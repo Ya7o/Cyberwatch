@@ -9869,47 +9869,54 @@
    "reason": "SEMANTIC_REJECTED"
   },
   {
-   "attempts": 1,
+   "attempts": 0,
    "entry": {
-    "content": "SL\nPar Seblatombe, rédacteur FrenchBreaches\nPublié le 10/10/2026\n— Secteur Éducation\nÉcole 42 : les données de 140 000 profils auraient été récupérées après le piratage d'un compte étudiant\nMise à jour le 10 octobre à 09h00\nL’école 42 confirme une fuite de données pouvant concerner jusqu’à 140 000 étudiants et candidats, notamment des noms, e-mails, identifiants et informations pédagogiques. Aucun mot de passe ne serait exposé.\nL’établissement indique avoir déposé plainte, notifié la CNIL et alerté les campus concernés, tout en renforçant ses mesures de sécurité.\nLe réseau international de l'École 42, spécialisé dans la formation aux métiers de l'informatique, est concerné par une fuite de données présumée d'une ampleur importante. Selon les informations analysées par FrenchBreaches, un ensemble de 140 080 profils attribués à des utilisateurs de la plateforme 42 contient notamment des identités, des adresses e-mail, des informations pédagogiques et des références à des photographies de profil.\nSelon nos informations, la compromission d'un compte étudiant aurait permis au pirate d'extraire massivement les données de la plateforme par scraping. L'attaquant aurait été détecté et bloqué dès le lendemain de l'exfiltration présumée, sans que cette intervention puisse empêcher la récupération des informations. L'ampleur exacte de la fuite reste à confirmer.\nLes données recensées concernent plusieurs écoles du réseau 42 à travers le monde, sans que leur nombre exact soit précisé à ce stade. L'origine des données et les circonstances de leur exposition restent toutefois inconnues.\nL'École 42, un réseau de formation présent dans le monde entier\nFondée en 2013 à Paris par Xavier Niel, l'École 42 est un établissement de formation aux métiers de l'informatique et de la programmation. Son modèle pédagogique repose sur l'apprentissage entre pairs, la réalisation de projets et l'absence de cours magistraux traditionnels.\nGratuite et accessible sans condition de diplôme, la formation s'adresse à des profils variés souhaitant se spécialiser dans le développement informatique et les technologies numériques.\nDepuis sa création, l'École 42 s'est largement développée à l'international. Son réseau compte plus de 50 campus répartis dans une trentaine de pays, notamment en Europe, en Afrique, en Asie et sur le continent américain.\nSelon les informations de FrenchBreaches, la fuite de données présumée concerne plusieurs établissements de ce réseau international, et non un campus isolé. Le nombre exact d'écoles impliquées n'est pas communiqué.\n140 080 profils recensés dans les données\nL'analyse des 140 080 enregistrements met en évidence une quantité importante d'informations associées aux profils d'utilisateurs de l'École 42.\nLes principaux champs identifiés sont les suivants :\n140 072 prénoms (près de 100 % des profils) ;\n127 746 noms de famille (91 %) ;\n140 078 adresses e-mail (près de 100 %) ;\n140 077 indications de campus (près de 100 %) ;\n136 918 niveaux de progression (98 %) ;\n92 221 grades ou statuts pédagogiques (66 %) ;\n84 724 indications de cursus (60 %) ;\n138 632 valeurs de portefeuille virtuel (« wallet ») (99 %) ;\n64 081 affiliations à une coalition (46 %) ;\n94 794 références à des photos de profil (68 %).\nCes chiffres correspondent au nombre d'enregistrements renseignés pour chaque catégorie, et non nécessairement à autant de personnes distinctes.\nPlusieurs écoles du réseau international concernées\nLes informations analysées comportent un champ permettant d'identifier le campus de rattachement des utilisateurs.\nUn exemple de profil examiné fait notamment référence au campus de Rome, en Italie, avec une adresse e-mail associée à son domaine étudiant.\nD'après les informations recueillies par FrenchBreaches, les données concernent plusieurs écoles 42 implantées dans différents pays.\nCette dimension internationale distingue l'incident d'une fuite limitée à un seul établissement. Elle ne signifie toutefois pas que les systèmes informatiques de chaque campus concerné ont été directement compromis.\nLe nombre exact d'établissements impliqués et la répartition des 140 080 profils par campus ne sont pas précisés à ce stade.\nDes identités, des parcours scolaires et près de 95 000 références à des photos\nLes informations ne se limitent pas aux noms et aux adresses e-mail.\nLes enregistrements comportent également des éléments relatifs au parcours des utilisateurs sur la plateforme pédagogique de l'École 42 :\nIdentifiants de connexion et liens vers les profils ;\nCampus et cursus suivis ;\nGrades, niveaux et progression pédagogique ;\nPoints d'évaluation et portefeuilles virtuels ;\nAffiliations à des coalitions ;\nLiens et métadonnées associés aux photographies de profil.\nPrès de 95 000 enregistrements contiennent une référence à une photo de profil. Certains comportent également des informations techniques sur les fichiers images, notamment leur taille, leur format ou leur empreinte numérique.\nLa présence de ces références ne permet toutefois pas, à elle seule, de confirmer que les photographies originales ont été téléchargées ou dérobées.\nDe même, le champ « wallet » désigne ici un élément de la plateforme pédagogique et ne constitue pas une preuve d'exposition de données bancaires ou de portefeuilles de cryptomonnaies.\nQuels risques pour les étudiants et anciens élèves ?\nL'association de noms, d'adresses e-mail, d'identifiants et d'informations sur les parcours pédagogiques pourrait faciliter des tentatives d'hameçonnage ciblé.\nDes personnes malveillantes pourraient notamment exploiter ces éléments pour envoyer de faux messages se faisant passer pour l'administration d'un campus, un service informatique ou un recruteur.\nLes informations sur les cursus, les niveaux et les promotions pourraient également servir à personnaliser ces messages et à renforcer leur crédibilité.\nAucun mot de passe, numéro de Sécurité sociale ou renseignement bancaire n'a été identifié dans les catégories de données communiquées à FrenchBreaches.\nUne fuite de données dont l'origine reste à déterminer\nLa présence de ces informations dans un ensemble de fichiers ne suffit pas à démontrer qu'une cyberattaque a directement compromis les systèmes informatiques de l'École 42.\nLes enregistrements comportent notamment des liens vers des profils de la plateforme intra.42.fr, mais leur présence ne permet pas d'établir si les informations proviennent d'une intrusion, d'une collecte automatisée ou d'une autre source.\nÀ ce stade, aucun élément fourni ne permet non plus de confirmer que les infrastructures informatiques des différents campus ont été individuellement compromises.\nFrenchBreaches a recensé 140 080 profils contenant des données attribuées à des utilisateurs de l'École 42, répartis entre plusieurs établissements du réseau international. L'origine des fichiers, leur éventuelle diffusion et le nombre exact de personnes uniques concernées restent à confirmer.",
+    "content": "Bourse Direct, l’un des principaux courtiers en ligne français, confirme un incident de cybersécurité survenu dans la nuit du 27 au 28 octobre 2026.  Des données personnelles et bancaires de certains clients ont été exposées, notamment leurs noms, prénoms, numéros de compte client et IBAN bancaires.  Contactée par Cyberattaque.org, la société précise que 800 comptes sont concernés par cet incident.  \n\n\n\n  Dans un e-mail dont Cyberattaque.org a obtenu une copie , Bourse Direct informe les personnes concernées d’un acte de cyber-malveillance ayant affecté leurs informations personnelles. Le courtier indique avoir contenu l’incident, renforcé ses mesures de sécurité et engagé les démarches de notification auprès des autorités compétentes. \n\n\n\n Créé en 1996 et installé à Paris,  Bourse Direct  est un acteur majeur du courtage en ligne en France. L’entreprise permet aux particuliers d’investir sur les marchés financiers à travers des comptes-titres, des plans d’épargne en actions (PEA) et différents produits d’épargne. Selon ses derniers résultats publiés en octobre, elle comptait  près de 435 000 comptes clients à fin septembre 2026 . \n\n\n\n   \n\n\n\n Une intrusion survenue dans la nuit du 27 au 28 octobre \n\n\n\n La chronologie de l’incident est précisée dans le message adressé aux clients. Bourse Direct indique qu’un acte malveillant a affecté certaines données personnelles  dans la nuit du mardi 27 au mercredi 28 octobre 2026 . \n\n\n\n L’entreprise ne détaille pas la méthode employée par les attaquants. Une compromission de compte disposant de privilèges élevés, une vulnérabilité applicative ou un accès non autorisé à une base de données pourraient expliquer l’exposition de ces informations, mais aucun de ces scénarios n’est confirmé. \n\n\n\n Le courtier affirme avoir rapidement contenu l’incident et renforcé la protection de ses systèmes. Il ne précise toutefois pas combien de temps les informations ont été accessibles ni si elles ont été copiées par les cybercriminels. \n\n\n\n Les noms, numéros de compte et IBAN bancaires concernés \n\n\n\n Le courrier transmis à Cyberattaque.org identifie précisément  trois catégories de données personnelles exposées  : \n\n\n\n \n  Les noms et prénoms  des clients concernés ; \n\n\n\n  Les numéros de compte client Bourse Direct  ; \n\n\n\n  Les IBAN bancaires  associés à ces clients. \n \n\n\n\n Cette combinaison d’informations est particulièrement sensible dans le secteur financier. Elle permet d’associer l’identité d’une personne à sa relation commerciale avec un courtier en ligne et à ses coordonnées bancaires. \n\n\n\n Le numéro de compte client constitue notamment une référence interne utilisée pour identifier un compte auprès de Bourse Direct. Il ne correspond pas nécessairement à un numéro de compte bancaire permettant d’effectuer des opérations financières. \n\n\n\n  Le courtier précise que les informations exposées ne permettent pas, à elles seules, d’accéder aux comptes des clients ni d’effectuer des opérations depuis ceux-ci.  \n\n\n\n Le message ne fait pas état d’une compromission des mots de passe, des codes d’authentification, des soldes des portefeuilles ou de l’historique des investissements. Aucun vol de titres ou de fonds n’est annoncé. \n\n\n\n Un IBAN exposé peut-il permettre de voler de l’argent ? \n\n\n\n Contrairement à un mot de passe ou à un code d’accès bancaire,  un IBAN ne suffit normalement pas à se connecter à un compte ou à réaliser directement un virement sortant . \n\n\n\n Sa divulgation n’est cependant pas sans conséquence. Des coordonnées bancaires dérobées peuvent notamment être utilisées dans certaines tentatives de fraude aux prélèvements SEPA. \n\n\n\n Un fraudeur pourrait essayer d’utiliser l’IBAN d’une victime pour mettre en place un mandat de prélèvement frauduleux auprès d’un organisme ou pour souscrire un service en utilisant ses coordonnées bancaires. \n\n\n\n Les mécanismes de contrôle bancaires et les possibilités de contestation limitent ces risques, mais  les personnes concernées doivent surveiller les opérations enregistrées sur leurs comptes bancaires . \n\n\n\n En cas de prélèvement inconnu, il est recommandé de contacter immédiatement son établissement bancaire afin de contester l’opération et, si nécessaire, de bloquer les prélèvements du créancier concerné. \n\n\n\n Des tentatives d’escroquerie particulièrement crédibles contre les investisseurs \n\n\n\n Au-delà des risques liés aux prélèvements bancaires, cette fuite pourrait surtout faciliter des campagnes de  phishing et d’usurpation d’identité ciblant les clients de Bourse Direct . \n\n\n\n Un cybercriminel connaissant le nom d’un investisseur, son numéro de compte client et son IBAN pourrait se faire passer pour un conseiller du courtier. \n\n\n\n Il pourrait par exemple contacter la victime en évoquant un problème de sécurité, une vérification réglementaire ou une opération inhabituelle nécessitant une intervention urgente. \n\n\n\n  La connaissance du numéro de compte et de l’IBAN pourrait donner une apparence de légitimité à ces sollicitations.  Le fraudeur pourrait ensuite chercher à obtenir le mot de passe, un code de validation ou convaincre la personne de transférer ses fonds vers un prétendu compte sécurisé. \n\n\n\n Ce type d’escroquerie est particulièrement préoccupant dans le domaine de l’investissement, où les victimes peuvent détenir des sommes importantes sur leurs comptes-titres ou leurs comptes bancaires associés. \n\n\n\n Bourse Direct invite les clients concernés à redoubler de vigilance face aux messages, appels et courriels inattendus utilisant leurs données personnelles. \n\n\n\n 800 comptes concernés sur près de 435 000 chez Bourse Direct \n\n\n\n  Contactée par Cyberattaque.org, la société Bourse Direct confirme que 800 comptes sont concernés par cet incident de cybersécurité.  Cette précision permet désormais de mieux mesurer l’ampleur de l’exposition des données personnelles et bancaires de ses clients. \n\n\n\n Dans son dernier communiqué financier, publié le 14 octobre 2026, Bourse Direct faisait état de  près de 435 000 comptes clients à fin septembre 2026 , contre un peu plus de 406 000 à la fin de l’année précédente. \n\n\n\n Les  800 comptes concernés représentent ainsi environ 0,18 % du nombre total de comptes clients  recensés par le courtier à la fin du mois de septembre 2026. \n\n\n\n Cette croissance témoigne du poids du courtier sur le marché français de l’investissement en ligne. En neuf mois, ses clients avaient notamment exécuté environ 4,5 millions d’ordres de Bourse. \n\n\n\n Si le nombre de comptes touchés est désormais connu, il n’est pas précisé si tous ont subi exactement la même exposition de données ou si plusieurs catégories de comptes ont été affectées. Le nombre de comptes concernés ne correspond pas nécessairement au nombre de personnes distinctes touchées. \n\n\n\n Bourse Direct annonce avoir contenu l’incident \n\n\n\n Dans sa communication, le courtier indique que  l’incident a été contenu et que ses mesures de sécurité ont été renforcées . \n\n\n\n Bourse Direct affirme également poursuivre les actions nécessaires pour améliorer la protection des données personnelles de ses clients. \n\n\n\n L’entreprise précise que  l’incident est en cours de notification auprès des autorités compétentes . Son courrier ne confirme donc pas encore l’achèvement de ces démarches. \n\n\n\n Les personnes souhaitant obtenir des renseignements peuvent contacter le service client au  01 56 88 90 90, choix 1 , ou utiliser la messagerie sécurisée de leur espace personnel. \n\n\n\n À ce stade, Bourse Direct n’a pas communiqué publiquement de bilan technique détaillé précisant l’origine de l’intrusion ou une éventuelle revendication par un groupe cybercriminel.  La société a toutefois confirmé directement à Cyberattaque.org que 800 comptes sont concernés par l’incident.  \n\n\n\n Une fuite sensible pour un acteur majeur de l’investissement français \n\n\n\n Cette affaire présente une particularité importante : les données exposées ne concernent pas uniquement l’identité des clients, mais également  leur numéro de compte chez un courtier financier et leurs coordonnées bancaires . \n\n\n\n Ces informations pourraient être exploitées pour cibler précisément des investisseurs, notamment à travers de fausses communications de sécurité ou des tentatives de fraude bancaire. \n\n\n\n  Au 30 octobre 2026, Bourse Direct confirme que 800 comptes sont concernés par cet incident de cybersécurité.  Le courtier assure avoir contenu l’attaque et rappelle que les informations exposées ne suffisent pas à effectuer des opérations depuis les comptes concernés. \n\n\n\n Le principal enjeu réside désormais dans la prévention des fraudes pouvant résulter de l’association entre l’identité des clients, leurs références de comptes et leurs IBAN bancaires.",
     "entity": "",
     "event_date": "",
     "location": "",
     "organisation": "",
-    "published": "2026-10-10",
+    "published": "2026-10-30",
     "sector": "",
-    "source_item_id": "https://frenchbreaches.com/alertes/cole-42-mv0c35v3wnuu9qjgsyn",
+    "source_item_id": "4701",
     "source_metadata": {
-     "detail_hydration": {
-      "chars": 6932,
-      "extractor_version": "editorial-html-2026-09-06.1",
-      "fallback": "",
-      "status": "HYDRATED",
-      "truncated": false
-     },
      "rich_facts": {
       "affected_counts": [
        {
         "date": "",
-        "evidence": "L'analyse des 140 080 enregistrements met en évidence une quantité importante d'informations associées aux profils d'utilisateurs de l'École 42.",
-        "item_id": "https://frenchbreaches.com/alertes/cole-42-mv0c35v3wnuu9qjgsyn",
-        "raw": "140 080 enregistrements",
+        "evidence": "Contactée par Cyberattaque.org, la société Bourse Direct confirme que 800 comptes sont concernés par cet incident de cybersécurité.",
+        "raw": "800 comptes",
         "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "unit": "records",
-        "value": 140080
+        "status": "confirmed",
+        "unit": "accounts",
+        "value": 800
        },
        {
         "date": "",
-        "evidence": "Près de 95 000 enregistrements contiennent une référence à une photo de profil.",
-        "item_id": "https://frenchbreaches.com/alertes/cole-42-mv0c35v3wnuu9qjgsyn",
-        "raw": "95 000 enregistrements",
+        "evidence": "Selon ses derniers résultats publiés en octobre, elle comptait  près de 435 000 comptes clients à fin septembre 2026 .",
+        "raw": "435 000 comptes",
         "scope": "",
-        "source_id": "FRENCHBREACHES",
         "status": "unknown",
-        "unit": "records",
-        "value": 95000
+        "unit": "accounts",
+        "value": 435000
+       },
+       {
+        "date": "",
+        "evidence": "Bourse Direct victime d’une cyberattaque : les IBAN de 800 clients exposés",
+        "raw": "800 clients",
+        "scope": "",
+        "status": "unknown",
+        "unit": "clients",
+        "value": 800
+       },
+       {
+        "date": "",
+        "evidence": "Contactée par Cyberattaque.org, la société précise que 800 comptes sont concernés par cet incident.",
+        "raw": "800 comptes",
+        "scope": "",
+        "status": "unknown",
+        "unit": "accounts",
+        "value": 800
        }
       ],
       "affected_datasets": [],
@@ -9917,904 +9924,225 @@
       "claims": [
        {
         "date": "",
-        "evidence": "L'analyse des 140 080 enregistrements met en évidence une quantité importante d'informations associées aux profils d'utilisateurs de l'École 42.",
-        "item_id": "https://frenchbreaches.com/alertes/cole-42-mv0c35v3wnuu9qjgsyn",
+        "evidence": "Contactée par Cyberattaque.org, la société Bourse Direct confirme que 800 comptes sont concernés par cet incident de cybersécurité.",
         "scope": "",
-        "source_id": "FRENCHBREACHES",
+        "status": "confirmed",
+        "type": "affected_count",
+        "unit": "accounts",
+        "value": 800
+       },
+       {
+        "date": "",
+        "evidence": "Selon ses derniers résultats publiés en octobre, elle comptait  près de 435 000 comptes clients à fin septembre 2026 .",
+        "scope": "",
         "status": "unknown",
         "type": "affected_count",
-        "unit": "records",
-        "value": 140080
+        "unit": "accounts",
+        "value": 435000
        },
        {
         "date": "",
-        "evidence": "Près de 95 000 enregistrements contiennent une référence à une photo de profil.",
-        "item_id": "https://frenchbreaches.com/alertes/cole-42-mv0c35v3wnuu9qjgsyn",
+        "evidence": "Bourse Direct victime d’une cyberattaque : les IBAN de 800 clients exposés",
         "scope": "",
-        "source_id": "FRENCHBREACHES",
         "status": "unknown",
         "type": "affected_count",
-        "unit": "records",
-        "value": 95000
+        "unit": "clients",
+        "value": 800
        },
        {
         "date": "",
-        "evidence": "École 42 : les données de 140 000 profils auraient été récupérées après le piratage d'un compte étudiant Mise à jour le 10 octobre à 09h00 L’école 42 confirme une fuite de données pouvant concerner jusqu’à 140 000 étudiants et candidats, notamment des noms, e-mails, identifiants…",
-        "item_id": "https://frenchbreaches.com/alertes/cole-42-mv0c35v3wnuu9qjgsyn",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
+        "evidence": "Contactée par Cyberattaque.org, la société précise que 800 comptes sont concernés par cet incident.",
+        "scope": "",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "accounts",
+        "value": 800
+       },
+       {
+        "date": "",
+        "evidence": "Bourse Direct victime d’une cyberattaque : les IBAN de 800 clients exposés",
+        "status": "unknown",
         "type": "data_type",
-        "value": "adresses e-mail"
+        "value": "données bancaires"
        },
        {
         "date": "",
-        "evidence": "École 42 : les données de 140 000 profils auraient été récupérées après le piratage d'un compte étudiant Mise à jour le 10 octobre à 09h00 L’école 42 confirme une fuite de données pouvant concerner jusqu’à 140 000 étudiants et candidats, notamment des noms, e-mails, identifiants…",
-        "item_id": "https://frenchbreaches.com/alertes/cole-42-mv0c35v3wnuu9qjgsyn",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "type": "data_type",
-        "value": "identifiants"
-       },
-       {
-        "date": "",
-        "evidence": "L’école 42 confirme une fuite de données pouvant concerner jusqu’à 140 000 étudiants et candidats, notamment des noms, e-mails, identifiants et informations pédagogiques.",
-        "item_id": "https://frenchbreaches.com/alertes/cole-42-mv0c35v3wnuu9qjgsyn",
-        "source_id": "FRENCHBREACHES",
-        "status": "confirmed",
-        "type": "data_type",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "L’école 42 confirme une fuite de données pouvant concerner jusqu’à 140 000 étudiants et candidats, notamment des noms, e-mails, identifiants et informations pédagogiques.",
-        "item_id": "https://frenchbreaches.com/alertes/cole-42-mv0c35v3wnuu9qjgsyn",
-        "source_id": "FRENCHBREACHES",
-        "status": "confirmed",
-        "type": "data_type",
-        "value": "identifiants"
-       },
-       {
-        "date": "",
-        "evidence": "Aucun mot de passe ne serait exposé.",
-        "item_id": "https://frenchbreaches.com/alertes/cole-42-mv0c35v3wnuu9qjgsyn",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "type": "data_type",
-        "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "Selon les informations analysées par FrenchBreaches, un ensemble de 140 080 profils attribués à des utilisateurs de la plateforme 42 contient notamment des identités, des adresses e-mail, des informations pédagogiques et des références à des photographies de profil.",
-        "item_id": "https://frenchbreaches.com/alertes/cole-42-mv0c35v3wnuu9qjgsyn",
-        "source_id": "FRENCHBREACHES",
-        "status": "reported",
-        "type": "data_type",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "Selon les informations analysées par FrenchBreaches, un ensemble de 140 080 profils attribués à des utilisateurs de la plateforme 42 contient notamment des identités, des adresses e-mail, des informations pédagogiques et des références à des photographies de profil.",
-        "item_id": "https://frenchbreaches.com/alertes/cole-42-mv0c35v3wnuu9qjgsyn",
-        "source_id": "FRENCHBREACHES",
-        "status": "reported",
-        "type": "data_type",
-        "value": "photographies"
-       },
-       {
-        "date": "",
-        "evidence": "140 072 prénoms (près de 100 % des profils) ;",
-        "item_id": "https://frenchbreaches.com/alertes/cole-42-mv0c35v3wnuu9qjgsyn",
-        "source_id": "FRENCHBREACHES",
+        "evidence": "Des données personnelles et bancaires de certains clients ont été exposées, notamment leurs noms, prénoms, numéros de compte client et IBAN bancaires.",
         "status": "unknown",
         "type": "data_type",
         "value": "noms et prénoms"
        },
        {
         "date": "",
-        "evidence": "140 078 adresses e-mail (près de 100 %) ;",
-        "item_id": "https://frenchbreaches.com/alertes/cole-42-mv0c35v3wnuu9qjgsyn",
-        "source_id": "FRENCHBREACHES",
+        "evidence": "Dans un e-mail dont Cyberattaque.org a obtenu une copie , Bourse Direct informe les personnes concernées d’un acte de cyber-malveillance ayant affecté leurs informations personnelles.",
         "status": "unknown",
         "type": "data_type",
         "value": "adresses e-mail"
        },
        {
         "date": "",
-        "evidence": "94 794 références à des photos de profil (68 %).",
-        "item_id": "https://frenchbreaches.com/alertes/cole-42-mv0c35v3wnuu9qjgsyn",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
+        "evidence": "Un IBAN exposé peut-il permettre de voler de l’argent ?",
+        "status": "hypothesis",
         "type": "data_type",
-        "value": "photographies"
+        "value": "données bancaires"
+       },
+       {
+        "date": "",
+        "evidence": "Le fraudeur pourrait ensuite chercher à obtenir le mot de passe, un code de validation ou convaincre la personne de transférer ses fonds vers un prétendu compte sécurisé.",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "mots de passe"
+       },
+       {
+        "date": "",
+        "evidence": "Ce type d’escroquerie est particulièrement préoccupant dans le domaine de l’investissement, où les victimes peuvent détenir des sommes importantes sur leurs comptes-titres ou leurs comptes bancaires associés.",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "montants"
+       },
+       {
+        "date": "2026-10-28",
+        "evidence": "Bourse Direct, l’un des principaux courtiers en ligne français, confirme un incident de cybersécurité survenu dans la nuit du 27 au 28 octobre 2026.",
+        "kind": "statement",
+        "scope": "Chronologie",
+        "status": "confirmed",
+        "value": "Bourse Direct, l’un des principaux courtiers en ligne français, confirme un incident de cybersécurité survenu dans la nuit du 27 au 28 octobre 2026."
+       },
+       {
+        "date": "2026-10-14",
+        "evidence": "Dans son dernier communiqué financier, publié le 14 octobre 2026, Bourse Direct faisait état de  près de 435 000 comptes clients à fin septembre 2026 , contre un peu plus de 406 000 à la fin de l’année précédente.",
+        "kind": "statement",
+        "scope": "Chronologie",
+        "status": "unknown",
+        "value": "Dans son dernier communiqué financier, publié le 14 octobre 2026, Bourse Direct faisait état de  près de 435 000 comptes clients à fin septembre 2026 , contre un peu plus de 406 000 à la fin de l’année précédente."
+       },
+       {
+        "date": "2026-10-30",
+        "evidence": "Au 30 octobre 2026, Bourse Direct confirme que 800 comptes sont concernés par cet incident de cybersécurité.",
+        "kind": "statement",
+        "scope": "Chronologie",
+        "status": "confirmed",
+        "value": "Au 30 octobre 2026, Bourse Direct confirme que 800 comptes sont concernés par cet incident de cybersécurité."
        }
       ],
       "data_types": [
        {
         "date": "",
-        "evidence": "École 42 : les données de 140 000 profils auraient été récupérées après le piratage d'un compte étudiant Mise à jour le 10 octobre à 09h00 L’école 42 confirme une fuite de données pouvant concerner jusqu’à 140 000 étudiants et candidats, notamment des noms, e-mails, identifiants…",
-        "item_id": "https://frenchbreaches.com/alertes/cole-42-mv0c35v3wnuu9qjgsyn",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "value": "adresses e-mail"
+        "evidence": "Bourse Direct victime d’une cyberattaque : les IBAN de 800 clients exposés",
+        "status": "unknown",
+        "value": "données bancaires"
        },
        {
         "date": "",
-        "evidence": "École 42 : les données de 140 000 profils auraient été récupérées après le piratage d'un compte étudiant Mise à jour le 10 octobre à 09h00 L’école 42 confirme une fuite de données pouvant concerner jusqu’à 140 000 étudiants et candidats, notamment des noms, e-mails, identifiants…",
-        "item_id": "https://frenchbreaches.com/alertes/cole-42-mv0c35v3wnuu9qjgsyn",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "value": "identifiants"
-       },
-       {
-        "date": "",
-        "evidence": "L’école 42 confirme une fuite de données pouvant concerner jusqu’à 140 000 étudiants et candidats, notamment des noms, e-mails, identifiants et informations pédagogiques.",
-        "item_id": "https://frenchbreaches.com/alertes/cole-42-mv0c35v3wnuu9qjgsyn",
-        "source_id": "FRENCHBREACHES",
-        "status": "confirmed",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "L’école 42 confirme une fuite de données pouvant concerner jusqu’à 140 000 étudiants et candidats, notamment des noms, e-mails, identifiants et informations pédagogiques.",
-        "item_id": "https://frenchbreaches.com/alertes/cole-42-mv0c35v3wnuu9qjgsyn",
-        "source_id": "FRENCHBREACHES",
-        "status": "confirmed",
-        "value": "identifiants"
-       },
-       {
-        "date": "",
-        "evidence": "Aucun mot de passe ne serait exposé.",
-        "item_id": "https://frenchbreaches.com/alertes/cole-42-mv0c35v3wnuu9qjgsyn",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "Selon les informations analysées par FrenchBreaches, un ensemble de 140 080 profils attribués à des utilisateurs de la plateforme 42 contient notamment des identités, des adresses e-mail, des informations pédagogiques et des références à des photographies de profil.",
-        "item_id": "https://frenchbreaches.com/alertes/cole-42-mv0c35v3wnuu9qjgsyn",
-        "source_id": "FRENCHBREACHES",
-        "status": "reported",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "Selon les informations analysées par FrenchBreaches, un ensemble de 140 080 profils attribués à des utilisateurs de la plateforme 42 contient notamment des identités, des adresses e-mail, des informations pédagogiques et des références à des photographies de profil.",
-        "item_id": "https://frenchbreaches.com/alertes/cole-42-mv0c35v3wnuu9qjgsyn",
-        "source_id": "FRENCHBREACHES",
-        "status": "reported",
-        "value": "photographies"
-       },
-       {
-        "date": "",
-        "evidence": "140 072 prénoms (près de 100 % des profils) ;",
-        "item_id": "https://frenchbreaches.com/alertes/cole-42-mv0c35v3wnuu9qjgsyn",
-        "source_id": "FRENCHBREACHES",
+        "evidence": "Des données personnelles et bancaires de certains clients ont été exposées, notamment leurs noms, prénoms, numéros de compte client et IBAN bancaires.",
         "status": "unknown",
         "value": "noms et prénoms"
        },
        {
         "date": "",
-        "evidence": "140 078 adresses e-mail (près de 100 %) ;",
-        "item_id": "https://frenchbreaches.com/alertes/cole-42-mv0c35v3wnuu9qjgsyn",
-        "source_id": "FRENCHBREACHES",
+        "evidence": "Dans un e-mail dont Cyberattaque.org a obtenu une copie , Bourse Direct informe les personnes concernées d’un acte de cyber-malveillance ayant affecté leurs informations personnelles.",
         "status": "unknown",
         "value": "adresses e-mail"
        },
        {
         "date": "",
-        "evidence": "94 794 références à des photos de profil (68 %).",
-        "item_id": "https://frenchbreaches.com/alertes/cole-42-mv0c35v3wnuu9qjgsyn",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "photographies"
+        "evidence": "Un IBAN exposé peut-il permettre de voler de l’argent ?",
+        "status": "hypothesis",
+        "value": "données bancaires"
+       },
+       {
+        "date": "",
+        "evidence": "Le fraudeur pourrait ensuite chercher à obtenir le mot de passe, un code de validation ou convaincre la personne de transférer ses fonds vers un prétendu compte sécurisé.",
+        "status": "hypothesis",
+        "value": "mots de passe"
+       },
+       {
+        "date": "",
+        "evidence": "Ce type d’escroquerie est particulièrement préoccupant dans le domaine de l’investissement, où les victimes peuvent détenir des sommes importantes sur leurs comptes-titres ou leurs comptes bancaires associés.",
+        "status": "hypothesis",
+        "value": "montants"
        }
       ],
       "data_volumes": [],
-      "engine": "generic-rich-facts",
       "profile": {
-       "chars": 7222,
-       "claims": 12,
+       "chars": 8900,
+       "claims": 10,
+       "dates": 4,
        "hypotheses": 3,
-       "semantic_candidate": true,
-       "sentences": 71
+       "numbers": 9,
+       "sentences": 67
       },
       "relations": [],
       "semantic": {
-       "candidate": true,
        "used": false
       },
-      "source_adapter": "frenchbreaches",
-      "timeline": [],
-      "version": "2",
-      "vulnerabilities": []
-     }
-    },
-    "summary": "École 42 : les données de 140 000 profils auraient été récupérées après le piratage d'un compte étudiant Mise à jour le 10 octobre à 09h00 L’école 42 confirme une fuite de données pouvant concerner jusqu’à 140 000 étudiants et candidats, notamment des noms, e-mails, identifiants…",
-    "threat": "Fuite de données",
-    "title": "École 42",
-    "url": "https://frenchbreaches.com/alertes/cole-42-mv0c35v3wnuu9qjgsyn"
-   },
-   "exhausted_fields": {},
-   "field_reasons": {},
-   "first_queued_at": "2026-10-11T06:14:45.345021+00:00",
-   "item": {
-    "Collected_As_Of": "2026-10-11T17:36:03.829355+04:00",
-    "Event_Date": "",
-    "Item_ID": "ITM-211dbbfd32606322",
-    "Location": "France métropolitaine",
-    "Organisation_Key": "ecole42",
-    "Organisation_Raw": "École 42",
-    "Published_Date": "2026-10-10",
-    "Sector": "Éducation / Formation",
-    "Source_ID": "FRENCHBREACHES",
-    "Source_Item_ID": "https://frenchbreaches.com/alertes/cole-42-mv0c35v3wnuu9qjgsyn",
-    "Threat": "Fuite de données",
-    "Threat_Raw": "Fuite de données",
-    "Title": "École 42",
-    "URL": "https://frenchbreaches.com/alertes/cole-42-mv0c35v3wnuu9qjgsyn"
-   },
-   "key": "ITM-211dbbfd32606322:1b870a2cc811e36e8b2aef0bd65b8601f86cc6e1ac798311b13005928eacffbe",
-   "last_queued_at": "2026-10-30T13:44:19.874073+00:00",
-   "pending_fields": [
-    "incident_summary",
-    "summary"
-   ],
-   "reason": "TECHNICAL_FAILURE"
-  },
-  {
-   "attempts": 1,
-   "entry": {
-    "content": "SL\nPar Seblatombe, rédacteur FrenchBreaches\nPublié le 09/10/2026\n— Secteur Commerce\nCyberattaque chez ASOS : un compte employé compromis, des données personnelles de clients exposées\nLe géant britannique de la mode en ligne ASOS informe ses clients d'un incident de cybersécurité ayant permis à un tiers non autorisé d'accéder à certaines informations personnelles. Selon un communiqué transmis aux personnes concernées, l'attaquant a compromis le compte d'un employé pour accéder à des plateformes externes utilisées par l'entreprise.\nL'incident a notamment été découvert après l'envoi, le 6 octobre 2026, de notifications push frauduleuses prétendant provenir d'ASOS.\nDans sa communication, l'enseigne présente ses excuses aux clients concernés et indique avoir lancé une enquête avec l'appui de spécialistes internes et externes.\nASOS confirme que des données personnelles ont été accessibles, mais précise qu'aucune information de carte bancaire ni aucun mot de passe de compte n'a été obtenu.\nDes notifications frauduleuses envoyées au nom d'ASOS\nLe 6 octobre 2026, certains clients d'ASOS ont reçu une notification push prétendant provenir de l'entreprise.\nDans un message adressé à ses utilisateurs, ASOS reconnaît cet incident et explique avoir engagé des investigations pour en déterminer les circonstances.\nL'entreprise précise que ses équipes, accompagnées de spécialistes externes, ont mené une enquête approfondie au cours des 48 heures suivant la découverte de l'incident.\nLes investigations doivent se poursuivre dans les semaines à venir.\nLe compte d'un employé compromis\nSelon les conclusions préliminaires communiquées par ASOS, un tiers non autorisé a obtenu l'accès au compte d'un employé.\nPour parvenir à ses fins, l'attaquant se serait fait passer pour un contact de confiance afin d'obtenir des identifiants de connexion.\nCette méthode correspond à une technique d'ingénierie sociale, qui consiste à manipuler une personne pour l'amener à divulguer des informations confidentielles.\nLes identifiants récupérés auraient ensuite été utilisés pour accéder à des informations présentes sur certaines plateformes tierces utilisées par ASOS.\nL'incident ne correspond donc pas nécessairement à une intrusion directe dans l'ensemble de l'infrastructure informatique de l'entreprise.\nQuelles données personnelles ont été exposées ?\nL'enquête menée par ASOS a confirmé que le tiers non autorisé avait accès à certaines informations personnelles.\nLes catégories de données mentionnées dans le communiqué comprennent notamment :\nLes noms des clients\nLes coordonnées personnelles\nCertaines informations non personnelles associées aux comptes\nASOS ne détaille pas, dans l'extrait de communication disponible, l'ensemble des champs concernés.\nL'entreprise précise toutefois deux éléments importants :\nAucune information relative aux cartes de paiement n'a été consultée.\nAucun mot de passe de compte client n'a été obtenu.\nCes précisions permettent de distinguer les informations potentiellement exposées des données qui, selon les investigations d'ASOS, n'ont pas été compromises.\nDes plateformes tierces immédiatement verrouillées\nÀ la suite de la découverte de l'accès non autorisé, ASOS indique avoir immédiatement verrouillé les plateformes concernées.\nL'objectif était d'empêcher toute nouvelle consultation d'informations par l'attaquant.\nL'entreprise affirme également avoir engagé une enquête avec le soutien de spécialistes en cybersécurité internes et externes.\nLes investigations doivent permettre de déterminer précisément les circonstances de l'incident et son étendue.\nASOS indique par ailleurs travailler avec les autorités judiciaires compétentes et les organismes de régulation.\nQuels risques pour les clients d'ASOS ?\nMême en l'absence de compromission des mots de passe et des informations de cartes bancaires, l'accès non autorisé à des noms et coordonnées personnelles peut présenter certains risques.\nCes informations pourraient notamment être utilisées dans des tentatives d'hameçonnage ciblées, par e-mail, SMS ou notification frauduleuse.\nUn message utilisant le nom d'un client et se présentant comme une communication officielle d'ASOS pourrait sembler plus crédible.\nLes clients doivent donc rester vigilants face aux messages inattendus demandant de confirmer leurs identifiants, leurs coordonnées bancaires ou d'effectuer un paiement.\nIl est préférable de consulter directement le site ou l'application officielle d'ASOS plutôt que de suivre un lien suspect.\nUne cyberattaque confirmée, mais un bilan encore incomplet\nLa communication d'ASOS confirme la compromission d'un compte employé et l'accès non autorisé à certaines données personnelles de clients.\nL'entreprise indique avoir sécurisé les plateformes concernées et poursuit ses investigations.\nToutefois, plusieurs questions restent sans réponse dans le communiqué disponible, notamment le nombre de clients concernés, la nature exacte de toutes les informations accessibles et l'éventuelle extraction des données.\nIl n'est donc pas possible, à ce stade, de déterminer l'ampleur totale de l'incident.\nFrenchBreaches continuera de suivre cette affaire et les éventuelles nouvelles communications d'ASOS.",
-    "entity": "",
-    "event_date": "",
-    "location": "",
-    "organisation": "",
-    "published": "2026-10-09",
-    "sector": "",
-    "source_item_id": "https://frenchbreaches.com/alertes/asos-mv1dpielrzsucnmlgr",
-    "source_metadata": {
-     "detail_hydration": {
-      "chars": 5199,
-      "extractor_version": "editorial-html-2026-09-06.1",
-      "fallback": "",
-      "status": "HYDRATED",
-      "truncated": false
-     },
-     "rich_facts": {
-      "affected_counts": [],
-      "affected_datasets": [],
-      "affected_systems": [],
-      "claims": [
-       {
-        "date": "",
-        "evidence": "Pour parvenir à ses fins, l'attaquant se serait fait passer pour un contact de confiance afin d'obtenir des identifiants de connexion.",
-        "item_id": "https://frenchbreaches.com/alertes/asos-mv1dpielrzsucnmlgr",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "type": "data_type",
-        "value": "identifiants"
-       },
-       {
-        "date": "",
-        "evidence": "Même en l'absence de compromission des mots de passe et des informations de cartes bancaires, l'accès non autorisé à des noms et coordonnées personnelles peut présenter certains risques.",
-        "item_id": "https://frenchbreaches.com/alertes/asos-mv1dpielrzsucnmlgr",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "type": "data_type",
-        "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "Ces informations pourraient notamment être utilisées dans des tentatives d'hameçonnage ciblées, par e-mail, SMS ou notification frauduleuse.",
-        "item_id": "https://frenchbreaches.com/alertes/asos-mv1dpielrzsucnmlgr",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "type": "data_type",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "Les clients doivent donc rester vigilants face aux messages inattendus demandant de confirmer leurs identifiants, leurs coordonnées bancaires ou d'effectuer un paiement.",
-        "item_id": "https://frenchbreaches.com/alertes/asos-mv1dpielrzsucnmlgr",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "type": "data_type",
-        "value": "données bancaires"
-       }
-      ],
-      "data_types": [
-       {
-        "date": "",
-        "evidence": "Pour parvenir à ses fins, l'attaquant se serait fait passer pour un contact de confiance afin d'obtenir des identifiants de connexion.",
-        "item_id": "https://frenchbreaches.com/alertes/asos-mv1dpielrzsucnmlgr",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "value": "identifiants"
-       },
-       {
-        "date": "",
-        "evidence": "Même en l'absence de compromission des mots de passe et des informations de cartes bancaires, l'accès non autorisé à des noms et coordonnées personnelles peut présenter certains risques.",
-        "item_id": "https://frenchbreaches.com/alertes/asos-mv1dpielrzsucnmlgr",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "Ces informations pourraient notamment être utilisées dans des tentatives d'hameçonnage ciblées, par e-mail, SMS ou notification frauduleuse.",
-        "item_id": "https://frenchbreaches.com/alertes/asos-mv1dpielrzsucnmlgr",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "Les clients doivent donc rester vigilants face aux messages inattendus demandant de confirmer leurs identifiants, leurs coordonnées bancaires ou d'effectuer un paiement.",
-        "item_id": "https://frenchbreaches.com/alertes/asos-mv1dpielrzsucnmlgr",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "value": "données bancaires"
-       }
-      ],
-      "data_volumes": [],
-      "engine": "generic-rich-facts",
-      "profile": {
-       "chars": 5486,
-       "claims": 4,
-       "hypotheses": 4,
-       "semantic_candidate": true,
-       "sentences": 52
-      },
-      "relations": [],
-      "semantic": {
-       "candidate": true,
-       "used": false
-      },
-      "source_adapter": "frenchbreaches",
       "timeline": [
        {
-        "date": "2026-10-06",
-        "event": "L'incident a notamment été découvert après l'envoi, le 6 octobre 2026, de notifications push frauduleuses prétendant provenir d'ASOS.",
-        "evidence": "L'incident a notamment été découvert après l'envoi, le 6 octobre 2026, de notifications push frauduleuses prétendant provenir d'ASOS.",
-        "item_id": "https://frenchbreaches.com/alertes/asos-mv1dpielrzsucnmlgr",
-        "source_id": "FRENCHBREACHES",
+        "date": "2026-10-28",
+        "event": "Bourse Direct, l’un des principaux courtiers en ligne français, confirme un incident de cybersécurité survenu dans la nuit du 27 au 28 octobre 2026.",
+        "evidence": "Bourse Direct, l’un des principaux courtiers en ligne français, confirme un incident de cybersécurité survenu dans la nuit du 27 au 28 octobre 2026.",
+        "status": "confirmed"
+       },
+       {
+        "date": "2026-10-14",
+        "event": "Dans son dernier communiqué financier, publié le 14 octobre 2026, Bourse Direct faisait état de  près de 435 000 comptes clients à fin septembre 2026 , contre un peu plus de 406 000 à la fin de l’année précédente.",
+        "evidence": "Dans son dernier communiqué financier, publié le 14 octobre 2026, Bourse Direct faisait état de  près de 435 000 comptes clients à fin septembre 2026 , contre un peu plus de 406 000 à la fin de l’année précédente.",
         "status": "unknown"
        },
        {
-        "date": "2026-10-06",
-        "event": "Le 6 octobre 2026, certains clients d'ASOS ont reçu une notification push prétendant provenir de l'entreprise.",
-        "evidence": "Le 6 octobre 2026, certains clients d'ASOS ont reçu une notification push prétendant provenir de l'entreprise.",
-        "item_id": "https://frenchbreaches.com/alertes/asos-mv1dpielrzsucnmlgr",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown"
+        "date": "2026-10-30",
+        "event": "Au 30 octobre 2026, Bourse Direct confirme que 800 comptes sont concernés par cet incident de cybersécurité.",
+        "evidence": "Au 30 octobre 2026, Bourse Direct confirme que 800 comptes sont concernés par cet incident de cybersécurité.",
+        "status": "confirmed"
        }
       ],
       "version": "2",
       "vulnerabilities": []
      }
     },
-    "summary": "Cyberattaque chez ASOS : un compte employé compromis, des données personnelles de clients exposées Le géant britannique de la mode en ligne ASOS informe ses clients d'un incident de cybersécurité ayant permis à un tiers non autorisé d'accéder à certaines informations personnelles…",
-    "threat": "Fuite de données",
-    "title": "ASOS",
-    "url": "https://frenchbreaches.com/alertes/asos-mv1dpielrzsucnmlgr"
+    "summary": "Bourse Direct, l’un des principaux courtiers en ligne français, confirme un incident de cybersécurité survenu dans la nuit…",
+    "threat": "",
+    "title": "Bourse Direct victime d’une cyberattaque : les IBAN de 800 clients exposés",
+    "url": "https://www.cyberattaque.org/bourse-direct-victime-dune-cyberattaque-les-iban-de-ses-clients-exposes/"
    },
-   "exhausted_fields": {},
-   "field_reasons": {},
-   "first_queued_at": "2026-10-11T06:14:45.894371+00:00",
-   "item": {
-    "Collected_As_Of": "2026-10-11T10:14:17.452530+04:00",
-    "Event_Date": "",
-    "Item_ID": "ITM-81e930747e1f7198",
-    "Location": "France métropolitaine",
-    "Organisation_Key": "asos",
-    "Organisation_Raw": "ASOS",
-    "Published_Date": "2026-10-09",
-    "Sector": "Inconnu",
-    "Source_ID": "FRENCHBREACHES",
-    "Source_Item_ID": "https://frenchbreaches.com/alertes/asos-mv1dpielrzsucnmlgr",
-    "Threat": "Fuite de données",
-    "Threat_Raw": "Fuite de données",
-    "Title": "ASOS",
-    "URL": "https://frenchbreaches.com/alertes/asos-mv1dpielrzsucnmlgr"
-   },
-   "key": "ITM-81e930747e1f7198:03bdef106845cace6e7200856275d1883d201b7c87fe11b61ad180e135c1d8dd",
-   "last_queued_at": "2026-10-30T13:44:20.211183+00:00",
-   "pending_fields": [
-    "incident_summary",
-    "summary"
-   ],
-   "reason": "TECHNICAL_FAILURE"
-  },
-  {
-   "attempts": 1,
-   "entry": {
-    "content": "SL\nPar Seblatombe, rédacteur FrenchBreaches\nPublié le 09/10/2026\n— Secteur Commerce\nFuite de données en Suisse : près de 30 000 personnes concernées chez Quitt.ch\nUne nouvelle base de données attribuée à une plateforme suisse est proposée à la vente sur un forum de cybercriminels. Le 9 octobre 2026, un pirate a revendiqué la mise en vente de données provenant de Quitt.ch, un service en ligne spécialisé dans la gestion administrative des emplois à domicile. Selon son annonce, les informations de 29 435 personnes seraient concernées.\nL'auteur de la publication, connu sous le pseudonyme ChimeraZ, affirme détenir 29 691 enregistrements, pour un volume total de 197 Mo.\nLa base revendiquée contiendrait notamment 29 680 adresses e-mail, 24 919 numéros de téléphone, 24 513 numéros AVS suisses et 13 516 IBAN.\nCes chiffres proviennent de l'annonce publiée par le cybercriminel. L'authenticité de la base complète et l'ampleur réelle de l'incident restent à confirmer.\nQuitt.ch, une plateforme suisse de gestion administrative\nQuitt.ch est une plateforme suisse permettant notamment aux particuliers de simplifier les démarches administratives liées à l'emploi de personnel à domicile.\nLe service propose des outils destinés à gérer différentes formalités, notamment celles liées aux assurances sociales, aux déclarations administratives et à la rémunération des employés.\nDans ce contexte, la plateforme peut être amenée à traiter des informations personnelles et financières nécessaires à la gestion des relations de travail.\nLa présence présumée de numéros AVS et de coordonnées bancaires dans les données proposées à la vente rend cette revendication particulièrement sensible.\nPrès de 30 000 personnes dans une base proposée à la vente\nLe 9 octobre 2026, un utilisateur du forum PwnForums, sous le pseudonyme ChimeraZ, a publié une annonce intitulée « 29K QUITT.CH ».\nDans son message, il affirme vendre une base de données attribuée à la plateforme suisse.\nLes chiffres annoncés sont les suivants :\n29 691 lignes de données\n29 435 personnes\n29 680 adresses e-mail\n24 919 numéros de téléphone\n24 513 numéros AVS suisses\n13 516 coordonnées bancaires IBAN\n197 Mo de données\nFormat JSONL\nLe nombre d'enregistrements est légèrement supérieur au nombre de personnes revendiqué, ce qui pourrait indiquer que certains individus apparaissent dans plusieurs lignes.\nLes 29 435 personnes annoncées correspondent à une estimation fournie par le pirate, et non à un nombre de victimes indépendamment vérifié.\nQuelles données personnelles seraient exposées ?\nL'extrait publié dans l'annonce présente une structure de données particulièrement détaillée.\nLes champs visibles comprennent notamment :\nNoms et prénoms\nDates de naissance\nAdresses e-mail\nNuméros de téléphone\nAdresses postales\nNuméros AVS suisses\nCoordonnées bancaires IBAN\nInformations relatives aux comptes utilisateurs\nDonnées administratives liées aux employeurs et aux employés\nInformations sur les banques et les titulaires de comptes\nDates de création et de modification des dossiers\nStatuts de validation et informations de gestion administrative\nCertains champs font également référence à des éléments relatifs à la rémunération, aux autorisations administratives et à la situation professionnelle.\nToutefois, plusieurs de ces champs apparaissent vides dans l'échantillon publié. Leur présence dans la structure du fichier ne signifie donc pas nécessairement que toutes ces informations sont renseignées pour chaque personne.\nL'annonce ne permet pas non plus de déterminer si des mots de passe ou des documents justificatifs figurent dans la base complète.\nDes numéros AVS et des IBAN potentiellement concernés\nLa présence revendiquée de 24 513 numéros AVS suisses constitue l'un des aspects les plus sensibles de cette publication.\nEn Suisse, le numéro AVS est un identifiant utilisé notamment dans le cadre des assurances sociales et de nombreuses démarches administratives.\nSon association avec des noms, des dates de naissance et des coordonnées pourrait faciliter certaines tentatives d'usurpation d'identité ou de fraude administrative.\nLe pirate affirme également disposer de 13 516 IBAN.\nCes coordonnées bancaires pourraient être exploitées dans des tentatives d'escroquerie, notamment lorsqu'elles sont associées à des informations permettant d'identifier les titulaires des comptes.\nUn IBAN ne permet toutefois pas, à lui seul, d'accéder à un compte bancaire ou d'effectuer librement des virements.\nLa validité des numéros AVS et des IBAN annoncés n'a pas été établie à partir de la seule capture publiée.\nQuels risques pour les utilisateurs de Quitt.ch ?\nSi les informations revendiquées sont authentiques, elles pourraient être utilisées pour mener des campagnes d'hameçonnage ciblées, des tentatives d'usurpation d'identité ou des escroqueries administratives.\nUn cybercriminel disposant du nom d'une personne, de son numéro de téléphone, de son adresse e-mail et d'informations liées à son emploi pourrait notamment se faire passer pour un organisme administratif, un assureur ou un service de gestion salariale.\nLa présence éventuelle de données bancaires et de numéros AVS pourrait également rendre certains messages frauduleux plus crédibles.\nLes personnes utilisant la plateforme doivent donc rester vigilantes face aux sollicitations inattendues demandant de confirmer leurs informations personnelles, leurs coordonnées bancaires ou leurs identifiants de connexion.\n## Une fuite revendiquée, sans confirmation d'une intrusion\nÀ ce stade, rien dans la publication ne permet de déterminer précisément comment les données auraient été obtenues.\nL'annonce ne contient pas d'élément technique démontrant une intrusion directe dans les serveurs de Quitt.ch.\nLa provenance exacte des fichiers, leur ancienneté et leur éventuelle circulation antérieure restent inconnues.\nLa vente revendiquée d'une base de données ne suffit pas, à elle seule, à confirmer un piratage récent de la plateforme.\nLes chiffres publiés par ChimeraZ devront également être vérifiés afin de déterminer le nombre réel de personnes concernées et les catégories de données effectivement présentes.\nUne nouvelle revendication visant une plateforme suisse\nCette publication intervient le 9 octobre 2026, date à laquelle le même utilisateur a également proposé à la vente une autre base attribuée à CourtiersPartenaires.com, une plateforme suisse de courtage financier et d'assurance.\nLes deux annonces concernent des services suisses traitant des informations personnelles, mais aucun élément disponible ne permet d'établir un lien technique entre les deux incidents présumés.\nDans le cas de Quitt.ch, les informations revendiquées sont particulièrement préoccupantes en raison de la présence annoncée de numéros AVS et de coordonnées bancaires.\nFrenchBreaches n'a pas pu confirmer l'authenticité de l'intégralité de la base ni établir l'existence d'une compromission directe des systèmes de Quitt.ch.\nL'enjeu est désormais de déterminer l'origine de ces données, leur authenticité et le nombre réel de personnes susceptibles d'être concernées.\nFrenchBreaches continuera de suivre cette affaire et les éventuelles communications de la plateforme.",
-    "entity": "",
-    "event_date": "",
-    "location": "",
-    "organisation": "",
-    "published": "2026-10-09",
-    "sector": "",
-    "source_item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-    "source_metadata": {
-     "detail_hydration": {
-      "chars": 7190,
-      "extractor_version": "editorial-html-2026-09-06.1",
-      "fallback": "",
-      "status": "HYDRATED",
-      "truncated": false
-     },
-     "rich_facts": {
-      "affected_counts": [
-       {
-        "date": "",
-        "evidence": "L'auteur de la publication, connu sous le pseudonyme ChimeraZ, affirme détenir 29 691 enregistrements, pour un volume total de 197 Mo.",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "raw": "29 691 enregistrements",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "unit": "records",
-        "value": 29691
-       },
-       {
-        "date": "",
-        "evidence": "Selon son annonce, les informations de 29 435 personnes seraient concernées.",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "raw": "29 435 personnes",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "unit": "people",
-        "value": 29435
-       },
-       {
-        "date": "",
-        "evidence": "Fuite de données en Suisse : près de 30 000 personnes concernées chez Quitt.ch Une nouvelle base de données attribuée à une plateforme suisse est proposée à la vente sur un forum de cybercriminels.",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "raw": "30 000 personnes",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "unit": "people",
-        "value": 30000
-       },
-       {
-        "date": "",
-        "evidence": "29 691 lignes de données",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "raw": "29 691 lignes",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "unit": "records",
-        "value": 29691
-       },
-       {
-        "date": "",
-        "evidence": "29 435 personnes",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "raw": "29 435 personnes",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "unit": "people",
-        "value": 29435
-       }
-      ],
-      "affected_datasets": [],
-      "affected_systems": [],
-      "claims": [
-       {
-        "date": "",
-        "evidence": "L'auteur de la publication, connu sous le pseudonyme ChimeraZ, affirme détenir 29 691 enregistrements, pour un volume total de 197 Mo.",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "type": "affected_count",
-        "unit": "records",
-        "value": 29691
-       },
-       {
-        "date": "",
-        "evidence": "Selon son annonce, les informations de 29 435 personnes seraient concernées.",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "type": "affected_count",
-        "unit": "people",
-        "value": 29435
-       },
-       {
-        "date": "",
-        "evidence": "Fuite de données en Suisse : près de 30 000 personnes concernées chez Quitt.ch Une nouvelle base de données attribuée à une plateforme suisse est proposée à la vente sur un forum de cybercriminels.",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "people",
-        "value": 30000
-       },
-       {
-        "date": "",
-        "evidence": "29 691 lignes de données",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "records",
-        "value": 29691
-       },
-       {
-        "date": "",
-        "evidence": "29 435 personnes",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "people",
-        "value": 29435
-       },
-       {
-        "date": "",
-        "evidence": "L'auteur de la publication, connu sous le pseudonyme ChimeraZ, affirme détenir 29 691 enregistrements, pour un volume total de 197 Mo.",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "type": "data_volume",
-        "unit": "MO",
-        "value": 197.0
-       },
-       {
-        "date": "",
-        "evidence": "197 Mo de données",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_volume",
-        "unit": "MO",
-        "value": 197.0
-       },
-       {
-        "date": "",
-        "evidence": "La base revendiquée contiendrait notamment 29 680 adresses e-mail, 24 919 numéros de téléphone, 24 513 numéros AVS suisses et 13 516 IBAN.",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "type": "data_type",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "La base revendiquée contiendrait notamment 29 680 adresses e-mail, 24 919 numéros de téléphone, 24 513 numéros AVS suisses et 13 516 IBAN.",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "type": "data_type",
-        "value": "numéros de téléphone"
-       },
-       {
-        "date": "",
-        "evidence": "La base revendiquée contiendrait notamment 29 680 adresses e-mail, 24 919 numéros de téléphone, 24 513 numéros AVS suisses et 13 516 IBAN.",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "type": "data_type",
-        "value": "données bancaires"
-       },
-       {
-        "date": "",
-        "evidence": "La présence présumée de numéros AVS et de coordonnées bancaires dans les données proposées à la vente rend cette revendication particulièrement sensible.",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "données bancaires"
-       },
-       {
-        "date": "",
-        "evidence": "29 680 adresses e-mail",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "24 919 numéros de téléphone",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "numéros de téléphone"
-       },
-       {
-        "date": "",
-        "evidence": "Noms et prénoms",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "noms et prénoms"
-       },
-       {
-        "date": "",
-        "evidence": "Dates de naissance",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "dates de naissance"
-       },
-       {
-        "date": "",
-        "evidence": "Adresses postales",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "adresses postales"
-       },
-       {
-        "date": "",
-        "evidence": "Des numéros AVS et des IBAN potentiellement concernés",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "type": "data_type",
-        "value": "données bancaires"
-       },
-       {
-        "date": "",
-        "evidence": "En Suisse, le numéro AVS est un identifiant utilisé notamment dans le cadre des assurances sociales et de nombreuses démarches administratives.",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "type": "data_type",
-        "value": "identifiants"
-       },
-       {
-        "date": "",
-        "evidence": "Son association avec des noms, des dates de naissance et des coordonnées pourrait faciliter certaines tentatives d'usurpation d'identité ou de fraude administrative.",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "type": "data_type",
-        "value": "dates de naissance"
-       },
-       {
-        "date": "",
-        "evidence": "Les personnes utilisant la plateforme doivent donc rester vigilantes face aux sollicitations inattendues demandant de confirmer leurs informations personnelles, leurs coordonnées bancaires ou leurs identifiants de connexion.",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "type": "data_type",
-        "value": "identifiants"
-       }
-      ],
-      "data_types": [
-       {
-        "date": "",
-        "evidence": "La base revendiquée contiendrait notamment 29 680 adresses e-mail, 24 919 numéros de téléphone, 24 513 numéros AVS suisses et 13 516 IBAN.",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "La base revendiquée contiendrait notamment 29 680 adresses e-mail, 24 919 numéros de téléphone, 24 513 numéros AVS suisses et 13 516 IBAN.",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "value": "numéros de téléphone"
-       },
-       {
-        "date": "",
-        "evidence": "La base revendiquée contiendrait notamment 29 680 adresses e-mail, 24 919 numéros de téléphone, 24 513 numéros AVS suisses et 13 516 IBAN.",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "value": "données bancaires"
-       },
-       {
-        "date": "",
-        "evidence": "La présence présumée de numéros AVS et de coordonnées bancaires dans les données proposées à la vente rend cette revendication particulièrement sensible.",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "données bancaires"
-       },
-       {
-        "date": "",
-        "evidence": "29 680 adresses e-mail",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "24 919 numéros de téléphone",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "numéros de téléphone"
-       },
-       {
-        "date": "",
-        "evidence": "Noms et prénoms",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "noms et prénoms"
-       },
-       {
-        "date": "",
-        "evidence": "Dates de naissance",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "dates de naissance"
-       },
-       {
-        "date": "",
-        "evidence": "Adresses postales",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "adresses postales"
-       },
-       {
-        "date": "",
-        "evidence": "Des numéros AVS et des IBAN potentiellement concernés",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "value": "données bancaires"
-       },
-       {
-        "date": "",
-        "evidence": "En Suisse, le numéro AVS est un identifiant utilisé notamment dans le cadre des assurances sociales et de nombreuses démarches administratives.",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "value": "identifiants"
-       },
-       {
-        "date": "",
-        "evidence": "Son association avec des noms, des dates de naissance et des coordonnées pourrait faciliter certaines tentatives d'usurpation d'identité ou de fraude administrative.",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "value": "dates de naissance"
-       },
-       {
-        "date": "",
-        "evidence": "Les personnes utilisant la plateforme doivent donc rester vigilantes face aux sollicitations inattendues demandant de confirmer leurs informations personnelles, leurs coordonnées bancaires ou leurs identifiants de connexion.",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "value": "identifiants"
-       }
-      ],
-      "data_volumes": [
-       {
-        "date": "",
-        "evidence": "L'auteur de la publication, connu sous le pseudonyme ChimeraZ, affirme détenir 29 691 enregistrements, pour un volume total de 197 Mo.",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "unit": "MO",
-        "value": 197.0
-       },
-       {
-        "date": "",
-        "evidence": "197 Mo de données",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "unit": "MO",
-        "value": 197.0
-       }
-      ],
-      "engine": "generic-rich-facts",
-      "profile": {
-       "chars": 7478,
-       "claims": 20,
-       "hypotheses": 4,
-       "semantic_candidate": true,
-       "sentences": 79
-      },
-      "relations": [],
-      "semantic": {
-       "candidate": true,
-       "used": false
-      },
-      "source_adapter": "frenchbreaches",
-      "timeline": [
-       {
-        "date": "2026-10-09",
-        "event": "Le 9 octobre 2026, un pirate a revendiqué la mise en vente de données provenant de…",
-        "evidence": "Le 9 octobre 2026, un pirate a revendiqué la mise en vente de données provenant de…",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed"
-       },
-       {
-        "date": "2026-10-09",
-        "event": "Le 9 octobre 2026, un pirate a revendiqué la mise en vente de données provenant de Quitt.ch, un service en ligne spécialisé dans la gestion administrative des emplois à domicile.",
-        "evidence": "Le 9 octobre 2026, un pirate a revendiqué la mise en vente de données provenant de Quitt.ch, un service en ligne spécialisé dans la gestion administrative des emplois à domicile.",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed"
-       },
-       {
-        "date": "2026-10-09",
-        "event": "Le 9 octobre 2026, un utilisateur du forum PwnForums, sous le pseudonyme ChimeraZ, a publié une annonce intitulée « 29K QUITT.CH ».",
-        "evidence": "Le 9 octobre 2026, un utilisateur du forum PwnForums, sous le pseudonyme ChimeraZ, a publié une annonce intitulée « 29K QUITT.CH ».",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown"
-       },
-       {
-        "date": "2026-10-09",
-        "event": "Cette publication intervient le 9 octobre 2026, date à laquelle le même utilisateur a également proposé à la vente une autre base attribuée à CourtiersPartenaires.com, une plateforme suisse de courtage financier et d'assurance.",
-        "evidence": "Cette publication intervient le 9 octobre 2026, date à laquelle le même utilisateur a également proposé à la vente une autre base attribuée à CourtiersPartenaires.com, une plateforme suisse de courtage financier et d'assurance.",
-        "item_id": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown"
-       }
-      ],
-      "version": "2",
-      "vulnerabilities": []
-     }
+   "exhausted_fields": {
+    "activity_description": {
+     "at": "2026-10-31T13:11:01.715267+00:00",
+     "reason": "ACTIVITY_NOT_DESCRIBED"
     },
-    "summary": "Fuite de données en Suisse : près de 30 000 personnes concernées chez Quitt.ch Une nouvelle base de données attribuée à une plateforme suisse est proposée à la vente sur un forum de cybercriminels. Le 9 octobre 2026, un pirate a revendiqué la mise en vente de données provenant de…",
-    "threat": "Fuite de données",
-    "title": "Quitt",
-    "url": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4"
+    "activity_sector_match": {
+     "at": "2026-10-31T13:11:01.715267+00:00",
+     "reason": "NO_VALID_ACTIVITY_PAIR"
+    }
    },
-   "exhausted_fields": {},
-   "field_reasons": {},
-   "first_queued_at": "2026-10-11T06:14:46.426076+00:00",
+   "field_reasons": {
+    "activity_description": "ACTIVITY_NOT_DESCRIBED",
+    "activity_sector_match": "EVIDENCE_NOT_GROUNDED"
+   },
+   "first_queued_at": "2026-10-30T13:43:27.008741+00:00",
    "item": {
-    "Collected_As_Of": "2026-10-11T10:14:17.452530+04:00",
+    "Collected_As_Of": "2026-10-30T17:41:01.674252+04:00",
     "Event_Date": "",
-    "Item_ID": "ITM-09df79941a2ef0fc",
-    "Location": "France métropolitaine",
-    "Organisation_Key": "quitt",
-    "Organisation_Raw": "Quitt",
-    "Published_Date": "2026-10-09",
+    "Item_ID": "ITM-8c82082d337ad3b9",
+    "Location": "Inconnu",
+    "Organisation_Key": "bourse direct",
+    "Organisation_Raw": "Bourse Direct",
+    "Published_Date": "2026-10-30",
     "Sector": "Inconnu",
-    "Source_ID": "FRENCHBREACHES",
-    "Source_Item_ID": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4",
+    "Source_ID": "CYBERATTAQUE_ORG",
+    "Source_Item_ID": "4701",
     "Threat": "Fuite de données",
-    "Threat_Raw": "Fuite de données",
-    "Title": "Quitt",
-    "URL": "https://frenchbreaches.com/alertes/quitt-mv1d7m5lqlir4jzqd4"
+    "Threat_Raw": "",
+    "Title": "Bourse Direct victime d’une cyberattaque : les IBAN de 800 clients exposés",
+    "URL": "https://www.cyberattaque.org/bourse-direct-victime-dune-cyberattaque-les-iban-de-ses-clients-exposes/"
    },
-   "key": "ITM-09df79941a2ef0fc:9646d6b85c26d3d9a9f1485adcaa2e675010fc0e3fd46b22991c2f37741c78c2",
-   "last_queued_at": "2026-10-30T13:44:20.559504+00:00",
-   "pending_fields": [
-    "incident_summary",
-    "summary"
-   ],
-   "reason": "TECHNICAL_FAILURE"
+   "key": "ITM-8c82082d337ad3b9:7dbd00bcae33bf455f0a49c76eb59ac60752019706fb1109475d7e307bc22e1a",
+   "last_queued_at": "2026-10-30T13:43:27.008741+00:00",
+   "pending_fields": [],
+   "reason": "SEMANTIC_REJECTED"
   },
   {
-   "attempts": 1,
+   "attempts": 2,
    "entry": {
     "content": "SL\nPar Seblatombe, rédacteur FrenchBreaches\nPublié le 09/10/2026\n— Secteur Commerce\nFuite de données en Suisse : les informations de 57 000 personnes proposées à la vente sur un forum de pirates\nUne plateforme suisse spécialisée dans la mise en relation avec des courtiers financiers et des professionnels de l’assurance fait l’objet d’une revendication de fuite de données. Le 9 octobre 2026, un cybercriminel a annoncé la vente d’une base attribuée au site CourtiersPartenaires.com, contenant les informations personnelles de plus de 57 000 personnes.\nL’auteur de la publication, connu sous le pseudonyme ChimeraZ, affirme détenir 97 704 enregistrements, représentant 57 229 personnes, pour un volume total de 121 Mo.\nSelon les chiffres affichés dans son annonce, la base contiendrait également 57 241 adresses e-mail et 42 609 numéros de téléphone.\nCes informations proviennent de la revendication du pirate et leur authenticité reste à confirmer.\nUne plateforme suisse de courtage financier et d’assurance\nCourtiersPartenaires.com se présente comme une plateforme suisse permettant aux particuliers d’entrer en relation avec des professionnels du courtage, notamment pour rechercher des solutions financières et d’assurance.\nLe site facilite les échanges entre les personnes souhaitant obtenir des renseignements ou des offres et les professionnels susceptibles de répondre à leurs besoins.\nLes informations revendiquées par le cybercriminel semblent notamment provenir de demandes de contact et d’échanges avec des prospects ou des clients.\nPrès de 100 000 enregistrements mis en vente\nLe 9 octobre 2026, un utilisateur du forum PwnForums, sous le pseudonyme ChimeraZ, a publié une annonce intitulée « 57K COURTIERSPARTENAIRES.COM ».\nDans son message, il affirme vendre une base de données appartenant à la plateforme suisse.\nL’annonce présente les chiffres suivants :\n97 704 lignes de données\n57 229 personnes\n57 241 adresses e-mail\n42 609 numéros de téléphone\n121 Mo de fichiers\nFormat JSONL\nLe nombre de lignes est supérieur au nombre de personnes annoncé, ce qui pourrait s’expliquer par la présence de plusieurs enregistrements associés à un même contact.\nCes volumes restent déclaratifs et ne constituent pas, à ce stade, un décompte vérifié des personnes réellement concernées.\nQuelles données personnelles sont concernées ?\nUn extrait publié directement dans l’annonce permet d’identifier plusieurs catégories d’informations.\nLes données présentées comprennent notamment :\nNoms et prénoms\nAdresses e-mail\nNuméros de téléphone\nDates des demandes de contact\nObjets et contenus de certaines demandes\nRéférences d’annonces immobilières\nIdentifiants et coordonnées d’agences\nInformations relatives aux échanges entre clients, prospects et professionnels\nL’extrait montre également des champs destinés à accueillir d’autres renseignements personnels, notamment des adresses, des informations professionnelles, des revenus ou des éléments de situation familiale.\nToutefois, plusieurs de ces champs sont vides dans l’exemple publié. Leur présence dans la structure du fichier ne prouve donc pas que ces informations soient renseignées pour les personnes concernées.\nLes données visibles semblent notamment liées à des formulaires de contact et à des demandes adressées à des professionnels.\nQuels risques pour les personnes concernées ?\nSi la base de données est authentique, les informations pourraient être utilisées pour mener des campagnes d’hameçonnage ciblées ou des tentatives d’escroquerie.\nUn cybercriminel disposant d’un nom, d’une adresse e-mail, d’un numéro de téléphone et du contexte d’une demande pourrait notamment se faire passer pour un courtier, une agence ou un conseiller financier.\nCes informations pourraient rendre certains messages frauduleux particulièrement crédibles, notamment lorsqu’ils font référence à une démarche réellement effectuée par la personne ciblée.\nLa présence éventuelle d’informations sur des demandes immobilières ou financières pourrait également faciliter la personnalisation de tentatives de fraude.\nUne fuite revendiquée, dont l’origine reste inconnue\nÀ ce stade, la publication du cybercriminel ne permet pas d’établir comment les données auraient été obtenues.\nAucun élément présenté dans l’annonce ne permet de confirmer une intrusion directe dans les systèmes informatiques de CourtiersPartenaires.com.\nLes données pourraient provenir d’un accès non autorisé, d’un compte compromis ou d’une autre source, sans qu’il soit possible de privilégier l’une de ces hypothèses.\nL’authenticité de la base complète, les volumes annoncés et l’existence d’une éventuelle compromission restent donc à vérifier.\nLa revendication publiée le 9 octobre 2026 constitue néanmoins un signalement à prendre au sérieux, compte tenu de la nature des informations visibles dans l’échantillon.\nFrenchBreaches continuera de suivre cette affaire et les éventuelles communications de la plateforme concernée.",
     "entity": "",
@@ -11195,7 +10523,10 @@
     "url": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z"
    },
    "exhausted_fields": {},
-   "field_reasons": {},
+   "field_reasons": {
+    "incident_summary": "FIELD_VALIDATION_REJECTED",
+    "summary": "CONFIDENCE_REJECTED"
+   },
    "first_queued_at": "2026-10-11T06:14:47.401754+00:00",
    "item": {
     "Collected_As_Of": "2026-10-11T10:14:17.452530+04:00",
@@ -11214,15 +10545,15 @@
     "URL": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z"
    },
    "key": "ITM-555d35ef81078a66:bdef88d9f7bf7e2c4d274a290bf40ff849ab0d9a119eff8e19c2aa5bd7676b13",
-   "last_queued_at": "2026-10-30T13:44:20.894330+00:00",
+   "last_queued_at": "2026-10-31T13:11:36.007944+00:00",
    "pending_fields": [
     "incident_summary",
     "summary"
    ],
-   "reason": "TECHNICAL_FAILURE"
+   "reason": "SEMANTIC_MISS"
   },
   {
-   "attempts": 1,
+   "attempts": 2,
    "entry": {
     "content": "SL\nPar Seblatombe, rédacteur FrenchBreaches\nPublié le 09/10/2026\nMammut : des fichiers internes et des mots de passe diffusés sur un forum de pirates\nLe fabricant suisse d’équipements de montagne Mammut voit son nom apparaître sur un forum de cybercriminels. Le 9 octobre 2026, un utilisateur a publié une archive présentée comme provenant d’une cyberattaque au ransomware menée par le groupe DataCarry en 2025.\nLa publication annonce 28 fichiers représentant environ 522 Mo de données, parmi lesquels des documents CSV, SQL et Excel. Certains fichiers contiendraient également des mots de passe et des paramètres de pare-feu.\nCette diffusion ne constitue toutefois pas, à elle seule, la preuve d’une nouvelle intrusion chez Mammut.\nMammut, une marque suisse spécialisée dans les sports de montagne\nFondée en 1862, Mammut Sports Group est une entreprise suisse spécialisée dans les équipements et vêtements destinés aux activités de montagne.\nLa marque commercialise notamment des vêtements techniques, des chaussures, des sacs à dos et du matériel d’alpinisme. Elle est présente dans de nombreux pays.\nUne cyberattaque attribuée au groupe DataCarry en 2025\nD’après la publication consultée par FrenchBreaches, Mammut aurait été victime d’une attaque au ransomware revendiquée par DataCarry le 26 mai 2025.\nL’auteur du message indique que la compromission pourrait remonter à septembre 2024. Cette date est présentée comme une estimation et n’a pas été confirmée par Mammut.\nLa revendication aurait initialement été publiée sur le site de divulgation du groupe DataCarry.\nAucune preuve présentée dans cette publication ne permet d’établir qu’une nouvelle cyberattaque a eu lieu en octobre 2026. Il s’agirait plutôt d’une remise en circulation de données attribuées à l’incident de 2025.\nPlus de 500 Mo de fichiers mis en circulation\nLe 9 octobre 2026, un utilisateur d'un forum de cybercriminel, sous le pseudonyme R4nsomwareVault, a annoncé avoir mis en ligne des fichiers attribués à Mammut.\nSelon ses déclarations, l'ensemble comprendrait 28 fichiers, pour un volume total de 522 Mo, après suppression des doublons identifiés par leurs empreintes numériques.\nParmi les formats annoncés figurent notamment :\n4 fichiers CSV, pouvant contenir des données structurées ;\n16 fichiers SQL, généralement utilisés pour des données issues de bases de données ;\n5 fichiers Excel (XLSX), dont un présenté comme contenant des mots de passe et des paramètres de pare-feu.\nL’auteur affirme également avoir conservé, dans un dossier distinct, des copies de fichiers contenant des identifiants exposés.\nLa nature exacte de ces informations, leur validité actuelle et leur caractère sensible restent à vérifier.\nQuels risques pour Mammut ?\nSi les fichiers sont authentiques, la présence éventuelle d’identifiants et de configurations de sécurité pourrait présenter un risque pour l’entreprise.\nDes informations techniques anciennes peuvent notamment faciliter la reconnaissance de systèmes informatiques ou être exploitées si certains accès n’ont pas été révoqués.\nCependant, rien ne permet d’affirmer à ce stade que les mots de passe évoqués sont toujours valides, ni que les systèmes actuels de Mammut sont exposés.\nLa publication ne permet pas non plus de déterminer si des données personnelles de clients ou de salariés figurent dans les archives.\nUne diffusion à confirmer\nCette affaire concerne pour l’heure une publication sur un forum de pirates, datée du 9 octobre 2026, faisant référence à une cyberattaque attribuée au groupe DataCarry en 2025.\nLes volumes, la nature des documents et les dates avancées proviennent des déclarations de l’auteur de la publication.\nFrenchBreaches n’a pas pu confirmer l’authenticité de l’intégralité des fichiers ni établir l’existence d’une nouvelle compromission.\nL’enjeu est désormais de déterminer si les documents diffusés correspondent bien aux données issues de l’incident revendiqué en 2025 et si certaines informations pourraient encore présenter un risque pour Mammut.",
     "entity": "",
@@ -11490,7 +10821,10 @@
     "url": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn"
    },
    "exhausted_fields": {},
-   "field_reasons": {},
+   "field_reasons": {
+    "activity_description": "ACTIVITY_NOT_DESCRIBED",
+    "activity_sector_match": "NO_VALID_ACTIVITY_PAIR"
+   },
    "first_queued_at": "2026-10-11T06:14:48.438529+00:00",
    "item": {
     "Collected_As_Of": "2026-10-11T10:14:17.452530+04:00",
@@ -11509,14 +10843,12 @@
     "URL": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn"
    },
    "key": "ITM-0bcd6e818ef2912b:a5004fb39cdeab0ab379c8da324cc516b1b1dcfb243473fb7efd6796d65964a4",
-   "last_queued_at": "2026-10-30T13:44:21.137211+00:00",
+   "last_queued_at": "2026-10-31T13:11:39.499521+00:00",
    "pending_fields": [
     "activity_description",
-    "activity_sector_match",
-    "incident_summary",
-    "summary"
+    "activity_sector_match"
    ],
-   "reason": "TECHNICAL_FAILURE"
+   "reason": "SEMANTIC_REJECTED"
   },
   {
    "attempts": 0,
@@ -53150,214 +52482,85 @@
   {
    "attempts": 0,
    "entry": {
-    "content": "SL\nPar Seblatombe, rédacteur FrenchBreaches\nPublié le 30/10/2026\n— Secteur public\nFédération suisse de basketball : les données de plus de 52 000 licenciés exposées, des milliers de mineurs concernés\nALERTE — La Fédération suisse de basketball (Swiss Basketball) est visée par une revendication de cyberattaque. Ce vendredi 30 octobre 2026, un pirate affirme avoir accédé à un extranet de la fédération et récupéré des données personnelles. FrenchBreaches a analysé quatre fichiers totalisant 96 252 enregistrements, dont 52 344 fiches de licenciés. Noms, adresses, dates de naissance, téléphones, e-mails et numéros AVS figurent parmi les informations présentes. Des milliers de joueurs mineurs sont également concernés.\nUne importante fuite de données pourrait toucher le basketball suisse.\nSur un forum de pirates, un utilisateur connu sous le pseudonyme « Venus1337 » affirme avoir compromis un extranet de la Fédération suisse de basketball et exporté les informations auxquelles il avait accès.\nSa publication, intitulée « Swiss Basketball - 52,345 », est accompagnée de fichiers contenant des informations personnelles et administratives.\nL'analyse réalisée par FrenchBreaches révèle un volume important de données concernant des licenciés, entraîneurs, arbitres et opérations comptables.\nPlus de 96 000 enregistrements analysés\nLes quatre fichiers examinés se répartissent ainsi :\nDonnéesNombre d'enregistrements\nLicenciés52 344\nEntraîneurs5 696\nArbitres1 523\nComptabilité et licences36 689\nTotal96 252\nAttention : ces 96 252 enregistrements ne représentent pas autant de personnes distinctes. Un licencié peut également apparaître dans les fichiers des entraîneurs, des arbitres ou de la comptabilité.\nLe fichier principal contient 52 344 fiches de licenciés, un chiffre quasiment identique aux 52 345 annoncées par le pirate.\nNoms, adresses, téléphones et numéros AVS\nLes données analysées vont bien au-delà des simples informations sportives.\nParmi les éléments présents figurent :\nNoms, prénoms et dates de naissance ;\nAdresses postales, e-mails et numéros de téléphone ;\nNationalités et sexes ;\nNuméros de licence et clubs sportifs ;\nCatégories, saisons et statuts des licences ;\nNuméros AVS, l'identifiant personnel utilisé en Suisse ;\nQualifications et formations des entraîneurs et arbitres ;\nMontants, taxes et informations comptables liés aux licences.\nDans le seul fichier des licenciés, FrenchBreaches a notamment relevé 51 315 champs e-mail renseignés, 52 186 champs d'adresse postale et 6 519 champs AVS.\nLes fichiers des entraîneurs et des arbitres contiennent également des identifiants AVS/AHV, ainsi que des informations sur leurs qualifications et leurs clubs.\nCes chiffres correspondent à des champs renseignés, et non nécessairement à des personnes ou identifiants uniques.\nAucun élément de l'analyse ne permet en revanche d'affirmer que des mots de passe ou des numéros de carte bancaire ont été exposés.\nDes milliers de mineurs dans les fichiers\nC'est l'un des points les plus préoccupants de cette affaire.\nLe fichier des licenciés contient des dates de naissance permettant d'identifier de nombreux enfants et adolescents.\nSur 32 709 dates de naissance interprétées, FrenchBreaches a relevé 21 648 enregistrements correspondant à des personnes de moins de 18 ans au 30 octobre 2026.\nCe chiffre ne représente pas nécessairement 21 648 mineurs distincts et ne permet pas de déterminer si toutes les licences sont encore actives.\nLa présence de données concernant des mineurs, associant potentiellement leur identité, leur adresse et leur club sportif, soulève néanmoins un important problème de confidentialité.\nDes entraîneurs, arbitres et données comptables également touchés\nLa fuite revendiquée ne concernerait pas uniquement les joueurs.\nUn fichier contient 5 696 fiches d'entraîneurs, avec leurs coordonnées, qualifications, formations et clubs.\nUn autre regroupe 1 523 fiches d'arbitres et d'officiels, comprenant notamment leurs informations personnelles, niveaux de qualification et statuts sportifs.\nEnfin, 36 689 enregistrements comptables comportent des informations relatives aux licences, aux taxes, aux transferts et aux paiements.\nCes éléments suggèrent que les données proviennent d'un environnement de gestion administrative relativement étendu.\nQuels risques pour les licenciés et leurs familles ?\nLes informations exposées pourraient être utilisées pour organiser des escroqueries ciblées.\nDes fraudeurs pourraient notamment se faire passer pour un club ou la Fédération suisse de basketball afin d'envoyer de fausses demandes de renouvellement de licence, de paiement de cotisation ou d'inscription à un tournoi.\nLes parents de jeunes licenciés pourraient également être visés par des messages frauduleux utilisant le nom du club de leur enfant.\nLa présence de numéros AVS et de coordonnées personnelles augmente par ailleurs les risques d'usurpation d'identité.\nAucune exploitation frauduleuse de ces données n'a toutefois été démontrée à ce stade.\nLa fédération a-t-elle confirmé la cyberattaque ?\nLe pirate affirme avoir obtenu un accès à un extranet avant d'en exporter les données.\nCependant, les fichiers examinés ne permettent pas de déterminer comment cet accès aurait été obtenu, ni si une vulnérabilité informatique a effectivement été exploitée.\nÀ ce stade, aucune confirmation officielle de la Fédération suisse de basketball concernant cette revendication ne figure parmi les éléments examinés.\nIl reste notamment à déterminer le nombre exact de personnes distinctes concernées, la date d'extraction des fichiers et les mesures éventuellement prises pour sécuriser les systèmes.\nL'analyse de FrenchBreaches confirme la présence de nombreuses données personnelles dans les fichiers examinés, mais les circonstances de leur obtention et l'ampleur définitive de la cyberattaque restent à établir.",
+    "content": "SL\nPar Seblatombe, rédacteur FrenchBreaches\nPublié le 30/10/2026\n— Secteur Commerce\nLa Halle au Sommeil victime d'un piratage : données bancaires et mots de passe de clients compromis\nL'enseigne française La Halle au Sommeil confirme une cyberattaque contre son site de vente en ligne. Des données personnelles de clients ont été copiées par une personne malveillante, tandis que des informations bancaires et des mots de passe ont également pu être exposés. L'entreprise a désactivé les anciens mots de passe et signalé l'incident à la CNIL.\nL'achat d'un matelas ou d'un sommier sur Internet pourrait avoir exposé certains clients à un risque de fraude.\nDans un message adressé à sa clientèle, La Halle au Sommeil, enseigne spécialisée dans la literie, révèle avoir découvert le 27 octobre 2026 qu'une personne malveillante s'était introduite sur son site www.halleausommeil.fr, au plus tard le 22 octobre.\nL'entreprise indique avoir corrigé les failles identifiées, supprimé les accès malveillants et renforcé la sécurité de sa boutique en ligne.\nMais l'enquête interne a révélé un élément particulièrement préoccupant : des données clients ont été copiées.\nNoms, adresses, commandes et données bancaires concernés\nSelon la notification envoyée aux clients, le pirate a pu accéder à plusieurs catégories d'informations personnelles :\nNoms et adresses e-mail ;\nAdresses postales et numéros de téléphone ;\nHistorique des commandes ;\nQuatre premiers et quatre derniers chiffres des cartes bancaires, ainsi que leur date d'expiration, pour les clients ayant payé par carte ;\nDates de naissance, selon les informations renseignées ;\nÉchanges avec le service client.\nLa Halle au Sommeil précise toutefois que son site ne conserve ni les numéros complets des cartes bancaires ni les cryptogrammes de sécurité.\nL'entreprise affirme également que ses vérifications n'ont pas identifié de code permettant d'espionner les paiements.\nLa présence de fragments de numéros de carte ne signifie donc pas que les informations nécessaires pour effectuer directement un paiement ont été dérobées.\nEn revanche, ces données, associées à l'identité et à l'historique d'achat des clients, pourraient être utilisées pour rendre des tentatives d'escroquerie plus crédibles.\nTous les anciens mots de passe considérés comme compromis\nC'est l'un des points les plus sensibles de cette cyberattaque.\nLa Halle au Sommeil explique que les mots de passe de ses clients n'étaient pas conservés en clair, mais que certains étaient protégés par un ancien procédé de sécurisation désormais jugé insuffisant.\nFace à ce constat, l'entreprise a pris une décision radicale : considérer tous les anciens mots de passe comme compromis.\nElle indique les avoir désactivés par mesure de précaution.\nLes clients souhaitant retrouver l'accès à leur compte doivent désormais se rendre directement sur le site officiel et utiliser la fonction « Mot de passe oublié ».\nLes personnes qui utilisaient le même mot de passe sur d'autres services, notamment leur messagerie ou leur banque, sont invitées à le modifier immédiatement sur chacun de ces comptes.\nDes risques de faux messages et d'arnaques ciblées\nLes informations potentiellement exposées pourraient permettre à des escrocs de contacter les clients en se faisant passer pour La Halle au Sommeil ou leur établissement bancaire.\nUn fraudeur connaissant le nom d'un client, son adresse, une ancienne commande et les derniers chiffres de sa carte pourrait, par exemple, envoyer un message particulièrement convaincant.\nL'objectif pourrait être de récupérer un mot de passe, un code de validation bancaire ou des informations de paiement supplémentaires.\nL'enseigne appelle ainsi ses clients à se méfier des e-mails, appels et SMS suspects, même lorsqu'ils mentionnent des informations exactes sur leurs achats.\nLa Halle au Sommeil rappelle qu'elle ne demande jamais de paiement, de coordonnées bancaires ou de code de sécurité par ces moyens.\nPour éviter les faux liens de réinitialisation, les clients doivent accéder directement à www.halleausommeil.fr.\nLa CNIL informée, le nombre de victimes inconnu\nLa Halle au Sommeil assure avoir pris des mesures pour sécuriser son site après la découverte de l'intrusion.\nL'entreprise indique également avoir informé la Commission nationale de l'informatique et des libertés (CNIL), l'autorité française chargée de la protection des données personnelles.\nÀ ce stade, le nombre de clients concernés n'est pas précisé dans la notification consultée.\nLe message ne détaille pas non plus le volume exact de données copiées ni la durée pendant laquelle le pirate a pu accéder au système.\nUne chose est néanmoins confirmée par l'enseigne : des informations clients ont été copiées et les anciens mots de passe ont été désactivés en raison du risque de compromission.\nPour les clients de La Halle au Sommeil, la priorité est désormais de réinitialiser leur mot de passe, de sécuriser les autres comptes utilisant le même identifiant et de rester vigilants face aux tentatives de fraude.",
     "entity": "",
     "event_date": "",
     "location": "",
     "organisation": "",
     "published": "2026-10-30",
     "sector": "",
-    "source_item_id": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy",
+    "source_item_id": "https://frenchbreaches.com/alertes/la-halle-au-sommeil-mvvftt6xg1jmb2rypz",
     "source_metadata": {
      "detail_hydration": {
-      "chars": 5858,
+      "chars": 5027,
       "extractor_version": "editorial-html-2026-09-06.1",
       "fallback": "",
       "status": "HYDRATED",
       "truncated": false
      },
      "rich_facts": {
-      "affected_counts": [
+      "affected_counts": [],
+      "affected_datasets": [
        {
         "date": "",
-        "evidence": "Attention : ces 96 252 enregistrements ne représentent pas autant de personnes distinctes.",
-        "item_id": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy",
-        "raw": "96 252 enregistrements",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "negated",
-        "unit": "records",
-        "value": 96252
-       },
-       {
-        "date": "",
-        "evidence": "FrenchBreaches a analysé quatre fichiers totalisant 96 252 enregistrements, dont 52 344 fiches de licenciés.",
-        "item_id": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy",
-        "raw": "96 252 enregistrements",
-        "scope": "",
+        "evidence": "Mais l'enquête interne a révélé un élément particulièrement préoccupant : des données clients ont été copiées.",
+        "item_id": "https://frenchbreaches.com/alertes/la-halle-au-sommeil-mvvftt6xg1jmb2rypz",
         "source_id": "FRENCHBREACHES",
         "status": "unknown",
-        "unit": "records",
-        "value": 96252
-       },
-       {
-        "date": "",
-        "evidence": "Plus de 96 000 enregistrements analysés",
-        "item_id": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy",
-        "raw": "96 000 enregistrements",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "unit": "records",
-        "value": 96000
-       },
-       {
-        "date": "",
-        "evidence": "Enfin, 36 689 enregistrements comptables comportent des informations relatives aux licences, aux taxes, aux transferts et aux paiements.",
-        "item_id": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy",
-        "raw": "36 689 enregistrements",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "unit": "records",
-        "value": 36689
-       },
-       {
-        "date": "2026-10-30",
-        "evidence": "Sur 32 709 dates de naissance interprétées, FrenchBreaches a relevé 21 648 enregistrements correspondant à des personnes de moins de 18 ans au 30 octobre 2026.",
-        "item_id": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy",
-        "raw": "21 648 enregistrements",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "unit": "records",
-        "value": 21648
+        "value": "données clients"
        }
       ],
-      "affected_datasets": [],
       "affected_systems": [],
       "claims": [
        {
         "date": "",
-        "evidence": "Attention : ces 96 252 enregistrements ne représentent pas autant de personnes distinctes.",
-        "item_id": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy",
-        "scope": "",
+        "evidence": "La Halle au Sommeil victime d'un piratage : données bancaires et mots de passe de clients compromis L'enseigne française La Halle au Sommeil confirme une cyberattaque contre son site de vente en ligne.",
+        "item_id": "https://frenchbreaches.com/alertes/la-halle-au-sommeil-mvvftt6xg1jmb2rypz",
         "source_id": "FRENCHBREACHES",
-        "status": "negated",
-        "type": "affected_count",
-        "unit": "records",
-        "value": 96252
-       },
-       {
-        "date": "",
-        "evidence": "FrenchBreaches a analysé quatre fichiers totalisant 96 252 enregistrements, dont 52 344 fiches de licenciés.",
-        "item_id": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "records",
-        "value": 96252
-       },
-       {
-        "date": "",
-        "evidence": "Plus de 96 000 enregistrements analysés",
-        "item_id": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "records",
-        "value": 96000
-       },
-       {
-        "date": "",
-        "evidence": "Enfin, 36 689 enregistrements comptables comportent des informations relatives aux licences, aux taxes, aux transferts et aux paiements.",
-        "item_id": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "records",
-        "value": 36689
-       },
-       {
-        "date": "2026-10-30",
-        "evidence": "Sur 32 709 dates de naissance interprétées, FrenchBreaches a relevé 21 648 enregistrements correspondant à des personnes de moins de 18 ans au 30 octobre 2026.",
-        "item_id": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "records",
-        "value": 21648
-       },
-       {
-        "date": "",
-        "evidence": "Noms, adresses, dates de naissance, téléphones, e-mails et numéros AVS figurent parmi les informations présentes.",
-        "item_id": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
+        "status": "confirmed",
         "type": "data_type",
-        "value": "adresses e-mail"
+        "value": "mots de passe"
        },
        {
         "date": "",
-        "evidence": "Noms, adresses, dates de naissance, téléphones, e-mails et numéros AVS figurent parmi les informations présentes.",
-        "item_id": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy",
+        "evidence": "La Halle au Sommeil victime d'un piratage : données bancaires et mots de passe de clients compromis L'enseigne française La Halle au Sommeil confirme une cyberattaque contre son site de vente en ligne.",
+        "item_id": "https://frenchbreaches.com/alertes/la-halle-au-sommeil-mvvftt6xg1jmb2rypz",
         "source_id": "FRENCHBREACHES",
-        "status": "claimed",
+        "status": "confirmed",
         "type": "data_type",
-        "value": "numéros de téléphone"
+        "value": "données bancaires"
        },
        {
         "date": "",
-        "evidence": "Noms, adresses, dates de naissance, téléphones, e-mails et numéros AVS figurent parmi les informations présentes.",
-        "item_id": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "type": "data_type",
-        "value": "dates de naissance"
-       },
-       {
-        "date": "",
-        "evidence": "Comptabilité et licences36 689",
-        "item_id": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy",
+        "evidence": "La Halle au Sommeil victime d'un piratage : données bancaires et mots de passe de clients compromis",
+        "item_id": "https://frenchbreaches.com/alertes/la-halle-au-sommeil-mvvftt6xg1jmb2rypz",
         "source_id": "FRENCHBREACHES",
         "status": "unknown",
         "type": "data_type",
-        "value": "données comptables"
+        "value": "mots de passe"
        },
        {
         "date": "",
-        "evidence": "Un licencié peut également apparaître dans les fichiers des entraîneurs, des arbitres ou de la comptabilité.",
-        "item_id": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "type": "data_type",
-        "value": "données comptables"
-       },
-       {
-        "date": "",
-        "evidence": "Noms, adresses, téléphones et numéros AVS",
-        "item_id": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy",
+        "evidence": "La Halle au Sommeil victime d'un piratage : données bancaires et mots de passe de clients compromis",
+        "item_id": "https://frenchbreaches.com/alertes/la-halle-au-sommeil-mvvftt6xg1jmb2rypz",
         "source_id": "FRENCHBREACHES",
         "status": "unknown",
         "type": "data_type",
-        "value": "numéros de téléphone"
+        "value": "données bancaires"
        },
        {
         "date": "",
-        "evidence": "Noms, prénoms et dates de naissance ;",
-        "item_id": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy",
+        "evidence": "Noms, adresses, commandes et données bancaires concernés",
+        "item_id": "https://frenchbreaches.com/alertes/la-halle-au-sommeil-mvvftt6xg1jmb2rypz",
         "source_id": "FRENCHBREACHES",
         "status": "unknown",
         "type": "data_type",
-        "value": "noms et prénoms"
+        "value": "informations de commandes"
        },
        {
         "date": "",
-        "evidence": "Noms, prénoms et dates de naissance ;",
-        "item_id": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "dates de naissance"
-       },
-       {
-        "date": "",
-        "evidence": "Adresses postales, e-mails et numéros de téléphone ;",
-        "item_id": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy",
+        "evidence": "Noms et adresses e-mail ;",
+        "item_id": "https://frenchbreaches.com/alertes/la-halle-au-sommeil-mvvftt6xg1jmb2rypz",
         "source_id": "FRENCHBREACHES",
         "status": "unknown",
         "type": "data_type",
@@ -53365,8 +52568,17 @@
        },
        {
         "date": "",
-        "evidence": "Adresses postales, e-mails et numéros de téléphone ;",
-        "item_id": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy",
+        "evidence": "Adresses postales et numéros de téléphone ;",
+        "item_id": "https://frenchbreaches.com/alertes/la-halle-au-sommeil-mvvftt6xg1jmb2rypz",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "Adresses postales et numéros de téléphone ;",
+        "item_id": "https://frenchbreaches.com/alertes/la-halle-au-sommeil-mvvftt6xg1jmb2rypz",
         "source_id": "FRENCHBREACHES",
         "status": "unknown",
         "type": "data_type",
@@ -53374,129 +52586,190 @@
        },
        {
         "date": "",
-        "evidence": "Numéros AVS, l'identifiant personnel utilisé en Suisse ;",
-        "item_id": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy",
+        "evidence": "Dates de naissance, selon les informations renseignées ;",
+        "item_id": "https://frenchbreaches.com/alertes/la-halle-au-sommeil-mvvftt6xg1jmb2rypz",
         "source_id": "FRENCHBREACHES",
-        "status": "unknown",
+        "status": "reported",
+        "type": "data_type",
+        "value": "dates de naissance"
+       },
+       {
+        "date": "",
+        "evidence": "Un fraudeur connaissant le nom d'un client, son adresse, une ancienne commande et les derniers chiffres de sa carte pourrait, par exemple, envoyer un message particulièrement convaincant.",
+        "item_id": "https://frenchbreaches.com/alertes/la-halle-au-sommeil-mvvftt6xg1jmb2rypz",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "informations de commandes"
+       },
+       {
+        "date": "",
+        "evidence": "L'objectif pourrait être de récupérer un mot de passe, un code de validation bancaire ou des informations de paiement supplémentaires.",
+        "item_id": "https://frenchbreaches.com/alertes/la-halle-au-sommeil-mvvftt6xg1jmb2rypz",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "mots de passe"
+       },
+       {
+        "date": "",
+        "evidence": "L'enseigne appelle ainsi ses clients à se méfier des e-mails, appels et SMS suspects, même lorsqu'ils mentionnent des informations exactes sur leurs achats.",
+        "item_id": "https://frenchbreaches.com/alertes/la-halle-au-sommeil-mvvftt6xg1jmb2rypz",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "La Halle au Sommeil rappelle qu'elle ne demande jamais de paiement, de coordonnées bancaires ou de code de sécurité par ces moyens.",
+        "item_id": "https://frenchbreaches.com/alertes/la-halle-au-sommeil-mvvftt6xg1jmb2rypz",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "données bancaires"
+       },
+       {
+        "date": "",
+        "evidence": "Pour les clients de La Halle au Sommeil, la priorité est désormais de réinitialiser leur mot de passe, de sécuriser les autres comptes utilisant le même identifiant et de rester vigilants face aux tentatives de fraude.",
+        "item_id": "https://frenchbreaches.com/alertes/la-halle-au-sommeil-mvvftt6xg1jmb2rypz",
+        "source_id": "FRENCHBREACHES",
+        "status": "confirmed",
         "type": "data_type",
         "value": "identifiants"
        },
        {
         "date": "",
-        "evidence": "Montants, taxes et informations comptables liés aux licences.",
-        "item_id": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy",
+        "evidence": "Mais l'enquête interne a révélé un élément particulièrement préoccupant : des données clients ont été copiées.",
+        "item_id": "https://frenchbreaches.com/alertes/la-halle-au-sommeil-mvvftt6xg1jmb2rypz",
         "source_id": "FRENCHBREACHES",
         "status": "unknown",
-        "type": "data_type",
-        "value": "montants"
+        "type": "dataset",
+        "value": "données clients"
        }
       ],
       "data_types": [
        {
         "date": "",
-        "evidence": "Noms, adresses, dates de naissance, téléphones, e-mails et numéros AVS figurent parmi les informations présentes.",
-        "item_id": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy",
+        "evidence": "La Halle au Sommeil victime d'un piratage : données bancaires et mots de passe de clients compromis L'enseigne française La Halle au Sommeil confirme une cyberattaque contre son site de vente en ligne.",
+        "item_id": "https://frenchbreaches.com/alertes/la-halle-au-sommeil-mvvftt6xg1jmb2rypz",
         "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "value": "adresses e-mail"
+        "status": "confirmed",
+        "value": "mots de passe"
        },
        {
         "date": "",
-        "evidence": "Noms, adresses, dates de naissance, téléphones, e-mails et numéros AVS figurent parmi les informations présentes.",
-        "item_id": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy",
+        "evidence": "La Halle au Sommeil victime d'un piratage : données bancaires et mots de passe de clients compromis L'enseigne française La Halle au Sommeil confirme une cyberattaque contre son site de vente en ligne.",
+        "item_id": "https://frenchbreaches.com/alertes/la-halle-au-sommeil-mvvftt6xg1jmb2rypz",
         "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "value": "numéros de téléphone"
+        "status": "confirmed",
+        "value": "données bancaires"
        },
        {
         "date": "",
-        "evidence": "Noms, adresses, dates de naissance, téléphones, e-mails et numéros AVS figurent parmi les informations présentes.",
-        "item_id": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "value": "dates de naissance"
-       },
-       {
-        "date": "",
-        "evidence": "Comptabilité et licences36 689",
-        "item_id": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy",
+        "evidence": "La Halle au Sommeil victime d'un piratage : données bancaires et mots de passe de clients compromis",
+        "item_id": "https://frenchbreaches.com/alertes/la-halle-au-sommeil-mvvftt6xg1jmb2rypz",
         "source_id": "FRENCHBREACHES",
         "status": "unknown",
-        "value": "données comptables"
+        "value": "mots de passe"
        },
        {
         "date": "",
-        "evidence": "Un licencié peut également apparaître dans les fichiers des entraîneurs, des arbitres ou de la comptabilité.",
-        "item_id": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "value": "données comptables"
-       },
-       {
-        "date": "",
-        "evidence": "Noms, adresses, téléphones et numéros AVS",
-        "item_id": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy",
+        "evidence": "La Halle au Sommeil victime d'un piratage : données bancaires et mots de passe de clients compromis",
+        "item_id": "https://frenchbreaches.com/alertes/la-halle-au-sommeil-mvvftt6xg1jmb2rypz",
         "source_id": "FRENCHBREACHES",
         "status": "unknown",
-        "value": "numéros de téléphone"
+        "value": "données bancaires"
        },
        {
         "date": "",
-        "evidence": "Noms, prénoms et dates de naissance ;",
-        "item_id": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy",
+        "evidence": "Noms, adresses, commandes et données bancaires concernés",
+        "item_id": "https://frenchbreaches.com/alertes/la-halle-au-sommeil-mvvftt6xg1jmb2rypz",
         "source_id": "FRENCHBREACHES",
         "status": "unknown",
-        "value": "noms et prénoms"
+        "value": "informations de commandes"
        },
        {
         "date": "",
-        "evidence": "Noms, prénoms et dates de naissance ;",
-        "item_id": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "dates de naissance"
-       },
-       {
-        "date": "",
-        "evidence": "Adresses postales, e-mails et numéros de téléphone ;",
-        "item_id": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy",
+        "evidence": "Noms et adresses e-mail ;",
+        "item_id": "https://frenchbreaches.com/alertes/la-halle-au-sommeil-mvvftt6xg1jmb2rypz",
         "source_id": "FRENCHBREACHES",
         "status": "unknown",
         "value": "adresses e-mail"
        },
        {
         "date": "",
-        "evidence": "Adresses postales, e-mails et numéros de téléphone ;",
-        "item_id": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy",
+        "evidence": "Adresses postales et numéros de téléphone ;",
+        "item_id": "https://frenchbreaches.com/alertes/la-halle-au-sommeil-mvvftt6xg1jmb2rypz",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "Adresses postales et numéros de téléphone ;",
+        "item_id": "https://frenchbreaches.com/alertes/la-halle-au-sommeil-mvvftt6xg1jmb2rypz",
         "source_id": "FRENCHBREACHES",
         "status": "unknown",
         "value": "adresses postales"
        },
        {
         "date": "",
-        "evidence": "Numéros AVS, l'identifiant personnel utilisé en Suisse ;",
-        "item_id": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy",
+        "evidence": "Dates de naissance, selon les informations renseignées ;",
+        "item_id": "https://frenchbreaches.com/alertes/la-halle-au-sommeil-mvvftt6xg1jmb2rypz",
         "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "identifiants"
+        "status": "reported",
+        "value": "dates de naissance"
        },
        {
         "date": "",
-        "evidence": "Montants, taxes et informations comptables liés aux licences.",
-        "item_id": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy",
+        "evidence": "Un fraudeur connaissant le nom d'un client, son adresse, une ancienne commande et les derniers chiffres de sa carte pourrait, par exemple, envoyer un message particulièrement convaincant.",
+        "item_id": "https://frenchbreaches.com/alertes/la-halle-au-sommeil-mvvftt6xg1jmb2rypz",
         "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "montants"
+        "status": "hypothesis",
+        "value": "informations de commandes"
+       },
+       {
+        "date": "",
+        "evidence": "L'objectif pourrait être de récupérer un mot de passe, un code de validation bancaire ou des informations de paiement supplémentaires.",
+        "item_id": "https://frenchbreaches.com/alertes/la-halle-au-sommeil-mvvftt6xg1jmb2rypz",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "value": "mots de passe"
+       },
+       {
+        "date": "",
+        "evidence": "L'enseigne appelle ainsi ses clients à se méfier des e-mails, appels et SMS suspects, même lorsqu'ils mentionnent des informations exactes sur leurs achats.",
+        "item_id": "https://frenchbreaches.com/alertes/la-halle-au-sommeil-mvvftt6xg1jmb2rypz",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "La Halle au Sommeil rappelle qu'elle ne demande jamais de paiement, de coordonnées bancaires ou de code de sécurité par ces moyens.",
+        "item_id": "https://frenchbreaches.com/alertes/la-halle-au-sommeil-mvvftt6xg1jmb2rypz",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "value": "données bancaires"
+       },
+       {
+        "date": "",
+        "evidence": "Pour les clients de La Halle au Sommeil, la priorité est désormais de réinitialiser leur mot de passe, de sécuriser les autres comptes utilisant le même identifiant et de rester vigilants face aux tentatives de fraude.",
+        "item_id": "https://frenchbreaches.com/alertes/la-halle-au-sommeil-mvvftt6xg1jmb2rypz",
+        "source_id": "FRENCHBREACHES",
+        "status": "confirmed",
+        "value": "identifiants"
        }
       ],
       "data_volumes": [],
       "engine": "generic-rich-facts",
       "profile": {
-       "chars": 6172,
-       "claims": 17,
-       "hypotheses": 1,
+       "chars": 5329,
+       "claims": 15,
+       "hypotheses": 4,
        "semantic_candidate": true,
-       "sentences": 67
+       "sentences": 48
       },
       "relations": [],
       "semantic": {
@@ -53509,437 +52782,35 @@
       "vulnerabilities": []
      }
     },
-    "summary": "Fédération suisse de basketball : les données de plus de 52 000 licenciés exposées, des milliers de mineurs concernés ALERTE — La Fédération suisse de basketball (Swiss Basketball) est visée par une revendication de cyberattaque. Ce vendredi 30 octobre 2026, un pirate affirme avo…",
+    "summary": "La Halle au Sommeil victime d'un piratage : données bancaires et mots de passe de clients compromis L'enseigne française La Halle au Sommeil confirme une cyberattaque contre son site de vente en ligne. Des données personnelles de clients ont été copiées par une personne malveilla…",
     "threat": "Fuite de données",
-    "title": "Fédération suisse de basketball",
-    "url": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy"
+    "title": "La Halle au Sommeil",
+    "url": "https://frenchbreaches.com/alertes/la-halle-au-sommeil-mvvftt6xg1jmb2rypz"
    },
    "exhausted_fields": {},
    "field_reasons": {
     "summary": "HEADLINE_TOO_LONG"
    },
-   "first_queued_at": "2026-10-30T13:41:48.278277+00:00",
+   "first_queued_at": "2026-10-31T13:10:06.341274+00:00",
    "item": {
-    "Collected_As_Of": "2026-10-30T17:41:01.674252+04:00",
+    "Collected_As_Of": "2026-10-31T17:09:28.057110+04:00",
     "Event_Date": "",
-    "Item_ID": "ITM-df9d548e7d2e3f36",
-    "Location": "Inconnu",
-    "Organisation_Key": "federation suisse de basketball",
-    "Organisation_Raw": "Fédération suisse de basketball",
-    "Published_Date": "2026-10-30",
-    "Sector": "Sport",
-    "Source_ID": "FRENCHBREACHES",
-    "Source_Item_ID": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy",
-    "Threat": "Fuite de données",
-    "Threat_Raw": "Fuite de données",
-    "Title": "Fédération suisse de basketball",
-    "URL": "https://frenchbreaches.com/alertes/f-d-ration-suisse-de-basketball-mvuxxch97tc2qxlgrdy"
-   },
-   "key": "ITM-df9d548e7d2e3f36:44e1333d466236769cf93308b9856929163848c8dfc250d1cf4282aff4b684e4",
-   "last_queued_at": "2026-10-30T13:41:48.278277+00:00",
-   "pending_fields": [
-    "summary"
-   ],
-   "reason": "SEMANTIC_MISS"
-  },
-  {
-   "attempts": 0,
-   "entry": {
-    "content": "SL\nPar Seblatombe, rédacteur FrenchBreaches\nPublié le 30/10/2026\n— Secteur Commerce\nRefugilys piraté : les données de milliers de propriétaires d'animaux potentiellement exposées\nRefugilys, un logiciel français utilisé pour gérer les refuges et associations de protection animale, est visé par une revendication de piratage. Ce jeudi 29 octobre 2026, un hacker affirme avoir découvert plusieurs failles permettant d'accéder aux données du service et de prendre le contrôle d'un compte administrateur.\nUn fichier de 5 491 lignes aurait été récupéré, contenant notamment des noms, adresses, numéros de téléphone et informations sur les cotisations. Des propriétaires d'animaux, adoptants et autres personnes en contact avec les refuges pourraient être concernés.\nUne nouvelle revendication de cyberattaque vise un service français utilisé dans le secteur de la protection animale.\nCette fois, c'est Refugilys, un logiciel de gestion destiné aux refuges et associations accueillant des animaux, qui est cité par un pirate informatique.\nDans une publication diffusée sur un forum de hackers le jeudi 29 octobre 2026, un utilisateur connu sous le pseudonyme « morphyn1337 » affirme avoir compromis le logiciel.\nLe pirate revendique non seulement l'accès à des informations personnelles, mais également la découverte de failles permettant de modifier un mot de passe administrateur et de prendre le contrôle d'un compte privilégié.\nCes affirmations techniques n'ont pas été vérifiées indépendamment.\nPlus de 5 400 fiches concernant potentiellement des propriétaires d'animaux\nPour appuyer sa revendication, le hacker présente un fichier intitulé INDIVIDUSCPLT.csv, annoncé comme contenant 5 491 lignes.\nLes intitulés de colonnes visibles dans sa publication correspondent à des informations administratives et à des coordonnées de personnes enregistrées dans le logiciel.\nParmi les données revendiquées figurent :\nNoms et prénoms des personnes enregistrées ;\nAdresses postales complètes, villes et codes postaux ;\nNuméros de téléphone ;\nAdresses e-mail ;\nStatuts et catégories de contacts ;\nInformations sur les adhésions et abonnements ;\nHistorique des cotisations, dons et ventes, notamment entre 2023 et 2026 ;\nInformations administratives liées aux associations.\nCes données pourraient concerner différentes catégories de personnes : propriétaires d'animaux, adoptants, familles d'accueil, donateurs, adhérents ou simples contacts des refuges.\nLes 5 491 lignes revendiquées ne correspondent toutefois pas nécessairement à 5 491 propriétaires d'animaux distincts.\nLe contenu intégral du fichier n'a pas été vérifié par FrenchBreaches.\nRefugilys, un logiciel qui centralise les informations des refuges\nLes captures de l'interface de Refugilys montrent un logiciel destiné à gérer plusieurs aspects de l'activité des refuges animaliers.\nL'application comporte notamment des rubriques consacrées aux animaux, aux personnes, à la comptabilité, aux animaux perdus ou retrouvés et aux stocks.\nUne fiche individuelle permet d'enregistrer les coordonnées d'une personne, mais également de préciser son rôle dans la vie d'un refuge.\nLes catégories visibles comprennent notamment :\nPropriétaire d'animal ;\nAdoptant ou personne ayant amené un animal ;\nFamille d'accueil ;\nDonateur ;\nParrain ou marraine ;\nContact ou témoin ;\nPersonne associée à un dossier administratif.\nLe logiciel propose également des rubriques relatives aux factures, aux réservations, aux dossiers, aux animaux et à la comptabilité.\nRefugilys ne sert donc pas uniquement à enregistrer des animaux : il permet également de centraliser de nombreuses informations sur les personnes en relation avec les refuges.\nDes informations sur les animaux et leurs propriétaires\nLes captures du logiciel montrent également des fiches détaillées consacrées aux animaux perdus, retrouvés ou pris en charge.\nCes fiches peuvent contenir plusieurs renseignements :\nType d'animal, race et sexe ;\nÂge et caractéristiques physiques ;\nNuméro de tatouage ou de puce électronique ;\nInformations sur le collier ou les signes particuliers ;\nDate et lieu de disparition ou de découverte ;\nCoordonnées du déclarant et du propriétaire ;\nRéférences des dossiers associés.\nCes fonctionnalités montrent que le logiciel peut établir un lien entre une personne, ses coordonnées et un animal identifié.\nUne telle association pourrait présenter un intérêt pour des fraudeurs, notamment dans le cadre de fausses annonces concernant un animal perdu ou de demandes de paiement frauduleuses.\nAttention : les captures de l'interface permettent d'identifier les catégories d'informations gérées par Refugilys, mais ne prouvent pas que toutes ces données figurent dans le fichier revendiqué par le hacker.\nLe pirate affirme pouvoir prendre le contrôle d'un compte administrateur\nAu-delà des données personnelles, la revendication évoque deux failles de sécurité.\nLa première serait une injection SQL, une vulnérabilité pouvant permettre à un attaquant d'interagir avec la base de données d'une application lorsque les protections sont insuffisantes.\nDans certaines circonstances, ce type de faille peut permettre de consulter, modifier ou extraire des informations.\nLa seconde vulnérabilité serait encore plus préoccupante.\nLe hacker affirme qu'il serait possible de réinitialiser le mot de passe d'un compte administrateur, puis d'en prendre le contrôle.\nSi cette affirmation était confirmée, un attaquant pourrait potentiellement accéder à des fonctionnalités sensibles du logiciel, modifier des dossiers ou perturber son fonctionnement.\nIl n'existe cependant, dans les éléments examinés, aucune démonstration indépendante permettant de confirmer cette prise de contrôle.\nPropriétaires d'animaux et donateurs : quels risques en cas de fuite ?\nLes informations revendiquées pourraient être utilisées pour mener des escroqueries ciblées.\nUn fraudeur disposant du nom, du numéro de téléphone et de l'adresse d'un propriétaire pourrait notamment se faire passer pour un refuge ou une association de protection animale.\nPlusieurs scénarios sont envisageables :\nFausse annonce concernant un animal perdu ou retrouvé, avec demande de paiement pour organiser sa récupération ;\nFrais d'adoption fictifs, réclamés au nom d'une association ;\nFaux appels aux dons, utilisant l'identité d'un refuge ;\nDemandes frauduleuses de renouvellement de cotisation ;\nSMS ou e-mails personnalisés, utilisant de véritables coordonnées ;\nTentatives d'usurpation d'identité à partir des informations personnelles exposées.\nLes informations relatives aux dons et aux cotisations pourraient notamment permettre à un escroc de rendre une demande de paiement plus crédible.\nAucune utilisation frauduleuse des données revendiquées n'a toutefois été démontrée à ce stade.\nLes refuges et associations pourraient également être touchés\nRefugilys est un outil de gestion qui accompagne les structures de protection animale dans leurs tâches administratives.\nUne éventuelle compromission pourrait donc avoir des conséquences pour les associations qui utilisent ce service.\nSelon l'étendue réelle des accès obtenus, les risques pourraient notamment concerner la confidentialité des fiches, l'intégrité des dossiers et la disponibilité de certaines fonctionnalités.\nLes captures montrent que le logiciel gère plusieurs types d'informations, allant des dossiers individuels aux animaux perdus ou retrouvés.\nIl n'est cependant pas établi que l'ensemble des refuges utilisant Refugilys aient été compromis.\nLe nombre exact d'associations concernées n'est pas connu.\nUn fichier partagé sur un forum de pirates\nLa revendication a été publiée sous le titre « refugilys.org (FR) 5K ».\nLe pirate y affirme avoir compromis Refugilys et présente un fichier CSV de 5 491 lignes, accompagné d'un lien de téléchargement.\nLa capture de la publication montre des colonnes relatives aux identités, coordonnées et informations administratives des personnes enregistrées.\nLa diffusion de telles données, si leur authenticité est confirmée, pourrait favoriser des campagnes de démarchage frauduleux, d'hameçonnage ou d'usurpation d'identité.\nLa publication sur un forum de hackers ne suffit toutefois pas à démontrer que toutes les informations revendiquées proviennent d'une intrusion récente.\nRefugilys a-t-il confirmé la cyberattaque ?\nÀ ce stade, aucune confirmation officielle de Refugilys concernant cette revendication de piratage ne figure parmi les éléments examinés.\nPlusieurs points restent à éclaircir :\nLes 5 491 lignes proviennent-elles effectivement de la base de données du logiciel ?\nCombien de propriétaires d'animaux, adoptants, donateurs et autres contacts sont concernés ?\nDes informations sur les animaux eux-mêmes ont-elles été extraites ?\nLes failles d'injection SQL et de réinitialisation du mot de passe administrateur sont-elles authentiques ?\nLes éventuelles vulnérabilités ont-elles été corrigées ?\nLes associations et les personnes concernées ont-elles été informées ?\nLa revendication de piratage est publique, mais l'origine exacte des données, le nombre de personnes touchées et la portée réelle des accès revendiqués restent à confirmer.\nFrenchBreaches continuera de suivre cette affaire et les éventuelles réactions de Refugilys.",
-    "entity": "",
-    "event_date": "",
-    "location": "",
-    "organisation": "",
-    "published": "2026-10-30",
-    "sector": "",
-    "source_item_id": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop",
-    "source_metadata": {
-     "detail_hydration": {
-      "chars": 9223,
-      "extractor_version": "editorial-html-2026-09-06.1",
-      "fallback": "",
-      "status": "HYDRATED",
-      "truncated": false
-     },
-     "rich_facts": {
-      "affected_counts": [
-       {
-        "date": "",
-        "evidence": "Le pirate y affirme avoir compromis Refugilys et présente un fichier CSV de 5 491 lignes, accompagné d'un lien de téléchargement.",
-        "item_id": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop",
-        "raw": "5 491 lignes",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "unit": "records",
-        "value": 5491
-       },
-       {
-        "date": "",
-        "evidence": "Un fichier de 5 491 lignes aurait été récupéré, contenant notamment des noms, adresses, numéros de téléphone et informations sur les cotisations.",
-        "item_id": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop",
-        "raw": "5 491 lignes",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "unit": "records",
-        "value": 5491
-       },
-       {
-        "date": "",
-        "evidence": "Les 5 491 lignes revendiquées ne correspondent toutefois pas nécessairement à 5 491 propriétaires d'animaux distincts.",
-        "item_id": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop",
-        "raw": "5 491 lignes",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "negated",
-        "unit": "records",
-        "value": 5491
-       },
-       {
-        "date": "",
-        "evidence": "Pour appuyer sa revendication, le hacker présente un fichier intitulé INDIVIDUSCPLT.csv, annoncé comme contenant 5 491 lignes.",
-        "item_id": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop",
-        "raw": "5 491 lignes",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "unit": "records",
-        "value": 5491
-       }
-      ],
-      "affected_datasets": [
-       {
-        "date": "",
-        "evidence": "Le logiciel propose également des rubriques relatives aux factures, aux réservations, aux dossiers, aux animaux et à la comptabilité.",
-        "item_id": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "réservations"
-       }
-      ],
-      "affected_systems": [],
-      "claims": [
-       {
-        "date": "",
-        "evidence": "Le pirate y affirme avoir compromis Refugilys et présente un fichier CSV de 5 491 lignes, accompagné d'un lien de téléchargement.",
-        "item_id": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "type": "affected_count",
-        "unit": "records",
-        "value": 5491
-       },
-       {
-        "date": "",
-        "evidence": "Un fichier de 5 491 lignes aurait été récupéré, contenant notamment des noms, adresses, numéros de téléphone et informations sur les cotisations.",
-        "item_id": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "type": "affected_count",
-        "unit": "records",
-        "value": 5491
-       },
-       {
-        "date": "",
-        "evidence": "Les 5 491 lignes revendiquées ne correspondent toutefois pas nécessairement à 5 491 propriétaires d'animaux distincts.",
-        "item_id": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "negated",
-        "type": "affected_count",
-        "unit": "records",
-        "value": 5491
-       },
-       {
-        "date": "",
-        "evidence": "Pour appuyer sa revendication, le hacker présente un fichier intitulé INDIVIDUSCPLT.csv, annoncé comme contenant 5 491 lignes.",
-        "item_id": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "records",
-        "value": 5491
-       },
-       {
-        "date": "",
-        "evidence": "Un fichier de 5 491 lignes aurait été récupéré, contenant notamment des noms, adresses, numéros de téléphone et informations sur les cotisations.",
-        "item_id": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "type": "data_type",
-        "value": "numéros de téléphone"
-       },
-       {
-        "date": "",
-        "evidence": "Le pirate revendique non seulement l'accès à des informations personnelles, mais également la découverte de failles permettant de modifier un mot de passe administrateur et de prendre le contrôle d'un compte privilégié.",
-        "item_id": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "type": "data_type",
-        "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "Les intitulés de colonnes visibles dans sa publication correspondent à des informations administratives et à des coordonnées de personnes enregistrées dans le logiciel.",
-        "item_id": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "informations administratives"
-       },
-       {
-        "date": "",
-        "evidence": "Noms et prénoms des personnes enregistrées ;",
-        "item_id": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "type": "data_type",
-        "value": "noms et prénoms"
-       },
-       {
-        "date": "",
-        "evidence": "Adresses postales complètes, villes et codes postaux ;",
-        "item_id": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "type": "data_type",
-        "value": "adresses postales"
-       },
-       {
-        "date": "",
-        "evidence": "Numéros de téléphone ;",
-        "item_id": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "type": "data_type",
-        "value": "numéros de téléphone"
-       },
-       {
-        "date": "",
-        "evidence": "Adresses e-mail ;",
-        "item_id": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "type": "data_type",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "Informations administratives liées aux associations.",
-        "item_id": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "type": "data_type",
-        "value": "informations administratives"
-       },
-       {
-        "date": "",
-        "evidence": "L'application comporte notamment des rubriques consacrées aux animaux, aux personnes, à la comptabilité, aux animaux perdus ou retrouvés et aux stocks.",
-        "item_id": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "type": "data_type",
-        "value": "données comptables"
-       },
-       {
-        "date": "",
-        "evidence": "Le hacker affirme qu'il serait possible de réinitialiser le mot de passe d'un compte administrateur, puis d'en prendre le contrôle.",
-        "item_id": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "type": "data_type",
-        "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "SMS ou e-mails personnalisés, utilisant de véritables coordonnées ;",
-        "item_id": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "Les failles d'injection SQL et de réinitialisation du mot de passe administrateur sont-elles authentiques ?",
-        "item_id": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "Le logiciel propose également des rubriques relatives aux factures, aux réservations, aux dossiers, aux animaux et à la comptabilité.",
-        "item_id": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "dataset",
-        "value": "réservations"
-       }
-      ],
-      "data_types": [
-       {
-        "date": "",
-        "evidence": "Un fichier de 5 491 lignes aurait été récupéré, contenant notamment des noms, adresses, numéros de téléphone et informations sur les cotisations.",
-        "item_id": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "value": "numéros de téléphone"
-       },
-       {
-        "date": "",
-        "evidence": "Le pirate revendique non seulement l'accès à des informations personnelles, mais également la découverte de failles permettant de modifier un mot de passe administrateur et de prendre le contrôle d'un compte privilégié.",
-        "item_id": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "Les intitulés de colonnes visibles dans sa publication correspondent à des informations administratives et à des coordonnées de personnes enregistrées dans le logiciel.",
-        "item_id": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "informations administratives"
-       },
-       {
-        "date": "",
-        "evidence": "Noms et prénoms des personnes enregistrées ;",
-        "item_id": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "value": "noms et prénoms"
-       },
-       {
-        "date": "",
-        "evidence": "Adresses postales complètes, villes et codes postaux ;",
-        "item_id": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "value": "adresses postales"
-       },
-       {
-        "date": "",
-        "evidence": "Numéros de téléphone ;",
-        "item_id": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "value": "numéros de téléphone"
-       },
-       {
-        "date": "",
-        "evidence": "Adresses e-mail ;",
-        "item_id": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "Informations administratives liées aux associations.",
-        "item_id": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "value": "informations administratives"
-       },
-       {
-        "date": "",
-        "evidence": "L'application comporte notamment des rubriques consacrées aux animaux, aux personnes, à la comptabilité, aux animaux perdus ou retrouvés et aux stocks.",
-        "item_id": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "value": "données comptables"
-       },
-       {
-        "date": "",
-        "evidence": "Le hacker affirme qu'il serait possible de réinitialiser le mot de passe d'un compte administrateur, puis d'en prendre le contrôle.",
-        "item_id": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "SMS ou e-mails personnalisés, utilisant de véritables coordonnées ;",
-        "item_id": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "Les failles d'injection SQL et de réinitialisation du mot de passe administrateur sont-elles authentiques ?",
-        "item_id": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "mots de passe"
-       }
-      ],
-      "data_volumes": [],
-      "engine": "generic-rich-facts",
-      "profile": {
-       "chars": 9515,
-       "claims": 17,
-       "hypotheses": 4,
-       "semantic_candidate": true,
-       "sentences": 103
-      },
-      "relations": [],
-      "semantic": {
-       "candidate": true,
-       "used": false
-      },
-      "source_adapter": "frenchbreaches",
-      "timeline": [
-       {
-        "date": "2026-10-29",
-        "event": "Dans une publication diffusée sur un forum de hackers le jeudi 29 octobre 2026, un utilisateur connu sous le pseudonyme « morphyn1337 » affirme avoir compromis le logiciel.",
-        "evidence": "Dans une publication diffusée sur un forum de hackers le jeudi 29 octobre 2026, un utilisateur connu sous le pseudonyme « morphyn1337 » affirme avoir compromis le logiciel.",
-        "item_id": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed"
-       }
-      ],
-      "version": "2",
-      "vulnerabilities": []
-     }
-    },
-    "summary": "Refugilys piraté : les données de milliers de propriétaires d'animaux potentiellement exposées Refugilys, un logiciel français utilisé pour gérer les refuges et associations de protection animale, est visé par une revendication de piratage. Ce jeudi 29 octobre 2026, un hacker aff…",
-    "threat": "Fuite de données",
-    "title": "Refugilys",
-    "url": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop"
-   },
-   "exhausted_fields": {},
-   "field_reasons": {
-    "incident_summary": "FIELD_VALIDATION_REJECTED",
-    "summary": "HEADLINE_TOO_LONG"
-   },
-   "first_queued_at": "2026-10-30T13:42:11.425034+00:00",
-   "item": {
-    "Collected_As_Of": "2026-10-30T17:41:01.674252+04:00",
-    "Event_Date": "",
-    "Item_ID": "ITM-72ac5476f2479955",
+    "Item_ID": "ITM-da7d84723dd44299",
     "Location": "France métropolitaine",
-    "Organisation_Key": "refugilys",
-    "Organisation_Raw": "Refugilys",
+    "Organisation_Key": "la halle au sommeil",
+    "Organisation_Raw": "La Halle au Sommeil",
     "Published_Date": "2026-10-30",
     "Sector": "Inconnu",
     "Source_ID": "FRENCHBREACHES",
-    "Source_Item_ID": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop",
+    "Source_Item_ID": "https://frenchbreaches.com/alertes/la-halle-au-sommeil-mvvftt6xg1jmb2rypz",
     "Threat": "Fuite de données",
     "Threat_Raw": "Fuite de données",
-    "Title": "Refugilys",
-    "URL": "https://frenchbreaches.com/alertes/refugilys-mvu6n3b7o8erm3lsyop"
+    "Title": "La Halle au Sommeil",
+    "URL": "https://frenchbreaches.com/alertes/la-halle-au-sommeil-mvvftt6xg1jmb2rypz"
    },
-   "key": "ITM-72ac5476f2479955:c0f09ddc41cc8e669a726b423ba16a5bc1372f50c3eaa399fb9aa9fc965eb935",
-   "last_queued_at": "2026-10-30T13:42:11.425034+00:00",
+   "key": "ITM-da7d84723dd44299:89d51b099d1c589c38122e88a415e1ee6c5857687578f6e984df327374272348",
+   "last_queued_at": "2026-10-31T13:10:06.341274+00:00",
    "pending_fields": [
-    "incident_summary",
     "summary"
    ],
    "reason": "SEMANTIC_MISS"
@@ -53947,206 +52818,198 @@
   {
    "attempts": 0,
    "entry": {
-    "content": "Bourse Direct, l’un des principaux courtiers en ligne français, confirme un incident de cybersécurité survenu dans la nuit du 27 au 28 octobre 2026.  Des données personnelles et bancaires de certains clients ont été exposées, notamment leurs noms, prénoms, numéros de compte client et IBAN bancaires.  Contactée par Cyberattaque.org, la société précise que 800 comptes sont concernés par cet incident.  \n\n\n\n  Dans un e-mail dont Cyberattaque.org a obtenu une copie , Bourse Direct informe les personnes concernées d’un acte de cyber-malveillance ayant affecté leurs informations personnelles. Le courtier indique avoir contenu l’incident, renforcé ses mesures de sécurité et engagé les démarches de notification auprès des autorités compétentes. \n\n\n\n Créé en 1996 et installé à Paris,  Bourse Direct  est un acteur majeur du courtage en ligne en France. L’entreprise permet aux particuliers d’investir sur les marchés financiers à travers des comptes-titres, des plans d’épargne en actions (PEA) et différents produits d’épargne. Selon ses derniers résultats publiés en octobre, elle comptait  près de 435 000 comptes clients à fin septembre 2026 . \n\n\n\n   \n\n\n\n Une intrusion survenue dans la nuit du 27 au 28 octobre \n\n\n\n La chronologie de l’incident est précisée dans le message adressé aux clients. Bourse Direct indique qu’un acte malveillant a affecté certaines données personnelles  dans la nuit du mardi 27 au mercredi 28 octobre 2026 . \n\n\n\n L’entreprise ne détaille pas la méthode employée par les attaquants. Une compromission de compte disposant de privilèges élevés, une vulnérabilité applicative ou un accès non autorisé à une base de données pourraient expliquer l’exposition de ces informations, mais aucun de ces scénarios n’est confirmé. \n\n\n\n Le courtier affirme avoir rapidement contenu l’incident et renforcé la protection de ses systèmes. Il ne précise toutefois pas combien de temps les informations ont été accessibles ni si elles ont été copiées par les cybercriminels. \n\n\n\n Les noms, numéros de compte et IBAN bancaires concernés \n\n\n\n Le courrier transmis à Cyberattaque.org identifie précisément  trois catégories de données personnelles exposées  : \n\n\n\n \n  Les noms et prénoms  des clients concernés ; \n\n\n\n  Les numéros de compte client Bourse Direct  ; \n\n\n\n  Les IBAN bancaires  associés à ces clients. \n \n\n\n\n Cette combinaison d’informations est particulièrement sensible dans le secteur financier. Elle permet d’associer l’identité d’une personne à sa relation commerciale avec un courtier en ligne et à ses coordonnées bancaires. \n\n\n\n Le numéro de compte client constitue notamment une référence interne utilisée pour identifier un compte auprès de Bourse Direct. Il ne correspond pas nécessairement à un numéro de compte bancaire permettant d’effectuer des opérations financières. \n\n\n\n  Le courtier précise que les informations exposées ne permettent pas, à elles seules, d’accéder aux comptes des clients ni d’effectuer des opérations depuis ceux-ci.  \n\n\n\n Le message ne fait pas état d’une compromission des mots de passe, des codes d’authentification, des soldes des portefeuilles ou de l’historique des investissements. Aucun vol de titres ou de fonds n’est annoncé. \n\n\n\n Un IBAN exposé peut-il permettre de voler de l’argent ? \n\n\n\n Contrairement à un mot de passe ou à un code d’accès bancaire,  un IBAN ne suffit normalement pas à se connecter à un compte ou à réaliser directement un virement sortant . \n\n\n\n Sa divulgation n’est cependant pas sans conséquence. Des coordonnées bancaires dérobées peuvent notamment être utilisées dans certaines tentatives de fraude aux prélèvements SEPA. \n\n\n\n Un fraudeur pourrait essayer d’utiliser l’IBAN d’une victime pour mettre en place un mandat de prélèvement frauduleux auprès d’un organisme ou pour souscrire un service en utilisant ses coordonnées bancaires. \n\n\n\n Les mécanismes de contrôle bancaires et les possibilités de contestation limitent ces risques, mais  les personnes concernées doivent surveiller les opérations enregistrées sur leurs comptes bancaires . \n\n\n\n En cas de prélèvement inconnu, il est recommandé de contacter immédiatement son établissement bancaire afin de contester l’opération et, si nécessaire, de bloquer les prélèvements du créancier concerné. \n\n\n\n Des tentatives d’escroquerie particulièrement crédibles contre les investisseurs \n\n\n\n Au-delà des risques liés aux prélèvements bancaires, cette fuite pourrait surtout faciliter des campagnes de  phishing et d’usurpation d’identité ciblant les clients de Bourse Direct . \n\n\n\n Un cybercriminel connaissant le nom d’un investisseur, son numéro de compte client et son IBAN pourrait se faire passer pour un conseiller du courtier. \n\n\n\n Il pourrait par exemple contacter la victime en évoquant un problème de sécurité, une vérification réglementaire ou une opération inhabituelle nécessitant une intervention urgente. \n\n\n\n  La connaissance du numéro de compte et de l’IBAN pourrait donner une apparence de légitimité à ces sollicitations.  Le fraudeur pourrait ensuite chercher à obtenir le mot de passe, un code de validation ou convaincre la personne de transférer ses fonds vers un prétendu compte sécurisé. \n\n\n\n Ce type d’escroquerie est particulièrement préoccupant dans le domaine de l’investissement, où les victimes peuvent détenir des sommes importantes sur leurs comptes-titres ou leurs comptes bancaires associés. \n\n\n\n Bourse Direct invite les clients concernés à redoubler de vigilance face aux messages, appels et courriels inattendus utilisant leurs données personnelles. \n\n\n\n 800 comptes concernés sur près de 435 000 chez Bourse Direct \n\n\n\n  Contactée par Cyberattaque.org, la société Bourse Direct confirme que 800 comptes sont concernés par cet incident de cybersécurité.  Cette précision permet désormais de mieux mesurer l’ampleur de l’exposition des données personnelles et bancaires de ses clients. \n\n\n\n Dans son dernier communiqué financier, publié le 14 octobre 2026, Bourse Direct faisait état de  près de 435 000 comptes clients à fin septembre 2026 , contre un peu plus de 406 000 à la fin de l’année précédente. \n\n\n\n Les  800 comptes concernés représentent ainsi environ 0,18 % du nombre total de comptes clients  recensés par le courtier à la fin du mois de septembre 2026. \n\n\n\n Cette croissance témoigne du poids du courtier sur le marché français de l’investissement en ligne. En neuf mois, ses clients avaient notamment exécuté environ 4,5 millions d’ordres de Bourse. \n\n\n\n Si le nombre de comptes touchés est désormais connu, il n’est pas précisé si tous ont subi exactement la même exposition de données ou si plusieurs catégories de comptes ont été affectées. Le nombre de comptes concernés ne correspond pas nécessairement au nombre de personnes distinctes touchées. \n\n\n\n Bourse Direct annonce avoir contenu l’incident \n\n\n\n Dans sa communication, le courtier indique que  l’incident a été contenu et que ses mesures de sécurité ont été renforcées . \n\n\n\n Bourse Direct affirme également poursuivre les actions nécessaires pour améliorer la protection des données personnelles de ses clients. \n\n\n\n L’entreprise précise que  l’incident est en cours de notification auprès des autorités compétentes . Son courrier ne confirme donc pas encore l’achèvement de ces démarches. \n\n\n\n Les personnes souhaitant obtenir des renseignements peuvent contacter le service client au  01 56 88 90 90, choix 1 , ou utiliser la messagerie sécurisée de leur espace personnel. \n\n\n\n À ce stade, Bourse Direct n’a pas communiqué publiquement de bilan technique détaillé précisant l’origine de l’intrusion ou une éventuelle revendication par un groupe cybercriminel.  La société a toutefois confirmé directement à Cyberattaque.org que 800 comptes sont concernés par l’incident.  \n\n\n\n Une fuite sensible pour un acteur majeur de l’investissement français \n\n\n\n Cette affaire présente une particularité importante : les données exposées ne concernent pas uniquement l’identité des clients, mais également  leur numéro de compte chez un courtier financier et leurs coordonnées bancaires . \n\n\n\n Ces informations pourraient être exploitées pour cibler précisément des investisseurs, notamment à travers de fausses communications de sécurité ou des tentatives de fraude bancaire. \n\n\n\n  Au 30 octobre 2026, Bourse Direct confirme que 800 comptes sont concernés par cet incident de cybersécurité.  Le courtier assure avoir contenu l’attaque et rappelle que les informations exposées ne suffisent pas à effectuer des opérations depuis les comptes concernés. \n\n\n\n Le principal enjeu réside désormais dans la prévention des fraudes pouvant résulter de l’association entre l’identité des clients, leurs références de comptes et leurs IBAN bancaires.",
+    "content": "Epitech Paris, l’une des principales écoles françaises d’informatique, est visée par une fuite de données revendiquée le vendredi 30 octobre 2026.  Un hacker utilisant le pseudonyme  tuturbinete  annonce avoir diffusé un fichier contenant les informations personnelles de  351 étudiants des promotions 2028 à 2031 . Les données comprennent notamment des noms, adresses email, numéros de téléphone, dates de naissance, adresses postales et identifiants Discord. \n\n\n\n Les informations présentées concernent exclusivement le campus parisien et ne représenteraient qu’une partie de ses étudiants.  Aucun mot de passe ne figure parmi les données annoncées.  \n\n\n\n Fondée en 1999 et membre du groupe IONIS, Epitech est une école supérieure spécialisée dans l’informatique, le développement logiciel, l’intelligence artificielle et la cybersécurité. Elle possède 15 campus en France. Son principal campus parisien est implanté au  Kremlin-Bicêtre, dans le Val-de-Marne , à proximité de la porte d’Italie. \n\n\n\n 351 étudiants des promotions 2028 à 2031 dans le fichier \n\n\n\n Le 30 octobre 2026 à 19 h 33, le hacker tuturbinete publie une revendication accompagnée d’un extrait de données présenté comme provenant d’Epitech Paris. \n\n\n\n L’auteur annonce  351 identifiants d’étudiants , répartis entre quatre promotions : 2028, 2029, 2030 et 2031. Il précise que son fichier constitue une extraction partielle et ne contient pas l’ensemble des étudiants du campus. \n\n\n\n Les informations seraient organisées dans un fichier CSV comportant  13 colonnes , correspondant aux données d’identité, de scolarité et de contact des étudiants. \n\n\n\n La publication porte la mention « July 2026 », suggérant un lien avec le mois de juillet.  Cette indication ne permet cependant pas de dater précisément une éventuelle extraction.  La diffusion des informations est, elle, revendiquée le 30 octobre. \n\n\n\n Noms, dates de naissance, adresses et comptes Discord exposés \n\n\n\n Les exemples publiés montrent des fiches individuelles particulièrement détaillées. Chaque enregistrement peut comporter les informations suivantes : \n\n\n\n \n  Le nom et le prénom  de l’étudiant ; \n\n\n\n  L’identifiant de connexion Epitech , prenant la forme d’une adresse institutionnelle ; \n\n\n\n  L’adresse email personnelle , notamment auprès de fournisseurs de messagerie grand public ; \n\n\n\n  Le numéro de téléphone  ; \n\n\n\n  La date de naissance  ; \n\n\n\n  L’adresse postale, la ville et le code postal  ; \n\n\n\n  Le campus et l’année de promotion  ; \n\n\n\n  L’identifiant numérique et le pseudonyme Discord . \n \n\n\n\n L’extrait consulté par Cyberattaque.org présente plusieurs fiches d’étudiants associant leur identité civile, une adresse de connexion en @epitech.eu, une messagerie personnelle et des informations de contact. \n\n\n\n Certaines données sont manquantes ou partiellement masquées. Le hacker annonce notamment  292 identifiants Discord renseignés et seulement 125 adresses postales complètes . \n\n\n\n Il évoque également 218 numéros de téléphone, tout en précisant que 126 seraient partiellement masqués.  Cette présentation ne permet pas de considérer les 218 numéros comme intégralement exploitables.  \n\n\n\n Les chiffres détaillés proviennent de la revendication de l’auteur. L’extrait publié permet de constater la présence des différentes catégories de données, mais pas de vérifier indépendamment l’intégralité des 351 fiches. \n\n\n\n Discord : un risque supplémentaire d’usurpation d’identité \n\n\n\n  La présence des identifiants Discord constitue une particularité importante de cette fuite.  Cette plateforme de communication est très utilisée dans les communautés de développeurs, les groupes étudiants et les projets informatiques. \n\n\n\n L’association d’un identifiant Discord à un nom, une adresse email personnelle et une promotion permettrait à un cybercriminel de cibler un étudiant sur plusieurs canaux. \n\n\n\n Un attaquant pourrait notamment  se faire passer pour un camarade de promotion, un intervenant ou un membre de l’administration  afin d’envoyer un faux lien de connexion, un document piégé ou une demande de vérification de compte. \n\n\n\n Les informations sur les promotions rendent également possibles des messages ciblés évoquant des projets informatiques, des stages, des examens ou des démarches administratives. \n\n\n\n Comment les informations des étudiants ont-elles pu être récupérées ? \n\n\n\n La structure du fichier évoque une extraction depuis un annuaire ou un outil permettant de centraliser les informations des étudiants. \n\n\n\n La coexistence d’identifiants institutionnels, de coordonnées personnelles, de promotions et de comptes Discord pourrait correspondre à une base utilisée pour faciliter la communication ou l’organisation des étudiants. \n\n\n\n Une telle liste pourrait être récupérée à la suite de la compromission d’un compte autorisé à consulter ces informations, de l’exposition d’un fichier partagé ou d’une vulnérabilité dans une application. \n\n\n\n  Le hacker ne fournit toutefois aucune explication technique démontrant une intrusion dans les systèmes informatiques d’Epitech.  L’existence du fichier revendiqué ne suffit donc pas à conclure que l’infrastructure de l’école a été piratée. \n\n\n\n Des étudiants exposés aux tentatives de phishing et de harcèlement \n\n\n\n Si les informations diffusées sont authentiques, les personnes concernées pourraient faire l’objet de tentatives d’hameçonnage particulièrement personnalisées. \n\n\n\n La connaissance du nom, de la promotion, de l’adresse institutionnelle et du compte Discord d’un étudiant pourrait permettre la création de  faux messages provenant prétendument de l’école ou d’autres étudiants . \n\n\n\n Les adresses postales et dates de naissance ajoutent un risque d’atteinte à la vie privée, de harcèlement ou d’utilisation abusive des informations personnelles. \n\n\n\n En revanche,  aucun mot de passe ni jeton de session n’est annoncé dans le fichier . Les informations présentées ne démontrent donc pas que les comptes informatiques des étudiants puissent être directement ouverts par un tiers. \n\n\n\n Une fuite attribuée à Epitech Paris, sans confirmation officielle \n\n\n\n  Au 31 octobre 2026, aucune communication publique d’Epitech confirmant cette fuite n’a été identifiée.  Le nombre de personnes réellement concernées, l’origine des informations et la méthode utilisée pour les récupérer restent à établir. \n\n\n\n La revendication concerne un fichier partiel attribué aux promotions 2028 à 2031 du campus parisien. Elle ne permet pas de conclure à une compromission des autres campus de l’école. \n\n\n\n  Le principal enjeu concerne la combinaison des informations étudiantes et des identifiants Discord.  Même en l’absence de mots de passe, leur divulgation pourrait faciliter des tentatives de fraude et d’usurpation d’identité ciblant directement les étudiants concernés.",
     "entity": "",
     "event_date": "",
     "location": "",
     "organisation": "",
-    "published": "2026-10-30",
+    "published": "2026-10-31",
     "sector": "",
-    "source_item_id": "4701",
+    "source_item_id": "4752",
     "source_metadata": {
      "rich_facts": {
-      "affected_counts": [
-       {
-        "date": "",
-        "evidence": "Contactée par Cyberattaque.org, la société Bourse Direct confirme que 800 comptes sont concernés par cet incident de cybersécurité.",
-        "raw": "800 comptes",
-        "scope": "",
-        "status": "confirmed",
-        "unit": "accounts",
-        "value": 800
-       },
-       {
-        "date": "",
-        "evidence": "Selon ses derniers résultats publiés en octobre, elle comptait  près de 435 000 comptes clients à fin septembre 2026 .",
-        "raw": "435 000 comptes",
-        "scope": "",
-        "status": "unknown",
-        "unit": "accounts",
-        "value": 435000
-       },
-       {
-        "date": "",
-        "evidence": "Bourse Direct victime d’une cyberattaque : les IBAN de 800 clients exposés",
-        "raw": "800 clients",
-        "scope": "",
-        "status": "unknown",
-        "unit": "clients",
-        "value": 800
-       },
-       {
-        "date": "",
-        "evidence": "Contactée par Cyberattaque.org, la société précise que 800 comptes sont concernés par cet incident.",
-        "raw": "800 comptes",
-        "scope": "",
-        "status": "unknown",
-        "unit": "accounts",
-        "value": 800
-       }
-      ],
+      "affected_counts": [],
       "affected_datasets": [],
       "affected_systems": [],
       "claims": [
        {
         "date": "",
-        "evidence": "Contactée par Cyberattaque.org, la société Bourse Direct confirme que 800 comptes sont concernés par cet incident de cybersécurité.",
-        "scope": "",
-        "status": "confirmed",
-        "type": "affected_count",
-        "unit": "accounts",
-        "value": 800
-       },
-       {
-        "date": "",
-        "evidence": "Selon ses derniers résultats publiés en octobre, elle comptait  près de 435 000 comptes clients à fin septembre 2026 .",
-        "scope": "",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "accounts",
-        "value": 435000
-       },
-       {
-        "date": "",
-        "evidence": "Bourse Direct victime d’une cyberattaque : les IBAN de 800 clients exposés",
-        "scope": "",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "clients",
-        "value": 800
-       },
-       {
-        "date": "",
-        "evidence": "Contactée par Cyberattaque.org, la société précise que 800 comptes sont concernés par cet incident.",
-        "scope": "",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "accounts",
-        "value": 800
-       },
-       {
-        "date": "",
-        "evidence": "Bourse Direct victime d’une cyberattaque : les IBAN de 800 clients exposés",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "données bancaires"
-       },
-       {
-        "date": "",
-        "evidence": "Des données personnelles et bancaires de certains clients ont été exposées, notamment leurs noms, prénoms, numéros de compte client et IBAN bancaires.",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "noms et prénoms"
-       },
-       {
-        "date": "",
-        "evidence": "Dans un e-mail dont Cyberattaque.org a obtenu une copie , Bourse Direct informe les personnes concernées d’un acte de cyber-malveillance ayant affecté leurs informations personnelles.",
+        "evidence": "Les données comprennent notamment des noms, adresses email, numéros de téléphone, dates de naissance, adresses postales et identifiants Discord.",
         "status": "unknown",
         "type": "data_type",
         "value": "adresses e-mail"
        },
        {
         "date": "",
-        "evidence": "Un IBAN exposé peut-il permettre de voler de l’argent ?",
-        "status": "hypothesis",
+        "evidence": "Les données comprennent notamment des noms, adresses email, numéros de téléphone, dates de naissance, adresses postales et identifiants Discord.",
+        "status": "unknown",
         "type": "data_type",
-        "value": "données bancaires"
+        "value": "numéros de téléphone"
        },
        {
         "date": "",
-        "evidence": "Le fraudeur pourrait ensuite chercher à obtenir le mot de passe, un code de validation ou convaincre la personne de transférer ses fonds vers un prétendu compte sécurisé.",
+        "evidence": "Les données comprennent notamment des noms, adresses email, numéros de téléphone, dates de naissance, adresses postales et identifiants Discord.",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "adresses postales"
+       },
+       {
+        "date": "",
+        "evidence": "Les données comprennent notamment des noms, adresses email, numéros de téléphone, dates de naissance, adresses postales et identifiants Discord.",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "dates de naissance"
+       },
+       {
+        "date": "",
+        "evidence": "Les données comprennent notamment des noms, adresses email, numéros de téléphone, dates de naissance, adresses postales et identifiants Discord.",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "identifiants"
+       },
+       {
+        "date": "",
+        "evidence": "Le nom et le prénom  de l’étudiant ;",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "noms et prénoms"
+       },
+       {
+        "date": "",
+        "evidence": "Il évoque également 218 numéros de téléphone, tout en précisant que 126 seraient partiellement masqués.",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "La coexistence d’identifiants institutionnels, de coordonnées personnelles, de promotions et de comptes Discord pourrait correspondre à une base utilisée pour faciliter la communication ou l’organisation des étudiants.",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "identifiants"
+       },
+       {
+        "date": "",
+        "evidence": "Les adresses postales et dates de naissance ajoutent un risque d’atteinte à la vie privée, de harcèlement ou d’utilisation abusive des informations personnelles.",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "adresses postales"
+       },
+       {
+        "date": "",
+        "evidence": "Les adresses postales et dates de naissance ajoutent un risque d’atteinte à la vie privée, de harcèlement ou d’utilisation abusive des informations personnelles.",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "dates de naissance"
+       },
+       {
+        "date": "",
+        "evidence": "Même en l’absence de mots de passe, leur divulgation pourrait faciliter des tentatives de fraude et d’usurpation d’identité ciblant directement les étudiants concernés.",
         "status": "hypothesis",
         "type": "data_type",
         "value": "mots de passe"
        },
        {
-        "date": "",
-        "evidence": "Ce type d’escroquerie est particulièrement préoccupant dans le domaine de l’investissement, où les victimes peuvent détenir des sommes importantes sur leurs comptes-titres ou leurs comptes bancaires associés.",
-        "status": "hypothesis",
-        "type": "data_type",
-        "value": "montants"
-       },
-       {
-        "date": "2026-10-28",
-        "evidence": "Bourse Direct, l’un des principaux courtiers en ligne français, confirme un incident de cybersécurité survenu dans la nuit du 27 au 28 octobre 2026.",
+        "date": "2026-10-30",
+        "evidence": "Epitech Paris, l’une des principales écoles françaises d’informatique, est visée par une fuite de données revendiquée le vendredi 30 octobre 2026.",
         "kind": "statement",
         "scope": "Chronologie",
-        "status": "confirmed",
-        "value": "Bourse Direct, l’un des principaux courtiers en ligne français, confirme un incident de cybersécurité survenu dans la nuit du 27 au 28 octobre 2026."
-       },
-       {
-        "date": "2026-10-14",
-        "evidence": "Dans son dernier communiqué financier, publié le 14 octobre 2026, Bourse Direct faisait état de  près de 435 000 comptes clients à fin septembre 2026 , contre un peu plus de 406 000 à la fin de l’année précédente.",
-        "kind": "statement",
-        "scope": "Chronologie",
-        "status": "unknown",
-        "value": "Dans son dernier communiqué financier, publié le 14 octobre 2026, Bourse Direct faisait état de  près de 435 000 comptes clients à fin septembre 2026 , contre un peu plus de 406 000 à la fin de l’année précédente."
+        "status": "claimed",
+        "value": "Epitech Paris, l’une des principales écoles françaises d’informatique, est visée par une fuite de données revendiquée le vendredi 30 octobre 2026."
        },
        {
         "date": "2026-10-30",
-        "evidence": "Au 30 octobre 2026, Bourse Direct confirme que 800 comptes sont concernés par cet incident de cybersécurité.",
+        "evidence": "Le 30 octobre 2026 à 19 h 33, le hacker tuturbinete publie une revendication accompagnée d’un extrait de données présenté comme provenant d’Epitech Paris.",
         "kind": "statement",
         "scope": "Chronologie",
-        "status": "confirmed",
-        "value": "Au 30 octobre 2026, Bourse Direct confirme que 800 comptes sont concernés par cet incident de cybersécurité."
+        "status": "unknown",
+        "value": "Le 30 octobre 2026 à 19 h 33, le hacker tuturbinete publie une revendication accompagnée d’un extrait de données présenté comme provenant d’Epitech Paris."
+       },
+       {
+        "date": "2026-10-31",
+        "evidence": "Au 31 octobre 2026, aucune communication publique d’Epitech confirmant cette fuite n’a été identifiée.",
+        "kind": "statement",
+        "scope": "Négation · Chronologie",
+        "status": "unknown",
+        "value": "Au 31 octobre 2026, aucune communication publique d’Epitech confirmant cette fuite n’a été identifiée."
        }
       ],
       "data_types": [
        {
         "date": "",
-        "evidence": "Bourse Direct victime d’une cyberattaque : les IBAN de 800 clients exposés",
-        "status": "unknown",
-        "value": "données bancaires"
-       },
-       {
-        "date": "",
-        "evidence": "Des données personnelles et bancaires de certains clients ont été exposées, notamment leurs noms, prénoms, numéros de compte client et IBAN bancaires.",
-        "status": "unknown",
-        "value": "noms et prénoms"
-       },
-       {
-        "date": "",
-        "evidence": "Dans un e-mail dont Cyberattaque.org a obtenu une copie , Bourse Direct informe les personnes concernées d’un acte de cyber-malveillance ayant affecté leurs informations personnelles.",
+        "evidence": "Les données comprennent notamment des noms, adresses email, numéros de téléphone, dates de naissance, adresses postales et identifiants Discord.",
         "status": "unknown",
         "value": "adresses e-mail"
        },
        {
         "date": "",
-        "evidence": "Un IBAN exposé peut-il permettre de voler de l’argent ?",
-        "status": "hypothesis",
-        "value": "données bancaires"
+        "evidence": "Les données comprennent notamment des noms, adresses email, numéros de téléphone, dates de naissance, adresses postales et identifiants Discord.",
+        "status": "unknown",
+        "value": "numéros de téléphone"
        },
        {
         "date": "",
-        "evidence": "Le fraudeur pourrait ensuite chercher à obtenir le mot de passe, un code de validation ou convaincre la personne de transférer ses fonds vers un prétendu compte sécurisé.",
+        "evidence": "Les données comprennent notamment des noms, adresses email, numéros de téléphone, dates de naissance, adresses postales et identifiants Discord.",
+        "status": "unknown",
+        "value": "adresses postales"
+       },
+       {
+        "date": "",
+        "evidence": "Les données comprennent notamment des noms, adresses email, numéros de téléphone, dates de naissance, adresses postales et identifiants Discord.",
+        "status": "unknown",
+        "value": "dates de naissance"
+       },
+       {
+        "date": "",
+        "evidence": "Les données comprennent notamment des noms, adresses email, numéros de téléphone, dates de naissance, adresses postales et identifiants Discord.",
+        "status": "unknown",
+        "value": "identifiants"
+       },
+       {
+        "date": "",
+        "evidence": "Le nom et le prénom  de l’étudiant ;",
+        "status": "unknown",
+        "value": "noms et prénoms"
+       },
+       {
+        "date": "",
+        "evidence": "Il évoque également 218 numéros de téléphone, tout en précisant que 126 seraient partiellement masqués.",
+        "status": "hypothesis",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "La coexistence d’identifiants institutionnels, de coordonnées personnelles, de promotions et de comptes Discord pourrait correspondre à une base utilisée pour faciliter la communication ou l’organisation des étudiants.",
+        "status": "hypothesis",
+        "value": "identifiants"
+       },
+       {
+        "date": "",
+        "evidence": "Les adresses postales et dates de naissance ajoutent un risque d’atteinte à la vie privée, de harcèlement ou d’utilisation abusive des informations personnelles.",
+        "status": "hypothesis",
+        "value": "adresses postales"
+       },
+       {
+        "date": "",
+        "evidence": "Les adresses postales et dates de naissance ajoutent un risque d’atteinte à la vie privée, de harcèlement ou d’utilisation abusive des informations personnelles.",
+        "status": "hypothesis",
+        "value": "dates de naissance"
+       },
+       {
+        "date": "",
+        "evidence": "Même en l’absence de mots de passe, leur divulgation pourrait faciliter des tentatives de fraude et d’usurpation d’identité ciblant directement les étudiants concernés.",
         "status": "hypothesis",
         "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "Ce type d’escroquerie est particulièrement préoccupant dans le domaine de l’investissement, où les victimes peuvent détenir des sommes importantes sur leurs comptes-titres ou leurs comptes bancaires associés.",
-        "status": "hypothesis",
-        "value": "montants"
        }
       ],
       "data_volumes": [],
       "profile": {
-       "chars": 8900,
-       "claims": 10,
-       "dates": 4,
-       "hypotheses": 3,
-       "numbers": 9,
-       "sentences": 67
+       "chars": 7002,
+       "claims": 11,
+       "dates": 3,
+       "hypotheses": 5,
+       "numbers": 0,
+       "sentences": 61
       },
       "relations": [],
       "semantic": {
@@ -54154,57 +53017,144 @@
       },
       "timeline": [
        {
-        "date": "2026-10-28",
-        "event": "Bourse Direct, l’un des principaux courtiers en ligne français, confirme un incident de cybersécurité survenu dans la nuit du 27 au 28 octobre 2026.",
-        "evidence": "Bourse Direct, l’un des principaux courtiers en ligne français, confirme un incident de cybersécurité survenu dans la nuit du 27 au 28 octobre 2026.",
-        "status": "confirmed"
-       },
-       {
-        "date": "2026-10-14",
-        "event": "Dans son dernier communiqué financier, publié le 14 octobre 2026, Bourse Direct faisait état de  près de 435 000 comptes clients à fin septembre 2026 , contre un peu plus de 406 000 à la fin de l’année précédente.",
-        "evidence": "Dans son dernier communiqué financier, publié le 14 octobre 2026, Bourse Direct faisait état de  près de 435 000 comptes clients à fin septembre 2026 , contre un peu plus de 406 000 à la fin de l’année précédente.",
-        "status": "unknown"
+        "date": "2026-10-30",
+        "event": "Epitech Paris, l’une des principales écoles françaises d’informatique, est visée par une fuite de données revendiquée le vendredi 30 octobre 2026.",
+        "evidence": "Epitech Paris, l’une des principales écoles françaises d’informatique, est visée par une fuite de données revendiquée le vendredi 30 octobre 2026.",
+        "status": "claimed"
        },
        {
         "date": "2026-10-30",
-        "event": "Au 30 octobre 2026, Bourse Direct confirme que 800 comptes sont concernés par cet incident de cybersécurité.",
-        "evidence": "Au 30 octobre 2026, Bourse Direct confirme que 800 comptes sont concernés par cet incident de cybersécurité.",
-        "status": "confirmed"
+        "event": "Le 30 octobre 2026 à 19 h 33, le hacker tuturbinete publie une revendication accompagnée d’un extrait de données présenté comme provenant d’Epitech Paris.",
+        "evidence": "Le 30 octobre 2026 à 19 h 33, le hacker tuturbinete publie une revendication accompagnée d’un extrait de données présenté comme provenant d’Epitech Paris.",
+        "status": "unknown"
+       },
+       {
+        "date": "2026-10-31",
+        "event": "Au 31 octobre 2026, aucune communication publique d’Epitech confirmant cette fuite n’a été identifiée.",
+        "evidence": "Au 31 octobre 2026, aucune communication publique d’Epitech confirmant cette fuite n’a été identifiée.",
+        "status": "negated"
        }
       ],
       "version": "2",
       "vulnerabilities": []
      }
     },
-    "summary": "Bourse Direct, l’un des principaux courtiers en ligne français, confirme un incident de cybersécurité survenu dans la nuit…",
+    "summary": "Epitech Paris, l’une des principales écoles françaises d’informatique, est visée par une fuite de données revendiquée le vendredi…",
     "threat": "",
-    "title": "Bourse Direct victime d’une cyberattaque : les IBAN de 800 clients exposés",
-    "url": "https://www.cyberattaque.org/bourse-direct-victime-dune-cyberattaque-les-iban-de-ses-clients-exposes/"
+    "title": "Epitech Paris : les données personnelles de 351 étudiants en fuite",
+    "url": "https://www.cyberattaque.org/epitech-paris-les-donnees-personnelles-de-351-etudiants-en-fuite/"
    },
    "exhausted_fields": {},
    "field_reasons": {
     "activity_description": "ACTIVITY_NOT_DESCRIBED",
-    "activity_sector_match": "EVIDENCE_NOT_GROUNDED"
+    "activity_sector_match": "NO_VALID_ACTIVITY_PAIR"
    },
-   "first_queued_at": "2026-10-30T13:43:27.008741+00:00",
+   "first_queued_at": "2026-10-31T13:10:39.967674+00:00",
    "item": {
-    "Collected_As_Of": "2026-10-30T17:41:01.674252+04:00",
+    "Collected_As_Of": "2026-10-31T17:09:28.057110+04:00",
     "Event_Date": "",
-    "Item_ID": "ITM-8c82082d337ad3b9",
+    "Item_ID": "ITM-aabeea2ab3a78e96",
     "Location": "Inconnu",
-    "Organisation_Key": "bourse direct",
-    "Organisation_Raw": "Bourse Direct",
+    "Organisation_Key": "epitech paris",
+    "Organisation_Raw": "Epitech Paris",
+    "Published_Date": "2026-10-31",
+    "Sector": "Inconnu",
+    "Source_ID": "CYBERATTAQUE_ORG",
+    "Source_Item_ID": "4752",
+    "Threat": "Fuite de données",
+    "Threat_Raw": "",
+    "Title": "Epitech Paris : les données personnelles de 351 étudiants en fuite",
+    "URL": "https://www.cyberattaque.org/epitech-paris-les-donnees-personnelles-de-351-etudiants-en-fuite/"
+   },
+   "key": "ITM-aabeea2ab3a78e96:a484cc4f9a5cd079a9ceb01fe22bfccb5e8ac4e4a2d53f5cd53b44b8e34033e3",
+   "last_queued_at": "2026-10-31T13:10:39.967674+00:00",
+   "pending_fields": [
+    "activity_description",
+    "activity_sector_match"
+   ],
+   "reason": "SEMANTIC_REJECTED"
+  },
+  {
+   "attempts": 0,
+   "entry": {
+    "content": "Une cyberattaque est suspectée à Cholet, dans le Maine-et-Loire, ce vendredi 30 octobre 2026. Plusieurs services de la Ville et de Cholet Agglomération rencontrent des perturbations, notamment sur leurs moyens de communication. Une cellule de crise a été mise en place pour suivre la situation et rétablir les services concernés. À ce stade, aucune fuite de données n’a été constatée.  \n\n\n\n La Ville de Cholet et son agglomération font face à un possible incident de cybersécurité affectant une partie de leurs services. Les premières informations font état de difficultés pour joindre plusieurs services administratifs par téléphone et par courrier électronique. \n\n\n\n Si l’hypothèse d’une cyberattaque est évoquée, l’origine exacte des perturbations reste à déterminer. Aucun détail technique permettant de confirmer une intrusion informatique ou d’identifier le mode opératoire d’éventuels attaquants n’a été communiqué. \n\n\n\n Des services municipaux perturbés et une cellule de crise activée \n\n\n\n Les dysfonctionnements touchent notamment les communications de plusieurs services de la Ville de Cholet et de Cholet Agglomération. Les appels téléphoniques et les échanges par courrier électronique sont perturbés, compliquant les démarches et les prises de contact avec certaines administrations. \n\n\n\n  Une cellule de crise a été constituée sous la responsabilité des dirigeants de la Ville et de l’agglomération.  Elle doit permettre de suivre l’évolution de l’incident, de coordonner les interventions et d’organiser le rétablissement des services. \n\n\n\n Les perturbations ne semblent toutefois pas concerner l’ensemble des outils numériques de la collectivité. Le site Internet officiel reste notamment accessible, ce qui indique que certains services continuent de fonctionner. \n\n\n\n La nature exacte des systèmes touchés, l’étendue des difficultés rencontrées et la date de début de l’incident ne sont pas encore précisées. \n\n\n\n Aucune fuite de données constatée à ce stade \n\n\n\n  Selon les premières informations disponibles, aucune fuite de données n’a été constatée.  Il s’agit d’un élément important pour les habitants et les usagers des services municipaux, dont les informations personnelles peuvent être traitées par les différentes administrations. \n\n\n\n Cette absence de fuite constatée ne permet cependant pas d’exclure définitivement une compromission. En cas d’incident de cybersécurité, les investigations techniques peuvent nécessiter du temps pour déterminer si des systèmes ont été consultés sans autorisation ou si des informations ont été extraites. \n\n\n\n À ce stade, aucune revendication, aucun groupe de pirates informatiques et aucun éventuel logiciel malveillant n’ont été identifiés publiquement comme étant à l’origine des perturbations. \n\n\n\n Cholet avait déjà alerté sur des SMS frauduleux mi-octobre \n\n\n\n Cet incident suspecté intervient deux semaines après une précédente alerte de la municipalité concernant des tentatives d’escroquerie utilisant son identité. \n\n\n\n Le 16 octobre 2026, la Ville de Cholet avait mis en garde les habitants contre la circulation de  SMS frauduleux se faisant passer pour des communications officielles de la mairie . La collectivité appelait les destinataires à ne pas communiquer leurs informations personnelles ou bancaires et à se méfier des liens suspects. \n\n\n\n Ces messages relevaient d’une tentative d’usurpation d’identité, une technique fréquemment utilisée dans les campagnes d’hameçonnage pour tromper les destinataires. \n\n\n\n  Aucun lien n’a cependant été établi entre cette campagne de SMS frauduleux et les perturbations informatiques signalées le 30 octobre.  L’utilisation abusive de l’identité d’une collectivité ne signifie pas nécessairement que ses systèmes informatiques ont été piratés. \n\n\n\n Une cyberattaque encore à confirmer \n\n\n\n Pour l’heure, plusieurs questions restent sans réponse. Les services informatiques de la collectivité ont-ils détecté une intrusion ? Les interruptions résultent-elles d’une attaque ou de mesures de sécurité prises par précaution ? Des informations personnelles ont-elles pu être consultées sans autorisation ? \n\n\n\n La mise en place d’une cellule de crise témoigne d’une mobilisation face à la situation, mais ne suffit pas à établir qu’une cyberattaque a effectivement eu lieu. \n\n\n\n  Cyberattaque.org suivra l’évolution de la situation et actualisera cet article à mesure que de nouveaux éléments permettront de préciser la nature de l’incident, son étendue et ses éventuelles conséquences sur les données des usagers.",
+    "entity": "",
+    "event_date": "",
+    "location": "",
+    "organisation": "",
+    "published": "2026-10-30",
+    "sector": "",
+    "source_item_id": "4739",
+    "source_metadata": {
+     "rich_facts": {
+      "affected_counts": [],
+      "affected_datasets": [],
+      "affected_systems": [],
+      "claims": [
+       {
+        "date": "2026-10-30",
+        "evidence": "Une cyberattaque est suspectée à Cholet, dans le Maine-et-Loire, ce vendredi 30 octobre 2026.",
+        "kind": "statement",
+        "scope": "Chronologie",
+        "status": "unknown",
+        "value": "Une cyberattaque est suspectée à Cholet, dans le Maine-et-Loire, ce vendredi 30 octobre 2026."
+       }
+      ],
+      "data_types": [],
+      "data_volumes": [],
+      "profile": {
+       "chars": 4734,
+       "claims": 0,
+       "dates": 3,
+       "hypotheses": 0,
+       "numbers": 0,
+       "sentences": 39
+      },
+      "relations": [],
+      "semantic": {
+       "used": false
+      },
+      "timeline": [
+       {
+        "date": "2026-10-30",
+        "event": "Une cyberattaque est suspectée à Cholet, dans le Maine-et-Loire, ce vendredi 30 octobre 2026.",
+        "evidence": "Une cyberattaque est suspectée à Cholet, dans le Maine-et-Loire, ce vendredi 30 octobre 2026.",
+        "status": "unknown"
+       }
+      ],
+      "version": "2",
+      "vulnerabilities": []
+     }
+    },
+    "summary": "Une cyberattaque est suspectée à Cholet, dans le Maine-et-Loire, ce vendredi 30 octobre 2026. Plusieurs services de la…",
+    "threat": "",
+    "title": "Cholet : une cyberattaque perturbe les services de la Ville et de l’agglomération",
+    "url": "https://www.cyberattaque.org/cholet-une-cyberattaque-perturbe-les-services-de-la-ville-et-de-lagglomeration/"
+   },
+   "exhausted_fields": {},
+   "field_reasons": {
+    "activity_description": "ACTIVITY_NOT_DESCRIBED",
+    "activity_sector_match": "NO_VALID_ACTIVITY_PAIR"
+   },
+   "first_queued_at": "2026-10-31T13:10:43.397477+00:00",
+   "item": {
+    "Collected_As_Of": "2026-10-31T17:09:28.057110+04:00",
+    "Event_Date": "",
+    "Item_ID": "ITM-69e636f67e36db32",
+    "Location": "Inconnu",
+    "Organisation_Key": "cholet",
+    "Organisation_Raw": "Cholet",
     "Published_Date": "2026-10-30",
     "Sector": "Inconnu",
     "Source_ID": "CYBERATTAQUE_ORG",
-    "Source_Item_ID": "4701",
-    "Threat": "Fuite de données",
+    "Source_Item_ID": "4739",
+    "Threat": "Phishing / fraude",
     "Threat_Raw": "",
-    "Title": "Bourse Direct victime d’une cyberattaque : les IBAN de 800 clients exposés",
-    "URL": "https://www.cyberattaque.org/bourse-direct-victime-dune-cyberattaque-les-iban-de-ses-clients-exposes/"
+    "Title": "Cholet : une cyberattaque perturbe les services de la Ville et de l’agglomération",
+    "URL": "https://www.cyberattaque.org/cholet-une-cyberattaque-perturbe-les-services-de-la-ville-et-de-lagglomeration/"
    },
-   "key": "ITM-8c82082d337ad3b9:7dbd00bcae33bf455f0a49c76eb59ac60752019706fb1109475d7e307bc22e1a",
-   "last_queued_at": "2026-10-30T13:43:27.008741+00:00",
+   "key": "ITM-69e636f67e36db32:054ff2df5ea482f9c740f30185c2be781a27c6974a98abe501447f8cdd1a58fa",
+   "last_queued_at": "2026-10-31T13:10:43.397477+00:00",
    "pending_fields": [
     "activity_description",
     "activity_sector_match"

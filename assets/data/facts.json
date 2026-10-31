@@ -15,7 +15,9 @@
    ],
    "vulnerable_people": false
   },
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "Le site pour adultes MySexShop.fr est visé par une revendication de fuite de données."
+  ],
   "version": 3
  },
  "INC-00C7F75053E1": {
@@ -103,6 +105,14 @@
    "vulnerable_people": false
   },
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-040D108C029C": {
+  "display_summary": "La Ville de Cholet et Cholet Agglomération subissent des perturbations de services potentiellement liées à une cyberattaque.",
+  "summary_paragraphs": [
+   "Plusieurs services de la Ville de Cholet et de Cholet Agglomération rencontrent des perturbations, notamment sur leurs moyens de communication.",
+   "À ce stade, aucune fuite de données n’a été constatée."
+  ],
   "version": 3
  },
  "INC-06066B2EEF57": {
@@ -265,6 +275,42 @@
   "summary_paragraphs": [
    "Le hacker RedStone revendique une base de 6,9 Go comprenant 54 545 utilisateurs et près de 1,75 million de réservations.",
    "Doinsport confirme l’incident et indique qu'un ancien serveur de sa marketplace a été compromis le 23 septembre."
+  ],
+  "version": 3
+ },
+ "INC-0D8E03D37A99": {
+  "display_summary": "La FFME a confirmé une intrusion via un compte détourné le 28 octobre 2026 ayant permis l'accès non autorisé à des données de licenciés.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "reported",
+     "value": "pièces d'identité"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Un compte utilisateur a été utilisé frauduleusement pour accéder à l'application myFFME et consulter potentiellement des informations personnelles de licenciés."
   ],
   "version": 3
  },
@@ -754,6 +800,34 @@
   ],
   "version": 3
  },
+ "INC-24437AB737D5": {
+  "display_summary": "BonjourLaFuite signale une fuite de données concernant La halle du sommeil.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "BONJOURLAFUITE"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "Début et fin du numéro de carte bancaire"
+    },
+    {
+     "sources": [
+      "BONJOURLAFUITE"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "Date d’expiration de carte bancaire"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "BonjourLaFuite signale une fuite de données concernant La halle du sommeil."
+  ],
+  "version": 3
+ },
  "INC-25FB4E5B300E": {
   "display_summary": "",
   "summary_paragraphs": [],
@@ -1098,6 +1172,27 @@
   ],
   "version": 3
  },
+ "INC-35AE1C30DC17": {
+  "display_summary": "Epitech Paris voit une fuite revendiquée de données personnelles de 351 étudiants des promotions 2028–2031.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Un hacker revendique la diffusion d'un fichier contenant les informations personnelles de 351 étudiants des promotions 2028 à 2031.",
+   "Les données annoncées comprennent noms, adresses email, numéros de téléphone, dates de naissance, adresses postales et identifiants Discord."
+  ],
+  "version": 3
+ },
  "INC-3634AD5756CD": {
   "display_summary": "BodySwap : les données de 10 309 utilisateurs du service d’images pour adultes en fuite",
   "sensitive_data": {
@@ -1264,7 +1359,7 @@
   "version": 3
  },
  "INC-3C9CC8162AB9": {
-  "display_summary": "",
+  "display_summary": "Des fichiers internes attribués à Mammut, dont des mots de passe et paramètres, ont été publiés sur un forum de pirates le 9 octobre 2026.",
   "sensitive_data": {
    "types": [
     {
@@ -1278,7 +1373,10 @@
    ],
    "vulnerable_people": false
   },
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "Un utilisateur d'un forum a annoncé la mise en ligne de 28 fichiers attribués à Mammut, pour un total de 522 Mo, dont CSV, SQL et Excel.",
+   "Parmi les fichiers, un est présenté comme contenant des mots de passe et des paramètres de pare-feu, mais l'authenticité et la validité restent à vérifier."
+  ],
   "version": 3
  },
  "INC-3CD401B79A41": {
@@ -1459,8 +1557,11 @@
   "version": 3
  },
  "INC-45A1B4470EF6": {
-  "display_summary": "",
-  "summary_paragraphs": [],
+  "display_summary": "ASOS signale la compromission d'un compte employé et l'accès non autorisé à certaines données personnelles de clients",
+  "summary_paragraphs": [
+   "ASOS indique qu'un tiers non autorisé a compromis le compte d'un employé pour accéder à des plateformes externes utilisées par l'entreprise.",
+   "ASOS confirme que des noms et coordonnées personnelles ont été accessibles, sans accès aux cartes de paiement ni aux mots de passe clients."
+  ],
   "version": 3
  },
  "INC-45C1E638A824": {
@@ -1533,7 +1634,10 @@
    ],
    "vulnerable_people": false
   },
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "Le site echecs.asso.fr, associé à la Fédération française des échecs (FFE), est visé par une revendication de fuite de données.",
+   "Le pirate affirme avoir diffusé une base contenant 15 732 enregistrements, concernant 8 656 personnes selon son décompte."
+  ],
   "version": 3
  },
  "INC-4AF85812E3E9": {
@@ -2737,7 +2841,60 @@
   "version": 3
  },
  "INC-74DACCF9E08E": {
-  "display_summary": "",
+  "display_summary": "La Fédération suisse de basketball fait l'objet d'une revendication de fuite de données de plus de 52 000 licenciés, incluant des milliers de mineurs.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "adresses e-mail"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "numéros de téléphone"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "dates de naissance"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "noms et prénoms"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "adresses postales"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "identifiants"
+    }
+   ],
+   "vulnerable_people": true
+  },
   "summary_paragraphs": [
    "Un pirate affirme avoir accédé à un extranet de la Fédération suisse de basketball et récupéré des données personnelles."
   ],
@@ -3914,13 +4071,13 @@
   "display_summary": "",
   "regional_watch": [
    {
-    "acteur": "Qilin (revendication du 15 octobre 2026, attribution non confirmée)",
+    "acteur": "Qilin (revendications des 15 et 23 octobre 2026, attribution non confirmée)",
     "admission_reason": "Cyberattaque confirmée publiquement par la collectivité et reprise par plusieurs sources locales.",
-    "impact_connu": "Services municipaux fortement perturbés et fonctionnement en mode dégradé ; accès Internet et lignes téléphoniques coupés par mesure de sécurité. Le 15 octobre 2026, le groupe Qilin a inscrit la commune sur son site de fuite selon plusieurs agrégateurs spécialisés. Aucun échantillon, volume de données, demande de rançon ou exfiltration n'est confirmé publiquement.",
+    "impact_connu": "Services municipaux fortement perturbés et fonctionnement en mode dégradé ; accès Internet et lignes téléphoniques coupés par mesure de sécurité. Le 15 octobre 2026, le groupe Qilin a inscrit la commune sur son site de fuite selon plusieurs agrégateurs spécialisés. Une seconde fiche intitulée « Tamponnt », publiée le 23 octobre et rattachée au domaine letampon.fr, est désormais documentée par deux agrégateurs. Aucun échantillon, volume de données, demande de rançon, publication de données ou exfiltration n'est confirmé publiquement.",
     "localisation": "Le Tampon",
     "score": 100,
     "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
-    "statut": "Cyberattaque confirmée par la collectivité ; inscription par Qilin sur un site de fuite ; rançongiciel et exfiltration non démontrés"
+    "statut": "Cyberattaque confirmée par la collectivité ; deux inscriptions attribuées à Qilin sur un site de fuite ; rançongiciel et exfiltration non démontrés"
    }
   ],
   "related_cases": [
@@ -3937,7 +4094,7 @@
    }
   ],
   "summary_paragraphs": [
-   "La mairie du Tampon a confirmé une cyberattaque survenue le 9 septembre 2026, qui a fortement perturbé ses services. Le 15 octobre, Qilin a inscrit la commune sur son site de fuite ; plusieurs agrégateurs spécialisés rattachent cette publication à letampon.fr. La publication ne démontre pas à elle seule une infection par rançongiciel ni un lien technique avec l'attaque de septembre. L'attribution, le vecteur, une éventuelle demande de rançon et l'exfiltration restent non confirmés par la collectivité ou une autorité."
+   "La mairie du Tampon a confirmé une cyberattaque survenue le 9 septembre 2026, qui a fortement perturbé ses services. Qilin a inscrit la commune sur son site de fuite le 15 octobre. Une seconde entrée « Tamponnt », datée du 23 octobre, est rattachée explicitement à letampon.fr par une source de renseignement cyber et apparaît séparément de l'entrée du 15 octobre dans un autre agrégateur. Ces publications constituent des revendications ; elles ne démontrent ni une infection par rançongiciel, ni une exfiltration, ni un lien technique avec l'attaque de septembre. L'attribution, le vecteur, une éventuelle demande de rançon et toute publication effective de données restent non confirmés par la collectivité ou une autorité."
   ],
   "version": 3
  },
@@ -4522,7 +4679,7 @@
   "version": 3
  },
  "INC-C22941539BC1": {
-  "display_summary": "Cherry Rocher confirme un incident touchant sa boutique en ligne et l'exposition potentielle de données personnelles de clients.",
+  "display_summary": "Une cyberattaque a affecté la boutique en ligne de la distillerie Cherry Rocher, exposant potentiellement des données personnelles de clients.",
   "sensitive_data": {
    "types": [
     {
@@ -4916,7 +5073,7 @@
   "version": 3
  },
  "INC-D063B76AE259": {
-  "display_summary": "",
+  "display_summary": "Une base de données attribuée à Quitt.ch, contenant près de 29 435 personnes, est proposée à la vente sur un forum par un pirate.",
   "sensitive_data": {
    "types": [
     {
@@ -4939,6 +5096,11 @@
    "Un hacker affirme détenir 2 249 970 lignes de données liées à Citya et près de 50 000 digicodes.",
    "Snexi avait reconnu une violation de données personnelles après l’attaque, citant noms, e‑mails, adresses et téléphones mais pas de données financières."
   ],
+  "version": 3
+ },
+ "INC-D145BD543C96": {
+  "display_summary": "",
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-D27A23CD8686": {
@@ -5146,6 +5308,32 @@
   "summary_paragraphs": [
    "La Ville de Mamoudzou confirme un incident affectant sa messagerie et l'envoi de courriels non sollicités. Elle indique n'avoir identifié aucune fuite de données ; elle ne précise pas si un compte ou un serveur a été compromis."
   ],
+  "version": 3
+ },
+ "INC-DC7E4C78A066": {
+  "display_summary": "Des fichiers attribués à Careco Group publiés par un pirate contiennent des données clients, commandes et informations liées aux mots de passe.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-DC8AC46291C7": {
@@ -5380,6 +5568,36 @@
   "summary_paragraphs": [
    "Kairos revendique avoir récupéré environ 645 Go de données et publie des preuves de leur accès.",
    "Les documents publiés incluent cartes d’identité, RIB, numéros de sécurité sociale, adresses, emails, CV et informations RH et salariales."
+  ],
+  "version": 3
+ },
+ "INC-E5294887AFDD": {
+  "display_summary": "La Halle au Sommeil confirme une cyberattaque ayant entraîné la copie de données clients, dont des données bancaires partielles et des mots de passe compromis.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "confirmed",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "confirmed",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "La Halle au Sommeil a découvert une intrusion sur son site de vente en ligne et indique que des données clients ont été copiées."
   ],
   "version": 3
  },
@@ -5633,6 +5851,14 @@
    "vulnerable_people": true
   },
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-ED134CE0E87B": {
+  "display_summary": "BonjourLaFuite signale une fuite de données concernant Fédération Française de Montagne Escalade.",
+  "summary_paragraphs": [
+   "BonjourLaFuite signale une fuite de données concernant Fédération Française de Montagne Escalade.",
+   "Les données indiquées comprennent : Nom, prénom ; Genre ; Adresse email ; Date de naissance ; Numéro de licence ; Carnet de formation."
+  ],
   "version": 3
  },
  "INC-ED39677A0644": {
