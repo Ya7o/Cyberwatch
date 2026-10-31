@@ -5,20 +5,20 @@
       "Mayotte"
     ],
     "year": 2026,
-    "generated_at": "2026-10-30T09:11:24+04:00",
+    "generated_at": "2026-10-31T08:52:14+04:00",
     "record_count": 17,
     "accepted_count": 9,
     "candidate_count": 8,
     "schema": "cyberwatch-veille-v2",
     "watch_result": {
       "new_incidents": 0,
-      "enriched_incidents": 0,
+      "enriched_incidents": 1,
       "corrected_incidents": 0,
-      "note": "Veille complémentaire vérifiée le 30 octobre 2026 depuis le snapshot courant de main. Aucun nouvel incident, enrichissement ou correctif métier n’a été retenu. Les 17 dossiers, leurs dates et tous les enrichissements déjà publiés sont conservés, dont Jean Joly du 29 septembre et le signal CSSM. La fiche FrenchBreaches « TAMPONNT » du 23 octobre, rattachée dans son extrait indexé à une revendication Qilin contre la commune du Tampon, n’est pas ajoutée comme enrichissement distinct : la page renvoie une erreur 404 à l’ouverture et ne fournit aucune preuve technique, fuite confirmée ni élément distinct de la revendication déjà documentée."
+      "note": "Veille complémentaire vérifiée le 31 octobre 2026 depuis le snapshot courant de main. Aucun nouvel incident ni correctif métier n’a été retenu. Le dossier Ville du Tampon est enrichi par une seconde entrée Qilin intitulée « Tamponnt », datée du 23 octobre et rattachée explicitement à letampon.fr par une source cyber ; un second agrégateur liste séparément cette entrée et celle du 15 octobre. Cet enrichissement documente la revendication uniquement : il ne confirme ni rançongiciel, ni exfiltration, ni publication de données. Les 17 dossiers et leurs dates sont conservés, notamment Jean Joly du 29 septembre et la CSSM."
     },
     "coverage": {
-      "method": "Veille cumulative Réunion/Mayotte vérifiée le 30 octobre 2026 depuis le snapshot courant de main. Les nouveaux incidents ou signaux publiés les 29 et 30 octobre ont été recherchés séparément des enrichissements des dossiers existants. La couverture a inclus les autorités et collectivités indexées, LINFO.re, Imaz Press, Zinfos974, Réunion La 1ère, Journal de Mayotte, Mayotte Hebdo, Info976, L’Info Kwezi, les services de l’État, le CERT-FR et des sources cyber. Les pages effectivement ouvertes comprennent Imaz Press sur la seconde enseigne non nommée, le Journal de Mayotte sur le rétablissement CSSM et l’alerte administrative, ainsi qu’un agrégateur de presse régionale ; la fiche FrenchBreaches « TAMPONNT » a été tentée mais renvoie 404. Des recherches ciblées ont aussi porté sur Le Tampon/Qilin, Leader Price, Jean Joly, DTPN 974, STOR Solutions et la Ville de Mamoudzou. Aucun changement métier distinct du snapshot courant n’a été retenu.",
-      "limitations": "La recherche publique indexée n’est pas exhaustive. La fiche FrenchBreaches « TAMPONNT » apparaît dans les résultats indexés avec une association à la commune du Tampon et aux armoiries municipales, mais son ouverture renvoie 404 ; aucune infection par rançongiciel, exfiltration, demande de rançon ni attribution n’est confirmée par la collectivité ou une autorité. Pour la CSSM, l’impact local et le rétablissement sont documentés sans preuve de compromission propre à Mayotte. Aucun rapport forensique, auteur ni vecteur exact n’est public pour Leader Price. La seconde enseigne réunionnaise reste non nommée. La revendication KillNet contre STOR Solutions demeure non vérifiée et DTPN 974 reste sans suivi officiel public nouveau. Certaines pages sociales ou audiovisuelles restent difficilement accessibles.",
+      "method": "Veille cumulative Réunion/Mayotte vérifiée le 31 octobre 2026 depuis le snapshot courant de main. Les nouveaux incidents ou signaux publiés les 30 et 31 octobre ont été recherchés séparément des enrichissements des dossiers existants. La couverture a inclus les autorités et collectivités indexées, LINFO.re, Imaz Press, Zinfos974, Réunion La 1ère, Journal de Mayotte, Info976, les services de l’État, le CERT-FR et des sources cyber. Les pages effectivement ouvertes comprennent Cyber Threat Intelligence et Invaders sur les deux entrées Qilin liées au Tampon, Zinfos974 sur Leader Price, le Journal de Mayotte sur le rétablissement CSSM et Imaz Press sur la seconde enseigne non nommée. Des recherches ciblées ont également porté sur Jean Joly et DTPN 974. Un enrichissement du dossier Ville du Tampon a été retenu ; aucune nouvelle victime régionale identifiable n’a été trouvée.",
+      "limitations": "La recherche publique indexée n’est pas exhaustive. Les entrées Qilin des 15 et 23 octobre sont des revendications de site de fuite relayées par des agrégateurs : aucune infection par rançongiciel, exfiltration, publication effective de données, demande de rançon ou attribution n’est confirmée par la collectivité ou une autorité. La fiche FrenchBreaches du 23 octobre reste inaccessible à l’ouverture, mais l'identité « Tamponnt » et le domaine letampon.fr sont corroborés par Cyber Threat Intelligence, tandis qu'Invaders liste séparément les entrées du 15 et du 23 octobre. Pour la CSSM, l’impact local et le rétablissement sont documentés sans preuve de compromission propre à Mayotte. Aucun rapport forensique, auteur ni vecteur exact n’est public pour Leader Price. La seconde enseigne réunionnaise reste non nommée. DTPN 974 reste sans suivi officiel public nouveau. Certaines pages sociales ou audiovisuelles restent difficilement accessibles.",
       "excluded_candidates": [
         {
           "organisation": "SFR — cyberattaque nationale de juillet 2026",
@@ -310,20 +310,21 @@
       "localisation": "Le Tampon",
       "secteur": "Administration / Collectivité",
       "type_menace": "Autre cyber",
-      "acteur": "Qilin (revendication du 15 octobre 2026, attribution non confirmée)",
-      "statut": "Cyberattaque confirmée par la collectivité ; inscription par Qilin sur un site de fuite ; rançongiciel et exfiltration non démontrés",
+      "acteur": "Qilin (revendications des 15 et 23 octobre 2026, attribution non confirmée)",
+      "statut": "Cyberattaque confirmée par la collectivité ; deux inscriptions attribuées à Qilin sur un site de fuite ; rançongiciel et exfiltration non démontrés",
       "score_cyberattaque": 100,
-      "impact_connu": "Services municipaux fortement perturbés et fonctionnement en mode dégradé ; accès Internet et lignes téléphoniques coupés par mesure de sécurité. Le 15 octobre 2026, le groupe Qilin a inscrit la commune sur son site de fuite selon plusieurs agrégateurs spécialisés. Aucun échantillon, volume de données, demande de rançon ou exfiltration n'est confirmé publiquement.",
+      "impact_connu": "Services municipaux fortement perturbés et fonctionnement en mode dégradé ; accès Internet et lignes téléphoniques coupés par mesure de sécurité. Le 15 octobre 2026, le groupe Qilin a inscrit la commune sur son site de fuite selon plusieurs agrégateurs spécialisés. Une seconde fiche intitulée « Tamponnt », publiée le 23 octobre et rattachée au domaine letampon.fr, est désormais documentée par deux agrégateurs. Aucun échantillon, volume de données, demande de rançon, publication de données ou exfiltration n'est confirmé publiquement.",
       "sources": [
         "https://la1ere.franceinfo.fr/reunion/la-mairie-du-tampon-victime-d-une-cyberattaque-les-services-momentanement-indisponibles-1736807.html",
         "https://www.cyberattaque.org/le-tampon-une-cyberattaque-frappe-la-mairie-et-perturbe-fortement-les-services-municipaux/",
         "https://frenchbreaches.com/alertes/ville-du-tampon-mtu8oc7tsqxl3kzgkvm",
         "https://www.linfo.re/la-reunion/societe/la-mairie-du-tampon-victime-d-une-cyberattaque-il-pourrait-y-avoir-une-fuite-de-donnees-c-est-une-hypothese",
         "https://cyberthreatintelligence.net/ransomware-victim/commune-du-tampon-qilin-2026",
-        "https://socradar.io/free-tools/ransomware-intelligence/victims/commune-du-tampon-qilin-d5934920"
+        "https://socradar.io/free-tools/ransomware-intelligence/victims/commune-du-tampon-qilin-d5934920",
+        "https://cyberthreatintelligence.net/ransomware-victim/tamponnt-qilin-2026"
       ],
-      "synthese": "La mairie du Tampon a confirmé une cyberattaque survenue le 9 septembre 2026, qui a fortement perturbé ses services. Le 15 octobre, Qilin a inscrit la commune sur son site de fuite ; plusieurs agrégateurs spécialisés rattachent cette publication à letampon.fr. La publication ne démontre pas à elle seule une infection par rançongiciel ni un lien technique avec l'attaque de septembre. L'attribution, le vecteur, une éventuelle demande de rançon et l'exfiltration restent non confirmés par la collectivité ou une autorité.",
-      "evolution": "corrige"
+      "synthese": "La mairie du Tampon a confirmé une cyberattaque survenue le 9 septembre 2026, qui a fortement perturbé ses services. Qilin a inscrit la commune sur son site de fuite le 15 octobre. Une seconde entrée « Tamponnt », datée du 23 octobre, est rattachée explicitement à letampon.fr par une source de renseignement cyber et apparaît séparément de l'entrée du 15 octobre dans un autre agrégateur. Ces publications constituent des revendications ; elles ne démontrent ni une infection par rançongiciel, ni une exfiltration, ni un lien technique avec l'attaque de septembre. L'attribution, le vecteur, une éventuelle demande de rançon et toute publication effective de données restent non confirmés par la collectivité ou une autorité.",
+      "evolution": "enrichi"
     },
     {
       "date": "2026-09-14",
