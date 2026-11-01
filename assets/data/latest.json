@@ -1,6 +1,222 @@
 [
  {
   "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-01",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-B5C36F07A2F9",
+  "location": "France métropolitaine",
+  "org": "Pharmacie de la Cigogne",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Santé",
+   "evidence_url": "https://frenchbreaches.com/alertes/pharmacie-de-la-cigogne-mvxltey6athigff2ntt",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/pharmacie-de-la-cigogne-mvxltey6athigff2ntt"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "La Pharmacie de la Cigogne fait l'objet d'une revendication disant qu'une base de données de 110 000 personnes et des documents médicaux auraient été exfiltrés.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-01",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-86BB8BF5E8A1",
+  "location": "France métropolitaine",
+  "org": "Institut de Médecine Tropicale d’Anvers",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Santé",
+   "evidence_url": "https://frenchbreaches.com/alertes/institut-de-m-decine-tropicale-d-anvers-mvxl597yo144e46lfj",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/institut-de-m-decine-tropicale-d-anvers-mvxl597yo144e46lfj"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-01",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-6FE004350F09",
+  "location": "France métropolitaine",
+  "org": "Vaud",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Éducation / Formation",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Éducation",
+   "evidence_url": "https://frenchbreaches.com/alertes/vaud-dgep-mvx1oi7bzi3yhco1z9",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/vaud-dgep-mvx1oi7bzi3yhco1z9"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Vaud (DGEP)",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-31",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-E1861BA9B0AF",
+  "location": "France métropolitaine",
+  "org": "Fédération nationale des chasseurs",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/f-d-ration-nationale-des-chasseurs-fnc-mvwl21bvs2c6njsvea",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/f-d-ration-nationale-des-chasseurs-fnc-mvwl21bvs2c6njsvea"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Un pirate revendique la mise en vente de données de près de 5 000 membres de la Fédération nationale des chasseurs.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-31",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-DF0FA4721D56",
+  "location": "France métropolitaine",
+  "org": "Ma Déco de Fête",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/ma-d-co-de-f-te-mvwtz6zebtsf4j2tmhh",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/ma-deco-de-fete-45-000-fiches-en-fuite-jusquaux-codes-dimmeuble-des-clients/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/ma-d-co-de-f-te-mvwtz6zebtsf4j2tmhh"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Ma Déco de Fête : 45 000 fiches en fuite, jusqu’aux codes d’immeuble des clients",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-31",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-DCA4F38842B2",
+  "location": "France métropolitaine",
+  "org": "Assoclub",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Assoclub.fr est présenté comme un logiciel en ligne permettant aux associations et aux clubs de centraliser différentes tâches administratives. [étiquette source écartée : public]",
+   "evidence_url": "https://frenchbreaches.com/alertes/assoclub-fr-mvwj75ghbjha57s6wct",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/assoclub-les-donnees-de-milliers-denfants-exposees-apres-une-cyberattaque/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/assoclub-fr-mvwj75ghbjha57s6wct"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Assoclub : les données de milliers d’enfants exposées après une cyberattaque",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": true,
   "date": "2026-10-31",
   "high_sensitivity_data_exposed": true,
@@ -38,6 +254,46 @@
   "credentials_or_secrets_exposed": false,
   "date": "2026-10-31",
   "high_sensitivity_data_exposed": false,
+  "id": "INC-D2679F969C22",
+  "location": "France métropolitaine",
+  "org": "AUTOSUR",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/autosur-secta-mvwpal5glsxnn6t0fz9",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-contre-autosur-pres-de-800-000-fiches-clients-mises-en-vente/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/autosur-secta-mvwpal5glsxnn6t0fz9"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Près de 800 000 enregistrements attribués à Autosur sont proposés à la vente, dont des échantillons contenant des fiches clients.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-31",
+  "high_sensitivity_data_exposed": false,
   "id": "INC-D145BD543C96",
   "location": "France métropolitaine",
   "org": "Groupe AC Environnement",
@@ -45,22 +301,341 @@
    "https://ac-environnement.com"
   ],
   "personal_data_exposed": false,
-  "sector": "Énergie / Utilities",
+  "sector": "Construction / BTP",
+  "sector_status": {
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Énergie / Utilities"
+   ],
+   "evidence": "Le groupe français AC Environnement, spécialisé dans le diagnostic immobilier et les prestations environnementales, apparaît sur le site de revendication du groupe de ransomware The Gentlemen.",
+   "evidence_url": "https://frenchbreaches.com/alertes/groupe-ac-environnement-rw_UjNKdmRYQmxJRUZESUVWdWRtbHliMjV1WlcxbGJuUkFkR2hsWjJWdWRHeGxiV1Z1",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/groupe-ac-environnement-rw_UjNKdmRYQmxJRUZESUVWdWRtbHliMjV1WlcxbGJuUkFkR2hsWjJWdWRHeGxiV1Z1"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES",
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "Groupe AC Environnement apparaît sur le site de revendication du groupe de ransomware The Gentlemen.",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-31",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-B6EE75FE8B18",
+  "location": "Inconnu",
+  "org": "Pharmacie de la Cigogne à Strasbourg",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/pharmacie-de-la-cigogne-a-strasbourg-110-000-patients-exposes-apres-une-cyberattaque/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Pharmacie de la Cigogne à Strasbourg : 110 000 patients exposés après une cyberattaque",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-31",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-B067C7EA5077",
+  "location": "France métropolitaine",
+  "org": "Ebikon, Gersau, Meggen et Wil",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
   "sector_status": {
    "confidence": 0.7,
-   "evidence": "Energy & Utilities",
-   "evidence_url": "https://ac-environnement.com",
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/ebikon-gersau-meggen-et-wil-suisses-mvwolian3fkl2e1adtg",
    "reason": "SOURCE_SECTOR_RAW",
    "status": "reported"
   },
-  "source_links": [],
-  "sources": [
-   "RANSOMWARE_LIVE"
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/ebikon-gersau-meggen-et-wil-suisses-mvwolian3fkl2e1adtg"
+   }
   ],
-  "summary": "",
-  "threat": "Ransomware",
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Quatre communes suisses (Ebikon, Gersau, Meggen, Wil) visées par une mise en vente de données revendiquée par un pirate.",
+  "threat": "Fuite de données",
   "threat_status": {
-   "status": "claimed"
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-31",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-AED21AB209B6",
+  "location": "France métropolitaine",
+  "org": "Davos Klosters",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/davos-klosters-mvwlopvr2gyaiqpj9xr",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/davos-klosters-mvwlopvr2gyaiqpj9xr"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Un pirate revendique la fuite des données personnelles de près de 20 000 personnes liées à Davos Klosters.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-31",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-A0A76EEC8EAA",
+  "location": "France métropolitaine",
+  "org": "Solnet",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "SOURCE_SECTOR_RAW_AMBIGUOUS",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/solnet-mvwjqg7ow72iqngt8te"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Un pirate revendique la fuite de 6 804 enregistrements attribués à Solnet, potentiellement concernés environ 5 000 personnes.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-31",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-9A1F0AC130B2",
+  "location": "Inconnu",
+  "org": "Pharmacie des Congrès à Dijon",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/pharmacie-des-congres-a-dijon-23-000-dossiers-de-patients-en-fuite/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Pharmacie des Congrès à Dijon : 23 000 dossiers de patients en fuite",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-31",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-695D2129F8DA",
+  "location": "France métropolitaine",
+  "org": "Terre de Son",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/terre-de-son-mvwud3cd5jgpeniqcp8",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/terre-de-son-un-piratage-expose-les-donnees-de-95-000-clients/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/terre-de-son-mvwud3cd5jgpeniqcp8"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "La boutique Terre de Son fait l’objet d’une revendication de fuite de données comprenant 95 228 clients et plus de 100 000 commandes.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-31",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-2B1CDBBD2AD7",
+  "location": "France métropolitaine",
+  "org": "Les Écologistes",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/les-cologistes-mvwjdoxbwq7dfh3sm5",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/les-ecologistes-un-hacker-annonce-une-fuite-de-donnees/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/les-cologistes-mvwjdoxbwq7dfh3sm5"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Les Écologistes : le parti visé par une fuite de données",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-31",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-224E6558FA08",
+  "location": "France métropolitaine",
+  "org": "Zone de secours Hainaut-Est",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/zone-de-secours-hainaut-est-zohe-mvwkwpu250s39frwzvg",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/zone-de-secours-hainaut-est-zohe-mvwkwpu250s39frwzvg"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Un pirate revendique la mise en vente d'une base de données attribuée à la Zone de secours Hainaut-Est contenant des contacts et des références de site.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-31",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-1639F36B1DEB",
+  "location": "France métropolitaine",
+  "org": "Pharmarcie des Congrès",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Santé",
+   "evidence_url": "https://frenchbreaches.com/alertes/pharmarcie-des-congr-s-mvwewlgg8b68m8lx2ah",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/pharmarcie-des-congr-s-mvwewlgg8b68m8lx2ah"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Un pirate revendique le vol de quatre sauvegardes et d'échantillons de données de la Pharmacie des Congrès de Dijon concernant environ 23 000 personnes.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
   }
  },
  {
@@ -473,26 +1048,35 @@
   "date": "2026-10-30",
   "high_sensitivity_data_exposed": false,
   "id": "INC-040D108C029C",
-  "location": "Inconnu",
+  "location": "France métropolitaine",
   "org": "Cholet",
   "organisation_links": [],
-  "personal_data_exposed": false,
-  "sector": "Inconnu",
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/cholet-mvxkw4ejwenzpj1t0da",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
   },
   "source_links": [
    {
     "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/cholet-une-cyberattaque-perturbe-les-services-de-la-ville-et-de-lagglomeration/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/cholet-mvxkw4ejwenzpj1t0da"
    }
   ],
   "sources": [
-   "CYBERATTAQUE_ORG"
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
   ],
-  "summary": "La Ville de Cholet et Cholet Agglomération subissent des perturbations de services potentiellement liées à une cyberattaque.",
+  "summary": "La ville de Cholet signale d'importantes perturbations informatiques affectant plusieurs services municipaux et intercommunaux depuis le 30 octobre 2026.",
   "threat": "Intrusion",
   "threat_status": {
    "status": "reported"
@@ -724,6 +1308,46 @@
   "threat": "Ransomware",
   "threat_status": {
    "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-28",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-E8722B65CB45",
+  "location": "France métropolitaine",
+  "org": "Verrières-en-Forez",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/verri-res-en-forez-mvxlia4vti4vk2ufhz",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/verrieres-en-forez-une-cyberattaque-bloque-la-mairie-les-pirates-exigent-une-rancon/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/verri-res-en-forez-mvxlia4vti4vk2ufhz"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "La mairie de Verrières-en-Forez a vu ses fichiers municipaux chiffrés lors d'une cyberattaque et les pirates ont exigé une rançon.",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "confirmed"
   }
  },
  {
@@ -2750,16 +3374,22 @@
     "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/cyberattaque-institut-national-detudes-demographiques/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/ined-rw_U1c1bFpFQjBhR1ZuWlc1MGJHVnRaVzQ"
    }
   ],
   "sources": [
    "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES",
    "RANSOMWARE_LIVE"
   ],
-  "summary": "INED : une cyberattaque paralyse son système informatique",
+  "summary": "L'INED apparaît sur le site de revendication du groupe de ransomware The Gentlemen, sans preuve visible de vol de données ni de chiffrement.",
   "threat": "Ransomware",
   "threat_status": {
-   "status": "claimed"
+   "status": "reported"
   }
  },
  {
@@ -9229,328 +9859,6 @@
   ],
   "summary": "La Région Hauts-de-France fait l'objet de revendications de fuite de données incluant 782 583 enregistrements et 48 Go soit 90 011 documents, selon un pirate.",
   "threat": "Fuite de données",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
-  "date": "2026-10-02",
-  "high_sensitivity_data_exposed": true,
-  "id": "INC-ED39677A0644",
-  "location": "France métropolitaine",
-  "org": "Région Hauts-de-France",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Administration / Collectivité",
-  "sector_status": {
-   "confidence": 0.8,
-   "evidence": "Région Hauts-de-France",
-   "evidence_url": "https://bonjourlafuite.eu.org/img/hauts-de-france.jpg",
-   "reason": "ORGANISATION_NAME_RULE",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "BonjourLaFuite",
-    "source": "BONJOURLAFUITE",
-    "url": "https://bonjourlafuite.eu.org/img/hauts-de-france.jpg"
-   },
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/region-hauts-de-france-des-donnees-personnelles-exposees-suite-a-une-cyberattaque-chez-atexo/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/r-gion-hauts-de-france-atexo-mur6n6zz7mtgktgessr"
-   }
-  ],
-  "sources": [
-   "BONJOURLAFUITE",
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "Région Hauts-de-France : des données personnelles exposées suite à une cyberattaque chez ATEXO",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "confirmed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
-  "date": "2026-10-02",
-  "high_sensitivity_data_exposed": true,
-  "id": "INC-E839CB798199",
-  "location": "France métropolitaine",
-  "org": "LDLC",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Commerce",
-   "evidence_url": "https://frenchbreaches.com/alertes/ldlc-muqsxvb7wz9y21k96wp",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "BonjourLaFuite",
-    "source": "BONJOURLAFUITE",
-    "url": "https://bonjourlafuite.eu.org/img/ldlc-2.png"
-   },
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/ldlc-victime-dune-cyberattaque-les-donnees-personnelles-de-clients-exposees/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/ldlc-muqsxvb7wz9y21k96wp"
-   }
-  ],
-  "sources": [
-   "BONJOURLAFUITE",
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "LDLC confirme un accès non autorisé à un système ayant permis la consultation de données personnelles de clients.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "confirmed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-02",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-B7A187FB027A",
-  "location": "Inconnu",
-  "org": "Fédération royale belge de football",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Sport",
-  "sector_status": {
-   "confidence": 0.8,
-   "evidence": "Fédération royale belge de football",
-   "evidence_url": "https://frenchbreaches.com/alertes/f-d-ration-royale-belge-de-football-rbfa-urbsfa-muqax4zegee0ktaus1o",
-   "reason": "ORGANISATION_NAME_RULE",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/f-d-ration-royale-belge-de-football-rbfa-urbsfa-muqax4zegee0ktaus1o"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "Une base attribuée à la Fédération royale belge de football est proposée à la vente, l'origine et la nature confidentielle des données n'étant pas confirmées.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "unknown"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-02",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-AA1E1BAAF08B",
-  "location": "France métropolitaine",
-  "org": "CNAM",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Éducation / Formation",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Éducation",
-   "evidence_url": "https://frenchbreaches.com/alertes/cnam-adage-muri2nsuk18ssrkyap",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "BonjourLaFuite",
-    "source": "BONJOURLAFUITE",
-    "url": "https://bonjourlafuite.eu.org/img/cnam-2.png"
-   },
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/cyberattaque-cnam-pres-de-16-000-profils-denseignants-exposes-dans-une-fuite-de-donnees/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/cnam-adage-muri2nsuk18ssrkyap"
-   }
-  ],
-  "sources": [
-   "BONJOURLAFUITE",
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "Cnam : près de 900 000 fiches et 16 000 profils d’enseignants en fuite",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "confirmed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-02",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-A6E6102B7E57",
-  "location": "France métropolitaine",
-  "org": "FMG Sales & Marketing",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Commerce",
-   "evidence_url": "https://frenchbreaches.com/alertes/fmg-sales-marketing-mur94aon523ticxpdfy",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/fmg-sales-marketing-cyberattaque-plus-de-10-000-intervenants-exposes-dans-une-fuite-de-donnees/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/fmg-sales-marketing-mur94aon523ticxpdfy"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "FMG Sales & Marketing : plus de 10 000 intervenants exposés dans une fuite de données",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-02",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-6D1A06BBDEFA",
-  "location": "France métropolitaine",
-  "org": "pierrefeu",
-  "organisation_links": [
-   "https://www.pierrefeu.fr"
-  ],
-  "personal_data_exposed": false,
-  "sector": "Inconnu",
-  "sector_status": {
-   "reason": "SOURCE_SECTOR_RAW_AMBIGUOUS",
-   "status": "unknown"
-  },
-  "source_links": [
-   {
-    "label": "krybitqsdzwmhnitvwuhvsntfgf2wrhxveyxroxpc44c6gkft2cqldyd.onion",
-    "source": "RANSOMWARE_LIVE",
-    "url": "http://krybitqsdzwmhnitvwuhvsntfgf2wrhxveyxroxpc44c6gkft2cqldyd.onion/blog/8b4ba9a7921f9cedc14275f97019a1c2717ee9d99a108241fbb94368079647c2/"
-   }
-  ],
-  "sources": [
-   "RANSOMWARE_LIVE"
-  ],
-  "summary": "",
-  "threat": "Ransomware",
-  "threat_status": {
-   "status": "claimed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-02",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-55B78F7C08BD",
-  "location": "France métropolitaine",
-  "org": "FitnessBoutique",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Commerce",
-   "evidence_url": "https://frenchbreaches.com/alertes/fitnessboutique-mur3td4i3kz7pnkibuc",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "BonjourLaFuite",
-    "source": "BONJOURLAFUITE",
-    "url": "https://bonjourlafuite.eu.org/img/fitnessboutique.jpg"
-   },
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/fitnessboutique-cyberattaque/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/fitnessboutique-mur3td4i3kz7pnkibuc"
-   }
-  ],
-  "sources": [
-   "BONJOURLAFUITE",
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "FitnessBoutique : près de 2 millions de fiches clients en vente sur le darkweb",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "confirmed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-02",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-0DDC0E58C729",
-  "location": "Inconnu",
-  "org": "Genae Écully",
-  "organisation_links": [],
-  "personal_data_exposed": false,
-  "sector": "Inconnu",
-  "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/genae-ecully-cyberattaque-fitnesskpi-1-848-adherents-exposes-avec-leurs-paiements-et-habitudes-de-frequentation/"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG"
-  ],
-  "summary": "Genae Écully : les habitudes de fréquentation de 1 848 adhérents exposés après une cyberattaque",
-  "threat": "Intrusion",
   "threat_status": {
    "status": "reported"
   }
