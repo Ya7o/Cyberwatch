@@ -1,6 +1,262 @@
 [
  {
   "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-02",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-ADE4342D82DD",
+  "location": "Inconnu",
+  "org": "D-EDGE",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "D-EDGE est une entreprise française spécialisée dans les technologies de réservation et de distribution hôtelière.",
+   "evidence_url": "https://www.cyberattaque.org/d-edge-des-voyageurs-cibles-par-des-escrocs-apres-une-cyberattaque/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/d-edge-des-voyageurs-cibles-par-des-escrocs-apres-une-cyberattaque/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "D-EDGE a confirmé un accès frauduleux aux données de réservation de voyageurs les 20 et 21 octobre 2026.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-02",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-69345E3F4CBB",
+  "location": "Inconnu",
+  "org": "Guécélard",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/guecelard-des-habitants-pieges-apres-le-piratage-de-la-messagerie-de-la-mairie/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "La messagerie des services techniques de la mairie de Guécélard a été piratée et a servi à envoyer des courriels frauduleux.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-01",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-BAC4A52869DC",
+  "location": "France métropolitaine",
+  "org": "Bien’ici",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/bien-ici-mvyb1wxid1nkam4gxdp",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/bienici-13-000-fiches-dagences-mises-en-vente-par-un-hacker/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/bien-ici-mvyb1wxid1nkam4gxdp"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Un hacker revendique la mise en vente des données de 13 000 agences de Bien'ici, sans preuve publique de fuite de données confidentielles.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "claimed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-01",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-1E2488E55A98",
+  "location": "France métropolitaine",
+  "org": "Dekra Norisko",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/dekra-norisko-mvybe57prsagt6a61l",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/dekra-norisko-mvybe57prsagt6a61l"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "DEKRA-Norisko signale une fuite de données personnelles liées à des réservations de contrôle technique via un sous-traitant.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-01",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-02B6D96E8D86",
+  "location": "France métropolitaine",
+  "org": "Grande Pharmacie Bailly",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Santé",
+   "evidence_url": "https://frenchbreaches.com/alertes/la-grande-pharmacie-bailly-mvxz4mkugvm1fg5v63w",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/grande-pharmacie-bailly-plus-de-300-000-patients-revendiques-dans-une-cyberattaque/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/la-grande-pharmacie-bailly-mvxz4mkugvm1fg5v63w"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Le hacker necrozma revendique la mise en vente de fichiers attribués à la Grande Pharmacie Bailly, dont une sauvegarde de plus de 300 000 dossiers.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-01",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-B6D1EF6FFB76",
+  "location": "France métropolitaine",
+  "org": "Groupe MPA",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/groupe-mpa-mvijiuunz1xmhru7jk",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/groupe-mpa-mvijiuunz1xmhru7jk"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Le cybercriminel ChimeraZ revendique la mise en vente de 3 824 749 enregistrements clients du groupe MPA, couvrant 11 sites et environ 1,6 million de personnes.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-01",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-8EBF8F8CF9E7",
+  "location": "France métropolitaine",
+  "org": "HelloDepann",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Construction / BTP",
+  "sector_status": {
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Commerce / Distribution"
+   ],
+   "evidence": "HelloDepann est une entreprise spécialisée dans les interventions d’urgence en plomberie, serrurerie, chauffage et électricité. Elle met en relation particuliers et professionnels, notamment dans les secteurs d’Orléans, Tours et Blois.",
+   "evidence_url": "https://www.cyberattaque.org/hellodepann-les-adresses-et-depannages-de-4-651-clients-en-fuite/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/hellodepann-les-adresses-et-depannages-de-4-651-clients-en-fuite/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/hellodepann-mvyayt5u5pwj23lu6kl"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Fuite de 4 651 fiches clients et 4 867 interventions de HelloDepann diffusées publiquement.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": true,
   "date": "2026-11-01",
   "high_sensitivity_data_exposed": true,
@@ -29,6 +285,40 @@
   ],
   "summary": "",
   "threat": "Intrusion",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-01",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-FF7CF68CF3A9",
+  "location": "Inconnu",
+  "org": "MPA Group",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Fondé en 1996 et installé à Marsannay-la-Côte, près de Dijon , MPA (Multi Passions Adhésif) est un groupe français spécialisé dans l’impression et la personnalisation.",
+   "evidence_url": "https://www.cyberattaque.org/mpa-group-11-million-de-plaques-dimmatriculation-et-des-adresses-personnelles-en-fuite/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/mpa-group-11-million-de-plaques-dimmatriculation-et-des-adresses-personnelles-en-fuite/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "MPA Group : 1,1 million de plaques d’immatriculation et des adresses personnelles en fuite",
+  "threat": "Fuite de données",
   "threat_status": {
    "status": "reported"
   }
@@ -95,10 +385,10 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Vaud (DGEP)",
+  "summary": "Vol de données de la plateforme de support informatique du canton de Vaud affectant environ 41 500 élèves et enseignants.",
   "threat": "Fuite de données",
   "threat_status": {
-   "status": "unknown"
+   "status": "confirmed"
   }
  },
  {
@@ -1692,6 +1982,40 @@
  },
  {
   "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-28",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-6458E2DBB4B1",
+  "location": "Inconnu",
+  "org": "Office de tourisme de Strasbourg",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Hébergement / Tourisme / Restauration",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "L’ Office eurométropolitain de tourisme, des loisirs et des congrès de Strasbourg accompagne les visiteurs dans la préparation de leurs séjours en Alsace. Il propose notamment des renseignements touristiques, des visites et des services de réservation à travers son site visitstrasbourg.fr.",
+   "evidence_url": "https://www.cyberattaque.org/office-de-tourisme-de-strasbourg-une-cyberattaque-expose-les-donnees-des-visiteurs/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/office-de-tourisme-de-strasbourg-une-cyberattaque-expose-les-donnees-des-visiteurs/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Le site de l'office de tourisme de Strasbourg a été victime d'une cyberattaque exposant des informations personnelles de visiteurs.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": true,
   "date": "2026-10-28",
   "high_sensitivity_data_exposed": false,
@@ -3054,10 +3378,15 @@
   "personal_data_exposed": false,
   "sector": "Inconnu",
   "sector_status": {
-   "reason": "SOURCE_SECTOR_RAW_AMBIGUOUS",
+   "reason": "NO_ACTIVITY_EVIDENCE | SOURCE_SECTOR_RAW_AMBIGUOUS",
    "status": "unknown"
   },
   "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/amsam-les-patients-et-salaries-alertes-dune-fuite-de-leurs-donnees-personnelles-apres-une-cyberattaque/"
+   },
    {
     "label": "bravoxxwcfz5qk43ychgveprpd5mw5hvxfs4a2uz2okx7mumiht4fzyd.onion",
     "source": "RANSOMWARE_LIVE",
@@ -3065,12 +3394,13 @@
    }
   ],
   "sources": [
+   "CYBERATTAQUE_ORG",
    "RANSOMWARE_LIVE"
   ],
-  "summary": "",
+  "summary": "L'Association Médico-Sociale Anne Morgan (AMSAM) a confirmé le vol de données personnelles suite à une cyberattaque.",
   "threat": "Ransomware",
   "threat_status": {
-   "status": "claimed"
+   "status": "reported"
   }
  },
  {
@@ -7583,9 +7913,9 @@
    "FRENCHBREACHES"
   ],
   "summary": "Wimoov : une cyberttaque touche la plateforme WIN",
-  "threat": "Fuite de données",
+  "threat": "Intrusion",
   "threat_status": {
-   "status": "unknown"
+   "status": "confirmed"
   }
  },
  {

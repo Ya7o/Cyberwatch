@@ -84,6 +84,27 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-02B6D96E8D86": {
+  "display_summary": "Le hacker necrozma revendique la mise en vente de fichiers attribués à la Grande Pharmacie Bailly, dont une sauvegarde de plus de 300 000 dossiers.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données de santé"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Le pirate affirme avoir récupéré une base de plus de 46 000 patients et une sauvegarde concernant plus de 300 000 personnes.",
+   "Un échantillon de 1 065 fiches analysé contient identités, adresses, numéros de Sécurité sociale, informations de mutuelle et dates de naissance."
+  ],
+  "version": 3
+ },
  "INC-02BB571E8CCD": {
   "display_summary": "",
   "summary_paragraphs": [],
@@ -397,7 +418,9 @@
  },
  "INC-13200FD49444": {
   "display_summary": "Quick : les données des membres du programme fidélité exposées après une intrusion",
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "L'intrusion a exposé noms, adresses e-mail, numéros de téléphone, dates de naissance, numéros de carte de fidélité et soldes de points."
+  ],
   "version": 3
  },
  "INC-135E28CAB136": {
@@ -696,6 +719,26 @@
   "summary_paragraphs": [
    "Orkyn indique que des données personnelles et de santé de patients ont été compromises et qu'un fichier a été accédé.",
    "Un hacker revendique le vol et propose au téléchargement près de 18 000 profils."
+  ],
+  "version": 3
+ },
+ "INC-1E2488E55A98": {
+  "display_summary": "DEKRA-Norisko signale une fuite de données personnelles liées à des réservations de contrôle technique via un sous-traitant.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "DEKRA Automotive indique qu’un incident survenu le 20 octobre 2026 chez l’un de ses sous-traitants a entraîné un accès non autorisé à des réservations."
   ],
   "version": 3
  },
@@ -2328,6 +2371,14 @@
   ],
   "version": 3
  },
+ "INC-6458E2DBB4B1": {
+  "display_summary": "Le site de l'office de tourisme de Strasbourg a été victime d'une cyberattaque exposant des informations personnelles de visiteurs.",
+  "summary_paragraphs": [
+   "Le site Internet a été attaqué et des informations personnelles transmises via un formulaire de contact ont potentiellement été consultées.",
+   "Les données potentiellement exposées incluent noms, adresses email, numéros de téléphone et le contenu des messages envoyés."
+  ],
+  "version": 3
+ },
  "INC-64F708830C0C": {
   "display_summary": "RGIS : 30 366 candidatures de son site de recrutement en fuite après une cyberattaque",
   "summary_paragraphs": [],
@@ -2482,6 +2533,13 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-69345E3F4CBB": {
+  "display_summary": "La messagerie des services techniques de la mairie de Guécélard a été piratée et a servi à envoyer des courriels frauduleux.",
+  "summary_paragraphs": [
+   "La messagerie des services techniques de la mairie de Guécélard a été compromise et a entraîné l’envoi de courriels frauduleux à des habitants."
+  ],
+  "version": 3
+ },
  "INC-695D2129F8DA": {
   "display_summary": "La boutique Terre de Son fait l’objet d’une revendication de fuite de données comprenant 95 228 clients et plus de 100 000 commandes.",
   "sensitive_data": {
@@ -2577,7 +2635,10 @@
    ],
    "vulnerable_people": false
   },
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "L'incident a été découvert le 26 août 2026 et notifié à la CNIL le 28 août 2026.",
+   "Un compte utilisateur compromis a permis l'accès non autorisé, mais aucune extraction de données n'a été constatée à ce stade."
+  ],
   "version": 3
  },
  "INC-6C763C3BB763": {
@@ -2752,8 +2813,11 @@
   "version": 3
  },
  "INC-6FE004350F09": {
-  "display_summary": "Vaud (DGEP)",
-  "summary_paragraphs": [],
+  "display_summary": "Vol de données de la plateforme de support informatique du canton de Vaud affectant environ 41 500 élèves et enseignants.",
+  "summary_paragraphs": [
+   "Les informations personnelles d'environ 41 500 élèves et enseignants ont été dérobées après un accès non autorisé à une plateforme informatique.",
+   "Les autorités indiquent qu'un élève pourrait être à l'origine de l'incident, mais sa responsabilité n'est pas établie."
+  ],
   "version": 3
  },
  "INC-6FFC07DEADC9": {
@@ -3709,6 +3773,14 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-8EBF8F8CF9E7": {
+  "display_summary": "Fuite de 4 651 fiches clients et 4 867 interventions de HelloDepann diffusées publiquement.",
+  "summary_paragraphs": [
+   "Un pirate affirme avoir récupéré deux fichiers JSON d'environ 14 Mo contenant des données clients, d'interventions, devis et factures de HelloDepann.",
+   "FrenchBreaches indique qu'aucune confirmation officielle de HelloDepann n'a été obtenue et que la revendication reste à établir."
+  ],
+  "version": 3
+ },
  "INC-8FE3D1894F9C": {
   "display_summary": "Ecofone signale une intrusion exploitant une faille zero-day de Magento ayant potentiellement exposé des données clients.",
   "sensitive_data": {
@@ -4310,6 +4382,11 @@
   ],
   "version": 3
  },
+ "INC-ADE4342D82DD": {
+  "display_summary": "D-EDGE a confirmé un accès frauduleux aux données de réservation de voyageurs les 20 et 21 octobre 2026.",
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-ADEEE05084B6": {
   "display_summary": "La Poste Mobile : son site visé par une cyberattaque DDoS prorusse",
   "sensitive_data": {
@@ -4580,6 +4657,26 @@
   ],
   "version": 3
  },
+ "INC-B6D1EF6FFB76": {
+  "display_summary": "Le cybercriminel ChimeraZ revendique la mise en vente de 3 824 749 enregistrements clients du groupe MPA, couvrant 11 sites et environ 1,6 million de personnes.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "reported",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Le cybercriminel ChimeraZ revendique 3 824 749 enregistrements clients du groupe MPA, issus de 11 sites et couvrant 2016-2026."
+  ],
+  "version": 3
+ },
  "INC-B6EE75FE8B18": {
   "display_summary": "Pharmacie de la Cigogne à Strasbourg : 110 000 patients exposés après une cyberattaque",
   "sensitive_data": {
@@ -4706,6 +4803,14 @@
  "INC-BA871580CC08": {
   "display_summary": "Afflelou : 49 761 factures d’un ancien portail interne en fuite après une cyberattaque",
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-BAC4A52869DC": {
+  "display_summary": "Un hacker revendique la mise en vente des données de 13 000 agences de Bien'ici, sans preuve publique de fuite de données confidentielles.",
+  "summary_paragraphs": [
+   "Un cybercriminel affirme avoir compromis une base de données contenant environ 13 000 fiches liées à des agences immobilières et à leurs collaborateurs.",
+   "Le pirate, pseudonyme necrozma, publie une revendication titrée « BIENICI.COM - 13K » et évoque une faille IDOR comme méthode d'accès."
+  ],
   "version": 3
  },
  "INC-BB2E3878A0EC": {
@@ -5308,7 +5413,7 @@
   "version": 3
  },
  "INC-D5F48B0C6F2B": {
-  "display_summary": "",
+  "display_summary": "L'Association Médico-Sociale Anne Morgan (AMSAM) a confirmé le vol de données personnelles suite à une cyberattaque.",
   "summary_paragraphs": [],
   "version": 3
  },
@@ -6528,6 +6633,27 @@
   "summary_paragraphs": [
    "BonjourLaFuite signale une fuite de données concernant Fédération Française de Tir.",
    "Les données indiquées comprennent : Nom, prénom ; Catégorie d’âge ; Club ; Grade Cibles Couleurs ; Pratique handisport ; Dossier complet."
+  ],
+  "version": 3
+ },
+ "INC-FF7CF68CF3A9": {
+  "display_summary": "MPA Group : 1,1 million de plaques d’immatriculation et des adresses personnelles en fuite",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "ChimeraZ revendique l'extraction et la mise en vente de 3,8 Go et 3 824 749 enregistrements attribués à MPA, incluant 1 133 713 plaques d’immatriculation.",
+   "Les fichiers examinés associent des plaques à des noms, adresses, téléphones et commandes, et contiennent 969 921 empreintes de mots de passe SHA-256."
   ],
   "version": 3
  },

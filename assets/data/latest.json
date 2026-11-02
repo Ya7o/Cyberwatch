@@ -2,6 +2,179 @@
  {
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
+  "date": "2026-11-02",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-ADE4342D82DD",
+  "location": "Inconnu",
+  "org": "D-EDGE",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "D-EDGE est une entreprise française spécialisée dans les technologies de réservation et de distribution hôtelière.",
+   "evidence_url": "https://www.cyberattaque.org/d-edge-des-voyageurs-cibles-par-des-escrocs-apres-une-cyberattaque/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/d-edge-des-voyageurs-cibles-par-des-escrocs-apres-une-cyberattaque/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "D-EDGE a confirmé un accès frauduleux aux données de réservation de voyageurs les 20 et 21 octobre 2026.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-02",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-69345E3F4CBB",
+  "location": "Inconnu",
+  "org": "Guécélard",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/guecelard-des-habitants-pieges-apres-le-piratage-de-la-messagerie-de-la-mairie/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "La messagerie des services techniques de la mairie de Guécélard a été piratée et a servi à envoyer des courriels frauduleux.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-01",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-FF7CF68CF3A9",
+  "location": "Inconnu",
+  "org": "MPA Group",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Fondé en 1996 et installé à Marsannay-la-Côte, près de Dijon , MPA (Multi Passions Adhésif) est un groupe français spécialisé dans l’impression et la personnalisation.",
+   "evidence_url": "https://www.cyberattaque.org/mpa-group-11-million-de-plaques-dimmatriculation-et-des-adresses-personnelles-en-fuite/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/mpa-group-11-million-de-plaques-dimmatriculation-et-des-adresses-personnelles-en-fuite/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "MPA Group : 1,1 million de plaques d’immatriculation et des adresses personnelles en fuite",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-01",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-BAC4A52869DC",
+  "location": "France métropolitaine",
+  "org": "Bien’ici",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/bien-ici-mvyb1wxid1nkam4gxdp",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/bienici-13-000-fiches-dagences-mises-en-vente-par-un-hacker/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/bien-ici-mvyb1wxid1nkam4gxdp"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Un hacker revendique la mise en vente des données de 13 000 agences de Bien'ici, sans preuve publique de fuite de données confidentielles.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "claimed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-01",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-B6D1EF6FFB76",
+  "location": "France métropolitaine",
+  "org": "Groupe MPA",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/groupe-mpa-mvijiuunz1xmhru7jk",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/groupe-mpa-mvijiuunz1xmhru7jk"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Le cybercriminel ChimeraZ revendique la mise en vente de 3 824 749 enregistrements clients du groupe MPA, couvrant 11 sites et environ 1,6 million de personnes.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-11-01",
   "high_sensitivity_data_exposed": false,
   "id": "INC-B5C36F07A2F9",
@@ -31,6 +204,49 @@
   "threat": "Fuite de données",
   "threat_status": {
    "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-01",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-8EBF8F8CF9E7",
+  "location": "France métropolitaine",
+  "org": "HelloDepann",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Construction / BTP",
+  "sector_status": {
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Commerce / Distribution"
+   ],
+   "evidence": "HelloDepann est une entreprise spécialisée dans les interventions d’urgence en plomberie, serrurerie, chauffage et électricité. Elle met en relation particuliers et professionnels, notamment dans les secteurs d’Orléans, Tours et Blois.",
+   "evidence_url": "https://www.cyberattaque.org/hellodepann-les-adresses-et-depannages-de-4-651-clients-en-fuite/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/hellodepann-les-adresses-et-depannages-de-4-651-clients-en-fuite/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/hellodepann-mvyayt5u5pwj23lu6kl"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Fuite de 4 651 fiches clients et 4 867 interventions de HelloDepann diffusées publiquement.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
   }
  },
  {
@@ -95,10 +311,84 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Vaud (DGEP)",
+  "summary": "Vol de données de la plateforme de support informatique du canton de Vaud affectant environ 41 500 élèves et enseignants.",
   "threat": "Fuite de données",
   "threat_status": {
-   "status": "unknown"
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-01",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-1E2488E55A98",
+  "location": "France métropolitaine",
+  "org": "Dekra Norisko",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/dekra-norisko-mvybe57prsagt6a61l",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/dekra-norisko-mvybe57prsagt6a61l"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "DEKRA-Norisko signale une fuite de données personnelles liées à des réservations de contrôle technique via un sous-traitant.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-01",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-02B6D96E8D86",
+  "location": "France métropolitaine",
+  "org": "Grande Pharmacie Bailly",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Santé",
+   "evidence_url": "https://frenchbreaches.com/alertes/la-grande-pharmacie-bailly-mvxz4mkugvm1fg5v63w",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/grande-pharmacie-bailly-plus-de-300-000-patients-revendiques-dans-une-cyberattaque/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/la-grande-pharmacie-bailly-mvxz4mkugvm1fg5v63w"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Le hacker necrozma revendique la mise en vente de fichiers attribués à la Grande Pharmacie Bailly, dont une sauvegarde de plus de 300 000 dossiers.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
   }
  },
  {
@@ -1552,6 +1842,40 @@
    "FRENCHBREACHES"
   ],
   "summary": "Bourse Direct confirme une cyberattaque ayant exposé les noms, numéros de compte client et IBAN de 800 comptes.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-28",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-6458E2DBB4B1",
+  "location": "Inconnu",
+  "org": "Office de tourisme de Strasbourg",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Hébergement / Tourisme / Restauration",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "L’ Office eurométropolitain de tourisme, des loisirs et des congrès de Strasbourg accompagne les visiteurs dans la préparation de leurs séjours en Alsace. Il propose notamment des renseignements touristiques, des visites et des services de réservation à travers son site visitstrasbourg.fr.",
+   "evidence_url": "https://www.cyberattaque.org/office-de-tourisme-de-strasbourg-une-cyberattaque-expose-les-donnees-des-visiteurs/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/office-de-tourisme-de-strasbourg-une-cyberattaque-expose-les-donnees-des-visiteurs/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Le site de l'office de tourisme de Strasbourg a été victime d'une cyberattaque exposant des informations personnelles de visiteurs.",
   "threat": "Intrusion",
   "threat_status": {
    "status": "confirmed"
@@ -3090,10 +3414,15 @@
   "personal_data_exposed": false,
   "sector": "Inconnu",
   "sector_status": {
-   "reason": "SOURCE_SECTOR_RAW_AMBIGUOUS",
+   "reason": "NO_ACTIVITY_EVIDENCE | SOURCE_SECTOR_RAW_AMBIGUOUS",
    "status": "unknown"
   },
   "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/amsam-les-patients-et-salaries-alertes-dune-fuite-de-leurs-donnees-personnelles-apres-une-cyberattaque/"
+   },
    {
     "label": "bravoxxwcfz5qk43ychgveprpd5mw5hvxfs4a2uz2okx7mumiht4fzyd.onion",
     "source": "RANSOMWARE_LIVE",
@@ -3101,12 +3430,13 @@
    }
   ],
   "sources": [
+   "CYBERATTAQUE_ORG",
    "RANSOMWARE_LIVE"
   ],
-  "summary": "",
+  "summary": "L'Association Médico-Sociale Anne Morgan (AMSAM) a confirmé le vol de données personnelles suite à une cyberattaque.",
   "threat": "Ransomware",
   "threat_status": {
-   "status": "claimed"
+   "status": "reported"
   }
  },
  {
@@ -7436,9 +7766,9 @@
    "FRENCHBREACHES"
   ],
   "summary": "Wimoov : une cyberttaque touche la plateforme WIN",
-  "threat": "Fuite de données",
+  "threat": "Intrusion",
   "threat_status": {
-   "status": "unknown"
+   "status": "confirmed"
   }
  },
  {
@@ -9543,321 +9873,6 @@
    "FRENCHBREACHES"
   ],
   "summary": "Fuite de données du service Permis de chasser (OFB) exposant environ 1 200 demandeurs et revendication d'accès à 170 000 lignes par un pirate.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-03",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-F19CA8144B3E",
-  "location": "France métropolitaine",
-  "org": "Cours Thalès",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Éducation / Formation",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Éducation",
-   "evidence_url": "https://frenchbreaches.com/alertes/cours-thal-s-musgbt3pvmwpqeg5v6",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/cyberattaque-cours-thales-40-070-donnees-de-facturation-exposees-apres-une-faille-idor/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/cours-thal-s-musgbt3pvmwpqeg5v6"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "Cours Thalès : 40 070 données de facturation exposées après une faille IDOR",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "confirmed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-03",
-  "high_sensitivity_data_exposed": true,
-  "id": "INC-E4D2A28AC615",
-  "location": "Inconnu",
-  "org": "CNEH",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Santé",
-  "sector_status": {
-   "confidence": 0.8,
-   "evidence": "Le CNEH est un organisme français créé en 1974 qui accompagne les établissements sanitaires et médico-sociaux ainsi que les professionnels de santé , notamment dans les domaines de la formation, du conseil et de l’expertise hospitalière.",
-   "evidence_url": "https://www.cyberattaque.org/cyberattaque-centre-national-de-expertise-hospitaliere/",
-   "reason": "ACTIVITY_RULE",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/cyberattaque-centre-national-de-expertise-hospitaliere/"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG"
-  ],
-  "summary": "Le Centre National de l’Expertise Hospitalière (CNEH) est visé par une revendication de ransomware affirmant la récupération d’environ 645 Go de données.",
-  "threat": "Ransomware",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-03",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-AE4B3CED8F6F",
-  "location": "France métropolitaine",
-  "org": "CNAM",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Éducation / Formation",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Éducation",
-   "evidence_url": "https://frenchbreaches.com/alertes/cnam-murn43e35w5ztpqrxtc",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/cnam-murn43e35w5ztpqrxtc"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-03",
-  "high_sensitivity_data_exposed": true,
-  "id": "INC-A674F41CD218",
-  "location": "Inconnu",
-  "org": "Fédération Royale Belge des Sports Équestres",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Sport",
-  "sector_status": {
-   "confidence": 0.8,
-   "evidence": "Fédération Royale Belge des Sports Équestres",
-   "evidence_url": "https://frenchbreaches.com/alertes/f-d-ration-royale-belge-des-sports-questres-frbse-kbrsf-murj93me4zg2qdmw1k",
-   "reason": "ORGANISATION_NAME_RULE",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/f-d-ration-royale-belge-des-sports-questres-frbse-kbrsf-murj93me4zg2qdmw1k"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "Fédération Royale Belge des Sports Équestres (FRBSE/KBRSF)",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
-  "date": "2026-10-03",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-A511F1D9017B",
-  "location": "Inconnu",
-  "org": "CGT de l’Aude",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Inconnu",
-  "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/cgt-plus-de-100-000-personnes-exposees-apres-la-decouverte-dune-vulnerabilite/"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG"
-  ],
-  "summary": "Un fichier de 76 951 entrées lié principalement à la CGT de l’Aude a été diffusé après qu'un collectif revendique une vulnérabilité sur cgt.fr.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "claimed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-03",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-9351E1D07BE3",
-  "location": "France métropolitaine",
-  "org": "CAPEB",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Industrie / Manufacture",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Industrie",
-   "evidence_url": "https://frenchbreaches.com/alertes/capeb-murke1g4sga4x80oopk",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/capeb-cyberattaque-3-9-millions-de-lignes-diffusees-500-000-artisans-en-fuite/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/capeb-murke1g4sga4x80oopk"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "La CAPEB fait l’objet d’une revendication de fuite de 3 966 461 lignes de données, revendiquées par le hacker ChimeraZ.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-03",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-5E8DA92FB14A",
-  "location": "Inconnu",
-  "org": "Fédération Royale Colombophile Belge",
-  "organisation_links": [],
-  "personal_data_exposed": false,
-  "sector": "Administration / Collectivité",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "public",
-   "evidence_url": "https://frenchbreaches.com/alertes/f-d-ration-royale-colombophile-belge-murjhz3kb1mdmj9m5g4",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/f-d-ration-royale-colombophile-belge-murjhz3kb1mdmj9m5g4"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "Une base attribuée à la Fédération Royale Colombophile Belge est proposée à la vente, revendiquant les données de 8 680 licenciés et 3,4 millions de résultats.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "unknown"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-03",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-56943E53C070",
-  "location": "France métropolitaine",
-  "org": "CGT Aude",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Administration / Collectivité",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "public",
-   "evidence_url": "https://frenchbreaches.com/alertes/cgt-aude-murlk6wfg15fmu7agjq",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/cgt-aude-murlk6wfg15fmu7agjq"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
-  "date": "2026-10-03",
-  "high_sensitivity_data_exposed": true,
-  "id": "INC-504E072622BB",
-  "location": "France métropolitaine",
-  "org": "Région Hauts-de-France",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Administration / Collectivité",
-  "sector_status": {
-   "confidence": 0.8,
-   "evidence": "Région Hauts-de-France",
-   "evidence_url": "https://frenchbreaches.com/alertes/r-gion-hauts-de-france-muqbs0geks60ywxsfd",
-   "reason": "ORGANISATION_NAME_RULE",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/r-gion-hauts-de-france-muqbs0geks60ywxsfd"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "La Région Hauts-de-France fait l'objet de revendications de fuite de données incluant 782 583 enregistrements et 48 Go soit 90 011 documents, selon un pirate.",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "reported"

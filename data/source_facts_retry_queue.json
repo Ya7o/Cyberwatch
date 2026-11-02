@@ -7955,6 +7955,311 @@
    "reason": "SEMANTIC_REJECTED"
   },
   {
+   "attempts": 4,
+   "entry": {
+    "content": "SL\nPar Seblatombe, rédacteur FrenchBreaches\nPublié le 09/10/2026\nMammut : des fichiers internes et des mots de passe diffusés sur un forum de pirates\nLe fabricant suisse d’équipements de montagne Mammut voit son nom apparaître sur un forum de cybercriminels. Le 9 octobre 2026, un utilisateur a publié une archive présentée comme provenant d’une cyberattaque au ransomware menée par le groupe DataCarry en 2025.\nLa publication annonce 28 fichiers représentant environ 522 Mo de données, parmi lesquels des documents CSV, SQL et Excel. Certains fichiers contiendraient également des mots de passe et des paramètres de pare-feu.\nCette diffusion ne constitue toutefois pas, à elle seule, la preuve d’une nouvelle intrusion chez Mammut.\nMammut, une marque suisse spécialisée dans les sports de montagne\nFondée en 1862, Mammut Sports Group est une entreprise suisse spécialisée dans les équipements et vêtements destinés aux activités de montagne.\nLa marque commercialise notamment des vêtements techniques, des chaussures, des sacs à dos et du matériel d’alpinisme. Elle est présente dans de nombreux pays.\nUne cyberattaque attribuée au groupe DataCarry en 2025\nD’après la publication consultée par FrenchBreaches, Mammut aurait été victime d’une attaque au ransomware revendiquée par DataCarry le 26 mai 2025.\nL’auteur du message indique que la compromission pourrait remonter à septembre 2024. Cette date est présentée comme une estimation et n’a pas été confirmée par Mammut.\nLa revendication aurait initialement été publiée sur le site de divulgation du groupe DataCarry.\nAucune preuve présentée dans cette publication ne permet d’établir qu’une nouvelle cyberattaque a eu lieu en octobre 2026. Il s’agirait plutôt d’une remise en circulation de données attribuées à l’incident de 2025.\nPlus de 500 Mo de fichiers mis en circulation\nLe 9 octobre 2026, un utilisateur d'un forum de cybercriminel, sous le pseudonyme R4nsomwareVault, a annoncé avoir mis en ligne des fichiers attribués à Mammut.\nSelon ses déclarations, l'ensemble comprendrait 28 fichiers, pour un volume total de 522 Mo, après suppression des doublons identifiés par leurs empreintes numériques.\nParmi les formats annoncés figurent notamment :\n4 fichiers CSV, pouvant contenir des données structurées ;\n16 fichiers SQL, généralement utilisés pour des données issues de bases de données ;\n5 fichiers Excel (XLSX), dont un présenté comme contenant des mots de passe et des paramètres de pare-feu.\nL’auteur affirme également avoir conservé, dans un dossier distinct, des copies de fichiers contenant des identifiants exposés.\nLa nature exacte de ces informations, leur validité actuelle et leur caractère sensible restent à vérifier.\nQuels risques pour Mammut ?\nSi les fichiers sont authentiques, la présence éventuelle d’identifiants et de configurations de sécurité pourrait présenter un risque pour l’entreprise.\nDes informations techniques anciennes peuvent notamment faciliter la reconnaissance de systèmes informatiques ou être exploitées si certains accès n’ont pas été révoqués.\nCependant, rien ne permet d’affirmer à ce stade que les mots de passe évoqués sont toujours valides, ni que les systèmes actuels de Mammut sont exposés.\nLa publication ne permet pas non plus de déterminer si des données personnelles de clients ou de salariés figurent dans les archives.\nUne diffusion à confirmer\nCette affaire concerne pour l’heure une publication sur un forum de pirates, datée du 9 octobre 2026, faisant référence à une cyberattaque attribuée au groupe DataCarry en 2025.\nLes volumes, la nature des documents et les dates avancées proviennent des déclarations de l’auteur de la publication.\nFrenchBreaches n’a pas pu confirmer l’authenticité de l’intégralité des fichiers ni établir l’existence d’une nouvelle compromission.\nL’enjeu est désormais de déterminer si les documents diffusés correspondent bien aux données issues de l’incident revendiqué en 2025 et si certaines informations pourraient encore présenter un risque pour Mammut.",
+    "entity": "",
+    "event_date": "",
+    "location": "",
+    "organisation": "",
+    "published": "2026-10-09",
+    "sector": "",
+    "source_item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
+    "source_metadata": {
+     "detail_hydration": {
+      "chars": 4006,
+      "extractor_version": "editorial-html-2026-09-06.1",
+      "fallback": "",
+      "status": "HYDRATED",
+      "truncated": false
+     },
+     "rich_facts": {
+      "affected_counts": [
+       {
+        "date": "",
+        "evidence": "La publication annonce 28 fichiers représentant environ 522 Mo de données, parmi lesquels des documents CSV, SQL et Excel.",
+        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
+        "raw": "28 fichiers",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "unit": "files",
+        "value": 28
+       },
+       {
+        "date": "",
+        "evidence": "16 fichiers SQL, généralement utilisés pour des données issues de bases de données ;",
+        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
+        "raw": "16 fichiers",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "unit": "files",
+        "value": 16
+       },
+       {
+        "date": "",
+        "evidence": "5 fichiers Excel (XLSX), dont un présenté comme contenant des mots de passe et des paramètres de pare-feu.",
+        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
+        "raw": "5 fichiers",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "unit": "files",
+        "value": 5
+       },
+       {
+        "date": "",
+        "evidence": "4 fichiers CSV, pouvant contenir des données structurées ;",
+        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
+        "raw": "4 fichiers",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "unit": "files",
+        "value": 4
+       }
+      ],
+      "affected_datasets": [],
+      "affected_systems": [],
+      "claims": [
+       {
+        "date": "",
+        "evidence": "La publication annonce 28 fichiers représentant environ 522 Mo de données, parmi lesquels des documents CSV, SQL et Excel.",
+        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "files",
+        "value": 28
+       },
+       {
+        "date": "",
+        "evidence": "16 fichiers SQL, généralement utilisés pour des données issues de bases de données ;",
+        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "files",
+        "value": 16
+       },
+       {
+        "date": "",
+        "evidence": "5 fichiers Excel (XLSX), dont un présenté comme contenant des mots de passe et des paramètres de pare-feu.",
+        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "files",
+        "value": 5
+       },
+       {
+        "date": "",
+        "evidence": "4 fichiers CSV, pouvant contenir des données structurées ;",
+        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "files",
+        "value": 4
+       },
+       {
+        "date": "",
+        "evidence": "La publication annonce 28 fichiers représentant environ 522 Mo de données, parmi lesquels des documents CSV, SQL et Excel.",
+        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "data_volume",
+        "unit": "MO",
+        "value": 522.0
+       },
+       {
+        "date": "",
+        "evidence": "Plus de 500 Mo de fichiers mis en circulation",
+        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "data_volume",
+        "unit": "MO",
+        "value": 500.0
+       },
+       {
+        "date": "",
+        "evidence": "Mammut : des fichiers internes et des mots de passe diffusés sur un forum de pirates",
+        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "mots de passe"
+       },
+       {
+        "date": "",
+        "evidence": "L’auteur affirme également avoir conservé, dans un dossier distinct, des copies de fichiers contenant des identifiants exposés.",
+        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "type": "data_type",
+        "value": "références de réservation"
+       },
+       {
+        "date": "",
+        "evidence": "Si les fichiers sont authentiques, la présence éventuelle d’identifiants et de configurations de sécurité pourrait présenter un risque pour l’entreprise.",
+        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "identifiants"
+       }
+      ],
+      "data_types": [
+       {
+        "date": "",
+        "evidence": "Mammut : des fichiers internes et des mots de passe diffusés sur un forum de pirates",
+        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "value": "mots de passe"
+       },
+       {
+        "date": "",
+        "evidence": "L’auteur affirme également avoir conservé, dans un dossier distinct, des copies de fichiers contenant des identifiants exposés.",
+        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
+        "source_id": "FRENCHBREACHES",
+        "status": "claimed",
+        "value": "références de réservation"
+       },
+       {
+        "date": "",
+        "evidence": "Si les fichiers sont authentiques, la présence éventuelle d’identifiants et de configurations de sécurité pourrait présenter un risque pour l’entreprise.",
+        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis",
+        "value": "identifiants"
+       }
+      ],
+      "data_volumes": [
+       {
+        "date": "",
+        "evidence": "La publication annonce 28 fichiers représentant environ 522 Mo de données, parmi lesquels des documents CSV, SQL et Excel.",
+        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "unit": "MO",
+        "value": 522.0
+       },
+       {
+        "date": "",
+        "evidence": "Plus de 500 Mo de fichiers mis en circulation",
+        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
+        "scope": "",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown",
+        "unit": "MO",
+        "value": 500.0
+       }
+      ],
+      "engine": "generic-rich-facts",
+      "profile": {
+       "chars": 4295,
+       "claims": 9,
+       "hypotheses": 1,
+       "semantic_candidate": true,
+       "sentences": 42
+      },
+      "relations": [],
+      "semantic": {
+       "candidate": true,
+       "used": false
+      },
+      "source_adapter": "frenchbreaches",
+      "timeline": [
+       {
+        "date": "2026-10-09",
+        "event": "Le 9 octobre 2026, un utilisateur a publié une archive présentée comme provenant d’une…",
+        "evidence": "Le 9 octobre 2026, un utilisateur a publié une archive présentée comme provenant d’une…",
+        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown"
+       },
+       {
+        "date": "2026-10-09",
+        "event": "Le 9 octobre 2026, un utilisateur a publié une archive présentée comme provenant d’une cyberattaque au ransomware menée par le groupe DataCarry en 2025.",
+        "evidence": "Le 9 octobre 2026, un utilisateur a publié une archive présentée comme provenant d’une cyberattaque au ransomware menée par le groupe DataCarry en 2025.",
+        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown"
+       },
+       {
+        "date": "2025-05-26",
+        "event": "D’après la publication consultée par FrenchBreaches, Mammut aurait été victime d’une attaque au ransomware revendiquée par DataCarry le 26 mai 2025.",
+        "evidence": "D’après la publication consultée par FrenchBreaches, Mammut aurait été victime d’une attaque au ransomware revendiquée par DataCarry le 26 mai 2025.",
+        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis"
+       },
+       {
+        "date": "2026-10-09",
+        "event": "Cette affaire concerne pour l’heure une publication sur un forum de pirates, datée du 9 octobre 2026, faisant référence à une cyberattaque attribuée au groupe DataCarry en 2025.",
+        "evidence": "Cette affaire concerne pour l’heure une publication sur un forum de pirates, datée du 9 octobre 2026, faisant référence à une cyberattaque attribuée au groupe DataCarry en 2025.",
+        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown"
+       }
+      ],
+      "version": "2",
+      "vulnerabilities": []
+     }
+    },
+    "summary": "Mammut : des fichiers internes et des mots de passe diffusés sur un forum de pirates Le fabricant suisse d’équipements de montagne Mammut voit son nom apparaître sur un forum de cybercriminels. Le 9 octobre 2026, un utilisateur a publié une archive présentée comme provenant d’une…",
+    "threat": "Fuite de données",
+    "title": "Mammut",
+    "url": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn"
+   },
+   "exhausted_fields": {
+    "activity_description": {
+     "at": "2026-11-02T16:41:16.656792+00:00",
+     "reason": "ACTIVITY_NOT_DESCRIBED"
+    },
+    "activity_sector_match": {
+     "at": "2026-11-02T16:41:16.656792+00:00",
+     "reason": "NO_VALID_ACTIVITY_PAIR"
+    }
+   },
+   "field_reasons": {
+    "activity_description": "ACTIVITY_NOT_DESCRIBED",
+    "activity_sector_match": "NO_VALID_ACTIVITY_PAIR"
+   },
+   "first_queued_at": "2026-10-11T06:14:48.438529+00:00",
+   "item": {
+    "Collected_As_Of": "2026-10-11T10:14:17.452530+04:00",
+    "Event_Date": "",
+    "Item_ID": "ITM-0bcd6e818ef2912b",
+    "Location": "France métropolitaine",
+    "Organisation_Key": "mammut",
+    "Organisation_Raw": "Mammut",
+    "Published_Date": "2026-10-09",
+    "Sector": "Inconnu",
+    "Source_ID": "FRENCHBREACHES",
+    "Source_Item_ID": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
+    "Threat": "Fuite de données",
+    "Threat_Raw": "Fuite de données",
+    "Title": "Mammut",
+    "URL": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn"
+   },
+   "key": "ITM-0bcd6e818ef2912b:a5004fb39cdeab0ab379c8da324cc516b1b1dcfb243473fb7efd6796d65964a4",
+   "last_attempt_at": "2026-11-02T16:41:14.402954+00:00",
+   "last_queued_at": "2026-11-01T13:55:42.402985+00:00",
+   "pending_fields": [],
+   "reason": "CALL_LIMIT"
+  },
+  {
    "attempts": 0,
    "entry": {
     "content": "La Fédération Sportive et Culturelle de France (FSCF) fait l’objet d’une revendication de fuite de données portant sur plus de 30 000 enregistrements.  Le 26 octobre 2026, un individu utilisant le pseudonyme « camillelellouche » a publié plusieurs extraits présentés comme provenant des fichiers de la fédération. Les informations comprennent des identités, des dates de naissance, des adresses postales, des numéros de licence et des renseignements sur les pratiques sportives. \n\n\n\n Le point le plus préoccupant concerne la présence de  données personnelles d’enfants mineurs , dont certains âgés de moins de 12 ans. Les fichiers permettent notamment d’associer leur identité à un club, une discipline et une catégorie sportive. \n\n\n\n Créée en 1898, la  Fédération Sportive et Culturelle de France  est une organisation reconnue d’utilité publique qui fédère des associations sportives, culturelles et socio-éducatives sur l’ensemble du territoire. Elle intervient notamment dans la gymnastique, le twirling, les activités artistiques et l’animation jeunesse. \n\n\n\n   \n\n\n\n 21 634 licences et plus de 5 300 présélections dans les données revendiquées \n\n\n\n La publication du 26 octobre détaille sept catégories de données qui auraient été récupérées depuis les services de la FSCF. \n\n\n\n \n  21 634  enregistrements de licences ; \n\n\n\n  5 305  enregistrements de présélections ; \n\n\n\n  1 573  abonnés ; \n\n\n\n  642  enregistrements liés aux instances de la FSCF ; \n\n\n\n  457  correspondants par discipline ; \n\n\n\n  270  licences annulées ; \n\n\n\n  140  abonnements. \n \n\n\n\n Le total atteint précisément  30 021 enregistrements . Ce chiffre ne correspond pas nécessairement à 30 021 personnes différentes, puisqu’un même individu peut apparaître dans plusieurs catégories. \n\n\n\n Les fichiers révèlent l’identité, l’adresse et le club sportif des licenciés \n\n\n\n Les extraits diffusés présentent une structure caractéristique d’un export de données de gestion fédérale. Plusieurs dizaines de champs sont recensés, permettant de retrouver des informations personnelles particulièrement détaillées. \n\n\n\n Parmi les informations apparaissant dans les exemples figurent : \n\n\n\n \n Les  noms, prénoms et dates de naissance  ; \n\n\n\n Les adresses postales, communes et codes postaux ; \n\n\n\n Les adresses email et potentiellement les numéros de téléphone ; \n\n\n\n Les numéros de licence et leur statut ; \n\n\n\n Les  clubs sportifs et les disciplines pratiquées  ; \n\n\n\n Les catégories d’âge et les niveaux de compétition ; \n\n\n\n Les comités départementaux et régionaux ; \n\n\n\n Les dates de validation et d’expiration des licences ; \n\n\n\n Certains montants financiers associés aux licences. \n \n\n\n\n Les exemples concernent notamment des licenciés de  Loire-Atlantique , dans des clubs situés autour de Nantes et de Saint-Herblain. On retrouve des pratiquants de gymnastique féminine, de gymnastique rythmique et de twirling. \n\n\n\n Des enfants nés en 2014 et 2016 apparaissent dans les extraits \n\n\n\n La présence de mineurs constitue l’un des aspects les plus sensibles de cette divulgation. Plusieurs fiches correspondent à des enfants nés en  2014 et 2016 , avec des catégories sportives U12 et U10. \n\n\n\n Pour ces jeunes licenciés, les informations permettent de connaître simultanément leur  identité, leur âge, leur commune de résidence et leur association sportive . \n\n\n\n Cette combinaison est particulièrement problématique : les données ne permettent pas seulement d’identifier un enfant, mais aussi de connaître une partie de ses activités extrascolaires. Si elles sont réutilisées à des fins malveillantes, elles pourraient faciliter des prises de contact frauduleuses auprès des familles. \n\n\n\n Des licences actives pour la saison 2026 \n\n\n\n Les enregistrements présentés ne semblent pas provenir exclusivement d’anciennes archives. Plusieurs fiches portent la mention  « Active » pour la saison 2026 , avec des dates de validation situées en 2025 et une fin de validité fixée au 31 août 2026. \n\n\n\n D’autres informations font référence à des licences de compétition dont les périodes de validité peuvent s’étendre jusqu’en  2028 . \n\n\n\n Ces éléments indiquent que les données revendiquées comprennent des informations administratives relativement récentes. Ils ne permettent toutefois pas de déterminer la date exacte à laquelle elles ont été extraites. \n\n\n\n Le hacker évoque une extraction automatisée des données \n\n\n\n L’auteur de la publication présente son opération comme un  « scraping » . Cette technique consiste à collecter automatiquement des informations accessibles depuis un site ou une application, parfois en exploitant des interfaces qui ne limitent pas suffisamment les requêtes. \n\n\n\n Dans le cas de la FSCF, plusieurs scénarios sont envisageables :  une interface de consultation insuffisamment protégée, une API exposant trop d’informations ou un défaut de contrôle des autorisations . \n\n\n\n La présence de champs administratifs détaillés laisse penser que les informations proviennent d’un système structuré de gestion des licences. En revanche, rien ne permet de déterminer si le hacker a contourné une protection, utilisé un accès légitime compromis ou simplement collecté des données accessibles sans authentification. \n\n\n\n Des escroqueries possibles en usurpant l’identité des clubs sportifs \n\n\n\n Le principal risque concerne désormais l’utilisation de ces informations pour mener des  campagnes de phishing ciblées contre les licenciés et leurs familles . \n\n\n\n Un fraudeur connaissant le nom d’un sportif, son club, sa discipline et sa saison de licence pourrait se faire passer pour une association afin de réclamer un paiement, une régularisation d’inscription ou une mise à jour du dossier administratif. \n\n\n\n La présence de données concernant des mineurs renforce cette inquiétude. Les parents pourraient recevoir des sollicitations suffisamment précises pour sembler provenir de véritables responsables associatifs. \n\n\n\n À ce stade,  aucune confirmation officielle de la FSCF n’a été identifiée concernant cette extraction . Les exemples publiés permettent d’observer la nature des informations concernées, mais pas de vérifier indépendamment l’intégralité des 30 021 enregistrements revendiqués. \n\n\n\n L’enjeu principal reste donc de déterminer comment des informations aussi détaillées, notamment celles de jeunes licenciés, ont pu être récupérées et si d’autres données de la fédération demeurent accessibles.",
@@ -8712,672 +9017,143 @@
    "reason": "SEMANTIC_REJECTED"
   },
   {
-   "attempts": 3,
+   "attempts": 0,
    "entry": {
-    "content": "SL\nPar Seblatombe, rédacteur FrenchBreaches\nPublié le 09/10/2026\n— Secteur Commerce\nFuite de données en Suisse : les informations de 57 000 personnes proposées à la vente sur un forum de pirates\nUne plateforme suisse spécialisée dans la mise en relation avec des courtiers financiers et des professionnels de l’assurance fait l’objet d’une revendication de fuite de données. Le 9 octobre 2026, un cybercriminel a annoncé la vente d’une base attribuée au site CourtiersPartenaires.com, contenant les informations personnelles de plus de 57 000 personnes.\nL’auteur de la publication, connu sous le pseudonyme ChimeraZ, affirme détenir 97 704 enregistrements, représentant 57 229 personnes, pour un volume total de 121 Mo.\nSelon les chiffres affichés dans son annonce, la base contiendrait également 57 241 adresses e-mail et 42 609 numéros de téléphone.\nCes informations proviennent de la revendication du pirate et leur authenticité reste à confirmer.\nUne plateforme suisse de courtage financier et d’assurance\nCourtiersPartenaires.com se présente comme une plateforme suisse permettant aux particuliers d’entrer en relation avec des professionnels du courtage, notamment pour rechercher des solutions financières et d’assurance.\nLe site facilite les échanges entre les personnes souhaitant obtenir des renseignements ou des offres et les professionnels susceptibles de répondre à leurs besoins.\nLes informations revendiquées par le cybercriminel semblent notamment provenir de demandes de contact et d’échanges avec des prospects ou des clients.\nPrès de 100 000 enregistrements mis en vente\nLe 9 octobre 2026, un utilisateur du forum PwnForums, sous le pseudonyme ChimeraZ, a publié une annonce intitulée « 57K COURTIERSPARTENAIRES.COM ».\nDans son message, il affirme vendre une base de données appartenant à la plateforme suisse.\nL’annonce présente les chiffres suivants :\n97 704 lignes de données\n57 229 personnes\n57 241 adresses e-mail\n42 609 numéros de téléphone\n121 Mo de fichiers\nFormat JSONL\nLe nombre de lignes est supérieur au nombre de personnes annoncé, ce qui pourrait s’expliquer par la présence de plusieurs enregistrements associés à un même contact.\nCes volumes restent déclaratifs et ne constituent pas, à ce stade, un décompte vérifié des personnes réellement concernées.\nQuelles données personnelles sont concernées ?\nUn extrait publié directement dans l’annonce permet d’identifier plusieurs catégories d’informations.\nLes données présentées comprennent notamment :\nNoms et prénoms\nAdresses e-mail\nNuméros de téléphone\nDates des demandes de contact\nObjets et contenus de certaines demandes\nRéférences d’annonces immobilières\nIdentifiants et coordonnées d’agences\nInformations relatives aux échanges entre clients, prospects et professionnels\nL’extrait montre également des champs destinés à accueillir d’autres renseignements personnels, notamment des adresses, des informations professionnelles, des revenus ou des éléments de situation familiale.\nToutefois, plusieurs de ces champs sont vides dans l’exemple publié. Leur présence dans la structure du fichier ne prouve donc pas que ces informations soient renseignées pour les personnes concernées.\nLes données visibles semblent notamment liées à des formulaires de contact et à des demandes adressées à des professionnels.\nQuels risques pour les personnes concernées ?\nSi la base de données est authentique, les informations pourraient être utilisées pour mener des campagnes d’hameçonnage ciblées ou des tentatives d’escroquerie.\nUn cybercriminel disposant d’un nom, d’une adresse e-mail, d’un numéro de téléphone et du contexte d’une demande pourrait notamment se faire passer pour un courtier, une agence ou un conseiller financier.\nCes informations pourraient rendre certains messages frauduleux particulièrement crédibles, notamment lorsqu’ils font référence à une démarche réellement effectuée par la personne ciblée.\nLa présence éventuelle d’informations sur des demandes immobilières ou financières pourrait également faciliter la personnalisation de tentatives de fraude.\nUne fuite revendiquée, dont l’origine reste inconnue\nÀ ce stade, la publication du cybercriminel ne permet pas d’établir comment les données auraient été obtenues.\nAucun élément présenté dans l’annonce ne permet de confirmer une intrusion directe dans les systèmes informatiques de CourtiersPartenaires.com.\nLes données pourraient provenir d’un accès non autorisé, d’un compte compromis ou d’une autre source, sans qu’il soit possible de privilégier l’une de ces hypothèses.\nL’authenticité de la base complète, les volumes annoncés et l’existence d’une éventuelle compromission restent donc à vérifier.\nLa revendication publiée le 9 octobre 2026 constitue néanmoins un signalement à prendre au sérieux, compte tenu de la nature des informations visibles dans l’échantillon.\nFrenchBreaches continuera de suivre cette affaire et les éventuelles communications de la plateforme concernée.",
+    "content": "À Verrières-en-Forez, dans la Loire, les pirates informatiques ont réussi à prendre en otage les fichiers de la mairie.  Dans la nuit du 28 octobre 2026, une cyberattaque a frappé le serveur de stockage de la commune, rendant une partie des données inaccessibles. Les cybercriminels ont ensuite exigé une rançon pour les débloquer, mais la municipalité a refusé de payer. \n\n\n\n Située près de Montbrison,  Verrières-en-Forez est une petite commune rurale d’environ 800 habitants , membre de Loire Forez Agglomération. Son maire, Kévin Klein, a confirmé l’incident, tandis que la municipalité a publié une alerte officielle concernant les risques pour les données personnelles des administrés. \n\n\n\n   \n\n\n\n Une attaque déclenchée à 3 h 40 du matin \n\n\n\n L’intrusion s’est produite le  28 octobre 2026 vers 3 h 40 . Les premières investigations orientent les soupçons vers une vulnérabilité du serveur de stockage municipal. \n\n\n\n Les attaquants ont procédé au  chiffrement des fichiers hébergés sur ce serveur , empêchant les agents du secrétariat de travailler normalement. Ce mode opératoire correspond à une attaque de type rançongiciel : les données deviennent illisibles et les pirates réclament de l’argent pour permettre leur récupération. \n\n\n\n Selon les premiers éléments communiqués,  les postes de travail et les logiciels sensibles de la collectivité n’ont pas été touchés . L’identité des attaquants, le logiciel malveillant éventuellement utilisé et le montant de la rançon n’ont pas été rendus publics. \n\n\n\n Des données d’état civil et des numéros de Sécurité sociale potentiellement concernés \n\n\n\n La mairie a choisi d’alerter directement les habitants, les associations et ses partenaires sur les informations susceptibles d’être concernées par l’incident. \n\n\n\n Parmi les données identifiées par la municipalité figurent : \n\n\n\n \n  Les noms, prénoms et dates de naissance  ; \n\n\n\n Les adresses postales et électroniques ; \n\n\n\n Les numéros de téléphone ; \n\n\n\n  Les numéros de Sécurité sociale des agents municipaux et des élus . \n \n\n\n\n  Attention toutefois : le chiffrement des fichiers ne signifie pas automatiquement qu’ils ont été volés.  Les investigations n’ont pas encore permis d’établir si les cybercriminels ont également extrait une copie des données avant de les rendre inaccessibles. \n\n\n\n La commune précise par ailleurs qu’elle ne détient pas les coordonnées bancaires des habitants. Le nombre exact de personnes potentiellement concernées n’a pas été communiqué. \n\n\n\n La municipalité refuse la rançon et dépose plainte \n\n\n\n Face aux exigences des pirates,  la mairie a décidé de ne pas verser la rançon . Son prestataire informatique travaille au rétablissement des systèmes et à la sécurisation de l’environnement touché. \n\n\n\n La collectivité indique avoir suspendu les comptes utilisateurs compromis, réinitialisé les mots de passe et engagé une analyse technique approfondie.  Une plainte pénale a été déposée et l’incident a été notifié à la CNIL , ainsi qu’au référent chargé de la protection des données auprès de Loire Forez Agglomération. \n\n\n\n Les risques pour les habitants concernent principalement  l’usurpation d’identité et les tentatives d’escroquerie , notamment par téléphone, SMS ou courrier électronique. Si une extraction des données était confirmée, des informations administratives pourraient être utilisées pour rendre ces démarches frauduleuses plus crédibles. \n\n\n\n  La cyberattaque est officiellement confirmée, tout comme la demande de rançon et l’indisponibilité des fichiers.  En revanche, aucune fuite de données n’est établie à ce stade. Les investigations doivent désormais déterminer l’ampleur réelle de l’intrusion et permettre à la petite commune ligérienne de retrouver un fonctionnement normal.",
     "entity": "",
     "event_date": "",
     "location": "",
     "organisation": "",
-    "published": "2026-10-09",
+    "published": "2026-11-01",
     "sector": "",
-    "source_item_id": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z",
+    "source_item_id": "4815",
     "source_metadata": {
-     "detail_hydration": {
-      "chars": 4939,
-      "extractor_version": "editorial-html-2026-09-06.1",
-      "fallback": "",
-      "status": "HYDRATED",
-      "truncated": false
-     },
      "rich_facts": {
-      "affected_counts": [
-       {
-        "date": "",
-        "evidence": "L’auteur de la publication, connu sous le pseudonyme ChimeraZ, affirme détenir 97 704 enregistrements, représentant 57 229 personnes, pour un volume total de 121 Mo.",
-        "item_id": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z",
-        "raw": "97 704 enregistrements",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "unit": "records",
-        "value": 97704
-       },
-       {
-        "date": "",
-        "evidence": "L’auteur de la publication, connu sous le pseudonyme ChimeraZ, affirme détenir 97 704 enregistrements, représentant 57 229 personnes, pour un volume total de 121 Mo.",
-        "item_id": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z",
-        "raw": "57 229 personnes",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "unit": "people",
-        "value": 57229
-       },
-       {
-        "date": "",
-        "evidence": "Près de 100 000 enregistrements mis en vente",
-        "item_id": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z",
-        "raw": "100 000 enregistrements",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "unit": "records",
-        "value": 100000
-       },
-       {
-        "date": "",
-        "evidence": "97 704 lignes de données",
-        "item_id": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z",
-        "raw": "97 704 lignes",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "unit": "records",
-        "value": 97704
-       },
-       {
-        "date": "",
-        "evidence": "57 229 personnes",
-        "item_id": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z",
-        "raw": "57 229 personnes",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "unit": "people",
-        "value": 57229
-       },
-       {
-        "date": "",
-        "evidence": "Fuite de données en Suisse : les informations de 57 000 personnes proposées à la vente sur un forum de pirates Une plateforme suisse spécialisée dans la mise en relation avec des courtiers financiers et des professionnels de l’assurance fait l’objet d’une revendication de fuite d…",
-        "item_id": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z",
-        "raw": "57 000 personnes",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "unit": "people",
-        "value": 57000
-       }
-      ],
+      "affected_counts": [],
       "affected_datasets": [],
       "affected_systems": [],
       "claims": [
        {
         "date": "",
-        "evidence": "L’auteur de la publication, connu sous le pseudonyme ChimeraZ, affirme détenir 97 704 enregistrements, représentant 57 229 personnes, pour un volume total de 121 Mo.",
-        "item_id": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "type": "affected_count",
-        "unit": "records",
-        "value": 97704
-       },
-       {
-        "date": "",
-        "evidence": "L’auteur de la publication, connu sous le pseudonyme ChimeraZ, affirme détenir 97 704 enregistrements, représentant 57 229 personnes, pour un volume total de 121 Mo.",
-        "item_id": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "type": "affected_count",
-        "unit": "people",
-        "value": 57229
-       },
-       {
-        "date": "",
-        "evidence": "Près de 100 000 enregistrements mis en vente",
-        "item_id": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "records",
-        "value": 100000
-       },
-       {
-        "date": "",
-        "evidence": "97 704 lignes de données",
-        "item_id": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "records",
-        "value": 97704
-       },
-       {
-        "date": "",
-        "evidence": "57 229 personnes",
-        "item_id": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "people",
-        "value": 57229
-       },
-       {
-        "date": "",
-        "evidence": "Fuite de données en Suisse : les informations de 57 000 personnes proposées à la vente sur un forum de pirates Une plateforme suisse spécialisée dans la mise en relation avec des courtiers financiers et des professionnels de l’assurance fait l’objet d’une revendication de fuite d…",
-        "item_id": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "people",
-        "value": 57000
-       },
-       {
-        "date": "",
-        "evidence": "L’auteur de la publication, connu sous le pseudonyme ChimeraZ, affirme détenir 97 704 enregistrements, représentant 57 229 personnes, pour un volume total de 121 Mo.",
-        "item_id": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "type": "data_volume",
-        "unit": "MO",
-        "value": 121.0
-       },
-       {
-        "date": "",
-        "evidence": "121 Mo de fichiers",
-        "item_id": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_volume",
-        "unit": "MO",
-        "value": 121.0
-       },
-       {
-        "date": "",
-        "evidence": "Selon les chiffres affichés dans son annonce, la base contiendrait également 57 241 adresses e-mail et 42 609 numéros de téléphone.",
-        "item_id": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z",
-        "source_id": "FRENCHBREACHES",
-        "status": "reported",
-        "type": "data_type",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "Selon les chiffres affichés dans son annonce, la base contiendrait également 57 241 adresses e-mail et 42 609 numéros de téléphone.",
-        "item_id": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z",
-        "source_id": "FRENCHBREACHES",
-        "status": "reported",
-        "type": "data_type",
-        "value": "numéros de téléphone"
-       },
-       {
-        "date": "",
-        "evidence": "57 241 adresses e-mail",
-        "item_id": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "42 609 numéros de téléphone",
-        "item_id": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "numéros de téléphone"
-       },
-       {
-        "date": "",
-        "evidence": "Noms et prénoms",
-        "item_id": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z",
-        "source_id": "FRENCHBREACHES",
+        "evidence": "Les noms, prénoms et dates de naissance  ;",
         "status": "unknown",
         "type": "data_type",
         "value": "noms et prénoms"
        },
        {
         "date": "",
-        "evidence": "Identifiants et coordonnées d’agences",
-        "item_id": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z",
-        "source_id": "FRENCHBREACHES",
+        "evidence": "Les noms, prénoms et dates de naissance  ;",
         "status": "unknown",
         "type": "data_type",
-        "value": "identifiants"
+        "value": "dates de naissance"
        },
        {
         "date": "",
-        "evidence": "Un cybercriminel disposant d’un nom, d’une adresse e-mail, d’un numéro de téléphone et du contexte d’une demande pourrait notamment se faire passer pour un courtier, une agence ou un conseiller financier.",
-        "item_id": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
+        "evidence": "Les adresses postales et électroniques ;",
+        "status": "unknown",
         "type": "data_type",
-        "value": "adresses e-mail"
+        "value": "adresses postales"
        },
        {
         "date": "",
-        "evidence": "Un cybercriminel disposant d’un nom, d’une adresse e-mail, d’un numéro de téléphone et du contexte d’une demande pourrait notamment se faire passer pour un courtier, une agence ou un conseiller financier.",
-        "item_id": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
+        "evidence": "Les numéros de téléphone ;",
+        "status": "unknown",
         "type": "data_type",
         "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "La collectivité indique avoir suspendu les comptes utilisateurs compromis, réinitialisé les mots de passe et engagé une analyse technique approfondie.",
+        "status": "reported",
+        "type": "data_type",
+        "value": "mots de passe"
+       },
+       {
+        "date": "",
+        "evidence": "Si une extraction des données était confirmée, des informations administratives pourraient être utilisées pour rendre ces démarches frauduleuses plus crédibles.",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "informations administratives"
+       },
+       {
+        "date": "2026-10-28",
+        "evidence": "Dans la nuit du 28 octobre 2026, une cyberattaque a frappé le serveur de stockage de la commune, rendant une partie des données inaccessibles.",
+        "kind": "statement",
+        "scope": "Chronologie",
+        "status": "unknown",
+        "value": "Dans la nuit du 28 octobre 2026, une cyberattaque a frappé le serveur de stockage de la commune, rendant une partie des données inaccessibles."
+       },
+       {
+        "date": "2026-10-28",
+        "evidence": "L’intrusion s’est produite le  28 octobre 2026 vers 3 h 40 .",
+        "kind": "statement",
+        "scope": "Chronologie",
+        "status": "unknown",
+        "value": "L’intrusion s’est produite le  28 octobre 2026 vers 3 h 40 ."
        }
       ],
       "data_types": [
        {
         "date": "",
-        "evidence": "Selon les chiffres affichés dans son annonce, la base contiendrait également 57 241 adresses e-mail et 42 609 numéros de téléphone.",
-        "item_id": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z",
-        "source_id": "FRENCHBREACHES",
-        "status": "reported",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "Selon les chiffres affichés dans son annonce, la base contiendrait également 57 241 adresses e-mail et 42 609 numéros de téléphone.",
-        "item_id": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z",
-        "source_id": "FRENCHBREACHES",
-        "status": "reported",
-        "value": "numéros de téléphone"
-       },
-       {
-        "date": "",
-        "evidence": "57 241 adresses e-mail",
-        "item_id": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "42 609 numéros de téléphone",
-        "item_id": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "numéros de téléphone"
-       },
-       {
-        "date": "",
-        "evidence": "Noms et prénoms",
-        "item_id": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z",
-        "source_id": "FRENCHBREACHES",
+        "evidence": "Les noms, prénoms et dates de naissance  ;",
         "status": "unknown",
         "value": "noms et prénoms"
        },
        {
         "date": "",
-        "evidence": "Identifiants et coordonnées d’agences",
-        "item_id": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z",
-        "source_id": "FRENCHBREACHES",
+        "evidence": "Les noms, prénoms et dates de naissance  ;",
         "status": "unknown",
-        "value": "identifiants"
+        "value": "dates de naissance"
        },
        {
         "date": "",
-        "evidence": "Un cybercriminel disposant d’un nom, d’une adresse e-mail, d’un numéro de téléphone et du contexte d’une demande pourrait notamment se faire passer pour un courtier, une agence ou un conseiller financier.",
-        "item_id": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "value": "adresses e-mail"
+        "evidence": "Les adresses postales et électroniques ;",
+        "status": "unknown",
+        "value": "adresses postales"
        },
        {
         "date": "",
-        "evidence": "Un cybercriminel disposant d’un nom, d’une adresse e-mail, d’un numéro de téléphone et du contexte d’une demande pourrait notamment se faire passer pour un courtier, une agence ou un conseiller financier.",
-        "item_id": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
+        "evidence": "Les numéros de téléphone ;",
+        "status": "unknown",
         "value": "numéros de téléphone"
-       }
-      ],
-      "data_volumes": [
-       {
-        "date": "",
-        "evidence": "L’auteur de la publication, connu sous le pseudonyme ChimeraZ, affirme détenir 97 704 enregistrements, représentant 57 229 personnes, pour un volume total de 121 Mo.",
-        "item_id": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "unit": "MO",
-        "value": 121.0
        },
        {
         "date": "",
-        "evidence": "121 Mo de fichiers",
-        "item_id": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "unit": "MO",
-        "value": 121.0
-       }
-      ],
-      "engine": "generic-rich-facts",
-      "profile": {
-       "chars": 5243,
-       "claims": 16,
-       "hypotheses": 2,
-       "semantic_candidate": true,
-       "sentences": 55
-      },
-      "relations": [],
-      "semantic": {
-       "candidate": true,
-       "used": false
-      },
-      "source_adapter": "frenchbreaches",
-      "timeline": [
-       {
-        "date": "2026-10-09",
-        "event": "Le 9 octobre 2026, un utilisateur du forum PwnForums, sous le pseudonyme ChimeraZ, a publié une annonce intitulée « 57K COURTIERSPARTENAIRES.COM ».",
-        "evidence": "Le 9 octobre 2026, un utilisateur du forum PwnForums, sous le pseudonyme ChimeraZ, a publié une annonce intitulée « 57K COURTIERSPARTENAIRES.COM ».",
-        "item_id": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown"
-       },
-       {
-        "date": "2026-10-09",
-        "event": "La revendication publiée le 9 octobre 2026 constitue néanmoins un signalement à prendre au sérieux, compte tenu de la nature des informations visibles dans l’échantillon.",
-        "evidence": "La revendication publiée le 9 octobre 2026 constitue néanmoins un signalement à prendre au sérieux, compte tenu de la nature des informations visibles dans l’échantillon.",
-        "item_id": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown"
-       }
-      ],
-      "version": "2",
-      "vulnerabilities": []
-     }
-    },
-    "summary": "Fuite de données en Suisse : les informations de 57 000 personnes proposées à la vente sur un forum de pirates Une plateforme suisse spécialisée dans la mise en relation avec des courtiers financiers et des professionnels de l’assurance fait l’objet d’une revendication de fuite d…",
-    "threat": "Fuite de données",
-    "title": "Courtiers Partenaires",
-    "url": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z"
-   },
-   "exhausted_fields": {},
-   "field_reasons": {
-    "incident_summary": "FIELD_VALIDATION_REJECTED",
-    "summary": "CONFIDENCE_REJECTED"
-   },
-   "first_queued_at": "2026-10-11T06:14:47.401754+00:00",
-   "item": {
-    "Collected_As_Of": "2026-10-11T10:14:17.452530+04:00",
-    "Event_Date": "",
-    "Item_ID": "ITM-555d35ef81078a66",
-    "Location": "France métropolitaine",
-    "Organisation_Key": "courtiers partenaires",
-    "Organisation_Raw": "Courtiers Partenaires",
-    "Published_Date": "2026-10-09",
-    "Sector": "Inconnu",
-    "Source_ID": "FRENCHBREACHES",
-    "Source_Item_ID": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z",
-    "Threat": "Fuite de données",
-    "Threat_Raw": "Fuite de données",
-    "Title": "Courtiers Partenaires",
-    "URL": "https://frenchbreaches.com/alertes/courtiers-partenaires-mv1d4b8gmkvwz5wt9z"
-   },
-   "key": "ITM-555d35ef81078a66:bdef88d9f7bf7e2c4d274a290bf40ff849ab0d9a119eff8e19c2aa5bd7676b13",
-   "last_queued_at": "2026-11-01T13:55:41.984637+00:00",
-   "pending_fields": [
-    "incident_summary",
-    "summary"
-   ],
-   "reason": "TECHNICAL_FAILURE"
-  },
-  {
-   "attempts": 3,
-   "entry": {
-    "content": "SL\nPar Seblatombe, rédacteur FrenchBreaches\nPublié le 09/10/2026\nMammut : des fichiers internes et des mots de passe diffusés sur un forum de pirates\nLe fabricant suisse d’équipements de montagne Mammut voit son nom apparaître sur un forum de cybercriminels. Le 9 octobre 2026, un utilisateur a publié une archive présentée comme provenant d’une cyberattaque au ransomware menée par le groupe DataCarry en 2025.\nLa publication annonce 28 fichiers représentant environ 522 Mo de données, parmi lesquels des documents CSV, SQL et Excel. Certains fichiers contiendraient également des mots de passe et des paramètres de pare-feu.\nCette diffusion ne constitue toutefois pas, à elle seule, la preuve d’une nouvelle intrusion chez Mammut.\nMammut, une marque suisse spécialisée dans les sports de montagne\nFondée en 1862, Mammut Sports Group est une entreprise suisse spécialisée dans les équipements et vêtements destinés aux activités de montagne.\nLa marque commercialise notamment des vêtements techniques, des chaussures, des sacs à dos et du matériel d’alpinisme. Elle est présente dans de nombreux pays.\nUne cyberattaque attribuée au groupe DataCarry en 2025\nD’après la publication consultée par FrenchBreaches, Mammut aurait été victime d’une attaque au ransomware revendiquée par DataCarry le 26 mai 2025.\nL’auteur du message indique que la compromission pourrait remonter à septembre 2024. Cette date est présentée comme une estimation et n’a pas été confirmée par Mammut.\nLa revendication aurait initialement été publiée sur le site de divulgation du groupe DataCarry.\nAucune preuve présentée dans cette publication ne permet d’établir qu’une nouvelle cyberattaque a eu lieu en octobre 2026. Il s’agirait plutôt d’une remise en circulation de données attribuées à l’incident de 2025.\nPlus de 500 Mo de fichiers mis en circulation\nLe 9 octobre 2026, un utilisateur d'un forum de cybercriminel, sous le pseudonyme R4nsomwareVault, a annoncé avoir mis en ligne des fichiers attribués à Mammut.\nSelon ses déclarations, l'ensemble comprendrait 28 fichiers, pour un volume total de 522 Mo, après suppression des doublons identifiés par leurs empreintes numériques.\nParmi les formats annoncés figurent notamment :\n4 fichiers CSV, pouvant contenir des données structurées ;\n16 fichiers SQL, généralement utilisés pour des données issues de bases de données ;\n5 fichiers Excel (XLSX), dont un présenté comme contenant des mots de passe et des paramètres de pare-feu.\nL’auteur affirme également avoir conservé, dans un dossier distinct, des copies de fichiers contenant des identifiants exposés.\nLa nature exacte de ces informations, leur validité actuelle et leur caractère sensible restent à vérifier.\nQuels risques pour Mammut ?\nSi les fichiers sont authentiques, la présence éventuelle d’identifiants et de configurations de sécurité pourrait présenter un risque pour l’entreprise.\nDes informations techniques anciennes peuvent notamment faciliter la reconnaissance de systèmes informatiques ou être exploitées si certains accès n’ont pas été révoqués.\nCependant, rien ne permet d’affirmer à ce stade que les mots de passe évoqués sont toujours valides, ni que les systèmes actuels de Mammut sont exposés.\nLa publication ne permet pas non plus de déterminer si des données personnelles de clients ou de salariés figurent dans les archives.\nUne diffusion à confirmer\nCette affaire concerne pour l’heure une publication sur un forum de pirates, datée du 9 octobre 2026, faisant référence à une cyberattaque attribuée au groupe DataCarry en 2025.\nLes volumes, la nature des documents et les dates avancées proviennent des déclarations de l’auteur de la publication.\nFrenchBreaches n’a pas pu confirmer l’authenticité de l’intégralité des fichiers ni établir l’existence d’une nouvelle compromission.\nL’enjeu est désormais de déterminer si les documents diffusés correspondent bien aux données issues de l’incident revendiqué en 2025 et si certaines informations pourraient encore présenter un risque pour Mammut.",
-    "entity": "",
-    "event_date": "",
-    "location": "",
-    "organisation": "",
-    "published": "2026-10-09",
-    "sector": "",
-    "source_item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
-    "source_metadata": {
-     "detail_hydration": {
-      "chars": 4006,
-      "extractor_version": "editorial-html-2026-09-06.1",
-      "fallback": "",
-      "status": "HYDRATED",
-      "truncated": false
-     },
-     "rich_facts": {
-      "affected_counts": [
-       {
-        "date": "",
-        "evidence": "La publication annonce 28 fichiers représentant environ 522 Mo de données, parmi lesquels des documents CSV, SQL et Excel.",
-        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
-        "raw": "28 fichiers",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "unit": "files",
-        "value": 28
-       },
-       {
-        "date": "",
-        "evidence": "16 fichiers SQL, généralement utilisés pour des données issues de bases de données ;",
-        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
-        "raw": "16 fichiers",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "unit": "files",
-        "value": 16
-       },
-       {
-        "date": "",
-        "evidence": "5 fichiers Excel (XLSX), dont un présenté comme contenant des mots de passe et des paramètres de pare-feu.",
-        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
-        "raw": "5 fichiers",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "unit": "files",
-        "value": 5
-       },
-       {
-        "date": "",
-        "evidence": "4 fichiers CSV, pouvant contenir des données structurées ;",
-        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
-        "raw": "4 fichiers",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "unit": "files",
-        "value": 4
-       }
-      ],
-      "affected_datasets": [],
-      "affected_systems": [],
-      "claims": [
-       {
-        "date": "",
-        "evidence": "La publication annonce 28 fichiers représentant environ 522 Mo de données, parmi lesquels des documents CSV, SQL et Excel.",
-        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "files",
-        "value": 28
-       },
-       {
-        "date": "",
-        "evidence": "16 fichiers SQL, généralement utilisés pour des données issues de bases de données ;",
-        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "files",
-        "value": 16
-       },
-       {
-        "date": "",
-        "evidence": "5 fichiers Excel (XLSX), dont un présenté comme contenant des mots de passe et des paramètres de pare-feu.",
-        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "files",
-        "value": 5
-       },
-       {
-        "date": "",
-        "evidence": "4 fichiers CSV, pouvant contenir des données structurées ;",
-        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "files",
-        "value": 4
-       },
-       {
-        "date": "",
-        "evidence": "La publication annonce 28 fichiers représentant environ 522 Mo de données, parmi lesquels des documents CSV, SQL et Excel.",
-        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_volume",
-        "unit": "MO",
-        "value": 522.0
-       },
-       {
-        "date": "",
-        "evidence": "Plus de 500 Mo de fichiers mis en circulation",
-        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_volume",
-        "unit": "MO",
-        "value": 500.0
-       },
-       {
-        "date": "",
-        "evidence": "Mammut : des fichiers internes et des mots de passe diffusés sur un forum de pirates",
-        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_type",
+        "evidence": "La collectivité indique avoir suspendu les comptes utilisateurs compromis, réinitialisé les mots de passe et engagé une analyse technique approfondie.",
+        "status": "reported",
         "value": "mots de passe"
        },
        {
         "date": "",
-        "evidence": "L’auteur affirme également avoir conservé, dans un dossier distinct, des copies de fichiers contenant des identifiants exposés.",
-        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "type": "data_type",
-        "value": "références de réservation"
-       },
-       {
-        "date": "",
-        "evidence": "Si les fichiers sont authentiques, la présence éventuelle d’identifiants et de configurations de sécurité pourrait présenter un risque pour l’entreprise.",
-        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
-        "source_id": "FRENCHBREACHES",
+        "evidence": "Si une extraction des données était confirmée, des informations administratives pourraient être utilisées pour rendre ces démarches frauduleuses plus crédibles.",
         "status": "hypothesis",
-        "type": "data_type",
-        "value": "identifiants"
+        "value": "informations administratives"
        }
       ],
-      "data_types": [
-       {
-        "date": "",
-        "evidence": "Mammut : des fichiers internes et des mots de passe diffusés sur un forum de pirates",
-        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "L’auteur affirme également avoir conservé, dans un dossier distinct, des copies de fichiers contenant des identifiants exposés.",
-        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "value": "références de réservation"
-       },
-       {
-        "date": "",
-        "evidence": "Si les fichiers sont authentiques, la présence éventuelle d’identifiants et de configurations de sécurité pourrait présenter un risque pour l’entreprise.",
-        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "value": "identifiants"
-       }
-      ],
-      "data_volumes": [
-       {
-        "date": "",
-        "evidence": "La publication annonce 28 fichiers représentant environ 522 Mo de données, parmi lesquels des documents CSV, SQL et Excel.",
-        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "unit": "MO",
-        "value": 522.0
-       },
-       {
-        "date": "",
-        "evidence": "Plus de 500 Mo de fichiers mis en circulation",
-        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "unit": "MO",
-        "value": 500.0
-       }
-      ],
-      "engine": "generic-rich-facts",
+      "data_volumes": [],
       "profile": {
-       "chars": 4295,
-       "claims": 9,
+       "chars": 3951,
+       "claims": 6,
+       "dates": 2,
        "hypotheses": 1,
-       "semantic_candidate": true,
-       "sentences": 42
+       "numbers": 0,
+       "sentences": 35
       },
       "relations": [],
       "semantic": {
-       "candidate": true,
        "used": false
       },
-      "source_adapter": "frenchbreaches",
       "timeline": [
        {
-        "date": "2026-10-09",
-        "event": "Le 9 octobre 2026, un utilisateur a publié une archive présentée comme provenant d’une…",
-        "evidence": "Le 9 octobre 2026, un utilisateur a publié une archive présentée comme provenant d’une…",
-        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
-        "source_id": "FRENCHBREACHES",
+        "date": "2026-10-28",
+        "event": "Dans la nuit du 28 octobre 2026, une cyberattaque a frappé le serveur de stockage de la commune, rendant une partie des données inaccessibles.",
+        "evidence": "Dans la nuit du 28 octobre 2026, une cyberattaque a frappé le serveur de stockage de la commune, rendant une partie des données inaccessibles.",
         "status": "unknown"
        },
        {
-        "date": "2026-10-09",
-        "event": "Le 9 octobre 2026, un utilisateur a publié une archive présentée comme provenant d’une cyberattaque au ransomware menée par le groupe DataCarry en 2025.",
-        "evidence": "Le 9 octobre 2026, un utilisateur a publié une archive présentée comme provenant d’une cyberattaque au ransomware menée par le groupe DataCarry en 2025.",
-        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown"
-       },
-       {
-        "date": "2025-05-26",
-        "event": "D’après la publication consultée par FrenchBreaches, Mammut aurait été victime d’une attaque au ransomware revendiquée par DataCarry le 26 mai 2025.",
-        "evidence": "D’après la publication consultée par FrenchBreaches, Mammut aurait été victime d’une attaque au ransomware revendiquée par DataCarry le 26 mai 2025.",
-        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis"
-       },
-       {
-        "date": "2026-10-09",
-        "event": "Cette affaire concerne pour l’heure une publication sur un forum de pirates, datée du 9 octobre 2026, faisant référence à une cyberattaque attribuée au groupe DataCarry en 2025.",
-        "evidence": "Cette affaire concerne pour l’heure une publication sur un forum de pirates, datée du 9 octobre 2026, faisant référence à une cyberattaque attribuée au groupe DataCarry en 2025.",
-        "item_id": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
-        "source_id": "FRENCHBREACHES",
+        "date": "2026-10-28",
+        "event": "L’intrusion s’est produite le  28 octobre 2026 vers 3 h 40 .",
+        "evidence": "L’intrusion s’est produite le  28 octobre 2026 vers 3 h 40 .",
         "status": "unknown"
        }
       ],
@@ -9385,43 +9161,49 @@
       "vulnerabilities": []
      }
     },
-    "summary": "Mammut : des fichiers internes et des mots de passe diffusés sur un forum de pirates Le fabricant suisse d’équipements de montagne Mammut voit son nom apparaître sur un forum de cybercriminels. Le 9 octobre 2026, un utilisateur a publié une archive présentée comme provenant d’une…",
-    "threat": "Fuite de données",
-    "title": "Mammut",
-    "url": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn"
+    "summary": "À Verrières-en-Forez, dans la Loire, les pirates informatiques ont réussi à prendre en otage les fichiers de la…",
+    "threat": "",
+    "title": "Verrières-en-Forez : une cyberattaque bloque la mairie, les pirates exigent une rançon",
+    "url": "https://www.cyberattaque.org/verrieres-en-forez-une-cyberattaque-bloque-la-mairie-les-pirates-exigent-une-rancon/"
    },
-   "exhausted_fields": {},
+   "exhausted_fields": {
+    "activity_description": {
+     "at": "2026-11-02T16:40:43.546565+00:00",
+     "reason": "CONFIDENCE_REJECTED"
+    },
+    "activity_sector_match": {
+     "at": "2026-11-02T16:40:43.546565+00:00",
+     "reason": "CONFIDENCE_REJECTED"
+    }
+   },
    "field_reasons": {
     "activity_description": "ACTIVITY_NOT_DESCRIBED",
     "activity_sector_match": "NO_VALID_ACTIVITY_PAIR"
    },
-   "first_queued_at": "2026-10-11T06:14:48.438529+00:00",
+   "first_queued_at": "2026-11-01T13:54:58.916920+00:00",
    "item": {
-    "Collected_As_Of": "2026-10-11T10:14:17.452530+04:00",
+    "Collected_As_Of": "2026-11-01T17:52:52.143834+04:00",
     "Event_Date": "",
-    "Item_ID": "ITM-0bcd6e818ef2912b",
-    "Location": "France métropolitaine",
-    "Organisation_Key": "mammut",
-    "Organisation_Raw": "Mammut",
-    "Published_Date": "2026-10-09",
+    "Item_ID": "ITM-ecc3d825973b3bc0",
+    "Location": "Inconnu",
+    "Organisation_Key": "verrieres en forez",
+    "Organisation_Raw": "Verrières-en-Forez",
+    "Published_Date": "2026-11-01",
     "Sector": "Inconnu",
-    "Source_ID": "FRENCHBREACHES",
-    "Source_Item_ID": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn",
-    "Threat": "Fuite de données",
-    "Threat_Raw": "Fuite de données",
-    "Title": "Mammut",
-    "URL": "https://frenchbreaches.com/alertes/mammut-mv1btcphy4aqz64jyn"
+    "Source_ID": "CYBERATTAQUE_ORG",
+    "Source_Item_ID": "4815",
+    "Threat": "Ransomware",
+    "Threat_Raw": "",
+    "Title": "Verrières-en-Forez : une cyberattaque bloque la mairie, les pirates exigent une rançon",
+    "URL": "https://www.cyberattaque.org/verrieres-en-forez-une-cyberattaque-bloque-la-mairie-les-pirates-exigent-une-rancon/"
    },
-   "key": "ITM-0bcd6e818ef2912b:a5004fb39cdeab0ab379c8da324cc516b1b1dcfb243473fb7efd6796d65964a4",
-   "last_queued_at": "2026-11-01T13:55:42.402985+00:00",
-   "pending_fields": [
-    "activity_description",
-    "activity_sector_match"
-   ],
-   "reason": "CALL_LIMIT"
+   "key": "ITM-ecc3d825973b3bc0:370c48db8d18bbfbfe275b6b735ed8280afc1b55f491a532d0b1ae4e4dbafc21",
+   "last_queued_at": "2026-11-01T13:54:58.916920+00:00",
+   "pending_fields": [],
+   "reason": "SEMANTIC_REJECTED"
   },
   {
-   "attempts": 1,
+   "attempts": 2,
    "entry": {
     "content": "SL\nPar Seblatombe, rédacteur FrenchBreaches\nPublié le 09/10/2026\n— Secteur public\nVACAF : près de 1,2 million de dossiers d’allocataires de la CAF proposés sur un forum de pirates\nMise à jour le 10 octobre à 15h\nLe Parisien, avec l’AFP, confirme les révélations de FrenchBreaches concernant le piratage de VACAF et la mise en vente de près de 1,2 million de dossiers d’allocataires de la CAF.\nLa CNAF confirme la fuite de données, annonce la suspension temporaire du site vacaf.org et le dépôt d’une plainte.\n--\nUne importante fuite de données pourrait toucher VACAF, le dispositif d’aide aux vacances des CAF. Selon les informations recueillies par FrenchBreaches, un cybercriminel propose sur un forum clandestin des fichiers contenant des informations personnelles sur des familles et leurs enfants.\nLes données revendiquées porteraient sur 1 191 967 dossiers d’allocataires, répartis entre 58 caisses CAF, ainsi que 97 269 fiches Pass Colo et 101 322 lignes d’inscriptions à des séjours pour enfants.\nSelon nos informations, plusieurs comptes utilisateurs dépourvus de double authentification auraient été compromis, permettant potentiellement l’accès à ces données. Les fichiers concerneraient uniquement des bénéficiaires de l’année 2026.\nLes informations présentées comprennent notamment les identités et dates de naissance de mineurs, les matricules CAF, les quotients familiaux, la composition des foyers, les aides financières et les réservations de vacances.\nFrenchBreaches a examiné trois échantillons totalisant 1 500 enregistrements. Les volumes annoncés et les circonstances exactes de l’incident restent toutefois à confirmer.\nVACAF, un dispositif de la CAF destiné aux familles\nVACAF permet aux familles éligibles de bénéficier d’aides financières pour partir en vacances, notamment dans des campings, des centres de vacances agréés ou des colonies de vacances.\nCe dispositif, associé aux Caisses d’allocations familiales, comprend plusieurs aides, dont l’Aide aux vacances sociales (AVS), l’Aide aux vacances enfants (AVE) et le Pass Colo.\nLes montants accordés dépendent notamment de la situation familiale et du quotient familial, un indicateur utilisé par la CAF pour déterminer certains droits.\nQuelles données personnelles sont concernées ?\nL’analyse des échantillons obtenus par FrenchBreaches révèle la présence de nombreuses informations personnelles concernant les allocataires et leurs enfants.\nLes catégories de données identifiées comprennent notamment :\nNoms et prénoms des allocataires\nNoms et prénoms des enfants\nDates de naissance des mineurs\nNuméros de matricule CAF\nCaisses CAF de rattachement\nDépartements de résidence\nQuotients familiaux (QF)\nNombre d’adultes et d’enfants à charge\nRangs de naissance des enfants\nMontants des aides Pass Colo\nStatuts d’utilisation et soldes des aides\nNuméros et statuts de réservation\nCentres et groupes de séjour\nDates des séjours et des réservations\nCoûts des séjours\nMontants pris en charge par les dispositifs AVE et Pass Colo\nMontants des aides externes\nRestes à charge des familles\nCes informations sont particulièrement sensibles, puisqu’elles permettent de relier l’identité de familles et de mineurs à leur situation familiale et financière, ainsi qu’à leurs projets de vacances.\nTrois ensembles de données examinés par FrenchBreaches\nLes échantillons transmis à notre rédaction correspondent à trois catégories de dossiers liés aux aides aux vacances.\nLe premier concerne les allocataires du dispositif AVS. Les fiches contiennent des informations d’identification, des références CAF et des données relatives à la composition des foyers.\nCertaines comprennent également des listes d’enfants rattachés aux dossiers, avec leurs dates de naissance. Les caisses CAF mentionnées dans cet échantillon suggèrent que les informations présentées ne se limitent pas à un seul territoire.\nLe deuxième ensemble concerne les bénéficiaires du Pass Colo, une aide destinée à financer une partie des séjours en colonie de vacances.\nLe pirate revendique environ 97 000 fiches uniques. L’échantillon examiné contient notamment des informations sur les enfants, les quotients familiaux et les aides accordées. Les 500 enregistrements étudiés mentionnent des enfants répartis dans 91 départements.\nEnfin, le troisième fichier rassemble des informations sur les réservations de séjours relevant de l’Aide aux vacances enfants (AVE).\nLes enregistrements détaillent les inscriptions, les centres de vacances, les dates des séjours et les différents montants financiers associés aux dossiers.\nL’auteur de la revendication affirme détenir environ 101 000 lignes de réservations. Ce chiffre ne correspond toutefois pas nécessairement à autant d’enfants différents, un même bénéficiaire pouvant apparaître dans plusieurs inscriptions.\nCes trois ensembles pourraient également comporter des doublons entre eux. Il serait donc incorrect d’additionner les volumes annoncés pour établir un nombre total de victimes.\nPlusieurs comptes compromis à l’origine de l’incident ?\nSelon les informations recueillies par FrenchBreaches, plusieurs comptes utilisateurs ne disposant pas de double authentification auraient été compromis, permettant potentiellement à un tiers malveillant d’accéder aux informations.\nLa double authentification consiste à exiger une vérification supplémentaire lors de la connexion, en plus du mot de passe. Son absence peut faciliter l’exploitation d’identifiants volés.\nCette piste pourrait expliquer l’accès à des dossiers détaillés et à des informations issues de différents modules de gestion.\nElle n’a cependant pas été confirmée officiellement. Les éléments disponibles ne permettent pas de déterminer précisément comment les comptes auraient été compromis, quels accès auraient été utilisés ni si les serveurs de VACAF ont été directement infiltrés.\nL’origine exacte des fichiers reste donc à établir.\nQuels risques pour les familles et leurs enfants ?\nLa présence de données concernant des mineurs et la situation financière de leurs familles soulève des préoccupations importantes.\nLes informations présentées pourraient notamment être exploitées pour mener des campagnes d’hameçonnage ciblées, en se faisant passer pour la CAF, VACAF ou un organisme de vacances.\nUn message frauduleux mentionnant le nom d’un enfant, une aide Pass Colo ou une réservation précise pourrait sembler particulièrement crédible.\nLes matricules CAF, quotients familiaux et montants de prise en charge pourraient également servir à personnaliser de fausses démarches administratives ou des demandes de paiement.\nLes familles doivent donc rester vigilantes face aux courriels, SMS et appels inattendus concernant leurs aides aux vacances.\nEn cas de doute, il est préférable de contacter directement sa CAF par ses canaux officiels et de ne jamais communiquer ses identifiants ou documents personnels à la suite d’une sollicitation suspecte.\nUne fuite revendiquée, dont l’ampleur reste à confirmer\nLes investigations de FrenchBreaches ont permis d’examiner 1 500 enregistrements répartis dans trois échantillons, contenant des informations sur des allocataires, des enfants bénéficiaires d’aides et des réservations de séjours.\nCes éléments donnent de la consistance à la revendication publiée sur le forum cybercriminel, mais ne permettent pas d’authentifier l’intégralité des bases annoncées ni de confirmer le nombre réel de personnes concernées.\nÀ la date de rédaction de cet article, aucune confirmation officielle de VACAF ou de la Caisse nationale des allocations familiales (CNAF) n’a pu être établie.\nLa principale interrogation porte désormais sur l’origine de ces données, les circonstances de leur obtention et l’étendue réelle de l’incident.\nFrenchBreaches continuera de suivre cette affaire et les éventuelles communications des organismes concernés.\nCet article vous est proposé en relation avec cette fuite de donnée\nCAF : les données de près de 1,2 million de dossiers d’aides aux vacances proposées à la vente\nUn pirate affirme détenir près de 1,2 million de dossiers liés aux aides aux vacances de la CAF. Des informations sur les familles et leurs enfants pourraient être exposées.\nLire l'article lié ➔",
     "entity": "",
@@ -9860,7 +9642,10 @@
     "url": "https://frenchbreaches.com/alertes/vacaf-mv1973gh31stjwpfe8l"
    },
    "exhausted_fields": {},
-   "field_reasons": {},
+   "field_reasons": {
+    "incident_summary": "FIELD_VALIDATION_REJECTED",
+    "summary": "CONFIDENCE_REJECTED"
+   },
    "first_queued_at": "2026-10-11T06:14:48.921309+00:00",
    "item": {
     "Collected_As_Of": "2026-10-11T10:14:17.452530+04:00",
@@ -9879,476 +9664,12 @@
     "URL": "https://frenchbreaches.com/alertes/vacaf-mv1973gh31stjwpfe8l"
    },
    "key": "ITM-de8d9fa7487387cb:fd27ad092d2e47ea687012165dedda58702902f22e85b4de317c2b95d24328b7",
-   "last_queued_at": "2026-11-01T13:55:42.967242+00:00",
+   "last_queued_at": "2026-11-02T16:41:21.466948+00:00",
    "pending_fields": [
     "incident_summary",
     "summary"
    ],
-   "reason": "CALL_LIMIT"
-  },
-  {
-   "attempts": 1,
-   "entry": {
-    "content": "SL\nPar Seblatombe, rédacteur FrenchBreaches\nPublié le 09/10/2026\n— Secteur Transport\nWimoov victime d’une cyberattaque : sa plateforme WIN compromise, une violation de données signalée à la CNIL\nL’association française Wimoov, spécialisée dans l’accompagnement à la mobilité, confirme avoir été victime d’une cyberattaque visant sa plateforme numérique WIN. L’incident, découvert le 26 août 2026, a été déclaré à la Commission nationale de l’informatique et des libertés (CNIL) deux jours plus tard. Un individu malveillant est parvenu à accéder au service grâce à un compte utilisateur compromis. Pour l’heure, Wimoov assure qu’aucune fuite de données n’a été constatée.\nUne nouvelle organisation française reconnaît avoir subi une intrusion informatique. Sur son site officiel, Wimoov affiche un message d’information destiné aux utilisateurs de sa plateforme WIN, dans lequel l’association détaille les premières conclusions de ses investigations.\nL’incident a été découvert le 26 août 2026 et officiellement notifié à la CNIL le 28 août 2026. Wimoov précise avoir qualifié cette cyberattaque de violation de données personnelles, tout en indiquant qu’aucune extraction ou divulgation d’informations n’a été constatée à ce stade.\nCette distinction est importante : l’existence d’un accès non autorisé est confirmée, mais le vol de données personnelles ne l’est pas.\nWimoov, une association qui accompagne les personnes dans leurs déplacements\nContrairement à ce que son nom pourrait laisser penser, la plateforme WIN n’a aucun lien avec Winamax ou les paris sportifs.\nElle appartient à Wimoov, une association française dont la mission est de faciliter les déplacements des personnes rencontrant des difficultés de mobilité.\nL’organisme accompagne notamment des personnes en recherche d’emploi, en formation ou confrontées à des obstacles pour accéder aux transports.\nSa plateforme WIN, pour Wimoov Interface Numérique, permet aux bénéficiaires, aux professionnels de la mobilité et aux partenaires de suivre et de gérer les parcours d’accompagnement.\nCette activité implique le traitement de données personnelles liées aux utilisateurs et à leur situation, ce qui rend la sécurité de la plateforme particulièrement importante.\nUn pirate est entré dans la plateforme grâce à un compte compromis\nSelon les premières investigations communiquées par Wimoov, l’attaque aurait été rendue possible par l’utilisation d’un compte utilisateur compromis.\nUn tiers malveillant est ainsi parvenu à accéder à la plateforme WIN sans autorisation.\nL’association ne précise pas comment les identifiants de ce compte ont été obtenus. Il pourrait s’agir de plusieurs scénarios, comme un mot de passe récupéré lors d’une précédente fuite ou une tentative d’hameçonnage, mais aucune de ces hypothèses n’a été confirmée.\nLa durée de l’intrusion, le niveau d’accès obtenu et les opérations éventuellement réalisées par l’attaquant ne sont pas détaillés dans la communication publique.\nWimoov ne fournit pas non plus de nombre précis d’utilisateurs potentiellement concernés.\nQuelles données personnelles pourraient être concernées ?\nLa plateforme WIN traite différentes informations nécessaires à l’accompagnement de ses utilisateurs.\nSelon sa politique de confidentialité, ces données peuvent notamment comprendre les noms, prénoms, adresses e-mail, numéros de téléphone, dates de naissance et adresses postales.\nDans le cadre de certains parcours d’accompagnement, l’application peut également contenir des informations relatives à la situation professionnelle, sociale ou aux difficultés de mobilité des bénéficiaires.\nCependant, rien ne permet actuellement d’affirmer que ces informations ont été consultées ou dérobées pendant la cyberattaque.\nWimoov indique explicitement qu’aucune fuite de données n’a été constatée à ce stade.\nIl serait donc prématuré de présenter ces catégories d’informations comme des données volées. Elles correspondent aux informations que le service est susceptible de traiter, et non à une liste de données compromises confirmées.\nTous les mots de passe réinitialisés après l’intrusion\nAprès la découverte de l’accès non autorisé, Wimoov affirme avoir immédiatement engagé plusieurs mesures de protection.\nL’association indique avoir migré WIN vers un nouvel environnement informatique, renforcé la sécurité des accès et procédé à la réinitialisation de l’ensemble des mots de passe.\nCes opérations visent à empêcher la réutilisation d’identifiants compromis et à limiter le risque de nouvelles connexions malveillantes.\nWimoov précise également que les personnes concernées reçoivent progressivement des informations adaptées à leur profil d’utilisation de la plateforme.\nLes investigations restent en cours pour déterminer l’étendue exacte de l’incident.\nPourquoi Wimoov a-t-elle signalé une violation de données à la CNIL ?\nUne violation de données personnelles ne signifie pas nécessairement qu’un fichier a été volé ou publié sur Internet.\nAu sens du règlement général sur la protection des données (RGPD), une violation peut également concerner un accès non autorisé à des informations personnelles, même sans preuve de leur extraction.\nC’est dans ce contexte que Wimoov indique avoir notifié l’incident à la CNIL le 28 août 2026, soit deux jours après sa découverte.\nCette déclaration ne constitue donc pas, à elle seule, une confirmation de fuite de données.\nElle montre néanmoins que l’association considère l’incident suffisamment sérieux pour relever des obligations réglementaires relatives à la protection des informations personnelles.\nQue doivent faire les utilisateurs de WIN ?\nLes utilisateurs de la plateforme doivent rester attentifs aux communications officielles de Wimoov et suivre les éventuelles instructions concernant la sécurisation de leur compte.\nMême si aucune fuite n’est confirmée, il est recommandé de ne jamais réutiliser un ancien mot de passe compromis sur plusieurs services.\nLes personnes recevant un message prétendant provenir de Wimoov doivent également vérifier son authenticité avant de communiquer des informations personnelles ou de cliquer sur un lien.\nL’association met à disposition une adresse de contact dédiée aux questions relatives à cet incident et à la protection des données :\n[email protected]\nUne cyberattaque confirmée, mais une fuite de données encore non établie\nLa cyberattaque contre Wimoov illustre les risques liés à la compromission d’un simple compte utilisateur. Un accès légitime détourné peut permettre à un individu malveillant de pénétrer dans une plateforme contenant des informations personnelles.\nDans cette affaire, Wimoov confirme l’intrusion informatique, la déclaration d’une violation de données à la CNIL et la réinitialisation générale des mots de passe.\nEn revanche, aucun nombre de victimes, aucune liste de données volées et aucune extraction d’informations n’ont été confirmés publiquement.\nLes investigations devront permettre de déterminer si l’attaquant a effectivement accédé à des données personnelles et si celles-ci ont pu être récupérées.\nÀ ce jour, il s’agit donc d’une cyberattaque et d’une violation de sécurité confirmées, mais pas d’une fuite de données personnelles avérée.",
-    "entity": "",
-    "event_date": "",
-    "location": "",
-    "organisation": "",
-    "published": "2026-10-09",
-    "sector": "",
-    "source_item_id": "https://frenchbreaches.com/alertes/wimoov-mv17oocsruj0ra84ffb",
-    "source_metadata": {
-     "detail_hydration": {
-      "chars": 7186,
-      "extractor_version": "editorial-html-2026-09-06.1",
-      "fallback": "",
-      "status": "HYDRATED",
-      "truncated": false
-     },
-     "rich_facts": {
-      "affected_counts": [],
-      "affected_datasets": [],
-      "affected_systems": [],
-      "claims": [
-       {
-        "date": "",
-        "evidence": "Il pourrait s’agir de plusieurs scénarios, comme un mot de passe récupéré lors d’une précédente fuite ou une tentative d’hameçonnage, mais aucune de ces hypothèses n’a été confirmée.",
-        "item_id": "https://frenchbreaches.com/alertes/wimoov-mv17oocsruj0ra84ffb",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "type": "data_type",
-        "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "Selon sa politique de confidentialité, ces données peuvent notamment comprendre les noms, prénoms, adresses e-mail, numéros de téléphone, dates de naissance et adresses postales.",
-        "item_id": "https://frenchbreaches.com/alertes/wimoov-mv17oocsruj0ra84ffb",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "type": "data_type",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "Selon sa politique de confidentialité, ces données peuvent notamment comprendre les noms, prénoms, adresses e-mail, numéros de téléphone, dates de naissance et adresses postales.",
-        "item_id": "https://frenchbreaches.com/alertes/wimoov-mv17oocsruj0ra84ffb",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "type": "data_type",
-        "value": "numéros de téléphone"
-       },
-       {
-        "date": "",
-        "evidence": "Selon sa politique de confidentialité, ces données peuvent notamment comprendre les noms, prénoms, adresses e-mail, numéros de téléphone, dates de naissance et adresses postales.",
-        "item_id": "https://frenchbreaches.com/alertes/wimoov-mv17oocsruj0ra84ffb",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "type": "data_type",
-        "value": "adresses postales"
-       },
-       {
-        "date": "",
-        "evidence": "Selon sa politique de confidentialité, ces données peuvent notamment comprendre les noms, prénoms, adresses e-mail, numéros de téléphone, dates de naissance et adresses postales.",
-        "item_id": "https://frenchbreaches.com/alertes/wimoov-mv17oocsruj0ra84ffb",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "type": "data_type",
-        "value": "noms et prénoms"
-       },
-       {
-        "date": "",
-        "evidence": "Selon sa politique de confidentialité, ces données peuvent notamment comprendre les noms, prénoms, adresses e-mail, numéros de téléphone, dates de naissance et adresses postales.",
-        "item_id": "https://frenchbreaches.com/alertes/wimoov-mv17oocsruj0ra84ffb",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "type": "data_type",
-        "value": "dates de naissance"
-       },
-       {
-        "date": "",
-        "evidence": "L’association indique avoir migré WIN vers un nouvel environnement informatique, renforcé la sécurité des accès et procédé à la réinitialisation de l’ensemble des mots de passe.",
-        "item_id": "https://frenchbreaches.com/alertes/wimoov-mv17oocsruj0ra84ffb",
-        "source_id": "FRENCHBREACHES",
-        "status": "reported",
-        "type": "data_type",
-        "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "Ces opérations visent à empêcher la réutilisation d’identifiants compromis et à limiter le risque de nouvelles connexions malveillantes.",
-        "item_id": "https://frenchbreaches.com/alertes/wimoov-mv17oocsruj0ra84ffb",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "identifiants"
-       },
-       {
-        "date": "",
-        "evidence": "[email protected]",
-        "item_id": "https://frenchbreaches.com/alertes/wimoov-mv17oocsruj0ra84ffb",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "Dans cette affaire, Wimoov confirme l’intrusion informatique, la déclaration d’une violation de données à la CNIL et la réinitialisation générale des mots de passe.",
-        "item_id": "https://frenchbreaches.com/alertes/wimoov-mv17oocsruj0ra84ffb",
-        "source_id": "FRENCHBREACHES",
-        "status": "confirmed",
-        "type": "data_type",
-        "value": "mots de passe"
-       }
-      ],
-      "data_types": [
-       {
-        "date": "",
-        "evidence": "Il pourrait s’agir de plusieurs scénarios, comme un mot de passe récupéré lors d’une précédente fuite ou une tentative d’hameçonnage, mais aucune de ces hypothèses n’a été confirmée.",
-        "item_id": "https://frenchbreaches.com/alertes/wimoov-mv17oocsruj0ra84ffb",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "Selon sa politique de confidentialité, ces données peuvent notamment comprendre les noms, prénoms, adresses e-mail, numéros de téléphone, dates de naissance et adresses postales.",
-        "item_id": "https://frenchbreaches.com/alertes/wimoov-mv17oocsruj0ra84ffb",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "Selon sa politique de confidentialité, ces données peuvent notamment comprendre les noms, prénoms, adresses e-mail, numéros de téléphone, dates de naissance et adresses postales.",
-        "item_id": "https://frenchbreaches.com/alertes/wimoov-mv17oocsruj0ra84ffb",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "value": "numéros de téléphone"
-       },
-       {
-        "date": "",
-        "evidence": "Selon sa politique de confidentialité, ces données peuvent notamment comprendre les noms, prénoms, adresses e-mail, numéros de téléphone, dates de naissance et adresses postales.",
-        "item_id": "https://frenchbreaches.com/alertes/wimoov-mv17oocsruj0ra84ffb",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "value": "adresses postales"
-       },
-       {
-        "date": "",
-        "evidence": "Selon sa politique de confidentialité, ces données peuvent notamment comprendre les noms, prénoms, adresses e-mail, numéros de téléphone, dates de naissance et adresses postales.",
-        "item_id": "https://frenchbreaches.com/alertes/wimoov-mv17oocsruj0ra84ffb",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "value": "noms et prénoms"
-       },
-       {
-        "date": "",
-        "evidence": "Selon sa politique de confidentialité, ces données peuvent notamment comprendre les noms, prénoms, adresses e-mail, numéros de téléphone, dates de naissance et adresses postales.",
-        "item_id": "https://frenchbreaches.com/alertes/wimoov-mv17oocsruj0ra84ffb",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "value": "dates de naissance"
-       },
-       {
-        "date": "",
-        "evidence": "L’association indique avoir migré WIN vers un nouvel environnement informatique, renforcé la sécurité des accès et procédé à la réinitialisation de l’ensemble des mots de passe.",
-        "item_id": "https://frenchbreaches.com/alertes/wimoov-mv17oocsruj0ra84ffb",
-        "source_id": "FRENCHBREACHES",
-        "status": "reported",
-        "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "Ces opérations visent à empêcher la réutilisation d’identifiants compromis et à limiter le risque de nouvelles connexions malveillantes.",
-        "item_id": "https://frenchbreaches.com/alertes/wimoov-mv17oocsruj0ra84ffb",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "identifiants"
-       },
-       {
-        "date": "",
-        "evidence": "[email protected]",
-        "item_id": "https://frenchbreaches.com/alertes/wimoov-mv17oocsruj0ra84ffb",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "Dans cette affaire, Wimoov confirme l’intrusion informatique, la déclaration d’une violation de données à la CNIL et la réinitialisation générale des mots de passe.",
-        "item_id": "https://frenchbreaches.com/alertes/wimoov-mv17oocsruj0ra84ffb",
-        "source_id": "FRENCHBREACHES",
-        "status": "confirmed",
-        "value": "mots de passe"
-       }
-      ],
-      "data_volumes": [],
-      "engine": "generic-rich-facts",
-      "profile": {
-       "chars": 7475,
-       "claims": 10,
-       "hypotheses": 6,
-       "semantic_candidate": true,
-       "sentences": 63
-      },
-      "relations": [],
-      "semantic": {
-       "candidate": true,
-       "used": false
-      },
-      "source_adapter": "frenchbreaches",
-      "timeline": [
-       {
-        "date": "2026-08-26",
-        "event": "L’incident a été découvert le 26 août 2026 et officiellement notifié à la CNIL le 28 août 2026.",
-        "evidence": "L’incident a été découvert le 26 août 2026 et officiellement notifié à la CNIL le 28 août 2026.",
-        "item_id": "https://frenchbreaches.com/alertes/wimoov-mv17oocsruj0ra84ffb",
-        "source_id": "FRENCHBREACHES",
-        "status": "confirmed"
-       },
-       {
-        "date": "2026-08-28",
-        "event": "C’est dans ce contexte que Wimoov indique avoir notifié l’incident à la CNIL le 28 août 2026, soit deux jours après sa découverte.",
-        "evidence": "C’est dans ce contexte que Wimoov indique avoir notifié l’incident à la CNIL le 28 août 2026, soit deux jours après sa découverte.",
-        "item_id": "https://frenchbreaches.com/alertes/wimoov-mv17oocsruj0ra84ffb",
-        "source_id": "FRENCHBREACHES",
-        "status": "reported"
-       }
-      ],
-      "version": "2",
-      "vulnerabilities": []
-     }
-    },
-    "summary": "Wimoov victime d’une cyberattaque : sa plateforme WIN compromise, une violation de données signalée à la CNIL L’association française Wimoov, spécialisée dans l’accompagnement à la mobilité, confirme avoir été victime d’une cyberattaque visant sa plateforme numérique WIN. L’incid…",
-    "threat": "Fuite de données",
-    "title": "Wimoov",
-    "url": "https://frenchbreaches.com/alertes/wimoov-mv17oocsruj0ra84ffb"
-   },
-   "exhausted_fields": {},
-   "field_reasons": {},
-   "first_queued_at": "2026-10-11T06:14:49.396451+00:00",
-   "item": {
-    "Collected_As_Of": "2026-10-11T10:14:17.452530+04:00",
-    "Event_Date": "",
-    "Item_ID": "ITM-69bf1fcd0bc37c05",
-    "Location": "France métropolitaine",
-    "Organisation_Key": "wimoov",
-    "Organisation_Raw": "Wimoov",
-    "Published_Date": "2026-10-09",
-    "Sector": "Inconnu",
-    "Source_ID": "FRENCHBREACHES",
-    "Source_Item_ID": "https://frenchbreaches.com/alertes/wimoov-mv17oocsruj0ra84ffb",
-    "Threat": "Fuite de données",
-    "Threat_Raw": "Fuite de données",
-    "Title": "Wimoov",
-    "URL": "https://frenchbreaches.com/alertes/wimoov-mv17oocsruj0ra84ffb"
-   },
-   "key": "ITM-69bf1fcd0bc37c05:6a102dc58c3b92e1ba2d69d13ca25adb320353b5c9eb6f114ddf655f11ae67aa",
-   "last_queued_at": "2026-11-01T13:55:43.530341+00:00",
-   "pending_fields": [
-    "incident_summary",
-    "summary"
-   ],
-   "reason": "CALL_LIMIT"
-  },
-  {
-   "attempts": 1,
-   "entry": {
-    "content": "SL\nPar Seblatombe, rédacteur FrenchBreaches\nPublié le 09/10/2026\n— Secteur Commerce\nQuick victime d'un piratage : des données personnelles de clients compromises\nL'enseigne de restauration rapide Quick confirme avoir été victime d'un accès non autorisé à son programme de fidélité Qlub Quick. Dans un e-mail adressé à ses clients, l'entreprise indique que plusieurs informations personnelles ont été exposées, notamment des noms, adresses e-mail, numéros de téléphone et dates de naissance.\nLe programme de fidélité Qlub Quick touché par une intrusion\nQuick a informé ses clients d'un incident de sécurité concernant son programme de fidélité Qlub Quick, accessible depuis son application et ses restaurants.\nAprès avoir détecté un accès non autorisé, l'enseigne avait décidé de suspendre temporairement le programme par précaution.\nDans un nouveau message adressé aux membres, Quick annonce que son programme de fidélité est désormais de nouveau accessible, les mesures de sécurité nécessaires ayant été mises en place.\nLes clients peuvent donc à nouveau cumuler des points lors de leurs commandes et profiter de leurs avantages fidélité.\nQuelles données personnelles ont été compromises ?\nSelon les premières investigations communiquées par Quick, les informations concernées par l'intrusion sont :\nLes noms et prénoms des clients ;\nLes adresses e-mail ;\nLes numéros de téléphone ;\nLes dates de naissance ;\nLes numéros de carte de fidélité ;\nLes soldes de points fidélité.\nCes informations peuvent notamment être utilisées par des escrocs pour envoyer des messages frauduleux personnalisés, en se faisant passer pour l'enseigne.\nQuick précise toutefois qu'aucune donnée bancaire n'a été compromise, l'entreprise indiquant ne pas collecter les informations bancaires de ses clients.\nQuick appelle ses clients à la vigilance\nL'enseigne indique que ses investigations se poursuivent afin de mieux comprendre les circonstances de cette intrusion.\nDans l'attente, elle recommande à ses clients de se méfier des e-mails, SMS et appels suspects qui pourraient sembler provenir de Quick.\nUn escroc disposant du nom, de l'adresse e-mail et du numéro de téléphone d'un client pourrait, par exemple, lui envoyer un faux message concernant ses points fidélité pour tenter de récupérer d'autres informations.\nQuick conseille donc de ne pas répondre aux sollicitations suspectes et de ne communiquer aucune information personnelle en cas de doute.\nLe programme de fidélité de nouveau opérationnel\nAprès cette suspension temporaire, Quick assure que les conditions de sécurité nécessaires au rétablissement du programme sont réunies.\nL'enseigne précise également que les clients ayant effectué des achats entre le 5 et le 9 octobre à 11 heures peuvent demander la régularisation de leurs points auprès du service client, via la rubrique « Contactez-nous » de l'application Quick ou du site quick.fr.\nÀ ce stade, Quick ne précise pas le nombre de clients concernés par cette fuite de données.\nL'entreprise indique poursuivre ses investigations et prévoit de communiquer de nouvelles informations conformément à ses obligations réglementaires.\nSource : e-mail d'information adressé aux membres du programme Qlub Quick, transmis à FrenchBreaches.",
-    "entity": "",
-    "event_date": "",
-    "location": "",
-    "organisation": "",
-    "published": "2026-10-09",
-    "sector": "",
-    "source_item_id": "https://frenchbreaches.com/alertes/quick-mv15tpmx67f101x6mas",
-    "source_metadata": {
-     "detail_hydration": {
-      "chars": 3230,
-      "extractor_version": "editorial-html-2026-09-06.1",
-      "fallback": "",
-      "status": "HYDRATED",
-      "truncated": false
-     },
-     "rich_facts": {
-      "affected_counts": [],
-      "affected_datasets": [],
-      "affected_systems": [],
-      "claims": [
-       {
-        "date": "",
-        "evidence": "Dans un e-mail adressé à ses clients, l'entreprise indique que plusieur…",
-        "item_id": "https://frenchbreaches.com/alertes/quick-mv15tpmx67f101x6mas",
-        "source_id": "FRENCHBREACHES",
-        "status": "reported",
-        "type": "data_type",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "Dans un e-mail adressé à ses clients, l'entreprise indique que plusieurs informations personnelles ont été exposées, notamment des noms, adresses e-mail, numéros de téléphone et dates de naissance.",
-        "item_id": "https://frenchbreaches.com/alertes/quick-mv15tpmx67f101x6mas",
-        "source_id": "FRENCHBREACHES",
-        "status": "reported",
-        "type": "data_type",
-        "value": "numéros de téléphone"
-       },
-       {
-        "date": "",
-        "evidence": "Dans un e-mail adressé à ses clients, l'entreprise indique que plusieurs informations personnelles ont été exposées, notamment des noms, adresses e-mail, numéros de téléphone et dates de naissance.",
-        "item_id": "https://frenchbreaches.com/alertes/quick-mv15tpmx67f101x6mas",
-        "source_id": "FRENCHBREACHES",
-        "status": "reported",
-        "type": "data_type",
-        "value": "dates de naissance"
-       },
-       {
-        "date": "",
-        "evidence": "Les clients peuvent donc à nouveau cumuler des points lors de leurs commandes et profiter de leurs avantages fidélité.",
-        "item_id": "https://frenchbreaches.com/alertes/quick-mv15tpmx67f101x6mas",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "type": "data_type",
-        "value": "informations de commandes"
-       },
-       {
-        "date": "",
-        "evidence": "Les noms et prénoms des clients ;",
-        "item_id": "https://frenchbreaches.com/alertes/quick-mv15tpmx67f101x6mas",
-        "source_id": "FRENCHBREACHES",
-        "status": "reported",
-        "type": "data_type",
-        "value": "noms et prénoms"
-       },
-       {
-        "date": "",
-        "evidence": "Un escroc disposant du nom, de l'adresse e-mail et du numéro de téléphone d'un client pourrait, par exemple, lui envoyer un faux message concernant ses points fidélité pour tenter de récupérer d'autres informations.",
-        "item_id": "https://frenchbreaches.com/alertes/quick-mv15tpmx67f101x6mas",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "type": "data_type",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "Un escroc disposant du nom, de l'adresse e-mail et du numéro de téléphone d'un client pourrait, par exemple, lui envoyer un faux message concernant ses points fidélité pour tenter de récupérer d'autres informations.",
-        "item_id": "https://frenchbreaches.com/alertes/quick-mv15tpmx67f101x6mas",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "type": "data_type",
-        "value": "numéros de téléphone"
-       }
-      ],
-      "data_types": [
-       {
-        "date": "",
-        "evidence": "Dans un e-mail adressé à ses clients, l'entreprise indique que plusieur…",
-        "item_id": "https://frenchbreaches.com/alertes/quick-mv15tpmx67f101x6mas",
-        "source_id": "FRENCHBREACHES",
-        "status": "reported",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "Dans un e-mail adressé à ses clients, l'entreprise indique que plusieurs informations personnelles ont été exposées, notamment des noms, adresses e-mail, numéros de téléphone et dates de naissance.",
-        "item_id": "https://frenchbreaches.com/alertes/quick-mv15tpmx67f101x6mas",
-        "source_id": "FRENCHBREACHES",
-        "status": "reported",
-        "value": "numéros de téléphone"
-       },
-       {
-        "date": "",
-        "evidence": "Dans un e-mail adressé à ses clients, l'entreprise indique que plusieurs informations personnelles ont été exposées, notamment des noms, adresses e-mail, numéros de téléphone et dates de naissance.",
-        "item_id": "https://frenchbreaches.com/alertes/quick-mv15tpmx67f101x6mas",
-        "source_id": "FRENCHBREACHES",
-        "status": "reported",
-        "value": "dates de naissance"
-       },
-       {
-        "date": "",
-        "evidence": "Les clients peuvent donc à nouveau cumuler des points lors de leurs commandes et profiter de leurs avantages fidélité.",
-        "item_id": "https://frenchbreaches.com/alertes/quick-mv15tpmx67f101x6mas",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "value": "informations de commandes"
-       },
-       {
-        "date": "",
-        "evidence": "Les noms et prénoms des clients ;",
-        "item_id": "https://frenchbreaches.com/alertes/quick-mv15tpmx67f101x6mas",
-        "source_id": "FRENCHBREACHES",
-        "status": "reported",
-        "value": "noms et prénoms"
-       },
-       {
-        "date": "",
-        "evidence": "Un escroc disposant du nom, de l'adresse e-mail et du numéro de téléphone d'un client pourrait, par exemple, lui envoyer un faux message concernant ses points fidélité pour tenter de récupérer d'autres informations.",
-        "item_id": "https://frenchbreaches.com/alertes/quick-mv15tpmx67f101x6mas",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "Un escroc disposant du nom, de l'adresse e-mail et du numéro de téléphone d'un client pourrait, par exemple, lui envoyer un faux message concernant ses points fidélité pour tenter de récupérer d'autres informations.",
-        "item_id": "https://frenchbreaches.com/alertes/quick-mv15tpmx67f101x6mas",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "value": "numéros de téléphone"
-       }
-      ],
-      "data_volumes": [],
-      "engine": "generic-rich-facts",
-      "profile": {
-       "chars": 3518,
-       "claims": 7,
-       "hypotheses": 3,
-       "semantic_candidate": true,
-       "sentences": 36
-      },
-      "relations": [],
-      "semantic": {
-       "candidate": true,
-       "used": false
-      },
-      "source_adapter": "frenchbreaches",
-      "timeline": [],
-      "version": "2",
-      "vulnerabilities": []
-     }
-    },
-    "summary": "Quick victime d'un piratage : des données personnelles de clients compromises L'enseigne de restauration rapide Quick confirme avoir été victime d'un accès non autorisé à son programme de fidélité Qlub Quick. Dans un e-mail adressé à ses clients, l'entreprise indique que plusieur…",
-    "threat": "Fuite de données",
-    "title": "Quick",
-    "url": "https://frenchbreaches.com/alertes/quick-mv15tpmx67f101x6mas"
-   },
-   "exhausted_fields": {},
-   "field_reasons": {},
-   "first_queued_at": "2026-10-11T06:14:49.944668+00:00",
-   "item": {
-    "Collected_As_Of": "2026-10-11T10:14:17.452530+04:00",
-    "Event_Date": "",
-    "Item_ID": "ITM-548c7adef0b28064",
-    "Location": "France métropolitaine",
-    "Organisation_Key": "quick",
-    "Organisation_Raw": "Quick",
-    "Published_Date": "2026-10-09",
-    "Sector": "Inconnu",
-    "Source_ID": "FRENCHBREACHES",
-    "Source_Item_ID": "https://frenchbreaches.com/alertes/quick-mv15tpmx67f101x6mas",
-    "Threat": "Fuite de données",
-    "Threat_Raw": "Fuite de données",
-    "Title": "Quick",
-    "URL": "https://frenchbreaches.com/alertes/quick-mv15tpmx67f101x6mas"
-   },
-   "key": "ITM-548c7adef0b28064:03380b12fdf6fbe3b7445641ebfeac6eda717ef405789a44fdd73cd70509444b",
-   "last_queued_at": "2026-11-01T13:55:44.119937+00:00",
-   "pending_fields": [
-    "incident_summary",
-    "summary"
-   ],
-   "reason": "CALL_LIMIT"
+   "reason": "SEMANTIC_MISS"
   },
   {
    "attempts": 0,
@@ -51734,277 +51055,6 @@
   {
    "attempts": 0,
    "entry": {
-    "content": "SL\nPar Seblatombe, rédacteur FrenchBreaches\nPublié le 01/11/2026\n— Secteur Santé\nBelgique : l’Institut de médecine tropicale piraté, les données de 2 300 personnes volées\nL’Institut de médecine tropicale d’Anvers, en Belgique, confirme avoir été victime d’une cyberattaque ayant entraîné le vol de données issues d’une application utilisée pour les soins médicaux et la recherche scientifique. Environ 2 300 personnes seraient concernées par la compromission de données permettant de les identifier.\nUne nouvelle cyberattaque touche le secteur de la santé en Belgique. L’Institut de médecine tropicale d’Anvers (ITM), établissement reconnu pour ses activités de soins, de recherche scientifique et de formation, a officiellement confirmé un incident de cybersécurité.\nDans une déclaration publiée le 28 octobre 2026 et actualisée le lendemain, l’institut révèle qu’un individu non autorisé a accédé à une base de données et en a copié le contenu.\nSelon les informations rapportées par l’agence Belga, environ 2 300 personnes dont les données sont directement identifiables ont été concernées.\nL’incident a été détecté le 12 octobre 2026.\nUne intrusion dans un serveur utilisé pour les soins et la recherche\nLe lundi 12 octobre, les équipes informatiques de l’Institut de médecine tropicale ont détecté une activité suspecte sur le serveur d’une application.\nCette application était utilisée pour certaines activités de soins au sein de la polyclinique, mais également pour des travaux de recherche scientifique.\nFace à cette activité anormale, l’établissement indique avoir immédiatement mis le serveur hors ligne afin de limiter les conséquences de l’incident.\nUne enquête interne a ensuite été lancée avec l’appui d’experts externes spécialisés en cybersécurité et en investigation numérique.\nLes premières conclusions ont confirmé qu’un tiers non autorisé avait réussi à accéder à une base de données et à en copier des informations.\nIl ne s’agit donc pas d’une simple tentative de piratage : l’accès non autorisé et la copie de données sont officiellement confirmés.\nQuelles données ont été compromises ?\nL’Institut de médecine tropicale précise que la majorité des informations copiées étaient pseudonymisées.\nCela signifie que les personnes étaient enregistrées sous un code plutôt que sous leur nom, afin de limiter leur identification directe.\nToutefois, pour une partie des personnes concernées, les données compromises comprenaient également des informations permettant de les identifier.\nLes éléments confirmés à ce stade sont les suivants :\nDes données issues d’une application utilisée dans le cadre de soins médicaux ;\nDes informations liées à des activités de recherche scientifique ;\nDes enregistrements pseudonymisés, associés à des codes ;\nPour certaines personnes, des données permettant une identification directe.\nL’établissement n’a pas publié de liste détaillée des champs dérobés. Il n’est donc pas possible de confirmer précisément la présence de diagnostics, de résultats d’analyses, de traitements ou d’autres informations médicales individuelles dans les fichiers copiés.\nLa nature médicale et scientifique de l’application concernée rend néanmoins cet incident particulièrement sensible.\nEnviron 2 300 personnes directement concernées\nD’après les informations diffusées le 29 octobre par l’agence de presse belge Belga, environ 2 300 personnes dont les données peuvent être directement associées à leur identité ont été concernées.\nL’institut indique avoir entrepris de contacter les personnes exposées aux risques les plus importants, directement ou par l’intermédiaire de ses partenaires de recherche.\nIl faut toutefois distinguer ce chiffre du volume total de données copiées.\nEn effet, une grande partie de la base de données était pseudonymisée. Le nombre total d’enregistrements concernés n’a pas été précisé dans le communiqué officiel.\nDe même, l’institut n’a pas communiqué de répartition détaillée entre patients, participants aux études scientifiques et autres personnes éventuellement concernées.\nLes autres systèmes de l’institut seraient épargnés\nSelon les premières constatations de l’établissement, les autres systèmes informatiques de l’Institut de médecine tropicale n’auraient pas été touchés.\nL’institut précise également que ses activités continuent normalement.\nLes consultations médicales, les soins et l’enseignement ne sont donc pas interrompus à la suite de cet incident.\nCette continuité de service ne remet toutefois pas en cause la gravité de la fuite, puisque des informations ont effectivement été copiées par un tiers non autorisé.\nQuels risques pour les personnes concernées ?\nL’Institut de médecine tropicale appelle les personnes potentiellement touchées à faire preuve de vigilance face aux tentatives de fraude.\nL’établissement met notamment en garde contre :\nLes e-mails inattendus évoquant la cyberattaque ;\nLes SMS ou appels téléphoniques prétendant provenir de l’institut ;\nLes demandes de transmission de données personnelles ou médicales ;\nLes sollicitations de paiement liées à l’incident ;\nLes demandes de mots de passe ou de coordonnées bancaires.\nUn cybercriminel pourrait tenter d’exploiter la médiatisation de cette fuite pour se faire passer pour un membre de l’établissement et obtenir de nouvelles informations.\nL’institut rappelle qu’il ne demande jamais de mots de passe ou de coordonnées bancaires dans ce type de communication.\nEn cas de doute, il recommande de contacter directement ses services par les canaux officiels.\nLes autorités belges informées et une plainte déposée\nL’Institut de médecine tropicale a déclaré l’incident aux autorités compétentes.\nParmi les organismes informés figurent :\nL’Autorité de protection des données (APD), chargée notamment du respect du RGPD en Belgique ;\nLe Centre pour la Cybersécurité Belgique (CCB), organisme national chargé de la cybersécurité.\nL’établissement a également déposé une plainte auprès de la police.\nLes investigations doivent désormais permettre de déterminer les circonstances exactes de l’intrusion, les données copiées et les éventuelles conséquences pour les personnes concernées.\nÀ ce stade, aucune information officielle ne permet d’identifier l’auteur de l’attaque ou d’affirmer que les données ont été mises en vente ou publiées sur un forum clandestin.\nUne cyberattaque officiellement confirmée\nContrairement aux simples revendications de pirates, cette affaire repose sur une communication officielle de l’organisme victime.\nL’Institut de médecine tropicale confirme un accès non autorisé et une copie de données depuis une application utilisée pour les soins et la recherche.\nEnviron 2 300 personnes seraient concernées par la compromission d’informations directement identifiables, tandis que la majorité des données copiées étaient pseudonymisées.\nL’établissement affirme que ses autres systèmes ne sont pas touchés et que ses activités se poursuivent normalement.\nL’enquête reste en cours afin de préciser l’étendue exacte de la fuite et les circonstances de l’intrusion.",
-    "entity": "",
-    "event_date": "",
-    "location": "",
-    "organisation": "",
-    "published": "2026-11-01",
-    "sector": "",
-    "source_item_id": "https://frenchbreaches.com/alertes/institut-de-m-decine-tropicale-d-anvers-mvxl597yo144e46lfj",
-    "source_metadata": {
-     "detail_hydration": {
-      "chars": 7028,
-      "extractor_version": "editorial-html-2026-09-06.1",
-      "fallback": "",
-      "status": "HYDRATED",
-      "truncated": false
-     },
-     "rich_facts": {
-      "affected_counts": [
-       {
-        "date": "",
-        "evidence": "Belgique : l’Institut de médecine tropicale piraté, les données de 2 300 personnes volées L’Institut de médecine tropicale d’Anvers, en Belgique, confirme avoir été victime d’une cyberattaque ayant entraîné le vol de données issues d’une application utilisée pour les soins médica…",
-        "item_id": "https://frenchbreaches.com/alertes/institut-de-m-decine-tropicale-d-anvers-mvxl597yo144e46lfj",
-        "raw": "2 300 personnes",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "confirmed",
-        "unit": "people",
-        "value": 2300
-       },
-       {
-        "date": "",
-        "evidence": "Selon les informations rapportées par l’agence Belga, environ 2 300 personnes dont les données sont directement identifiables ont été concernées.",
-        "item_id": "https://frenchbreaches.com/alertes/institut-de-m-decine-tropicale-d-anvers-mvxl597yo144e46lfj",
-        "raw": "2 300 personnes",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "reported",
-        "unit": "people",
-        "value": 2300
-       },
-       {
-        "date": "",
-        "evidence": "Environ 2 300 personnes seraient concernées par la compromission de données permettant de les identifier.",
-        "item_id": "https://frenchbreaches.com/alertes/institut-de-m-decine-tropicale-d-anvers-mvxl597yo144e46lfj",
-        "raw": "2 300 personnes",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "unit": "people",
-        "value": 2300
-       },
-       {
-        "date": "",
-        "evidence": "Belgique : l’Institut de médecine tropicale piraté, les données de 2 300 personnes volées",
-        "item_id": "https://frenchbreaches.com/alertes/institut-de-m-decine-tropicale-d-anvers-mvxl597yo144e46lfj",
-        "raw": "2 300 personnes",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "unit": "people",
-        "value": 2300
-       }
-      ],
-      "affected_datasets": [],
-      "affected_systems": [],
-      "claims": [
-       {
-        "date": "",
-        "evidence": "Belgique : l’Institut de médecine tropicale piraté, les données de 2 300 personnes volées L’Institut de médecine tropicale d’Anvers, en Belgique, confirme avoir été victime d’une cyberattaque ayant entraîné le vol de données issues d’une application utilisée pour les soins médica…",
-        "item_id": "https://frenchbreaches.com/alertes/institut-de-m-decine-tropicale-d-anvers-mvxl597yo144e46lfj",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "confirmed",
-        "type": "affected_count",
-        "unit": "people",
-        "value": 2300
-       },
-       {
-        "date": "",
-        "evidence": "Selon les informations rapportées par l’agence Belga, environ 2 300 personnes dont les données sont directement identifiables ont été concernées.",
-        "item_id": "https://frenchbreaches.com/alertes/institut-de-m-decine-tropicale-d-anvers-mvxl597yo144e46lfj",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "reported",
-        "type": "affected_count",
-        "unit": "people",
-        "value": 2300
-       },
-       {
-        "date": "",
-        "evidence": "Environ 2 300 personnes seraient concernées par la compromission de données permettant de les identifier.",
-        "item_id": "https://frenchbreaches.com/alertes/institut-de-m-decine-tropicale-d-anvers-mvxl597yo144e46lfj",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "type": "affected_count",
-        "unit": "people",
-        "value": 2300
-       },
-       {
-        "date": "",
-        "evidence": "Belgique : l’Institut de médecine tropicale piraté, les données de 2 300 personnes volées",
-        "item_id": "https://frenchbreaches.com/alertes/institut-de-m-decine-tropicale-d-anvers-mvxl597yo144e46lfj",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "people",
-        "value": 2300
-       },
-       {
-        "date": "",
-        "evidence": "Les e-mails inattendus évoquant la cyberattaque ;",
-        "item_id": "https://frenchbreaches.com/alertes/institut-de-m-decine-tropicale-d-anvers-mvxl597yo144e46lfj",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "Les demandes de mots de passe ou de coordonnées bancaires.",
-        "item_id": "https://frenchbreaches.com/alertes/institut-de-m-decine-tropicale-d-anvers-mvxl597yo144e46lfj",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "Les demandes de mots de passe ou de coordonnées bancaires.",
-        "item_id": "https://frenchbreaches.com/alertes/institut-de-m-decine-tropicale-d-anvers-mvxl597yo144e46lfj",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "données bancaires"
-       },
-       {
-        "date": "",
-        "evidence": "L’institut rappelle qu’il ne demande jamais de mots de passe ou de coordonnées bancaires dans ce type de communication.",
-        "item_id": "https://frenchbreaches.com/alertes/institut-de-m-decine-tropicale-d-anvers-mvxl597yo144e46lfj",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "type": "data_type",
-        "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "L’institut rappelle qu’il ne demande jamais de mots de passe ou de coordonnées bancaires dans ce type de communication.",
-        "item_id": "https://frenchbreaches.com/alertes/institut-de-m-decine-tropicale-d-anvers-mvxl597yo144e46lfj",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "type": "data_type",
-        "value": "données bancaires"
-       }
-      ],
-      "data_types": [
-       {
-        "date": "",
-        "evidence": "Les e-mails inattendus évoquant la cyberattaque ;",
-        "item_id": "https://frenchbreaches.com/alertes/institut-de-m-decine-tropicale-d-anvers-mvxl597yo144e46lfj",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "Les demandes de mots de passe ou de coordonnées bancaires.",
-        "item_id": "https://frenchbreaches.com/alertes/institut-de-m-decine-tropicale-d-anvers-mvxl597yo144e46lfj",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "Les demandes de mots de passe ou de coordonnées bancaires.",
-        "item_id": "https://frenchbreaches.com/alertes/institut-de-m-decine-tropicale-d-anvers-mvxl597yo144e46lfj",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "données bancaires"
-       },
-       {
-        "date": "",
-        "evidence": "L’institut rappelle qu’il ne demande jamais de mots de passe ou de coordonnées bancaires dans ce type de communication.",
-        "item_id": "https://frenchbreaches.com/alertes/institut-de-m-decine-tropicale-d-anvers-mvxl597yo144e46lfj",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "L’institut rappelle qu’il ne demande jamais de mots de passe ou de coordonnées bancaires dans ce type de communication.",
-        "item_id": "https://frenchbreaches.com/alertes/institut-de-m-decine-tropicale-d-anvers-mvxl597yo144e46lfj",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "value": "données bancaires"
-       }
-      ],
-      "data_volumes": [],
-      "engine": "generic-rich-facts",
-      "profile": {
-       "chars": 7350,
-       "claims": 9,
-       "hypotheses": 3,
-       "semantic_candidate": true,
-       "sentences": 70
-      },
-      "relations": [],
-      "semantic": {
-       "candidate": true,
-       "used": false
-      },
-      "source_adapter": "frenchbreaches",
-      "timeline": [
-       {
-        "date": "2026-10-28",
-        "event": "Dans une déclaration publiée le 28 octobre 2026 et actualisée le lendemain, l’institut révèle qu’un individu non autorisé a accédé à une base de données et en a copié le contenu.",
-        "evidence": "Dans une déclaration publiée le 28 octobre 2026 et actualisée le lendemain, l’institut révèle qu’un individu non autorisé a accédé à une base de données et en a copié le contenu.",
-        "item_id": "https://frenchbreaches.com/alertes/institut-de-m-decine-tropicale-d-anvers-mvxl597yo144e46lfj",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown"
-       },
-       {
-        "date": "2026-10-12",
-        "event": "L’incident a été détecté le 12 octobre 2026.",
-        "evidence": "L’incident a été détecté le 12 octobre 2026.",
-        "item_id": "https://frenchbreaches.com/alertes/institut-de-m-decine-tropicale-d-anvers-mvxl597yo144e46lfj",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown"
-       }
-      ],
-      "version": "2",
-      "vulnerabilities": []
-     }
-    },
-    "summary": "Belgique : l’Institut de médecine tropicale piraté, les données de 2 300 personnes volées L’Institut de médecine tropicale d’Anvers, en Belgique, confirme avoir été victime d’une cyberattaque ayant entraîné le vol de données issues d’une application utilisée pour les soins médica…",
-    "threat": "Fuite de données",
-    "title": "Institut de Médecine Tropicale d’Anvers",
-    "url": "https://frenchbreaches.com/alertes/institut-de-m-decine-tropicale-d-anvers-mvxl597yo144e46lfj"
-   },
-   "exhausted_fields": {},
-   "field_reasons": {
-    "summary": "HEADLINE_TOO_LONG"
-   },
-   "first_queued_at": "2026-11-01T13:53:37.476770+00:00",
-   "item": {
-    "Collected_As_Of": "2026-11-01T17:52:52.143834+04:00",
-    "Event_Date": "",
-    "Item_ID": "ITM-21c8b077dc8e9cb2",
-    "Location": "France métropolitaine",
-    "Organisation_Key": "institut de medecine tropicale d anvers",
-    "Organisation_Raw": "Institut de Médecine Tropicale d’Anvers",
-    "Published_Date": "2026-11-01",
-    "Sector": "Inconnu",
-    "Source_ID": "FRENCHBREACHES",
-    "Source_Item_ID": "https://frenchbreaches.com/alertes/institut-de-m-decine-tropicale-d-anvers-mvxl597yo144e46lfj",
-    "Threat": "Fuite de données",
-    "Threat_Raw": "Fuite de données",
-    "Title": "Institut de Médecine Tropicale d’Anvers",
-    "URL": "https://frenchbreaches.com/alertes/institut-de-m-decine-tropicale-d-anvers-mvxl597yo144e46lfj"
-   },
-   "key": "ITM-21c8b077dc8e9cb2:4bea6f05ccfa47001313227a5be3303090d421bb1a312b5adf2f28edb3903c6a",
-   "last_queued_at": "2026-11-01T13:53:37.476770+00:00",
-   "pending_fields": [
-    "summary"
-   ],
-   "reason": "SEMANTIC_MISS"
-  },
-  {
-   "attempts": 0,
-   "entry": {
     "content": "SL\nPar Seblatombe, rédacteur FrenchBreaches\nPublié le 31/10/2026\n— Secteur Commerce\nTerre de Son : les données de 95 000 clients revendiquées après un piratage\nLe site français Terre de Son (terredeson.com), spécialisé dans la vente de matériel de sonorisation, d'éclairage, de DJ et d'équipements de studio, est visé par une fuite de données revendiquée par le cybercriminel ChimeraZ sur un forum clandestin.\nDans une publication datée du 31 octobre 2026, celui-ci affirme avoir mis en vente une base de données contenant 309 100 enregistrements concernant environ 95 228 personnes, ainsi que des informations liées à 92 agences ou entités.\nLes données revendiquées couvriraient une période allant de 2013 à 2026 et comprendraient notamment des coordonnées personnelles, des adresses de livraison et des historiques de commandes.\nQuelles données seraient exposées ?\nSelon la publication du pirate, les informations seraient regroupées dans une archive CSV d'environ 28 Mo, répartie entre plusieurs fichiers.\nLes extraits présentés font apparaître les types de données suivants :\nIdentité des clients : noms, prénoms et identifiants de comptes ;\nCoordonnées personnelles : adresses e-mail et numéros de téléphone ;\nAdresses postales : rues, codes postaux, villes et pays ;\nCommandes : références de commandes, produits achetés, montants et statuts de livraison ;\nInformations de paiement : mentions de modalités de règlement, notamment des paiements en plusieurs fois ;\nHistorique commercial : dates et heures de commandes, références de produits et informations associées aux achats.\nTrois principaux fichiers sont mentionnés dans la publication :\n110K_adresses.csv : environ 110 000 enregistrements d'adresses et de coordonnées ;\n103K_commandes.csv : environ 103 000 enregistrements liés aux commandes ;\n95K_clients.csv : environ 95 000 enregistrements associés aux clients.\nLes exemples affichés comprennent notamment des noms, des adresses e-mail, des numéros de téléphone, des adresses postales, des montants d'achat et des références de commandes.\nEn revanche, les extraits visibles ne montrent ni mots de passe ni numéros de carte bancaire complets. La mention d'un mode de paiement ne signifie pas nécessairement que des coordonnées bancaires ont été compromises.\nPrès de 95 000 personnes potentiellement concernées\nChimeraZ revendique un total de 309 100 lignes de données, pour environ 95 228 personnes selon son estimation.\nCes chiffres ne doivent pas être confondus : les 309 100 enregistrements ne correspondent pas à autant de clients distincts.\nUne même personne peut apparaître dans plusieurs fichiers, notamment ceux consacrés aux comptes clients, aux adresses et aux commandes.\nLe pirate affirme également que les informations couvriraient une période de treize ans, entre 2013 et 2026.\nL'ancienneté des données et le nombre exact de personnes réellement concernées restent toutefois à vérifier.\nDes historiques de commandes et des adresses de livraison\nLa présence revendiquée d'historiques de commandes constitue un élément sensible de cette fuite.\nLes extraits montrent notamment des références de produits, des montants, des dates d'achat et des statuts d'expédition.\nAssociées aux noms, adresses e-mail, numéros de téléphone et adresses postales, ces informations pourraient permettre à des fraudeurs de concevoir des messages particulièrement crédibles.\nUn client pourrait, par exemple, recevoir un faux message faisant référence à un achat de matériel audio, à une livraison ou à un paiement.\nLes informations relatives aux adresses pourraient également exposer des particuliers comme des professionnels ayant commandé sur le site.\nQuels risques pour les clients de Terre de Son ?\nSi cette fuite est authentique, les données pourraient être exploitées pour mener des campagnes de phishing ciblées, des tentatives d'usurpation d'identité ou des escroqueries liées aux commandes.\nLes fraudeurs pourraient notamment se faire passer pour le service client de Terre de Son, un transporteur ou un prestataire de paiement.\nLa combinaison des coordonnées personnelles et des historiques d'achat pourrait renforcer la crédibilité de ces tentatives.\nLes personnes ayant utilisé le site sont invitées à rester vigilantes face aux messages évoquant une commande, une livraison ou un règlement, particulièrement lorsqu'ils demandent de cliquer sur un lien ou de communiquer des informations personnelles.\nLe piratage de Terre de Son est-il confirmé ?\nÀ ce stade, les informations reposent sur une publication attribuée au cybercriminel ChimeraZ, accompagnée d'extraits de fichiers présentés comme provenant de terredeson.com.\nLe pirate affirme avoir mis la base de données en vente sur un forum clandestin.\nCes éléments ne permettent cependant pas, à eux seuls, de confirmer l'authenticité de l'ensemble des données, leur origine exacte ou les circonstances de leur obtention.\nAucune confirmation officielle de Terre de Son n'est établie sur la base des éléments disponibles.\nL'étendue réelle de cette fuite et le nombre de clients concernés restent donc à confirmer.",
     "entity": "",
     "event_date": "",
@@ -53474,186 +52524,6 @@
    },
    "key": "ITM-a3ec4c138c6ce545:997d77220bca63e748db0e192768a1f43f0b0d311bf607e88da6740078ba0968",
    "last_queued_at": "2026-11-01T13:54:45.982326+00:00",
-   "pending_fields": [
-    "activity_description",
-    "activity_sector_match"
-   ],
-   "reason": "SEMANTIC_REJECTED"
-  },
-  {
-   "attempts": 0,
-   "entry": {
-    "content": "À Verrières-en-Forez, dans la Loire, les pirates informatiques ont réussi à prendre en otage les fichiers de la mairie.  Dans la nuit du 28 octobre 2026, une cyberattaque a frappé le serveur de stockage de la commune, rendant une partie des données inaccessibles. Les cybercriminels ont ensuite exigé une rançon pour les débloquer, mais la municipalité a refusé de payer. \n\n\n\n Située près de Montbrison,  Verrières-en-Forez est une petite commune rurale d’environ 800 habitants , membre de Loire Forez Agglomération. Son maire, Kévin Klein, a confirmé l’incident, tandis que la municipalité a publié une alerte officielle concernant les risques pour les données personnelles des administrés. \n\n\n\n   \n\n\n\n Une attaque déclenchée à 3 h 40 du matin \n\n\n\n L’intrusion s’est produite le  28 octobre 2026 vers 3 h 40 . Les premières investigations orientent les soupçons vers une vulnérabilité du serveur de stockage municipal. \n\n\n\n Les attaquants ont procédé au  chiffrement des fichiers hébergés sur ce serveur , empêchant les agents du secrétariat de travailler normalement. Ce mode opératoire correspond à une attaque de type rançongiciel : les données deviennent illisibles et les pirates réclament de l’argent pour permettre leur récupération. \n\n\n\n Selon les premiers éléments communiqués,  les postes de travail et les logiciels sensibles de la collectivité n’ont pas été touchés . L’identité des attaquants, le logiciel malveillant éventuellement utilisé et le montant de la rançon n’ont pas été rendus publics. \n\n\n\n Des données d’état civil et des numéros de Sécurité sociale potentiellement concernés \n\n\n\n La mairie a choisi d’alerter directement les habitants, les associations et ses partenaires sur les informations susceptibles d’être concernées par l’incident. \n\n\n\n Parmi les données identifiées par la municipalité figurent : \n\n\n\n \n  Les noms, prénoms et dates de naissance  ; \n\n\n\n Les adresses postales et électroniques ; \n\n\n\n Les numéros de téléphone ; \n\n\n\n  Les numéros de Sécurité sociale des agents municipaux et des élus . \n \n\n\n\n  Attention toutefois : le chiffrement des fichiers ne signifie pas automatiquement qu’ils ont été volés.  Les investigations n’ont pas encore permis d’établir si les cybercriminels ont également extrait une copie des données avant de les rendre inaccessibles. \n\n\n\n La commune précise par ailleurs qu’elle ne détient pas les coordonnées bancaires des habitants. Le nombre exact de personnes potentiellement concernées n’a pas été communiqué. \n\n\n\n La municipalité refuse la rançon et dépose plainte \n\n\n\n Face aux exigences des pirates,  la mairie a décidé de ne pas verser la rançon . Son prestataire informatique travaille au rétablissement des systèmes et à la sécurisation de l’environnement touché. \n\n\n\n La collectivité indique avoir suspendu les comptes utilisateurs compromis, réinitialisé les mots de passe et engagé une analyse technique approfondie.  Une plainte pénale a été déposée et l’incident a été notifié à la CNIL , ainsi qu’au référent chargé de la protection des données auprès de Loire Forez Agglomération. \n\n\n\n Les risques pour les habitants concernent principalement  l’usurpation d’identité et les tentatives d’escroquerie , notamment par téléphone, SMS ou courrier électronique. Si une extraction des données était confirmée, des informations administratives pourraient être utilisées pour rendre ces démarches frauduleuses plus crédibles. \n\n\n\n  La cyberattaque est officiellement confirmée, tout comme la demande de rançon et l’indisponibilité des fichiers.  En revanche, aucune fuite de données n’est établie à ce stade. Les investigations doivent désormais déterminer l’ampleur réelle de l’intrusion et permettre à la petite commune ligérienne de retrouver un fonctionnement normal.",
-    "entity": "",
-    "event_date": "",
-    "location": "",
-    "organisation": "",
-    "published": "2026-11-01",
-    "sector": "",
-    "source_item_id": "4815",
-    "source_metadata": {
-     "rich_facts": {
-      "affected_counts": [],
-      "affected_datasets": [],
-      "affected_systems": [],
-      "claims": [
-       {
-        "date": "",
-        "evidence": "Les noms, prénoms et dates de naissance  ;",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "noms et prénoms"
-       },
-       {
-        "date": "",
-        "evidence": "Les noms, prénoms et dates de naissance  ;",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "dates de naissance"
-       },
-       {
-        "date": "",
-        "evidence": "Les adresses postales et électroniques ;",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "adresses postales"
-       },
-       {
-        "date": "",
-        "evidence": "Les numéros de téléphone ;",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "numéros de téléphone"
-       },
-       {
-        "date": "",
-        "evidence": "La collectivité indique avoir suspendu les comptes utilisateurs compromis, réinitialisé les mots de passe et engagé une analyse technique approfondie.",
-        "status": "reported",
-        "type": "data_type",
-        "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "Si une extraction des données était confirmée, des informations administratives pourraient être utilisées pour rendre ces démarches frauduleuses plus crédibles.",
-        "status": "hypothesis",
-        "type": "data_type",
-        "value": "informations administratives"
-       },
-       {
-        "date": "2026-10-28",
-        "evidence": "Dans la nuit du 28 octobre 2026, une cyberattaque a frappé le serveur de stockage de la commune, rendant une partie des données inaccessibles.",
-        "kind": "statement",
-        "scope": "Chronologie",
-        "status": "unknown",
-        "value": "Dans la nuit du 28 octobre 2026, une cyberattaque a frappé le serveur de stockage de la commune, rendant une partie des données inaccessibles."
-       },
-       {
-        "date": "2026-10-28",
-        "evidence": "L’intrusion s’est produite le  28 octobre 2026 vers 3 h 40 .",
-        "kind": "statement",
-        "scope": "Chronologie",
-        "status": "unknown",
-        "value": "L’intrusion s’est produite le  28 octobre 2026 vers 3 h 40 ."
-       }
-      ],
-      "data_types": [
-       {
-        "date": "",
-        "evidence": "Les noms, prénoms et dates de naissance  ;",
-        "status": "unknown",
-        "value": "noms et prénoms"
-       },
-       {
-        "date": "",
-        "evidence": "Les noms, prénoms et dates de naissance  ;",
-        "status": "unknown",
-        "value": "dates de naissance"
-       },
-       {
-        "date": "",
-        "evidence": "Les adresses postales et électroniques ;",
-        "status": "unknown",
-        "value": "adresses postales"
-       },
-       {
-        "date": "",
-        "evidence": "Les numéros de téléphone ;",
-        "status": "unknown",
-        "value": "numéros de téléphone"
-       },
-       {
-        "date": "",
-        "evidence": "La collectivité indique avoir suspendu les comptes utilisateurs compromis, réinitialisé les mots de passe et engagé une analyse technique approfondie.",
-        "status": "reported",
-        "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "Si une extraction des données était confirmée, des informations administratives pourraient être utilisées pour rendre ces démarches frauduleuses plus crédibles.",
-        "status": "hypothesis",
-        "value": "informations administratives"
-       }
-      ],
-      "data_volumes": [],
-      "profile": {
-       "chars": 3951,
-       "claims": 6,
-       "dates": 2,
-       "hypotheses": 1,
-       "numbers": 0,
-       "sentences": 35
-      },
-      "relations": [],
-      "semantic": {
-       "used": false
-      },
-      "timeline": [
-       {
-        "date": "2026-10-28",
-        "event": "Dans la nuit du 28 octobre 2026, une cyberattaque a frappé le serveur de stockage de la commune, rendant une partie des données inaccessibles.",
-        "evidence": "Dans la nuit du 28 octobre 2026, une cyberattaque a frappé le serveur de stockage de la commune, rendant une partie des données inaccessibles.",
-        "status": "unknown"
-       },
-       {
-        "date": "2026-10-28",
-        "event": "L’intrusion s’est produite le  28 octobre 2026 vers 3 h 40 .",
-        "evidence": "L’intrusion s’est produite le  28 octobre 2026 vers 3 h 40 .",
-        "status": "unknown"
-       }
-      ],
-      "version": "2",
-      "vulnerabilities": []
-     }
-    },
-    "summary": "À Verrières-en-Forez, dans la Loire, les pirates informatiques ont réussi à prendre en otage les fichiers de la…",
-    "threat": "",
-    "title": "Verrières-en-Forez : une cyberattaque bloque la mairie, les pirates exigent une rançon",
-    "url": "https://www.cyberattaque.org/verrieres-en-forez-une-cyberattaque-bloque-la-mairie-les-pirates-exigent-une-rancon/"
-   },
-   "exhausted_fields": {},
-   "field_reasons": {
-    "activity_description": "ACTIVITY_NOT_DESCRIBED",
-    "activity_sector_match": "NO_VALID_ACTIVITY_PAIR"
-   },
-   "first_queued_at": "2026-11-01T13:54:58.916920+00:00",
-   "item": {
-    "Collected_As_Of": "2026-11-01T17:52:52.143834+04:00",
-    "Event_Date": "",
-    "Item_ID": "ITM-ecc3d825973b3bc0",
-    "Location": "Inconnu",
-    "Organisation_Key": "verrieres en forez",
-    "Organisation_Raw": "Verrières-en-Forez",
-    "Published_Date": "2026-11-01",
-    "Sector": "Inconnu",
-    "Source_ID": "CYBERATTAQUE_ORG",
-    "Source_Item_ID": "4815",
-    "Threat": "Ransomware",
-    "Threat_Raw": "",
-    "Title": "Verrières-en-Forez : une cyberattaque bloque la mairie, les pirates exigent une rançon",
-    "URL": "https://www.cyberattaque.org/verrieres-en-forez-une-cyberattaque-bloque-la-mairie-les-pirates-exigent-une-rancon/"
-   },
-   "key": "ITM-ecc3d825973b3bc0:370c48db8d18bbfbfe275b6b735ed8280afc1b55f491a532d0b1ae4e4dbafc21",
-   "last_queued_at": "2026-11-01T13:54:58.916920+00:00",
    "pending_fields": [
     "activity_description",
     "activity_sector_match"
@@ -55344,6 +54214,537 @@
     "activity_sector_match"
    ],
    "reason": "TECHNICAL_FAILURE"
+  },
+  {
+   "attempts": 0,
+   "entry": {
+    "content": "La mairie de Guécélard, dans la Sarthe, confirme le piratage de la messagerie électronique de ses services techniques.  L’incident, rendu public le 27 octobre 2026, a entraîné l’envoi de courriels frauduleux à des habitants. Une dizaine de personnes auraient déjà cliqué sur un lien malveillant. \n\n\n\n Située à une dizaine de kilomètres du Mans,  Guécélard est une commune d’environ 3 200 habitants , membre de la communauté de communes du Val de Sarthe. Ses services techniques, qui comptent une dizaine d’agents, interviennent notamment dans l’entretien des espaces publics, des bâtiments et des équipements municipaux. \n\n\n\n Une boîte mail municipale utilisée pour envoyer des messages frauduleux \n\n\n\n Dans une alerte publiée le  mardi 27 octobre 2026 , la municipalité reconnaît que la messagerie de ses services techniques a été compromise. Elle appelle les habitants à la prudence face aux courriels inhabituels provenant de cette adresse. \n\n\n\n Selon les informations rapportées localement,  des messages frauduleux ont été adressés à des habitants et une dizaine d’entre eux ont cliqué sur un lien . Il n’est toutefois pas établi que ces personnes aient transmis des informations personnelles, téléchargé un logiciel malveillant ou subi un préjudice financier. \n\n\n\n Le piratage d’une véritable messagerie municipale constitue un risque particulier : les courriels peuvent sembler légitimes aux yeux des destinataires, notamment lorsqu’ils proviennent d’un service avec lequel ils ont déjà échangé. \n\n\n\n Comment les pirates ont-ils pu accéder à la messagerie ? \n\n\n\n La commune n’a pas précisé comment l’accès à cette boîte électronique avait été obtenu. Plusieurs scénarios peuvent expliquer une telle compromission, notamment  le vol d’identifiants par phishing, la réutilisation d’un mot de passe compromis ou le détournement d’une session de connexion . \n\n\n\n Une fois une messagerie professionnelle compromise, les cybercriminels peuvent potentiellement exploiter les échanges existants, identifier des contacts ou diffuser de nouveaux messages frauduleux en utilisant l’identité de l’organisation. \n\n\n\n  À ce stade, aucune information publique ne permet d’affirmer que l’ensemble du réseau informatique de la mairie a été piraté , ni que des fichiers administratifs ou des données personnelles ont été extraits. \n\n\n\n Des habitants exposés à des tentatives d’escroquerie \n\n\n\n Les conséquences possibles vont du vol d’identifiants à l’installation de logiciels malveillants. Des escrocs pourraient également utiliser l’identité des services techniques pour envoyer de fausses demandes de paiement, des documents piégés ou des sollicitations administratives trompeuses. \n\n\n\n Dans son communiqué,  la mairie recommande de ne pas répondre aux messages suspects, de ne pas cliquer sur les liens et de ne transmettre aucune information personnelle  en réponse à ces courriels. \n\n\n\n  Le piratage de la messagerie est officiellement confirmé par la municipalité.  En revanche, la durée de la compromission, le nombre total de messages envoyés et les éventuelles conséquences pour les habitants n’ont pas été détaillés. \n\n\n\n Cet incident illustre les risques liés à la compromission d’un compte de messagerie dans une collectivité :  une seule adresse électronique piratée peut suffire à exposer les administrés à des tentatives de fraude particulièrement crédibles.",
+    "entity": "",
+    "event_date": "",
+    "location": "",
+    "organisation": "",
+    "published": "2026-11-02",
+    "sector": "",
+    "source_item_id": "4853",
+    "source_metadata": {
+     "rich_facts": {
+      "affected_counts": [],
+      "affected_datasets": [],
+      "affected_systems": [],
+      "claims": [
+       {
+        "date": "2026-10-27",
+        "evidence": "L’incident, rendu public le 27 octobre 2026, a entraîné l’envoi de courriels frauduleux à des habitants.",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Elle appelle les habitants à la prudence face aux courriels inhabituels provenant de cette adresse.",
+        "status": "confirmed",
+        "type": "data_type",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Le piratage d’une véritable messagerie municipale constitue un risque particulier : les courriels peuvent sembler légitimes aux yeux des destinataires, notamment lorsqu’ils proviennent d’un service avec lequel ils ont déjà échangé.",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Plusieurs scénarios peuvent expliquer une telle compromission, notamment  le vol d’identifiants par phishing, la réutilisation d’un mot de passe compromis ou le détournement d’une session de connexion .",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "identifiants"
+       },
+       {
+        "date": "",
+        "evidence": "Plusieurs scénarios peuvent expliquer une telle compromission, notamment  le vol d’identifiants par phishing, la réutilisation d’un mot de passe compromis ou le détournement d’une session de connexion .",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "mots de passe"
+       },
+       {
+        "date": "",
+        "evidence": "Les conséquences possibles vont du vol d’identifiants à l’installation de logiciels malveillants.",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "identifiants"
+       },
+       {
+        "date": "2026-10-27",
+        "evidence": "Dans une alerte publiée le  mardi 27 octobre 2026 , la municipalité reconnaît que la messagerie de ses services techniques a été compromise.",
+        "kind": "statement",
+        "scope": "Chronologie",
+        "status": "confirmed",
+        "value": "Dans une alerte publiée le  mardi 27 octobre 2026 , la municipalité reconnaît que la messagerie de ses services techniques a été compromise."
+       }
+      ],
+      "data_types": [
+       {
+        "date": "2026-10-27",
+        "evidence": "L’incident, rendu public le 27 octobre 2026, a entraîné l’envoi de courriels frauduleux à des habitants.",
+        "status": "unknown",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Elle appelle les habitants à la prudence face aux courriels inhabituels provenant de cette adresse.",
+        "status": "confirmed",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Le piratage d’une véritable messagerie municipale constitue un risque particulier : les courriels peuvent sembler légitimes aux yeux des destinataires, notamment lorsqu’ils proviennent d’un service avec lequel ils ont déjà échangé.",
+        "status": "hypothesis",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Plusieurs scénarios peuvent expliquer une telle compromission, notamment  le vol d’identifiants par phishing, la réutilisation d’un mot de passe compromis ou le détournement d’une session de connexion .",
+        "status": "hypothesis",
+        "value": "identifiants"
+       },
+       {
+        "date": "",
+        "evidence": "Plusieurs scénarios peuvent expliquer une telle compromission, notamment  le vol d’identifiants par phishing, la réutilisation d’un mot de passe compromis ou le détournement d’une session de connexion .",
+        "status": "hypothesis",
+        "value": "mots de passe"
+       },
+       {
+        "date": "",
+        "evidence": "Les conséquences possibles vont du vol d’identifiants à l’installation de logiciels malveillants.",
+        "status": "unknown",
+        "value": "identifiants"
+       }
+      ],
+      "data_volumes": [],
+      "profile": {
+       "chars": 3565,
+       "claims": 6,
+       "dates": 2,
+       "hypotheses": 3,
+       "numbers": 0,
+       "sentences": 25
+      },
+      "relations": [],
+      "semantic": {
+       "used": false
+      },
+      "timeline": [
+       {
+        "date": "2026-10-27",
+        "event": "L’incident, rendu public le 27 octobre 2026, a entraîné l’envoi de courriels frauduleux à des habitants.",
+        "evidence": "L’incident, rendu public le 27 octobre 2026, a entraîné l’envoi de courriels frauduleux à des habitants.",
+        "status": "unknown"
+       },
+       {
+        "date": "2026-10-27",
+        "event": "Dans une alerte publiée le  mardi 27 octobre 2026 , la municipalité reconnaît que la messagerie de ses services techniques a été compromise.",
+        "evidence": "Dans une alerte publiée le  mardi 27 octobre 2026 , la municipalité reconnaît que la messagerie de ses services techniques a été compromise.",
+        "status": "confirmed"
+       }
+      ],
+      "version": "2",
+      "vulnerabilities": []
+     }
+    },
+    "summary": "La mairie de Guécélard, dans la Sarthe, confirme le piratage de la messagerie électronique de ses services techniques….",
+    "threat": "",
+    "title": "Guécélard : des habitants piégés après le piratage de la messagerie de la mairie",
+    "url": "https://www.cyberattaque.org/guecelard-des-habitants-pieges-apres-le-piratage-de-la-messagerie-de-la-mairie/"
+   },
+   "exhausted_fields": {},
+   "field_reasons": {
+    "activity_description": "ACTIVITY_IDENTITY_AMBIGUOUS",
+    "activity_sector_match": "NO_VALID_ACTIVITY_PAIR"
+   },
+   "first_queued_at": "2026-11-02T16:39:56.935821+00:00",
+   "item": {
+    "Collected_As_Of": "2026-11-02T20:38:17.592736+04:00",
+    "Event_Date": "",
+    "Item_ID": "ITM-15925c14ba8a05da",
+    "Location": "Inconnu",
+    "Organisation_Key": "guecelard",
+    "Organisation_Raw": "Guécélard",
+    "Published_Date": "2026-11-02",
+    "Sector": "Inconnu",
+    "Source_ID": "CYBERATTAQUE_ORG",
+    "Source_Item_ID": "4853",
+    "Threat": "Malware",
+    "Threat_Raw": "",
+    "Title": "Guécélard : des habitants piégés après le piratage de la messagerie de la mairie",
+    "URL": "https://www.cyberattaque.org/guecelard-des-habitants-pieges-apres-le-piratage-de-la-messagerie-de-la-mairie/"
+   },
+   "key": "ITM-15925c14ba8a05da:fc76a24ede681fb4eaa4a6554ae2f2462ead9989696ebaaea8ee7e5d1f25e1a0",
+   "last_queued_at": "2026-11-02T16:39:56.935821+00:00",
+   "pending_fields": [
+    "activity_description",
+    "activity_sector_match"
+   ],
+   "reason": "SEMANTIC_REJECTED"
+  },
+  {
+   "attempts": 0,
+   "entry": {
+    "content": "L’Association Médico-Sociale Anne Morgan (AMSAM), implantée à Soissons dans l’Aisne, a officiellement confirmé avoir été victime d’une cyberattaque ayant entraîné le vol de données personnelles.  Dans un communiqué publié le 23 octobre 2026, l’organisme indique que ses bénéficiaires et ses salariés ont été informés de cet incident de sécurité. \n\n\n\n L’attaque a été détectée le  13 octobre 2026 . Dès sa découverte, l’association a engagé des mesures de sécurisation de ses serveurs et de ses messageries électroniques. Les investigations menées avec des spécialistes en cybersécurité ont confirmé, dix jours plus tard, que des informations personnelles avaient été extraites de son système informatique. \n\n\n\n   \n\n\n\n Fondée en 1917,  l’AMSAM accompagne plus de 5 500 personnes dans le département de l’Aisne et emploie près de 400 salariés . L’association intervient notamment dans les soins et l’aide à domicile, l’accompagnement des personnes âgées, le portage de repas et différents services médico-sociaux. \n\n\n\n Le groupe de ransomware BravoX revendique le vol de 922 Go de données \n\n\n\n Cette cyberattaque a été revendiquée le  22 octobre 2026 par le groupe de ransomware BravoX , qui a inscrit l’AMSAM sur son site de divulgation. \n\n\n\n Les cybercriminels affirment avoir dérobé  922,3 Go de données, représentant environ 2,2 millions de fichiers répartis dans 238 000 dossiers . Un volume particulièrement important pour une association médico-sociale, qui laisse craindre une exposition étendue de documents internes. \n\n\n\n Pour appuyer sa revendication, BravoX a présenté plusieurs captures de fichiers attribués à l’association. Le groupe avait également affiché un compte à rebours menaçant de rendre les données publiques autour du  29 octobre 2026 . La publication effective de l’ensemble des fichiers n’est pas établie. \n\n\n\n Des factures de bénéficiaires et des documents internes parmi les données revendiquées \n\n\n\n Les captures diffusées par BravoX montrent différentes catégories de documents, dont certains contiennent des informations concernant des personnes accompagnées par l’AMSAM. \n\n\n\n Parmi les éléments visibles figurent notamment : \n\n\n\n \n  Des factures et relances de paiement  comportant des noms, adresses et montants facturés ; \n\n\n\n  Des tableaux financiers  concernant des prestations réalisées auprès des bénéficiaires ; \n\n\n\n Des documents administratifs et des déclarations sociales ; \n\n\n\n  Des plannings de salariés  et des informations relatives aux périodes d’astreinte ; \n\n\n\n Des fichiers concernant l’organisation des services de soins et d’aide à domicile ; \n\n\n\n Des documents relatifs à des équipements médicaux et des contacts institutionnels. \n \n\n\n\n Plusieurs pièces présentées sont datées de  2024, 2025 et 2026 , suggérant que les informations revendiquées couvrent plusieurs années d’activité de l’association. \n\n\n\n Des risques importants pour les personnes accompagnées à domicile \n\n\n\n  La nature des activités de l’AMSAM rend cette fuite particulièrement préoccupante.  L’association accompagne notamment des personnes âgées, dépendantes ou nécessitant des soins réguliers à domicile. \n\n\n\n La divulgation de leurs identités, coordonnées et informations de facturation pourrait faciliter des tentatives d’escroquerie ciblées. Des fraudeurs pourraient notamment se faire passer pour des intervenants de l’association, adresser de fausses relances de paiement ou utiliser des renseignements administratifs pour gagner la confiance des bénéficiaires. \n\n\n\n L’exposition de documents internes et de plannings pourrait également fournir des informations sur le fonctionnement des services, les salariés et l’organisation des interventions. \n\n\n\n  Le nombre exact de personnes dont les données ont été compromises n’a pas été communiqué.  Les 5 500 bénéficiaires accompagnés par l’AMSAM ne représentent donc pas nécessairement le nombre de victimes de la cyberattaque. \n\n\n\n Une plainte déposée et la CNIL informée \n\n\n\n Dans son communiqué du 23 octobre, l’AMSAM confirme avoir  déposé plainte et effectué les signalements nécessaires auprès des autorités compétentes, notamment de la CNIL . \n\n\n\n L’association assure également que les prises en charge ont pu être maintenues malgré l’incident, sans perturbation particulière pour les patients et les bénéficiaires. \n\n\n\n  Le vol de données personnelles est officiellement confirmé par l’AMSAM.  En revanche, le volume de 922,3 Go et les 2,2 millions de fichiers annoncés restent des chiffres avancés par BravoX, sans confirmation publique de l’association. \n\n\n\n Les investigations se poursuivent pour déterminer l’origine de l’intrusion, identifier précisément les données dérobées et évaluer les conséquences pour les personnes concernées.",
+    "entity": "",
+    "event_date": "",
+    "location": "",
+    "organisation": "",
+    "published": "2026-11-02",
+    "sector": "",
+    "source_item_id": "4844",
+    "source_metadata": {
+     "rich_facts": {
+      "affected_counts": [
+       {
+        "date": "",
+        "evidence": "Les cybercriminels affirment avoir dérobé  922,3 Go de données, représentant environ 2,2 millions de fichiers répartis dans 238 000 dossiers .",
+        "raw": "2,2 millions de fichiers",
+        "scope": "",
+        "status": "claimed",
+        "unit": "files",
+        "value": 2200000
+       },
+       {
+        "date": "",
+        "evidence": "Les cybercriminels affirment avoir dérobé  922,3 Go de données, représentant environ 2,2 millions de fichiers répartis dans 238 000 dossiers .",
+        "raw": "238 000 dossiers",
+        "scope": "",
+        "status": "claimed",
+        "unit": "files",
+        "value": 238000
+       },
+       {
+        "date": "",
+        "evidence": "En revanche, le volume de 922,3 Go et les 2,2 millions de fichiers annoncés restent des chiffres avancés par BravoX, sans confirmation publique de l’association.",
+        "raw": "2,2 millions de fichiers",
+        "scope": "",
+        "status": "negated",
+        "unit": "files",
+        "value": 2200000
+       },
+       {
+        "date": "",
+        "evidence": "Fondée en 1917,  l’AMSAM accompagne plus de 5 500 personnes dans le département de l’Aisne et emploie près de 400 salariés .",
+        "raw": "5 500 personnes",
+        "scope": "",
+        "status": "unknown",
+        "unit": "people",
+        "value": 5500
+       }
+      ],
+      "affected_datasets": [],
+      "affected_systems": [],
+      "claims": [
+       {
+        "date": "",
+        "evidence": "Les cybercriminels affirment avoir dérobé  922,3 Go de données, représentant environ 2,2 millions de fichiers répartis dans 238 000 dossiers .",
+        "scope": "",
+        "status": "claimed",
+        "type": "affected_count",
+        "unit": "files",
+        "value": 2200000
+       },
+       {
+        "date": "",
+        "evidence": "Les cybercriminels affirment avoir dérobé  922,3 Go de données, représentant environ 2,2 millions de fichiers répartis dans 238 000 dossiers .",
+        "scope": "",
+        "status": "claimed",
+        "type": "affected_count",
+        "unit": "files",
+        "value": 238000
+       },
+       {
+        "date": "",
+        "evidence": "En revanche, le volume de 922,3 Go et les 2,2 millions de fichiers annoncés restent des chiffres avancés par BravoX, sans confirmation publique de l’association.",
+        "scope": "",
+        "status": "negated",
+        "type": "affected_count",
+        "unit": "files",
+        "value": 2200000
+       },
+       {
+        "date": "",
+        "evidence": "Fondée en 1917,  l’AMSAM accompagne plus de 5 500 personnes dans le département de l’Aisne et emploie près de 400 salariés .",
+        "scope": "",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "people",
+        "value": 5500
+       },
+       {
+        "date": "",
+        "evidence": "Le groupe de ransomware BravoX revendique le vol de 922 Go de données",
+        "scope": "",
+        "status": "claimed",
+        "type": "data_volume",
+        "unit": "GO",
+        "value": 922.0
+       },
+       {
+        "date": "",
+        "evidence": "Les cybercriminels affirment avoir dérobé  922,3 Go de données, représentant environ 2,2 millions de fichiers répartis dans 238 000 dossiers .",
+        "scope": "",
+        "status": "claimed",
+        "type": "data_volume",
+        "unit": "GO",
+        "value": 922.3
+       },
+       {
+        "date": "",
+        "evidence": "En revanche, le volume de 922,3 Go et les 2,2 millions de fichiers annoncés restent des chiffres avancés par BravoX, sans confirmation publique de l’association.",
+        "scope": "",
+        "status": "negated",
+        "type": "data_volume",
+        "unit": "GO",
+        "value": 922.3
+       },
+       {
+        "date": "",
+        "evidence": "Un volume particulièrement important pour une association médico-sociale, qui laisse craindre une exposition étendue de documents internes.",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "documents internes"
+       },
+       {
+        "date": "",
+        "evidence": "Des factures de bénéficiaires et des documents internes parmi les données revendiquées",
+        "status": "claimed",
+        "type": "data_type",
+        "value": "factures"
+       },
+       {
+        "date": "",
+        "evidence": "Des factures de bénéficiaires et des documents internes parmi les données revendiquées",
+        "status": "claimed",
+        "type": "data_type",
+        "value": "documents internes"
+       },
+       {
+        "date": "",
+        "evidence": "Des factures et relances de paiement  comportant des noms, adresses et montants facturés ;",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "montants"
+       },
+       {
+        "date": "",
+        "evidence": "Des factures et relances de paiement  comportant des noms, adresses et montants facturés ;",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "factures"
+       },
+       {
+        "date": "",
+        "evidence": "Des documents administratifs et des déclarations sociales ;",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "informations administratives"
+       },
+       {
+        "date": "",
+        "evidence": "La divulgation de leurs identités, coordonnées et informations de facturation pourrait faciliter des tentatives d’escroquerie ciblées.",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "facturation"
+       },
+       {
+        "date": "",
+        "evidence": "L’exposition de documents internes et de plannings pourrait également fournir des informations sur le fonctionnement des services, les salariés et l’organisation des interventions.",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "documents internes"
+       },
+       {
+        "date": "2026-10-23",
+        "evidence": "Dans un communiqué publié le 23 octobre 2026, l’organisme indique que ses bénéficiaires et ses salariés ont été informés de cet incident de sécurité.",
+        "kind": "statement",
+        "scope": "Chronologie",
+        "status": "reported",
+        "value": "Dans un communiqué publié le 23 octobre 2026, l’organisme indique que ses bénéficiaires et ses salariés ont été informés de cet incident de sécurité."
+       },
+       {
+        "date": "2026-10-13",
+        "evidence": "L’attaque a été détectée le  13 octobre 2026 .",
+        "kind": "statement",
+        "scope": "Chronologie",
+        "status": "unknown",
+        "value": "L’attaque a été détectée le  13 octobre 2026 ."
+       },
+       {
+        "date": "2026-10-22",
+        "evidence": "Cette cyberattaque a été revendiquée le  22 octobre 2026 par le groupe de ransomware BravoX , qui a inscrit l’AMSAM sur son site de divulgation.",
+        "kind": "statement",
+        "scope": "Chronologie",
+        "status": "claimed",
+        "value": "Cette cyberattaque a été revendiquée le  22 octobre 2026 par le groupe de ransomware BravoX , qui a inscrit l’AMSAM sur son site de divulgation."
+       },
+       {
+        "date": "2026-10-29",
+        "evidence": "Le groupe avait également affiché un compte à rebours menaçant de rendre les données publiques autour du  29 octobre 2026 .",
+        "kind": "statement",
+        "scope": "Chronologie",
+        "status": "unknown",
+        "value": "Le groupe avait également affiché un compte à rebours menaçant de rendre les données publiques autour du  29 octobre 2026 ."
+       }
+      ],
+      "data_types": [
+       {
+        "date": "",
+        "evidence": "Un volume particulièrement important pour une association médico-sociale, qui laisse craindre une exposition étendue de documents internes.",
+        "status": "unknown",
+        "value": "documents internes"
+       },
+       {
+        "date": "",
+        "evidence": "Des factures de bénéficiaires et des documents internes parmi les données revendiquées",
+        "status": "claimed",
+        "value": "factures"
+       },
+       {
+        "date": "",
+        "evidence": "Des factures de bénéficiaires et des documents internes parmi les données revendiquées",
+        "status": "claimed",
+        "value": "documents internes"
+       },
+       {
+        "date": "",
+        "evidence": "Des factures et relances de paiement  comportant des noms, adresses et montants facturés ;",
+        "status": "unknown",
+        "value": "montants"
+       },
+       {
+        "date": "",
+        "evidence": "Des factures et relances de paiement  comportant des noms, adresses et montants facturés ;",
+        "status": "unknown",
+        "value": "factures"
+       },
+       {
+        "date": "",
+        "evidence": "Des documents administratifs et des déclarations sociales ;",
+        "status": "unknown",
+        "value": "informations administratives"
+       },
+       {
+        "date": "",
+        "evidence": "La divulgation de leurs identités, coordonnées et informations de facturation pourrait faciliter des tentatives d’escroquerie ciblées.",
+        "status": "hypothesis",
+        "value": "facturation"
+       },
+       {
+        "date": "",
+        "evidence": "L’exposition de documents internes et de plannings pourrait également fournir des informations sur le fonctionnement des services, les salariés et l’organisation des interventions.",
+        "status": "hypothesis",
+        "value": "documents internes"
+       }
+      ],
+      "data_volumes": [
+       {
+        "date": "",
+        "evidence": "Le groupe de ransomware BravoX revendique le vol de 922 Go de données",
+        "scope": "",
+        "status": "claimed",
+        "unit": "GO",
+        "value": 922.0
+       },
+       {
+        "date": "",
+        "evidence": "Les cybercriminels affirment avoir dérobé  922,3 Go de données, représentant environ 2,2 millions de fichiers répartis dans 238 000 dossiers .",
+        "scope": "",
+        "status": "claimed",
+        "unit": "GO",
+        "value": 922.3
+       },
+       {
+        "date": "",
+        "evidence": "En revanche, le volume de 922,3 Go et les 2,2 millions de fichiers annoncés restent des chiffres avancés par BravoX, sans confirmation publique de l’association.",
+        "scope": "",
+        "status": "negated",
+        "unit": "GO",
+        "value": 922.3
+       }
+      ],
+      "profile": {
+       "chars": 4980,
+       "claims": 15,
+       "dates": 4,
+       "hypotheses": 2,
+       "numbers": 4,
+       "sentences": 40
+      },
+      "relations": [],
+      "semantic": {
+       "used": false
+      },
+      "timeline": [
+       {
+        "date": "2026-10-23",
+        "event": "Dans un communiqué publié le 23 octobre 2026, l’organisme indique que ses bénéficiaires et ses salariés ont été informés de cet incident de sécurité.",
+        "evidence": "Dans un communiqué publié le 23 octobre 2026, l’organisme indique que ses bénéficiaires et ses salariés ont été informés de cet incident de sécurité.",
+        "status": "reported"
+       },
+       {
+        "date": "2026-10-13",
+        "event": "L’attaque a été détectée le  13 octobre 2026 .",
+        "evidence": "L’attaque a été détectée le  13 octobre 2026 .",
+        "status": "unknown"
+       },
+       {
+        "date": "2026-10-22",
+        "event": "Cette cyberattaque a été revendiquée le  22 octobre 2026 par le groupe de ransomware BravoX , qui a inscrit l’AMSAM sur son site de divulgation.",
+        "evidence": "Cette cyberattaque a été revendiquée le  22 octobre 2026 par le groupe de ransomware BravoX , qui a inscrit l’AMSAM sur son site de divulgation.",
+        "status": "claimed"
+       },
+       {
+        "date": "2026-10-29",
+        "event": "Le groupe avait également affiché un compte à rebours menaçant de rendre les données publiques autour du  29 octobre 2026 .",
+        "evidence": "Le groupe avait également affiché un compte à rebours menaçant de rendre les données publiques autour du  29 octobre 2026 .",
+        "status": "unknown"
+       }
+      ],
+      "version": "2",
+      "vulnerabilities": []
+     }
+    },
+    "summary": "L’Association Médico-Sociale Anne Morgan (AMSAM), implantée à Soissons dans l’Aisne, a officiellement confirmé avoir été victime d’une cyberattaque…",
+    "threat": "",
+    "title": "AMSAM : les patients et salariés alertés d’une fuite de leurs données personnelles après une cyberattaque",
+    "url": "https://www.cyberattaque.org/amsam-les-patients-et-salaries-alertes-dune-fuite-de-leurs-donnees-personnelles-apres-une-cyberattaque/"
+   },
+   "exhausted_fields": {},
+   "field_reasons": {
+    "activity_description": "ACTIVITY_IDENTITY_AMBIGUOUS",
+    "activity_sector_match": "NO_VALID_ACTIVITY_PAIR"
+   },
+   "first_queued_at": "2026-11-02T16:40:14.367676+00:00",
+   "item": {
+    "Collected_As_Of": "2026-11-02T20:38:17.592736+04:00",
+    "Event_Date": "",
+    "Item_ID": "ITM-54a53061b88b2009",
+    "Location": "Inconnu",
+    "Organisation_Key": "amsam",
+    "Organisation_Raw": "AMSAM",
+    "Published_Date": "2026-11-02",
+    "Sector": "Inconnu",
+    "Source_ID": "CYBERATTAQUE_ORG",
+    "Source_Item_ID": "4844",
+    "Threat": "Ransomware",
+    "Threat_Raw": "",
+    "Title": "AMSAM : les patients et salariés alertés d’une fuite de leurs données personnelles après une cyberattaque",
+    "URL": "https://www.cyberattaque.org/amsam-les-patients-et-salaries-alertes-dune-fuite-de-leurs-donnees-personnelles-apres-une-cyberattaque/"
+   },
+   "key": "ITM-54a53061b88b2009:ef93f35e2fe611898a345b0409935483e8d953ef3f2a0141f342e6db83dfd45b",
+   "last_queued_at": "2026-11-02T16:40:14.367676+00:00",
+   "pending_fields": [
+    "activity_description",
+    "activity_sector_match"
+   ],
+   "reason": "SEMANTIC_REJECTED"
   }
  ],
  "version": 2
