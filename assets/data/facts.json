@@ -723,7 +723,7 @@
   "version": 3
  },
  "INC-1E2488E55A98": {
-  "display_summary": "DEKRA-Norisko signale une fuite de données personnelles liées à des réservations de contrôle technique via un sous-traitant.",
+  "display_summary": "DEKRA-Norisko : les données personnelles d’automobilistes compromises après une cyberattaque",
   "sensitive_data": {
    "types": [
     {
@@ -738,7 +738,8 @@
    "vulnerable_people": false
   },
   "summary_paragraphs": [
-   "DEKRA Automotive indique qu’un incident survenu le 20 octobre 2026 chez l’un de ses sous-traitants a entraîné un accès non autorisé à des réservations."
+   "Un prestataire compromis le 20 octobre 2026 a permis l'accès non autorisé aux informations personnelles liées aux réservations sur dekra-norisko.fr.",
+   "Les données exposées comprennent noms, prénoms, adresses email et numéros de téléphone des automobilistes."
   ],
   "version": 3
  },
@@ -939,7 +940,10 @@
  },
  "INC-2906CE42B265": {
   "display_summary": "Krys Group : les données de plus de 8 000 personnes diffusées après une cyberattaque",
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "Un pirate affirme avoir récupéré et diffusé gratuitement les informations de 9 537 personnes, fichier d’environ 3 Mo publié le 29 septembre 2026.",
+   "Les échantillons montrent noms, prénoms, dates de naissance et informations relatives à des rendez‑vous et séances d’optique."
+  ],
   "version": 3
  },
  "INC-29A3053E0113": {
@@ -1608,6 +1612,14 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-4487A2EFEFFE": {
+  "display_summary": "Association Francophone de Tennis de Table (AFTT)",
+  "summary_paragraphs": [
+   "Un utilisateur du forum revendique la diffusion d'un fichier de 11 712 enregistrements concernant l'AFTT.",
+   "La publication laisse ouverte l'hypothèse d'une collecte par web scraping plutôt qu'une intrusion confirmée."
+  ],
+  "version": 3
+ },
  "INC-4522C21E32DC": {
   "display_summary": "Une base attribuée à NosRezo / Propertips et revendiquée contenant les données de 413 722 personnes est proposée à la vente sur un forum cybercriminel.",
   "summary_paragraphs": [
@@ -1875,24 +1887,6 @@
   "summary_paragraphs": [],
   "version": 3
  },
- "INC-514833CDCCB3": {
-  "display_summary": "FFRandonnée : 1,43 million de fiches d’adhérents en fuite après une cyberattaque",
-  "sensitive_data": {
-   "types": [
-    {
-     "sources": [
-      "CYBERATTAQUE_ORG"
-     ],
-     "specifics": [],
-     "status": "claimed",
-     "value": "données de santé"
-    }
-   ],
-   "vulnerable_people": false
-  },
-  "summary_paragraphs": [],
-  "version": 3
- },
  "INC-5156949E8337": {
   "display_summary": "Primaire de la gauche : une cyberattaque perturbe le vote en ligne dès son ouverture",
   "summary_paragraphs": [],
@@ -1945,6 +1939,37 @@
   "summary_paragraphs": [
    "Le site internet de la mairie de Touget a été compromis et sa page d’accueil remplacée par un message politique visant Emmanuel Macron.",
    "La page porte également la signature « Hacked by GaSsPeR » et la capture consultée montre un defacement signé par un acteur utilisant le pseudonyme « GaSsPeR »."
+  ],
+  "version": 3
+ },
+ "INC-564DFD5234E5": {
+  "display_summary": "Un accès frauduleux au logiciel de gestion des commandes de Love and Vibes a exposé les identités et le détail des produits commandés.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Love and Vibes indique qu'un tiers a obtenu un accès non autorisé à son logiciel de gestion des commandes le 22 octobre 2026.",
+   "Des données potentiellement exposées incluent identité des clients et historiques de commandes, ainsi que montants et dates des transactions."
   ],
   "version": 3
  },
@@ -2664,7 +2689,10 @@
    ],
    "vulnerable_people": false
   },
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "Le 11 octobre 2026, un pirate a annoncé la mise en vente de 284 Mo de fichiers attribués au site armurerie-du-bocage.fr.",
+   "Les données présentées comprendraient noms, adresses, téléphones, e‑mails, factures et documents d'identité selon l'annonce."
+  ],
   "version": 3
  },
  "INC-6CB2BFBBFB47": {
@@ -3536,14 +3564,6 @@
   ],
   "version": 3
  },
- "INC-8977F4E00B2B": {
-  "display_summary": "Fuite revendiquée de données de 9 537 personnes attribuée à Krys Group, fichiers publiés sur un forum cybercriminel.",
-  "summary_paragraphs": [
-   "Un pirate affirme avoir récupéré et diffusé gratuitement les informations de 9 537 personnes, fichier d’environ 3 Mo publié le 29 septembre 2026.",
-   "Les échantillons montrent noms, prénoms, dates de naissance et informations relatives à des rendez‑vous et séances d’optique."
-  ],
-  "version": 3
- },
  "INC-89D759429998": {
   "display_summary": "Fédération Française de Voile (FF Voile)",
   "sensitive_data": {
@@ -3690,7 +3710,10 @@
    ],
    "vulnerable_people": true
   },
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "Un cybercriminel propose sur un forum clandestin des fichiers contenant des informations personnelles sur des familles et leurs enfants liés à VACAF.",
+   "FrenchBreaches a examiné trois échantillons totalisant 1 500 enregistrements; les volumes annoncés et les circonstances restent à confirmer."
+  ],
   "version": 3
  },
  "INC-8D3392DD5A1A": {
@@ -3839,6 +3862,14 @@
    "vulnerable_people": false
   },
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-90D01A8CAC4D": {
+  "display_summary": "Une base attribuée au Club Alpin Belge contenant 25 558 enregistrements a été publiée sur un forum de hackers le 2 novembre 2026.",
+  "summary_paragraphs": [
+   "Une base attribuée au Club Alpin Belge a été annoncée le 2 novembre 2026 sur le forum PwnForum et présentée comme comprenant 25 558 lignes.",
+   "Les extraits diffusés comportent des noms, dates de naissance, adresses et informations sur les cotisations selon la publication."
+  ],
   "version": 3
  },
  "INC-9108AA77446B": {
@@ -4126,6 +4157,37 @@
   ],
   "version": 3
  },
+ "INC-A28DFAC7B5CA": {
+  "display_summary": "57 109 factures de location de camions Brico Dépôt revendiquées en fuite de données.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "reported",
+     "value": "pièces d'identité"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Le hacker Venus1337 affirme avoir récupéré 57 109 enregistrements et accédé aux factures du service de location.",
+   "L’analyse du fichier par Cyberattaque.org a identifié 57 108 enregistrements exploitables et 41 740 adresses email distinctes."
+  ],
+  "version": 3
+ },
  "INC-A33386D1C382": {
   "display_summary": "",
   "summary_paragraphs": [],
@@ -4384,7 +4446,10 @@
  },
  "INC-ADE4342D82DD": {
   "display_summary": "D-EDGE a confirmé un accès frauduleux aux données de réservation de voyageurs les 20 et 21 octobre 2026.",
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "Des accès frauduleux aux systèmes de D-EDGE ont permis la consultation de données de réservation les 20 et 21 octobre 2026.",
+   "Noms, dates de séjour, références de réservation et coordonnées figurent parmi les informations concernées."
+  ],
   "version": 3
  },
  "INC-ADEEE05084B6": {
@@ -6555,7 +6620,20 @@
   "version": 3
  },
  "INC-FB1EC7E5A99A": {
-  "display_summary": "Un pirate revendique la mise en vente d’une base de 1,43 million d’enregistrements d’adhérents de la Fédération française de la randonnée.",
+  "display_summary": "FFRandonnée : 1,43 million de fiches d’adhérents en fuite après une cyberattaque",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "données de santé"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Un pirate nommé « RedStone » affirme avoir récupéré une base contenant près de 1,43 million d’enregistrements d’adhérents de la FFRandonnée.",
    "Le pirate propose à la vente environ 317 Mo de fichiers CSV comprenant e-mails, téléphones, adresses et données présentées comme médicales."
