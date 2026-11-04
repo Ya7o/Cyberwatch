@@ -5,20 +5,20 @@
       "Mayotte"
     ],
     "year": 2026,
-    "generated_at": "2026-11-03T09:08:00+04:00",
-    "record_count": 17,
-    "accepted_count": 9,
+    "generated_at": "2026-11-04T09:05:12+04:00",
+    "record_count": 18,
+    "accepted_count": 10,
     "candidate_count": 8,
     "schema": "cyberwatch-veille-v2",
     "watch_result": {
-      "new_incidents": 0,
+      "new_incidents": 1,
       "enriched_incidents": 0,
       "corrected_incidents": 0,
-      "note": "Veille complémentaire vérifiée le 3 novembre 2026 depuis le snapshot courant de main. Aucun nouvel incident, enrichissement ou correctif métier n’a été retenu. Les 17 dossiers, leurs dates et tous les enrichissements déjà publiés sont conservés, dont Jean Joly du 29 septembre, les deux entrées Qilin documentées pour Le Tampon et le signal CSSM. L’actualité du 3 novembre sur les réfrigérateurs concerne une nouvelle vague européenne sans victime réunionnaise ou mahoraise identifiée ; les autres résultats contrôlés reprennent des faits déjà enregistrés."
+      "note": "Veille complémentaire menée le 4 novembre 2026 depuis le snapshot courant de main. Un nouvel incident est retenu : L’Île en Glace, entreprise de fabrication et distribution de glaces à Saint-Leu, affirme avoir subi le 2 novembre une intrusion dans le logiciel de gestion de ses chambres froides, avec modification rapportée des consignes jusqu’à +100 °C. Le dossier est admis en ACCEPTED / Intrusion. Aucun enrichissement ni correctif métier n’est retenu pour les 17 dossiers antérieurs, dont Jean Joly du 29 septembre, Le Tampon, Leader Price et la CSSM."
     },
     "coverage": {
-      "method": "Veille cumulative Réunion/Mayotte vérifiée le 3 novembre 2026 depuis le snapshot courant de main. Les nouveaux incidents ou signaux publiés les 2 et 3 novembre ont été recherchés séparément des enrichissements des dossiers existants. La couverture a ciblé les autorités et collectivités indexées, LINFO.re, Imaz Press, Zinfos974, Réunion La 1ère, Journal de Mayotte, Info976, les services de l’État, le CERT-FR et des sources cyber. Les pages effectivement ouvertes comprennent la une d’Imaz Press du 3 novembre sur une vague européenne sans victime régionale identifiée, Acturadar relayant la revendication déjà connue visant Le Tampon, le Journal de Mayotte sur le rétablissement CSSM et son alerte OCOI, ainsi que la page Zinfos974 sur Leader Price, qui a renvoyé une erreur 403 à l’ouverture mais dont le résultat indexé a été contrôlé. Des recherches ciblées ont aussi porté sur Qilin, Jean Joly et DTPN 974. Aucun changement métier distinct du snapshot courant n’a été retenu.",
-      "limitations": "La recherche publique indexée n’est pas exhaustive et Réunion La 1ère a été bloquée par robots.txt pendant la recherche. Les entrées Qilin des 15 et 23 octobre restent des revendications relayées : aucune infection par rançongiciel, exfiltration, publication effective de données, demande de rançon ou attribution n’est confirmée par la collectivité ou une autorité. Acturadar reprend un unique signal FrenchBreaches du 24 octobre et n’apporte pas de preuve nouvelle. Pour la CSSM, l’impact local et le rétablissement sont documentés sans preuve de compromission propre à Mayotte. Aucun rapport forensique, auteur ni vecteur exact n’est public pour Leader Price. La seconde enseigne réunionnaise reste non nommée. DTPN 974 demeure sans suivi officiel public nouveau. La page Zinfos974 consultée a renvoyé 403 et certaines pages sociales ou audiovisuelles restent difficilement accessibles.",
+      "method": "Veille cumulative Réunion/Mayotte vérifiée le 4 novembre 2026 depuis le snapshot courant de main. Les nouveaux incidents ou signaux publiés les 3 et 4 novembre ont été recherchés séparément des enrichissements des dossiers existants. La couverture a ciblé les autorités et collectivités indexées, LINFO.re, Imaz Press, Zinfos974, Réunion La 1ère, Journal de Mayotte, Info976, les services de l’État, le CERT-FR, Cyber Réunion et des sources cyber. Les pages effectivement ouvertes comprennent l’article de Mémento sur L’Île en Glace, la page officielle de l’entreprise confirmant son implantation et son activité à Saint-Leu, une dépêche TV5MONDE/AFP sur la vague européenne distincte et un agrégateur régional. Les recherches d’enrichissement ont porté sur Le Tampon/Qilin, Leader Price, CSSM, Jean Joly et DTPN 974. Un nouvel incident régional identifiable a été retenu ; aucun enrichissement ou correctif des dossiers existants n’a été établi.",
+      "limitations": "La recherche publique indexée n’est pas exhaustive. L’incident L’Île en Glace n’est documenté que par une publication locale au moment de la veille : aucune communication directe de la victime, confirmation d’autorité, seconde source journalistique, revendication, analyse forensique, vecteur exact, perte de marchandises, interruption d’activité ou montant de préjudice n’est public. La page Annuaire des entreprises a renvoyé 403 à l’ouverture ; l’implantation et l’activité ont néanmoins été contrôlées sur le site officiel de l’entreprise. La nouvelle vague européenne de compromissions frigorifiques ne permet pas d’inférer un lien technique avec ce dossier réunionnais. Pour Le Tampon, aucune infection par rançongiciel, exfiltration ou publication effective de données n’est confirmée. Pour la CSSM, aucune compromission propre à Mayotte n’est démontrée. La seconde enseigne réunionnaise reste non nommée, et DTPN 974 demeure sans suivi officiel public nouveau.",
       "excluded_candidates": [
         {
           "organisation": "SFR — cyberattaque nationale de juillet 2026",
@@ -408,6 +408,25 @@
         "https://lejournaldemayotte.yt/2026/10/22/alerte-informatique-des-sites-administratifs-inaccessibles-a-mayotte-sur-fond-de-menace-mondiale/"
       ],
       "synthese": "À confirmer — perturbation réelle des services numériques et téléphoniques de la CSSM à Mayotte, attribuée dans sa communication à un incident de sécurité informatique détecté au niveau national. Le lien technique direct avec les vulnérabilités évoquées dans la presse n’est pas établi et aucune compromission locale n’est démontrée.",
+      "evolution": "nouveau"
+    },
+    {
+      "date": "2026-11-02",
+      "organisation": "L’Île en Glace",
+      "admission": "ACCEPTED",
+      "admission_reason": "L’entreprise affirme à Mémento avoir été victime d’une cyberattaque contre le logiciel de gestion de ses chambres froides ; l’action cyber et la victime réunionnaise sont identifiées, même si les détails techniques et l’ampleur de l’impact ne sont pas corroborés indépendamment.",
+      "territoire": "La Réunion",
+      "localisation": "Saint-Leu",
+      "secteur": "Industrie / Manufacture",
+      "type_menace": "Intrusion",
+      "acteur": "Non identifié",
+      "statut": "Cyberattaque déclarée par l’entreprise à la presse locale ; aucune revendication signalée ; préjudice non chiffré",
+      "score_cyberattaque": 100,
+      "impact_connu": "Dans la soirée du 2 novembre, un accès non autorisé au logiciel de gestion des chambres froides aurait permis de modifier les consignes de température jusqu’à +100 °C. Le montant du préjudice, une éventuelle perte de marchandises et l’effet sur la continuité d’activité ne sont pas établis publiquement.",
+      "sources": [
+        "https://www.memento.fr/article_03-11-2026-piratage-ile-en-glace-victime-d-un-piratage-informatique-ses-chambres-froides-ciblees"
+      ],
+      "synthese": "L’entreprise réunionnaise L’Île en Glace affirme avoir subi le 2 novembre 2026 une cyberattaque visant le logiciel de gestion de ses chambres froides. Mémento rapporte une pénétration du logiciel et une modification des consignes de température jusqu’à +100 °C. Aucun acteur, vecteur exact, rapport forensique, montant de préjudice, perte de marchandises ou interruption d’activité n’est confirmé publiquement.",
       "evolution": "nouveau"
     }
   ]
