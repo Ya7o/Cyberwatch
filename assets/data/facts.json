@@ -84,6 +84,35 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-02896BC656BE": {
+  "display_summary": "1 699 factures de JASP-K9 seraient accessibles via une faille exposant des informations de facturation.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "LunarisSec affirme détenir 1 699 factures liées à JASP-K9 et a publié des captures d'écran de documents.",
+   "JASP-K9 n'a pas confirmé l'intrusion et l'authenticité des documents reste à établir."
+  ],
+  "version": 3
+ },
  "INC-02B6D96E8D86": {
   "display_summary": "Le hacker necrozma revendique la mise en vente de fichiers attribués à la Grande Pharmacie Bailly, dont une sauvegarde de plus de 300 000 dossiers.",
   "sensitive_data": {
@@ -1115,6 +1144,11 @@
   ],
   "version": 3
  },
+ "INC-2EBD1D52EB2D": {
+  "display_summary": "",
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-2ECF4B71AF30": {
   "display_summary": "Une base de 31 240 lignes attribuée à Dr.Veto, portail lié au logiciel de gestion vétérinaire Hubvet, a été publiée gratuitement sur un forum cybercriminel.",
   "summary_paragraphs": [
@@ -1628,6 +1662,27 @@
   ],
   "version": 3
  },
+ "INC-456F2717E853": {
+  "display_summary": "Fédération française de pelote basque : 31 814 données de compétition diffusées sur le darkweb",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Un fichier de 31 814 enregistrements attribués à la FFPB a été diffusé le 4 novembre 2026, revendiqué par un pseudonyme.",
+   "L'analyse indique que les données correspondent à des résultats publics consultables sur le site officiel de la fédération, sans preuve d'intrusion."
+  ],
+  "version": 3
+ },
  "INC-45A1B4470EF6": {
   "display_summary": "ASOS signale la compromission d'un compte employé et l'accès non autorisé à certaines données personnelles de clients",
   "summary_paragraphs": [
@@ -1897,6 +1952,11 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-5179F936E34D": {
+  "display_summary": "AFIB : près de 3 800 professionnels de la banque et de l’assurance concernés par une fuite de données",
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-523457E7106A": {
   "display_summary": "GeoNat’îdF : les données de 3 400 utilisateurs de la plateforme biodiversité francilienne piraté",
   "sensitive_data": {
@@ -2137,6 +2197,24 @@
  },
  "INC-5AD7E8261825": {
   "display_summary": "",
+  "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-5B57D1B37C8C": {
+  "display_summary": "L'INRAE serait victime d'une compromission ayant entraîné la fuite potentielle de bases de données, fichiers et identifiants techniques.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "reported",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [],
   "version": 3
  },
@@ -3388,6 +3466,11 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-837C98C6B728": {
+  "display_summary": "",
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-838BDB4325BB": {
   "display_summary": "Fuite de données confirmée à l'ANFR : 406 053 enregistrements du téléservice Radiomaritime diffusés sur un forum cybercriminel.",
   "summary_paragraphs": [
@@ -4105,6 +4188,13 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-9F1F812BA43A": {
+  "display_summary": "Le site base-pcb.inrae.fr d'INRAE a été défiguré le 3 novembre 2026 et une revendication évoque le vol de 1,2 Go de données.",
+  "summary_paragraphs": [
+   "Le 3 novembre 2026, la page base-pcb.inrae.fr a été remplacée par une page de défiguration."
+  ],
+  "version": 3
+ },
  "INC-9FABAAA7F3E5": {
   "display_summary": "Centrale Canine : 1,48 million de chiens avec puces et emails d’éleveurs en fuite",
   "summary_paragraphs": [],
@@ -4395,11 +4485,12 @@
   "version": 3
  },
  "INC-AA49D64CDD92": {
-  "display_summary": "BonjourLaFuite signale une fuite de données concernant ANSSI.",
+  "display_summary": "",
   "sensitive_data": {
    "types": [
     {
      "sources": [
+      "FRENCHBREACHES",
       "BONJOURLAFUITE"
      ],
      "specifics": [
@@ -4412,7 +4503,8 @@
    "vulnerable_people": false
   },
   "summary_paragraphs": [
-   "BonjourLaFuite signale une fuite de données concernant ANSSI."
+   "Une vulnérabilité Metabase a permis de compromettre 118 comptes utilisateurs du laboratoire d'innovation de l'ANSSI.",
+   "Les données compromises incluent identifiants, adresses e-mail, mots de passe hachés et données statistiques d'utilisation."
   ],
   "version": 3
  },
@@ -5271,6 +5363,19 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-CAD77106D492": {
+  "display_summary": "L'AFIB fait l'objet d'une revendication de piratage avec près de 3 800 données de membres revendiquées.",
+  "summary_paragraphs": [
+   "Un pirate affirme avoir récupéré les données de près de 3 800 membres de l'association.",
+   "Le pirate revendique un fichier JSONL de 1 167 Ko contenant noms, adresses, e‑mails, téléphones, SIRET et ORIAS, mais l'AFIB n'a pas confirmé."
+  ],
+  "version": 3
+ },
+ "INC-CB116813D04D": {
+  "display_summary": "Fortuneo : une cyberattaque aurait permis de détourner plus de 133M$ du Crédit Mutuel Arkéa",
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-CB3FABAACC36": {
   "display_summary": "Assurimo fait l’objet d’une revendication de fuite de données revendiquant 674 303 clients et 954 000 lignes.",
   "sensitive_data": {
@@ -5323,6 +5428,13 @@
   "summary_paragraphs": [
    "Réassurez-moi indique que des données ont été extraites le 13 septembre 2026.",
    "L’accès non autorisé a visé un outil utilisé par Réassurez-moi, puis l’entreprise affirme avoir interrompu cet accès et sécurisé ses systèmes."
+  ],
+  "version": 3
+ },
+ "INC-CDB6D42DD970": {
+  "display_summary": "Holcim confirme une fuite de données après une cyberattaque revendiquée par le groupe Emperador.",
+  "summary_paragraphs": [
+   "Holcim confirme avoir subi un incident de cybersécurité et évoque une « fuite de données non autorisée de portée limitée »."
   ],
   "version": 3
  },
@@ -6358,27 +6470,6 @@
   "summary_paragraphs": [],
   "version": 3
  },
- "INC-EE167D8D9DEA": {
-  "display_summary": "",
-  "sensitive_data": {
-   "types": [
-    {
-     "sources": [
-      "FRENCHBREACHES"
-     ],
-     "specifics": [],
-     "status": "unknown",
-     "value": "mots de passe"
-    }
-   ],
-   "vulnerable_people": false
-  },
-  "summary_paragraphs": [
-   "Une vulnérabilité Metabase a permis de compromettre 118 comptes utilisateurs du laboratoire d'innovation de l'ANSSI.",
-   "Les données compromises incluent identifiants, adresses e-mail, mots de passe hachés et données statistiques d'utilisation."
-  ],
-  "version": 3
- },
  "INC-EE5ED30C854D": {
   "display_summary": "",
   "summary_paragraphs": [],
@@ -6445,8 +6536,11 @@
   "version": 3
  },
  "INC-F20034DB3A78": {
-  "display_summary": "",
-  "summary_paragraphs": [],
+  "display_summary": "Un pirate revendique la mise en vente de 188 010 enregistrements (272 Mo) liés à Grand Delta Habitat contenant noms, adresses, téléphones et e-mails.",
+  "summary_paragraphs": [
+   "Le 11 octobre 2026, un pirate affirme détenir une base de données associée à Grand Delta Habitat et l'a annoncée sur un forum cybercriminel.",
+   "L'échantillon présenté contiendrait noms, adresses, numéros de téléphone, e-mails et détails d'interventions dans des logements."
+  ],
   "version": 3
  },
  "INC-F29ACDC2C7FF": {
@@ -6483,6 +6577,24 @@
    "vulnerable_people": false
   },
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-F33D4C0903ED": {
+  "display_summary": "",
+  "regional_watch": [
+   {
+    "acteur": "Non identifié",
+    "admission_reason": "L’entreprise affirme à Mémento avoir été victime d’une cyberattaque contre le logiciel de gestion de ses chambres froides ; l’action cyber et la victime réunionnaise sont identifiées, même si les détails techniques et l’ampleur de l’impact ne sont pas corroborés indépendamment.",
+    "impact_connu": "Dans la soirée du 2 novembre, un accès non autorisé au logiciel de gestion des chambres froides aurait permis de modifier les consignes de température jusqu’à +100 °C. Le montant du préjudice, une éventuelle perte de marchandises et l’effet sur la continuité d’activité ne sont pas établis publiquement.",
+    "localisation": "Saint-Leu",
+    "score": 100,
+    "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
+    "statut": "Cyberattaque déclarée par l’entreprise à la presse locale ; aucune revendication signalée ; préjudice non chiffré"
+   }
+  ],
+  "summary_paragraphs": [
+   "L’entreprise réunionnaise L’Île en Glace affirme avoir subi le 2 novembre 2026 une cyberattaque visant le logiciel de gestion de ses chambres froides. Mémento rapporte une pénétration du logiciel et une modification des consignes de température jusqu’à +100 °C. Aucun acteur, vecteur exact, rapport forensique, montant de préjudice, perte de marchandises ou interruption d’activité n’est confirmé publiquement."
+  ],
   "version": 3
  },
  "INC-F34197834D47": {

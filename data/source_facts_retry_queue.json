@@ -8260,6 +8260,350 @@
    "reason": "CALL_LIMIT"
   },
   {
+   "attempts": 2,
+   "entry": {
+    "content": "Infogreffe , le portail français permettant d’accéder aux informations légales et économiques des entreprises enregistrées au registre du commerce, fait l’objet d’une importante revendication de cyberattaque. Le collectif  LunarisSec  affirme avoir compromis l’organisation et revendique  3 708 531 lignes de données . \n\n\n\n La revendication est attribuée à plusieurs membres du groupe utilisant les pseudonymes  CybΞr, Pwn2dd, Hex@py et 0xDzz . Mais surtout, plusieurs captures d’écran communiquées comme preuves semblent montrer un niveau d’accès allant bien au-delà d’une simple extraction de données publiques. \n\n\n\n  Cyberattaque.org s’est procuré ces éléments . L’une des captures transmises le  10 octobre 2026  montre notamment ce qui ressemble à la configuration d’une  connexion directe à une base PostgreSQL , avec une adresse JDBC, un nom d’utilisateur et un mot de passe enregistré. \n\n\n\n   \n\n\n\n Infogreffe au cœur des données légales des entreprises françaises \n\n\n\n  Infogreffe  est le service de diffusion de l’information légale et officielle issue des greffes des tribunaux de commerce. Il permet notamment de consulter ou commander des extraits Kbis, comptes annuels, actes, statuts, informations sur les dirigeants, procédures collectives ou états d’endettement. \n\n\n\n Le portail propose également plusieurs services destinés aux entreprises, notamment autour de la donnée, de la surveillance d’entreprises et du  recouvrement des créances impayées . \n\n\n\n 3 708 531 lignes revendiquées par LunarisSec \n\n\n\n LunarisSec annonce avoir récupéré  3 708 531 lignes  liées à Infogreffe. Aucun élément communiqué à Cyberattaque.org ne permet pour le moment de déterminer précisément à quelle table ou à quel ensemble de données correspond ce chiffre. \n\n\n\n Il serait donc prématuré de parler de 3,7 millions de personnes. Une base informatique peut contenir plusieurs lignes pour un même utilisateur, une même entreprise ou une même opération. \n\n\n\n La nature exacte des informations contenues dans ces millions d’enregistrements reste également à confirmer. \n\n\n\n Une capture montre une connexion PostgreSQL configurée \n\n\n\n Le document le plus intéressant transmis par LunarisSec montre une interface contenant les paramètres d’une  connexion à une base de données PostgreSQL . \n\n\n\n On peut notamment y distinguer le pilote, une adresse, un nom d’utilisateur ainsi qu’un champ contenant un mot de passe. \n\n\n\n Ce type d’écran correspond à la configuration utilisée par une application pour  communiquer directement avec une base de données . Il ne s’agit donc pas simplement de la consultation d’une page publique d’Infogreffe. \n\n\n\n La capture ne permet cependant pas d’affirmer que LunarisSec possède effectivement le mot de passe affiché derrière les points, ni que cette connexion est encore fonctionnelle. Elle suggère en revanche que les attaquants ont pu atteindre  une interface technique ou administrative disposant de paramètres de connexion à une base PostgreSQL . \n\n\n\n Des traces d’une application basée sur Joget \n\n\n\n Une autre capture apporte un indice supplémentaire sur l’environnement compromis. Elle montre des journaux techniques faisant référence à  org.joget.apps.util.UserAuthenticationService  et à une application identifiée comme  AppCenter . \n\n\n\n  Joget  est une plateforme permettant de créer et d’exploiter des applications métier. Les lignes visibles correspondent notamment à des opérations d’authentification et contiennent des références à des comptes utilisateurs et à des adresses email. \n\n\n\n Ces éléments semblent donc provenir d’un  environnement applicatif interne ou métier , plutôt que du simple moteur public permettant de rechercher une entreprise sur Infogreffe. \n\n\n\n Une capture liée aux « impayés » intrigue \n\n\n\n Une troisième capture montre une interface comportant une rubrique intitulée  « Les impayés » , avec une colonne « Montant ». \n\n\n\n Une ligne datée du  17 janvier 2023  affiche un montant particulièrement étonnant de  10 000 001 189,50 euros , soit plus de 10 milliards d’euros. \n\n\n\n Ce chiffre ne doit surtout pas être interprété comme le montant réel des créances ou des impayés gérés par Infogreffe. Il pourrait correspondre à  une valeur de test, une donnée erronée ou un enregistrement isolé . La capture ne fournit pas suffisamment de contexte pour le déterminer. \n\n\n\n Elle est néanmoins intéressante car Infogreffe exploite justement un service permettant aux entreprises et particuliers de gérer le  recouvrement amiable de créances . Il reste à déterminer si l’écran montré par LunarisSec appartient directement à cet environnement ou à un autre outil interne. \n\n\n\n Les captures suggèrent un accès plus profond qu’une simple fuite \n\n\n\n Pris séparément, aucun de ces éléments ne permet de reconstituer précisément le scénario de l’attaque. Leur combinaison est en revanche significative :  configuration d’une base PostgreSQL, journaux d’authentification d’une application métier et accès à des écrans internes . \n\n\n\n Cela suggère que LunarisSec pourrait avoir obtenu un accès à une partie de l’ environnement applicatif d’Infogreffe  et pas uniquement récupéré un fichier exposé sur Internet. \n\n\n\n La méthode d’accès reste inconnue. Rien ne permet encore de savoir si les attaquants ont exploité une vulnérabilité, compromis un compte, détourné une interface d’administration ou utilisé une autre technique. \n\n\n\n Le contenu des 3,7 millions de lignes reste à confirmer \n\n\n\n Le principal point d’incertitude concerne désormais les  3 708 531 lignes revendiquées . Aucun échantillon suffisamment complet analysé par Cyberattaque.org ne permet à ce stade d’en déterminer le contenu exact. \n\n\n\n Il serait notamment prématuré d’affirmer qu’elles contiennent des informations personnelles sur les utilisateurs d’Infogreffe, des données d’entreprises, des dossiers de recouvrement ou des documents issus des greffes. \n\n\n\n Les captures fournies par LunarisSec donnent néanmoins davantage de poids à la revendication en montrant des  éléments techniques cohérents avec l’accès à un environnement applicatif et à sa base de données . \n\n\n\n Une revendication qui doit encore être confirmée par Infogreffe \n\n\n\n À ce stade,  Infogreffe n’a pas publiquement confirmé la revendication de LunarisSec . Le volume annoncé, l’étendue exacte de l’accès et la nature des données potentiellement récupérées restent donc à établir. \n\n\n\n L’élément le plus préoccupant n’est pour l’instant pas le chiffre de 3,7 millions de lignes en lui-même, mais les captures laissant penser que les attaquants ont pu atteindre  des interfaces techniques capables de communiquer avec une base PostgreSQL et des applications métier internes .",
+    "entity": "",
+    "event_date": "",
+    "location": "",
+    "organisation": "",
+    "published": "2026-10-10",
+    "sector": "",
+    "source_item_id": "4085",
+    "source_metadata": {
+     "rich_facts": {
+      "affected_counts": [
+       {
+        "date": "",
+        "evidence": "Le collectif  LunarisSec  affirme avoir compromis l’organisation et revendique  3 708 531 lignes de données .",
+        "raw": "3 708 531 lignes",
+        "scope": "",
+        "status": "claimed",
+        "unit": "records",
+        "value": 3708531
+       },
+       {
+        "date": "",
+        "evidence": "Infogreffe : 3,7 millions de lignes revendiquées après une cyberattaque",
+        "raw": "3,7 millions de lignes",
+        "scope": "",
+        "status": "claimed",
+        "unit": "records",
+        "value": 3700000
+       },
+       {
+        "date": "",
+        "evidence": "Il serait donc prématuré de parler de 3,7 millions de personnes.",
+        "raw": "3,7 millions de personnes",
+        "scope": "",
+        "status": "hypothesis",
+        "unit": "people",
+        "value": 3700000
+       },
+       {
+        "date": "",
+        "evidence": "LunarisSec annonce avoir récupéré  3 708 531 lignes  liées à Infogreffe.",
+        "raw": "3 708 531 lignes",
+        "scope": "",
+        "status": "unknown",
+        "unit": "records",
+        "value": 3708531
+       },
+       {
+        "date": "",
+        "evidence": "Le contenu des 3,7 millions de lignes reste à confirmer",
+        "raw": "3,7 millions de lignes",
+        "scope": "",
+        "status": "unknown",
+        "unit": "records",
+        "value": 3700000
+       }
+      ],
+      "affected_datasets": [],
+      "affected_systems": [],
+      "claims": [
+       {
+        "date": "",
+        "evidence": "Le collectif  LunarisSec  affirme avoir compromis l’organisation et revendique  3 708 531 lignes de données .",
+        "scope": "",
+        "status": "claimed",
+        "type": "affected_count",
+        "unit": "records",
+        "value": 3708531
+       },
+       {
+        "date": "",
+        "evidence": "Infogreffe : 3,7 millions de lignes revendiquées après une cyberattaque",
+        "scope": "",
+        "status": "claimed",
+        "type": "affected_count",
+        "unit": "records",
+        "value": 3700000
+       },
+       {
+        "date": "",
+        "evidence": "Il serait donc prématuré de parler de 3,7 millions de personnes.",
+        "scope": "",
+        "status": "hypothesis",
+        "type": "affected_count",
+        "unit": "people",
+        "value": 3700000
+       },
+       {
+        "date": "",
+        "evidence": "LunarisSec annonce avoir récupéré  3 708 531 lignes  liées à Infogreffe.",
+        "scope": "",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "records",
+        "value": 3708531
+       },
+       {
+        "date": "",
+        "evidence": "Le contenu des 3,7 millions de lignes reste à confirmer",
+        "scope": "",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "records",
+        "value": 3700000
+       },
+       {
+        "date": "2026-10-10",
+        "evidence": "L’une des captures transmises le  10 octobre 2026  montre notamment ce qui ressemble à la configuration d’une  connexion directe à une base PostgreSQL , avec une adresse JDBC, un nom d’utilisateur et un mot de passe enregistré.",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "mots de passe"
+       },
+       {
+        "date": "",
+        "evidence": "On peut notamment y distinguer le pilote, une adresse, un nom d’utilisateur ainsi qu’un champ contenant un mot de passe.",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "mots de passe"
+       },
+       {
+        "date": "",
+        "evidence": "Les lignes visibles correspondent notamment à des opérations d’authentification et contiennent des références à des comptes utilisateurs et à des adresses email.",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Une troisième capture montre une interface comportant une rubrique intitulée  « Les impayés » , avec une colonne « Montant ».",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "montants"
+       }
+      ],
+      "data_types": [
+       {
+        "date": "2026-10-10",
+        "evidence": "L’une des captures transmises le  10 octobre 2026  montre notamment ce qui ressemble à la configuration d’une  connexion directe à une base PostgreSQL , avec une adresse JDBC, un nom d’utilisateur et un mot de passe enregistré.",
+        "status": "unknown",
+        "value": "mots de passe"
+       },
+       {
+        "date": "",
+        "evidence": "On peut notamment y distinguer le pilote, une adresse, un nom d’utilisateur ainsi qu’un champ contenant un mot de passe.",
+        "status": "hypothesis",
+        "value": "mots de passe"
+       },
+       {
+        "date": "",
+        "evidence": "Les lignes visibles correspondent notamment à des opérations d’authentification et contiennent des références à des comptes utilisateurs et à des adresses email.",
+        "status": "unknown",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Une troisième capture montre une interface comportant une rubrique intitulée  « Les impayés » , avec une colonne « Montant ».",
+        "status": "unknown",
+        "value": "montants"
+       }
+      ],
+      "data_volumes": [],
+      "profile": {
+       "chars": 6888,
+       "claims": 9,
+       "dates": 2,
+       "hypotheses": 2,
+       "numbers": 8,
+       "sentences": 54
+      },
+      "relations": [
+       {
+        "evidence": "Le collectif  LunarisSec  affirme avoir compromis l’organisation et revendique  3 708 531 lignes de données .",
+        "object": "incident",
+        "relation": "claimed_by",
+        "status": "claimed",
+        "subject": "LunarisSec"
+       }
+      ],
+      "semantic": {
+       "used": false
+      },
+      "timeline": [],
+      "version": "2",
+      "vulnerabilities": []
+     }
+    },
+    "summary": "Infogreffe, le portail français permettant d’accéder aux informations légales et économiques des entreprises enregistrées au registre du commerce,…",
+    "threat": "",
+    "title": "Infogreffe : 3,7 millions de lignes revendiquées après une cyberattaque",
+    "url": "https://www.cyberattaque.org/infogreffe-37-millions-de-lignes-revendiquees-apres-une-cyberattaque/"
+   },
+   "exhausted_fields": {
+    "activity_description": {
+     "at": "2026-11-04T14:58:55.976285+00:00",
+     "reason": "ACTIVITY_NOT_DESCRIBED"
+    },
+    "activity_sector_match": {
+     "at": "2026-11-04T14:58:55.976285+00:00",
+     "reason": "NO_VALID_ACTIVITY_PAIR"
+    }
+   },
+   "field_reasons": {
+    "activity_description": "ACTIVITY_NOT_DESCRIBED",
+    "activity_sector_match": "NO_VALID_ACTIVITY_PAIR"
+   },
+   "first_queued_at": "2026-10-11T06:14:57.000616+00:00",
+   "item": {
+    "Collected_As_Of": "2026-10-11T17:36:03.829355+04:00",
+    "Event_Date": "",
+    "Item_ID": "ITM-7543d5198870d435",
+    "Location": "Inconnu",
+    "Organisation_Key": "infogreffe",
+    "Organisation_Raw": "Infogreffe",
+    "Published_Date": "2026-10-10",
+    "Sector": "Inconnu",
+    "Source_ID": "CYBERATTAQUE_ORG",
+    "Source_Item_ID": "4085",
+    "Threat": "Intrusion",
+    "Threat_Raw": "",
+    "Title": "Infogreffe : 3,7 millions de lignes revendiquées après une cyberattaque",
+    "URL": "https://www.cyberattaque.org/infogreffe-37-millions-de-lignes-revendiquees-apres-une-cyberattaque/"
+   },
+   "key": "ITM-7543d5198870d435:ecd0c17aa3237d52351298924fc3a540524fe806e11bb21dfcec083d777477a7",
+   "last_attempt_at": "2026-11-04T14:58:53.199235+00:00",
+   "last_queued_at": "2026-11-03T14:45:26.162360+00:00",
+   "pending_fields": [],
+   "reason": "SEMANTIC_REJECTED"
+  },
+  {
+   "attempts": 2,
+   "entry": {
+    "content": "La  primaire de la gauche sociale-démocrate pour l’élection présidentielle de 2027  est perturbée par une cyberattaque depuis l’ouverture du scrutin, ce  vendredi 9 octobre 2026 à 8 heures . La cible n’est pas directement un parti politique mais  e-votez.net, la plateforme utilisée pour organiser le vote électronique . \n\n\n\n L’attaque repose sur un  afflux massif de connexions générées par des robots  afin de saturer le service et de compliquer l’accès des véritables électeurs. Les organisateurs assurent cependant que  les votes déjà enregistrés n’ont pas été compromis  et que la plateforme n’a jamais complètement cessé de fonctionner. \n\n\n\n Plus de 140 000 électeurs appelés à voter en ligne \n\n\n\n La primaire « Choisir 2027 » doit départager cinq candidats :  Olivier Faure, Raphaël Glucksmann, Jérôme Guedj, Emmanuel Maurel et Ségolène Royal . \n\n\n\n Au total,  140 282 personnes se sont inscrites  pour participer au premier tour. Le scrutin est organisé exclusivement en ligne du  vendredi 9 octobre à 8 heures au samedi 10 octobre à 20 heures . \n\n\n\n C’est donc dès les premières minutes d’un scrutin réunissant plus de 140 000 électeurs que la plateforme e-votez a commencé à rencontrer d’importantes difficultés d’accès. \n\n\n\n Des milliers de connexions générées par des robots \n\n\n\n Selon la commission d’organisation, les attaquants cherchent à  atteindre artificiellement le nombre maximal de connexions simultanées  accepté par la plateforme en utilisant des bots. \n\n\n\n Un membre de l’organisation cité par Le Parisien indique que l’infrastructure serait normalement dimensionnée pour environ  10 000 connexions simultanées . L’attaque aurait provoqué des pointes pouvant atteindre  20 000 connexions , entraînant des ralentissements et des refus temporaires d’accès. \n\n\n\n Le scénario décrit s’apparente à une  attaque par déni de service  : l’objectif est de saturer les ressources disponibles en multipliant artificiellement les requêtes. Le site existe toujours et continue de traiter certaines connexions, mais les utilisateurs légitimes peuvent avoir beaucoup plus de difficultés à y accéder. \n\n\n\n Perturber le vote ne signifie pas modifier les votes \n\n\n\n C’est une distinction essentielle dans cet incident. Les éléments rendus publics décrivent pour le moment une attaque contre la  disponibilité de la plateforme , et non une intrusion permettant de consulter, supprimer ou modifier les suffrages. \n\n\n\n La commission d’organisation affirme qu’ « à aucun moment » la plateforme n’a été interrompue  et que le scrutin a continué depuis son ouverture. Elle assure également que  l’intégrité des votes enregistrés n’est pas compromise . \n\n\n\n À ce stade, aucune information publique ne fait état d’un  accès aux données des électeurs, d’une modification de bulletins ou d’une compromission du mécanisme de dépouillement . Cette assurance concernant l’intégrité du scrutin provient toutefois des organisateurs : aucun rapport technique indépendant détaillant l’incident n’a encore été rendu public. \n\n\n\n L’ANSSI mobilisée et la justice saisie \n\n\n\n L’incident a rapidement pris une dimension nationale en raison de sa cible. Selon les informations communiquées dans la journée, le Premier ministre  Sébastien Lecornu a demandé l’intervention de l’Agence nationale de la sécurité des systèmes d’information (ANSSI) . \n\n\n\n Les organisations politiques participant à la primaire ont également annoncé  saisir la justice , qualifiant l’attaque de tentative de perturbation d’un processus démocratique. \n\n\n\n L’origine des connexions malveillantes n’est pour le moment pas connue. Aucun groupe cybercriminel ou acteur étatique n’a été publiquement identifié comme responsable et  aucune attribution ne peut être faite à ce stade . \n\n\n\n Une attaque simple mais particulièrement efficace pendant une élection \n\n\n\n Une attaque de saturation ne nécessite pas forcément de pénétrer dans les serveurs de vote. Des réseaux de machines ou de services automatisés peuvent générer simultanément un très grand nombre de connexions afin de  consommer les ressources disponibles et empêcher les véritables utilisateurs d’accéder normalement au service . \n\n\n\n Dans le contexte d’un scrutin, le risque est particulier : même sans toucher directement aux bulletins, un attaquant peut chercher à  empêcher ou décourager une partie des électeurs de voter , créer de la confusion et surtout alimenter le doute autour de la fiabilité du processus. \n\n\n\n C’est précisément pour cette raison qu’il est important de distinguer une attaque affectant l’accès au site d’une compromission de l’intégrité du vote. Pour le moment,  seule la première est établie . \n\n\n\n Le scrutin reste ouvert jusqu’à samedi soir \n\n\n\n Les électeurs rencontrant des difficultés sont invités à  réessayer ultérieurement plutôt qu’à actualiser continuellement la page , ce qui ajoute inutilement des requêtes à une infrastructure déjà sous pression. \n\n\n\n Les organisateurs rappellent également que le premier tour reste ouvert jusqu’au  samedi 10 octobre à 20 heures . Un éventuel second tour est prévu les  16 et 17 octobre 2026 . \n\n\n\n La cyberattaque constitue donc à ce stade une  tentative de perturbation du vote en ligne  plutôt qu’une compromission démontrée des suffrages. Les investigations de l’ANSSI et de la justice devront désormais permettre d’identifier l’origine de l’attaque et de déterminer plus précisément son ampleur.",
+    "entity": "",
+    "event_date": "",
+    "location": "",
+    "organisation": "",
+    "published": "2026-10-09",
+    "sector": "",
+    "source_item_id": "4063",
+    "source_metadata": {
+     "rich_facts": {
+      "affected_counts": [
+       {
+        "date": "",
+        "evidence": "Au total,  140 282 personnes se sont inscrites  pour participer au premier tour.",
+        "raw": "140 282 personnes",
+        "scope": "",
+        "status": "unknown",
+        "unit": "people",
+        "value": 140282
+       }
+      ],
+      "affected_datasets": [],
+      "affected_systems": [],
+      "claims": [
+       {
+        "date": "",
+        "evidence": "Au total,  140 282 personnes se sont inscrites  pour participer au premier tour.",
+        "scope": "",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "people",
+        "value": 140282
+       },
+       {
+        "date": "2026-10-09",
+        "evidence": "La  primaire de la gauche sociale-démocrate pour l’élection présidentielle de 2027  est perturbée par une cyberattaque depuis l’ouverture du scrutin, ce  vendredi 9 octobre 2026 à 8 heures .",
+        "kind": "statement",
+        "scope": "Chronologie",
+        "status": "unknown",
+        "value": "La  primaire de la gauche sociale-démocrate pour l’élection présidentielle de 2027  est perturbée par une cyberattaque depuis l’ouverture du scrutin, ce  vendredi 9 octobre 2026 à 8 heures ."
+       }
+      ],
+      "data_types": [],
+      "data_volumes": [],
+      "profile": {
+       "chars": 5617,
+       "claims": 1,
+       "dates": 2,
+       "hypotheses": 0,
+       "numbers": 1,
+       "sentences": 42
+      },
+      "relations": [],
+      "semantic": {
+       "used": false
+      },
+      "timeline": [
+       {
+        "date": "2026-10-09",
+        "event": "La  primaire de la gauche sociale-démocrate pour l’élection présidentielle de 2027  est perturbée par une cyberattaque depuis l’ouverture du scrutin, ce  vendredi 9 octobre 2026 à 8 heures .",
+        "evidence": "La  primaire de la gauche sociale-démocrate pour l’élection présidentielle de 2027  est perturbée par une cyberattaque depuis l’ouverture du scrutin, ce  vendredi 9 octobre 2026 à 8 heures .",
+        "status": "unknown"
+       }
+      ],
+      "version": "2",
+      "vulnerabilities": []
+     }
+    },
+    "summary": "La primaire de la gauche sociale-démocrate pour l’élection présidentielle de 2027 est perturbée par une cyberattaque depuis l’ouverture…",
+    "threat": "",
+    "title": "Primaire de la gauche : une cyberattaque perturbe le vote en ligne dès son ouverture",
+    "url": "https://www.cyberattaque.org/primaire-de-la-gauche-une-cyberattaque-perturbe-le-vote-en-ligne-des-son-ouverture/"
+   },
+   "exhausted_fields": {
+    "activity_description": {
+     "at": "2026-11-04T14:58:59.467208+00:00",
+     "reason": "ACTIVITY_NOT_DESCRIBED"
+    },
+    "activity_sector_match": {
+     "at": "2026-11-04T14:58:59.467208+00:00",
+     "reason": "CONFIDENCE_REJECTED"
+    }
+   },
+   "field_reasons": {
+    "activity_description": "ACTIVITY_IDENTITY_AMBIGUOUS",
+    "activity_sector_match": "NO_VALID_ACTIVITY_PAIR"
+   },
+   "first_queued_at": "2026-10-11T06:14:59.701944+00:00",
+   "item": {
+    "Collected_As_Of": "2026-10-11T10:14:17.452530+04:00",
+    "Event_Date": "",
+    "Item_ID": "ITM-320e000af50cee1c",
+    "Location": "Inconnu",
+    "Organisation_Key": "primaire de la gauche",
+    "Organisation_Raw": "Primaire de la gauche",
+    "Published_Date": "2026-10-09",
+    "Sector": "Inconnu",
+    "Source_ID": "CYBERATTAQUE_ORG",
+    "Source_Item_ID": "4063",
+    "Threat": "Ransomware",
+    "Threat_Raw": "",
+    "Title": "Primaire de la gauche : une cyberattaque perturbe le vote en ligne dès son ouverture",
+    "URL": "https://www.cyberattaque.org/primaire-de-la-gauche-une-cyberattaque-perturbe-le-vote-en-ligne-des-son-ouverture/"
+   },
+   "key": "ITM-320e000af50cee1c:b5e0e396069849c2e6f370d1bcf76a964a5f8d94f91106f7c4bb8231c496c5a0",
+   "last_attempt_at": "2026-11-04T14:58:56.197535+00:00",
+   "last_queued_at": "2026-11-03T14:45:28.841345+00:00",
+   "pending_fields": [],
+   "reason": "SEMANTIC_REJECTED"
+  },
+  {
    "attempts": 0,
    "entry": {
     "content": "La Fédération Sportive et Culturelle de France (FSCF) fait l’objet d’une revendication de fuite de données portant sur plus de 30 000 enregistrements.  Le 26 octobre 2026, un individu utilisant le pseudonyme « camillelellouche » a publié plusieurs extraits présentés comme provenant des fichiers de la fédération. Les informations comprennent des identités, des dates de naissance, des adresses postales, des numéros de licence et des renseignements sur les pratiques sportives. \n\n\n\n Le point le plus préoccupant concerne la présence de  données personnelles d’enfants mineurs , dont certains âgés de moins de 12 ans. Les fichiers permettent notamment d’associer leur identité à un club, une discipline et une catégorie sportive. \n\n\n\n Créée en 1898, la  Fédération Sportive et Culturelle de France  est une organisation reconnue d’utilité publique qui fédère des associations sportives, culturelles et socio-éducatives sur l’ensemble du territoire. Elle intervient notamment dans la gymnastique, le twirling, les activités artistiques et l’animation jeunesse. \n\n\n\n   \n\n\n\n 21 634 licences et plus de 5 300 présélections dans les données revendiquées \n\n\n\n La publication du 26 octobre détaille sept catégories de données qui auraient été récupérées depuis les services de la FSCF. \n\n\n\n \n  21 634  enregistrements de licences ; \n\n\n\n  5 305  enregistrements de présélections ; \n\n\n\n  1 573  abonnés ; \n\n\n\n  642  enregistrements liés aux instances de la FSCF ; \n\n\n\n  457  correspondants par discipline ; \n\n\n\n  270  licences annulées ; \n\n\n\n  140  abonnements. \n \n\n\n\n Le total atteint précisément  30 021 enregistrements . Ce chiffre ne correspond pas nécessairement à 30 021 personnes différentes, puisqu’un même individu peut apparaître dans plusieurs catégories. \n\n\n\n Les fichiers révèlent l’identité, l’adresse et le club sportif des licenciés \n\n\n\n Les extraits diffusés présentent une structure caractéristique d’un export de données de gestion fédérale. Plusieurs dizaines de champs sont recensés, permettant de retrouver des informations personnelles particulièrement détaillées. \n\n\n\n Parmi les informations apparaissant dans les exemples figurent : \n\n\n\n \n Les  noms, prénoms et dates de naissance  ; \n\n\n\n Les adresses postales, communes et codes postaux ; \n\n\n\n Les adresses email et potentiellement les numéros de téléphone ; \n\n\n\n Les numéros de licence et leur statut ; \n\n\n\n Les  clubs sportifs et les disciplines pratiquées  ; \n\n\n\n Les catégories d’âge et les niveaux de compétition ; \n\n\n\n Les comités départementaux et régionaux ; \n\n\n\n Les dates de validation et d’expiration des licences ; \n\n\n\n Certains montants financiers associés aux licences. \n \n\n\n\n Les exemples concernent notamment des licenciés de  Loire-Atlantique , dans des clubs situés autour de Nantes et de Saint-Herblain. On retrouve des pratiquants de gymnastique féminine, de gymnastique rythmique et de twirling. \n\n\n\n Des enfants nés en 2014 et 2016 apparaissent dans les extraits \n\n\n\n La présence de mineurs constitue l’un des aspects les plus sensibles de cette divulgation. Plusieurs fiches correspondent à des enfants nés en  2014 et 2016 , avec des catégories sportives U12 et U10. \n\n\n\n Pour ces jeunes licenciés, les informations permettent de connaître simultanément leur  identité, leur âge, leur commune de résidence et leur association sportive . \n\n\n\n Cette combinaison est particulièrement problématique : les données ne permettent pas seulement d’identifier un enfant, mais aussi de connaître une partie de ses activités extrascolaires. Si elles sont réutilisées à des fins malveillantes, elles pourraient faciliter des prises de contact frauduleuses auprès des familles. \n\n\n\n Des licences actives pour la saison 2026 \n\n\n\n Les enregistrements présentés ne semblent pas provenir exclusivement d’anciennes archives. Plusieurs fiches portent la mention  « Active » pour la saison 2026 , avec des dates de validation situées en 2025 et une fin de validité fixée au 31 août 2026. \n\n\n\n D’autres informations font référence à des licences de compétition dont les périodes de validité peuvent s’étendre jusqu’en  2028 . \n\n\n\n Ces éléments indiquent que les données revendiquées comprennent des informations administratives relativement récentes. Ils ne permettent toutefois pas de déterminer la date exacte à laquelle elles ont été extraites. \n\n\n\n Le hacker évoque une extraction automatisée des données \n\n\n\n L’auteur de la publication présente son opération comme un  « scraping » . Cette technique consiste à collecter automatiquement des informations accessibles depuis un site ou une application, parfois en exploitant des interfaces qui ne limitent pas suffisamment les requêtes. \n\n\n\n Dans le cas de la FSCF, plusieurs scénarios sont envisageables :  une interface de consultation insuffisamment protégée, une API exposant trop d’informations ou un défaut de contrôle des autorisations . \n\n\n\n La présence de champs administratifs détaillés laisse penser que les informations proviennent d’un système structuré de gestion des licences. En revanche, rien ne permet de déterminer si le hacker a contourné une protection, utilisé un accès légitime compromis ou simplement collecté des données accessibles sans authentification. \n\n\n\n Des escroqueries possibles en usurpant l’identité des clubs sportifs \n\n\n\n Le principal risque concerne désormais l’utilisation de ces informations pour mener des  campagnes de phishing ciblées contre les licenciés et leurs familles . \n\n\n\n Un fraudeur connaissant le nom d’un sportif, son club, sa discipline et sa saison de licence pourrait se faire passer pour une association afin de réclamer un paiement, une régularisation d’inscription ou une mise à jour du dossier administratif. \n\n\n\n La présence de données concernant des mineurs renforce cette inquiétude. Les parents pourraient recevoir des sollicitations suffisamment précises pour sembler provenir de véritables responsables associatifs. \n\n\n\n À ce stade,  aucune confirmation officielle de la FSCF n’a été identifiée concernant cette extraction . Les exemples publiés permettent d’observer la nature des informations concernées, mais pas de vérifier indépendamment l’intégralité des 30 021 enregistrements revendiqués. \n\n\n\n L’enjeu principal reste donc de déterminer comment des informations aussi détaillées, notamment celles de jeunes licenciés, ont pu être récupérées et si d’autres données de la fédération demeurent accessibles.",
@@ -9748,1336 +10092,6 @@
   {
    "attempts": 1,
    "entry": {
-    "content": "SL\nPar Seblatombe, rédacteur FrenchBreaches\nPublié le 09/10/2026\n— Secteur public\nÉducation nationale : Stormous revendique une cyberattaque, des milliers d'identifiants et mots de passe exposés\nLe ministère de l'Éducation nationale est concerné par deux affaires distinctes de fuite de données. En mars 2026, il a confirmé la compromission des informations personnelles de 243 000 agents via le système COMPAS. De son côté, le groupe cybercriminel Stormous revendique une attaque datant de juin 2025, qui aurait touché environ 40 000 personnes.\nDes fichiers examinés par FrenchBreaches contiennent des milliers d'adresses e-mail, d'identifiants et de mots de passe liés à des services éducatifs et administratifs français. Certaines données proviendraient toutefois de logiciels voleurs d'informations (infostealers). Aucun lien entre les deux affaires n'est établi à ce stade.\nDes milliers d'identifiants liés à l'Éducation nationale\nLa revendication attribuée à Stormous, située autour du 10 juin 2025, s'accompagne de plusieurs fichiers présentés comme des données compromises.\nFrenchBreaches a examiné cinq fichiers, comprenant notamment des identifiants associés à l'Éducation nationale, à l'académie de Créteil et à d'autres administrations françaises.\nParmi les éléments analysés :\ngouv.fr.json : 5 000 enregistrements, associés à plusieurs domaines gouvernementaux ;\nac-creteil.json : 3 329 enregistrements, liés à des services de l'académie de Créteil ;\neducation.gouv.fr.csv : 1 328 lignes de données, hors en-têtes, concernant notamment des plateformes éducatives et étudiantes ;\ndb_administrative.txt : 1 992 lignes, regroupant des adresses e-mail professionnelles et des empreintes de mots de passe ;\nimpots.gouv.fr.txt : 742 lignes, contenant principalement des couples identifiant/mot de passe.\nCes volumes correspondent aux fichiers examinés et non au nombre de personnes distinctes concernées. Des doublons et des recoupements entre les différents ensembles sont possibles.\nQuelles données personnelles ont été exposées ?\nL'examen des fichiers révèle plusieurs catégories d'informations :\nAdresses e-mail personnelles et professionnelles ;\nIdentifiants de connexion et noms d'utilisateur ;\nMots de passe en clair, présents dans plusieurs fichiers ;\nEmpreintes de mots de passe, notamment MD5 et SHA-512 ;\nIdentifiants numériques, dont certains associés à des services fiscaux ;\nAdresses de connexion et noms de domaine des plateformes concernées ;\nDates et codes de pays associés aux enregistrements ;\nRéférences techniques permettant de regrouper certaines données par source.\nLe fichier gouv.fr.json contient notamment 5 000 enregistrements avec un champ de mot de passe renseigné, dont 1 855 disposent d'une adresse e-mail et 3 000 d'un identifiant de connexion.\nDans ac-creteil.json, 3 307 enregistrements sur 3 329 comportent également un champ de mot de passe renseigné.\nCes éléments montrent la présence d'informations d'authentification potentiellement exploitables, sans permettre de confirmer que tous les mots de passe sont encore valides.\nEduConnect, Pronote, impôts : plusieurs services concernés\nLes échantillons contiennent des références à de nombreuses plateformes utilisées par les particuliers, les élèves, les étudiants et les agents publics.\nParmi les services identifiés figurent :\nEduConnect, portail d'authentification de l'Éducation nationale ;\nPronote, utilisé pour le suivi de la scolarité ;\nCyclades, plateforme de gestion des examens et concours ;\nLes messageries et téléservices de l'académie de Créteil ;\nMesServices.etudiant.gouv.fr, destiné aux étudiants ;\nimpots.gouv.fr, pour les démarches fiscales ;\nFrance-Visas, ANTS et Mon Compte Formation.\nLe fichier db_administrative.txt contient également des adresses professionnelles associées à plusieurs organismes publics et sociaux.\nLa présence d'identifiants liés à ces services ne signifie pas que leurs infrastructures ont toutes été piratées.\nDes données provenant notamment d'infostealers\nL'analyse technique révèle un élément important concernant la provenance des informations.\nDans le fichier gouv.fr.json, les 5 000 enregistrements portent la mention stealer, généralement utilisée pour désigner des données collectées par des logiciels malveillants spécialisés dans le vol d'informations.\nLe fichier ac-creteil.json comprend quant à lui 506 enregistrements étiquetés stealer et 2 823 portant la mention ulp.\nLes dates renseignées couvrent plusieurs années :\n2018 à 2025 pour gouv.fr.json ;\n2021 à 2025 pour ac-creteil.json.\nCes dates sont celles figurant dans les enregistrements et ne constituent pas nécessairement les dates des compromissions.\nCertains éléments sont postérieurs à la revendication de juin 2025, ce qui suggère que les fichiers examinés pourraient rassembler des données de différentes provenances ou périodes.\nL'analyse ne permet donc pas de confirmer que ces informations résultent d'une intrusion unique dans les systèmes du ministère de l'Éducation nationale.\nUne autre fuite confirmée concernant 243 000 agents\nIndépendamment de la revendication de Stormous, le ministère de l'Éducation nationale a confirmé, le 24 mars 2026, un incident de sécurité touchant le système COMPAS, utilisé pour la gestion des enseignants stagiaires.\nEnviron 243 000 agents sont concernés par cette compromission.\nLes informations exposées comprennent notamment :\nNoms et prénoms ;\nAdresses postales et coordonnées téléphoniques ;\nInformations administratives et professionnelles ;\nPériodes d'absence, sans données médicales ;\nIdentités et coordonnées professionnelles des tuteurs.\nSelon le ministère, l'accès frauduleux aurait eu lieu le 15 mars 2026 à la suite de l'usurpation d'un compte externe.\nAucun élément ne permet de relier cette fuite à Stormous. Les 243 000 agents concernés ne doivent donc pas être présentés comme des victimes confirmées de l'attaque revendiquée par ce groupe.\nQuels risques pour les utilisateurs concernés ?\nLa présence de mots de passe en clair constitue un risque important, notamment lorsque les mêmes identifiants sont utilisés sur plusieurs plateformes.\nDes personnes malveillantes pourraient exploiter ces informations pour tenter d'accéder à des comptes, usurper des identités ou mener des campagnes de phishing ciblées.\nLes utilisateurs concernés ont intérêt à modifier leurs mots de passe réutilisés, à activer l'authentification multifacteur lorsqu'elle est disponible et à surveiller les connexions suspectes.\nÀ ce stade, la revendication de Stormous concernant environ 40 000 personnes n'est pas confirmée par les seuls échantillons examinés. Ces derniers établissent la présence de nombreux identifiants et mots de passe associés à des services publics français, mais pas l'origine exacte de leur collecte ni une compromission directe du ministère.\nCet article vous est proposé en relation avec cette fuite de donnée\nÉducation nationale : 243 000 agents touchés, une autre attaque visant 40 000 personnes revendiquée\nÉducation nationale : 243 000 agents concernés par une fuite confirmée. Une autre affaire évoque 40 000 personnes et des mots de passe exposés.\nLire l'article lié ➔",
-    "entity": "",
-    "event_date": "",
-    "location": "",
-    "organisation": "",
-    "published": "2026-10-09",
-    "sector": "",
-    "source_item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-    "source_metadata": {
-     "detail_hydration": {
-      "chars": 7139,
-      "extractor_version": "editorial-html-2026-09-06.1",
-      "fallback": "",
-      "status": "HYDRATED",
-      "truncated": false
-     },
-     "rich_facts": {
-      "affected_counts": [
-       {
-        "date": "",
-        "evidence": "En mars 2026, il a confirmé la compromission des informations personnelles de 243 000 agents via le système COMPAS.",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "raw": "243 000 agents",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "confirmed",
-        "unit": "people",
-        "value": 243000
-       },
-       {
-        "date": "",
-        "evidence": "Éducation nationale : 243 000 agents touchés, une autre attaque visant 40 000 personnes revendiquée",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "raw": "243 000 agents",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "unit": "people",
-        "value": 243000
-       },
-       {
-        "date": "",
-        "evidence": "Éducation nationale : 243 000 agents touchés, une autre attaque visant 40 000 personnes revendiquée",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "raw": "40 000 personnes",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "unit": "people",
-        "value": 40000
-       },
-       {
-        "date": "",
-        "evidence": "De son côté, le groupe cybercriminel Stormous revendique une attaque datant de juin 2025, qui aurait touché environ 40 000 personnes.",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "raw": "40 000 personnes",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "unit": "people",
-        "value": 40000
-       },
-       {
-        "date": "",
-        "evidence": "Les 243 000 agents concernés ne doivent donc pas être présentés comme des victimes confirmées de l'attaque revendiquée par ce groupe.",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "raw": "243 000 agents",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "negated",
-        "unit": "people",
-        "value": 243000
-       },
-       {
-        "date": "",
-        "evidence": "À ce stade, la revendication de Stormous concernant environ 40 000 personnes n'est pas confirmée par les seuls échantillons examinés.",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "raw": "40 000 personnes",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "negated",
-        "unit": "people",
-        "value": 40000
-       },
-       {
-        "date": "",
-        "evidence": "Environ 243 000 agents sont concernés par cette compromission.",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "raw": "243 000 agents",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "unit": "people",
-        "value": 243000
-       },
-       {
-        "date": "",
-        "evidence": "Une autre affaire évoque 40 000 personnes et des mots de passe exposés.",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "raw": "40 000 personnes",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "unit": "people",
-        "value": 40000
-       },
-       {
-        "date": "",
-        "evidence": "gouv.fr.json : 5 000 enregistrements, associés à plusieurs domaines gouvernementaux ;",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "raw": "5 000 enregistrements",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "unit": "records",
-        "value": 5000
-       },
-       {
-        "date": "",
-        "evidence": "ac-creteil.json : 3 329 enregistrements, liés à des services de l'académie de Créteil ;",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "raw": "3 329 enregistrements",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "unit": "records",
-        "value": 3329
-       },
-       {
-        "date": "",
-        "evidence": "Dans ac-creteil.json, 3 307 enregistrements sur 3 329 comportent également un champ de mot de passe renseigné.",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "raw": "3 307 enregistrements",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "unit": "records",
-        "value": 3307
-       },
-       {
-        "date": "",
-        "evidence": "db_administrative.txt : 1 992 lignes, regroupant des adresses e-mail professionnelles et des empreintes de mots de passe ;",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "raw": "1 992 lignes",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "unit": "records",
-        "value": 1992
-       },
-       {
-        "date": "",
-        "evidence": "education.gouv.fr.csv : 1 328 lignes de données, hors en-têtes, concernant notamment des plateformes éducatives et étudiantes ;",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "raw": "1 328 lignes",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "unit": "records",
-        "value": 1328
-       },
-       {
-        "date": "",
-        "evidence": "impots.gouv.fr.txt : 742 lignes, contenant principalement des couples identifiant/mot de passe.",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "raw": "742 lignes",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "unit": "records",
-        "value": 742
-       },
-       {
-        "date": "",
-        "evidence": "Le fichier ac-creteil.json comprend quant à lui 506 enregistrements étiquetés stealer et 2 823 portant la mention ulp.",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "raw": "506 enregistrements",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "unit": "records",
-        "value": 506
-       }
-      ],
-      "affected_datasets": [],
-      "affected_systems": [],
-      "claims": [
-       {
-        "date": "",
-        "evidence": "En mars 2026, il a confirmé la compromission des informations personnelles de 243 000 agents via le système COMPAS.",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "confirmed",
-        "type": "affected_count",
-        "unit": "people",
-        "value": 243000
-       },
-       {
-        "date": "",
-        "evidence": "Éducation nationale : 243 000 agents touchés, une autre attaque visant 40 000 personnes revendiquée",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "type": "affected_count",
-        "unit": "people",
-        "value": 243000
-       },
-       {
-        "date": "",
-        "evidence": "Éducation nationale : 243 000 agents touchés, une autre attaque visant 40 000 personnes revendiquée",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "type": "affected_count",
-        "unit": "people",
-        "value": 40000
-       },
-       {
-        "date": "",
-        "evidence": "De son côté, le groupe cybercriminel Stormous revendique une attaque datant de juin 2025, qui aurait touché environ 40 000 personnes.",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "type": "affected_count",
-        "unit": "people",
-        "value": 40000
-       },
-       {
-        "date": "",
-        "evidence": "Les 243 000 agents concernés ne doivent donc pas être présentés comme des victimes confirmées de l'attaque revendiquée par ce groupe.",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "negated",
-        "type": "affected_count",
-        "unit": "people",
-        "value": 243000
-       },
-       {
-        "date": "",
-        "evidence": "À ce stade, la revendication de Stormous concernant environ 40 000 personnes n'est pas confirmée par les seuls échantillons examinés.",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "negated",
-        "type": "affected_count",
-        "unit": "people",
-        "value": 40000
-       },
-       {
-        "date": "",
-        "evidence": "Environ 243 000 agents sont concernés par cette compromission.",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "people",
-        "value": 243000
-       },
-       {
-        "date": "",
-        "evidence": "Une autre affaire évoque 40 000 personnes et des mots de passe exposés.",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "people",
-        "value": 40000
-       },
-       {
-        "date": "",
-        "evidence": "gouv.fr.json : 5 000 enregistrements, associés à plusieurs domaines gouvernementaux ;",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "records",
-        "value": 5000
-       },
-       {
-        "date": "",
-        "evidence": "ac-creteil.json : 3 329 enregistrements, liés à des services de l'académie de Créteil ;",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "records",
-        "value": 3329
-       },
-       {
-        "date": "",
-        "evidence": "Dans ac-creteil.json, 3 307 enregistrements sur 3 329 comportent également un champ de mot de passe renseigné.",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "records",
-        "value": 3307
-       },
-       {
-        "date": "",
-        "evidence": "db_administrative.txt : 1 992 lignes, regroupant des adresses e-mail professionnelles et des empreintes de mots de passe ;",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "records",
-        "value": 1992
-       },
-       {
-        "date": "",
-        "evidence": "education.gouv.fr.csv : 1 328 lignes de données, hors en-têtes, concernant notamment des plateformes éducatives et étudiantes ;",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "records",
-        "value": 1328
-       },
-       {
-        "date": "",
-        "evidence": "impots.gouv.fr.txt : 742 lignes, contenant principalement des couples identifiant/mot de passe.",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "records",
-        "value": 742
-       },
-       {
-        "date": "",
-        "evidence": "Le fichier ac-creteil.json comprend quant à lui 506 enregistrements étiquetés stealer et 2 823 portant la mention ulp.",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "records",
-        "value": 506
-       },
-       {
-        "date": "",
-        "evidence": "Éducation nationale : Stormous revendique une cyberattaque, des milliers d'identifiants et mots de passe exposés Le ministère de l'Éducation nationale est concerné par deux affaires distinctes de fuite de données.",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "type": "data_type",
-        "value": "identifiants"
-       },
-       {
-        "date": "",
-        "evidence": "Éducation nationale : Stormous revendique une cyberattaque, des milliers d'identifiants et mots de passe exposés Le ministère de l'Éducation nationale est concerné par deux affaires distinctes de fuite de données.",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "type": "data_type",
-        "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "Des fichiers examinés par FrenchBreaches contiennent des milliers d'adresses e-mail, d'identifiants et de mots de passe liés à des services éducatifs et administratifs français.",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "source_id": "FRENCHBREACHES",
-        "status": "confirmed",
-        "type": "data_type",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "Des fichiers examinés par FrenchBreaches contiennent des milliers d'adresses e-mail, d'identifiants et de mots de passe liés à des services éducatifs et administratifs français.",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "source_id": "FRENCHBREACHES",
-        "status": "confirmed",
-        "type": "data_type",
-        "value": "identifiants"
-       },
-       {
-        "date": "",
-        "evidence": "Des fichiers examinés par FrenchBreaches contiennent des milliers d'adresses e-mail, d'identifiants et de mots de passe liés à des services éducatifs et administratifs français.",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "source_id": "FRENCHBREACHES",
-        "status": "confirmed",
-        "type": "data_type",
-        "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "Des milliers d'identifiants liés à l'Éducation nationale",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "identifiants"
-       },
-       {
-        "date": "",
-        "evidence": "db_administrative.txt : 1 992 lignes, regroupant des adresses e-mail professionnelles et des empreintes de mots de passe ;",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "db_administrative.txt : 1 992 lignes, regroupant des adresses e-mail professionnelles et des empreintes de mots de passe ;",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "Ces éléments montrent la présence d'informations d'authentification potentiellement exploitables, sans permettre de confirmer que tous les mots de passe sont encore valides.",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "type": "data_type",
-        "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "Noms et prénoms ;",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "noms et prénoms"
-       },
-       {
-        "date": "",
-        "evidence": "Adresses postales et coordonnées téléphoniques ;",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "adresses postales"
-       },
-       {
-        "date": "",
-        "evidence": "Informations administratives et professionnelles ;",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "informations administratives"
-       },
-       {
-        "date": "",
-        "evidence": "Périodes d'absence, sans données médicales ;",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "données de santé"
-       }
-      ],
-      "data_types": [
-       {
-        "date": "",
-        "evidence": "Éducation nationale : Stormous revendique une cyberattaque, des milliers d'identifiants et mots de passe exposés Le ministère de l'Éducation nationale est concerné par deux affaires distinctes de fuite de données.",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "value": "identifiants"
-       },
-       {
-        "date": "",
-        "evidence": "Éducation nationale : Stormous revendique une cyberattaque, des milliers d'identifiants et mots de passe exposés Le ministère de l'Éducation nationale est concerné par deux affaires distinctes de fuite de données.",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "Des fichiers examinés par FrenchBreaches contiennent des milliers d'adresses e-mail, d'identifiants et de mots de passe liés à des services éducatifs et administratifs français.",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "source_id": "FRENCHBREACHES",
-        "status": "confirmed",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "Des fichiers examinés par FrenchBreaches contiennent des milliers d'adresses e-mail, d'identifiants et de mots de passe liés à des services éducatifs et administratifs français.",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "source_id": "FRENCHBREACHES",
-        "status": "confirmed",
-        "value": "identifiants"
-       },
-       {
-        "date": "",
-        "evidence": "Des fichiers examinés par FrenchBreaches contiennent des milliers d'adresses e-mail, d'identifiants et de mots de passe liés à des services éducatifs et administratifs français.",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "source_id": "FRENCHBREACHES",
-        "status": "confirmed",
-        "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "Des milliers d'identifiants liés à l'Éducation nationale",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "identifiants"
-       },
-       {
-        "date": "",
-        "evidence": "db_administrative.txt : 1 992 lignes, regroupant des adresses e-mail professionnelles et des empreintes de mots de passe ;",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "db_administrative.txt : 1 992 lignes, regroupant des adresses e-mail professionnelles et des empreintes de mots de passe ;",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "Ces éléments montrent la présence d'informations d'authentification potentiellement exploitables, sans permettre de confirmer que tous les mots de passe sont encore valides.",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "Noms et prénoms ;",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "noms et prénoms"
-       },
-       {
-        "date": "",
-        "evidence": "Adresses postales et coordonnées téléphoniques ;",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "adresses postales"
-       },
-       {
-        "date": "",
-        "evidence": "Informations administratives et professionnelles ;",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "informations administratives"
-       },
-       {
-        "date": "",
-        "evidence": "Périodes d'absence, sans données médicales ;",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "données de santé"
-       }
-      ],
-      "data_volumes": [],
-      "engine": "generic-rich-facts",
-      "profile": {
-       "chars": 7456,
-       "claims": 28,
-       "hypotheses": 2,
-       "semantic_candidate": true,
-       "sentences": 83
-      },
-      "relations": [
-       {
-        "evidence": "De son côté, le groupe cybercriminel Stormous revendique une attaque datant de juin 2025, qui aurait touché environ 40 000 personnes.",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "object": "incident",
-        "relation": "claimed_by",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "subject": "cybercriminel"
-       }
-      ],
-      "semantic": {
-       "candidate": true,
-       "used": false
-      },
-      "source_adapter": "frenchbreaches",
-      "timeline": [
-       {
-        "date": "2026-03-24",
-        "event": "Indépendamment de la revendication de Stormous, le ministère de l'Éducation nationale a confirmé, le 24 mars 2026, un incident de sécurité touchant le système COMPAS, utilisé pour la gestion des enseignants stagiaires.",
-        "evidence": "Indépendamment de la revendication de Stormous, le ministère de l'Éducation nationale a confirmé, le 24 mars 2026, un incident de sécurité touchant le système COMPAS, utilisé pour la gestion des enseignants stagiaires.",
-        "item_id": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-        "source_id": "FRENCHBREACHES",
-        "status": "confirmed"
-       }
-      ],
-      "version": "2",
-      "vulnerabilities": []
-     }
-    },
-    "summary": "Éducation nationale : Stormous revendique une cyberattaque, des milliers d'identifiants et mots de passe exposés Le ministère de l'Éducation nationale est concerné par deux affaires distinctes de fuite de données. En mars 2026, il a confirmé la compromission des informations pers…",
-    "threat": "Fuite de données",
-    "title": "Ministère de l'Éducation nationale",
-    "url": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d"
-   },
-   "exhausted_fields": {},
-   "field_reasons": {
-    "incident_summary": "CONFIDENCE_REJECTED",
-    "summary": "CONFIDENCE_REJECTED"
-   },
-   "first_queued_at": "2026-10-11T06:14:50.427981+00:00",
-   "item": {
-    "Collected_As_Of": "2026-10-11T10:14:17.452530+04:00",
-    "Event_Date": "",
-    "Item_ID": "ITM-915a7535e0a25f7e",
-    "Location": "France métropolitaine",
-    "Organisation_Key": "education nationale",
-    "Organisation_Raw": "Ministère de l'Éducation nationale",
-    "Published_Date": "2026-10-09",
-    "Sector": "Administration / Collectivité",
-    "Source_ID": "FRENCHBREACHES",
-    "Source_Item_ID": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-    "Threat": "Ransomware",
-    "Threat_Raw": "Fuite de données",
-    "Title": "Ministère de l'Éducation nationale",
-    "URL": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d"
-   },
-   "key": "ITM-915a7535e0a25f7e:0944a32d1e6fd374d6265ad81d62b2affab9153e10b830eb3da99c3f5d4d31bb",
-   "last_queued_at": "2026-11-03T14:45:23.465893+00:00",
-   "pending_fields": [
-    "incident_summary",
-    "summary"
-   ],
-   "reason": "SEMANTIC_MISS"
-  },
-  {
-   "attempts": 1,
-   "entry": {
-    "content": "Infogreffe , le portail français permettant d’accéder aux informations légales et économiques des entreprises enregistrées au registre du commerce, fait l’objet d’une importante revendication de cyberattaque. Le collectif  LunarisSec  affirme avoir compromis l’organisation et revendique  3 708 531 lignes de données . \n\n\n\n La revendication est attribuée à plusieurs membres du groupe utilisant les pseudonymes  CybΞr, Pwn2dd, Hex@py et 0xDzz . Mais surtout, plusieurs captures d’écran communiquées comme preuves semblent montrer un niveau d’accès allant bien au-delà d’une simple extraction de données publiques. \n\n\n\n  Cyberattaque.org s’est procuré ces éléments . L’une des captures transmises le  10 octobre 2026  montre notamment ce qui ressemble à la configuration d’une  connexion directe à une base PostgreSQL , avec une adresse JDBC, un nom d’utilisateur et un mot de passe enregistré. \n\n\n\n   \n\n\n\n Infogreffe au cœur des données légales des entreprises françaises \n\n\n\n  Infogreffe  est le service de diffusion de l’information légale et officielle issue des greffes des tribunaux de commerce. Il permet notamment de consulter ou commander des extraits Kbis, comptes annuels, actes, statuts, informations sur les dirigeants, procédures collectives ou états d’endettement. \n\n\n\n Le portail propose également plusieurs services destinés aux entreprises, notamment autour de la donnée, de la surveillance d’entreprises et du  recouvrement des créances impayées . \n\n\n\n 3 708 531 lignes revendiquées par LunarisSec \n\n\n\n LunarisSec annonce avoir récupéré  3 708 531 lignes  liées à Infogreffe. Aucun élément communiqué à Cyberattaque.org ne permet pour le moment de déterminer précisément à quelle table ou à quel ensemble de données correspond ce chiffre. \n\n\n\n Il serait donc prématuré de parler de 3,7 millions de personnes. Une base informatique peut contenir plusieurs lignes pour un même utilisateur, une même entreprise ou une même opération. \n\n\n\n La nature exacte des informations contenues dans ces millions d’enregistrements reste également à confirmer. \n\n\n\n Une capture montre une connexion PostgreSQL configurée \n\n\n\n Le document le plus intéressant transmis par LunarisSec montre une interface contenant les paramètres d’une  connexion à une base de données PostgreSQL . \n\n\n\n On peut notamment y distinguer le pilote, une adresse, un nom d’utilisateur ainsi qu’un champ contenant un mot de passe. \n\n\n\n Ce type d’écran correspond à la configuration utilisée par une application pour  communiquer directement avec une base de données . Il ne s’agit donc pas simplement de la consultation d’une page publique d’Infogreffe. \n\n\n\n La capture ne permet cependant pas d’affirmer que LunarisSec possède effectivement le mot de passe affiché derrière les points, ni que cette connexion est encore fonctionnelle. Elle suggère en revanche que les attaquants ont pu atteindre  une interface technique ou administrative disposant de paramètres de connexion à une base PostgreSQL . \n\n\n\n Des traces d’une application basée sur Joget \n\n\n\n Une autre capture apporte un indice supplémentaire sur l’environnement compromis. Elle montre des journaux techniques faisant référence à  org.joget.apps.util.UserAuthenticationService  et à une application identifiée comme  AppCenter . \n\n\n\n  Joget  est une plateforme permettant de créer et d’exploiter des applications métier. Les lignes visibles correspondent notamment à des opérations d’authentification et contiennent des références à des comptes utilisateurs et à des adresses email. \n\n\n\n Ces éléments semblent donc provenir d’un  environnement applicatif interne ou métier , plutôt que du simple moteur public permettant de rechercher une entreprise sur Infogreffe. \n\n\n\n Une capture liée aux « impayés » intrigue \n\n\n\n Une troisième capture montre une interface comportant une rubrique intitulée  « Les impayés » , avec une colonne « Montant ». \n\n\n\n Une ligne datée du  17 janvier 2023  affiche un montant particulièrement étonnant de  10 000 001 189,50 euros , soit plus de 10 milliards d’euros. \n\n\n\n Ce chiffre ne doit surtout pas être interprété comme le montant réel des créances ou des impayés gérés par Infogreffe. Il pourrait correspondre à  une valeur de test, une donnée erronée ou un enregistrement isolé . La capture ne fournit pas suffisamment de contexte pour le déterminer. \n\n\n\n Elle est néanmoins intéressante car Infogreffe exploite justement un service permettant aux entreprises et particuliers de gérer le  recouvrement amiable de créances . Il reste à déterminer si l’écran montré par LunarisSec appartient directement à cet environnement ou à un autre outil interne. \n\n\n\n Les captures suggèrent un accès plus profond qu’une simple fuite \n\n\n\n Pris séparément, aucun de ces éléments ne permet de reconstituer précisément le scénario de l’attaque. Leur combinaison est en revanche significative :  configuration d’une base PostgreSQL, journaux d’authentification d’une application métier et accès à des écrans internes . \n\n\n\n Cela suggère que LunarisSec pourrait avoir obtenu un accès à une partie de l’ environnement applicatif d’Infogreffe  et pas uniquement récupéré un fichier exposé sur Internet. \n\n\n\n La méthode d’accès reste inconnue. Rien ne permet encore de savoir si les attaquants ont exploité une vulnérabilité, compromis un compte, détourné une interface d’administration ou utilisé une autre technique. \n\n\n\n Le contenu des 3,7 millions de lignes reste à confirmer \n\n\n\n Le principal point d’incertitude concerne désormais les  3 708 531 lignes revendiquées . Aucun échantillon suffisamment complet analysé par Cyberattaque.org ne permet à ce stade d’en déterminer le contenu exact. \n\n\n\n Il serait notamment prématuré d’affirmer qu’elles contiennent des informations personnelles sur les utilisateurs d’Infogreffe, des données d’entreprises, des dossiers de recouvrement ou des documents issus des greffes. \n\n\n\n Les captures fournies par LunarisSec donnent néanmoins davantage de poids à la revendication en montrant des  éléments techniques cohérents avec l’accès à un environnement applicatif et à sa base de données . \n\n\n\n Une revendication qui doit encore être confirmée par Infogreffe \n\n\n\n À ce stade,  Infogreffe n’a pas publiquement confirmé la revendication de LunarisSec . Le volume annoncé, l’étendue exacte de l’accès et la nature des données potentiellement récupérées restent donc à établir. \n\n\n\n L’élément le plus préoccupant n’est pour l’instant pas le chiffre de 3,7 millions de lignes en lui-même, mais les captures laissant penser que les attaquants ont pu atteindre  des interfaces techniques capables de communiquer avec une base PostgreSQL et des applications métier internes .",
-    "entity": "",
-    "event_date": "",
-    "location": "",
-    "organisation": "",
-    "published": "2026-10-10",
-    "sector": "",
-    "source_item_id": "4085",
-    "source_metadata": {
-     "rich_facts": {
-      "affected_counts": [
-       {
-        "date": "",
-        "evidence": "Le collectif  LunarisSec  affirme avoir compromis l’organisation et revendique  3 708 531 lignes de données .",
-        "raw": "3 708 531 lignes",
-        "scope": "",
-        "status": "claimed",
-        "unit": "records",
-        "value": 3708531
-       },
-       {
-        "date": "",
-        "evidence": "Infogreffe : 3,7 millions de lignes revendiquées après une cyberattaque",
-        "raw": "3,7 millions de lignes",
-        "scope": "",
-        "status": "claimed",
-        "unit": "records",
-        "value": 3700000
-       },
-       {
-        "date": "",
-        "evidence": "Il serait donc prématuré de parler de 3,7 millions de personnes.",
-        "raw": "3,7 millions de personnes",
-        "scope": "",
-        "status": "hypothesis",
-        "unit": "people",
-        "value": 3700000
-       },
-       {
-        "date": "",
-        "evidence": "LunarisSec annonce avoir récupéré  3 708 531 lignes  liées à Infogreffe.",
-        "raw": "3 708 531 lignes",
-        "scope": "",
-        "status": "unknown",
-        "unit": "records",
-        "value": 3708531
-       },
-       {
-        "date": "",
-        "evidence": "Le contenu des 3,7 millions de lignes reste à confirmer",
-        "raw": "3,7 millions de lignes",
-        "scope": "",
-        "status": "unknown",
-        "unit": "records",
-        "value": 3700000
-       }
-      ],
-      "affected_datasets": [],
-      "affected_systems": [],
-      "claims": [
-       {
-        "date": "",
-        "evidence": "Le collectif  LunarisSec  affirme avoir compromis l’organisation et revendique  3 708 531 lignes de données .",
-        "scope": "",
-        "status": "claimed",
-        "type": "affected_count",
-        "unit": "records",
-        "value": 3708531
-       },
-       {
-        "date": "",
-        "evidence": "Infogreffe : 3,7 millions de lignes revendiquées après une cyberattaque",
-        "scope": "",
-        "status": "claimed",
-        "type": "affected_count",
-        "unit": "records",
-        "value": 3700000
-       },
-       {
-        "date": "",
-        "evidence": "Il serait donc prématuré de parler de 3,7 millions de personnes.",
-        "scope": "",
-        "status": "hypothesis",
-        "type": "affected_count",
-        "unit": "people",
-        "value": 3700000
-       },
-       {
-        "date": "",
-        "evidence": "LunarisSec annonce avoir récupéré  3 708 531 lignes  liées à Infogreffe.",
-        "scope": "",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "records",
-        "value": 3708531
-       },
-       {
-        "date": "",
-        "evidence": "Le contenu des 3,7 millions de lignes reste à confirmer",
-        "scope": "",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "records",
-        "value": 3700000
-       },
-       {
-        "date": "2026-10-10",
-        "evidence": "L’une des captures transmises le  10 octobre 2026  montre notamment ce qui ressemble à la configuration d’une  connexion directe à une base PostgreSQL , avec une adresse JDBC, un nom d’utilisateur et un mot de passe enregistré.",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "On peut notamment y distinguer le pilote, une adresse, un nom d’utilisateur ainsi qu’un champ contenant un mot de passe.",
-        "status": "hypothesis",
-        "type": "data_type",
-        "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "Les lignes visibles correspondent notamment à des opérations d’authentification et contiennent des références à des comptes utilisateurs et à des adresses email.",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "Une troisième capture montre une interface comportant une rubrique intitulée  « Les impayés » , avec une colonne « Montant ».",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "montants"
-       }
-      ],
-      "data_types": [
-       {
-        "date": "2026-10-10",
-        "evidence": "L’une des captures transmises le  10 octobre 2026  montre notamment ce qui ressemble à la configuration d’une  connexion directe à une base PostgreSQL , avec une adresse JDBC, un nom d’utilisateur et un mot de passe enregistré.",
-        "status": "unknown",
-        "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "On peut notamment y distinguer le pilote, une adresse, un nom d’utilisateur ainsi qu’un champ contenant un mot de passe.",
-        "status": "hypothesis",
-        "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "Les lignes visibles correspondent notamment à des opérations d’authentification et contiennent des références à des comptes utilisateurs et à des adresses email.",
-        "status": "unknown",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "Une troisième capture montre une interface comportant une rubrique intitulée  « Les impayés » , avec une colonne « Montant ».",
-        "status": "unknown",
-        "value": "montants"
-       }
-      ],
-      "data_volumes": [],
-      "profile": {
-       "chars": 6888,
-       "claims": 9,
-       "dates": 2,
-       "hypotheses": 2,
-       "numbers": 8,
-       "sentences": 54
-      },
-      "relations": [
-       {
-        "evidence": "Le collectif  LunarisSec  affirme avoir compromis l’organisation et revendique  3 708 531 lignes de données .",
-        "object": "incident",
-        "relation": "claimed_by",
-        "status": "claimed",
-        "subject": "LunarisSec"
-       }
-      ],
-      "semantic": {
-       "used": false
-      },
-      "timeline": [],
-      "version": "2",
-      "vulnerabilities": []
-     }
-    },
-    "summary": "Infogreffe, le portail français permettant d’accéder aux informations légales et économiques des entreprises enregistrées au registre du commerce,…",
-    "threat": "",
-    "title": "Infogreffe : 3,7 millions de lignes revendiquées après une cyberattaque",
-    "url": "https://www.cyberattaque.org/infogreffe-37-millions-de-lignes-revendiquees-apres-une-cyberattaque/"
-   },
-   "exhausted_fields": {},
-   "field_reasons": {
-    "activity_description": "ACTIVITY_NOT_DESCRIBED",
-    "activity_sector_match": "NO_VALID_ACTIVITY_PAIR"
-   },
-   "first_queued_at": "2026-10-11T06:14:57.000616+00:00",
-   "item": {
-    "Collected_As_Of": "2026-10-11T17:36:03.829355+04:00",
-    "Event_Date": "",
-    "Item_ID": "ITM-7543d5198870d435",
-    "Location": "Inconnu",
-    "Organisation_Key": "infogreffe",
-    "Organisation_Raw": "Infogreffe",
-    "Published_Date": "2026-10-10",
-    "Sector": "Inconnu",
-    "Source_ID": "CYBERATTAQUE_ORG",
-    "Source_Item_ID": "4085",
-    "Threat": "Intrusion",
-    "Threat_Raw": "",
-    "Title": "Infogreffe : 3,7 millions de lignes revendiquées après une cyberattaque",
-    "URL": "https://www.cyberattaque.org/infogreffe-37-millions-de-lignes-revendiquees-apres-une-cyberattaque/"
-   },
-   "key": "ITM-7543d5198870d435:ecd0c17aa3237d52351298924fc3a540524fe806e11bb21dfcec083d777477a7",
-   "last_queued_at": "2026-11-03T14:45:26.162360+00:00",
-   "pending_fields": [
-    "activity_description",
-    "activity_sector_match"
-   ],
-   "reason": "SEMANTIC_REJECTED"
-  },
-  {
-   "attempts": 1,
-   "entry": {
-    "content": "La  primaire de la gauche sociale-démocrate pour l’élection présidentielle de 2027  est perturbée par une cyberattaque depuis l’ouverture du scrutin, ce  vendredi 9 octobre 2026 à 8 heures . La cible n’est pas directement un parti politique mais  e-votez.net, la plateforme utilisée pour organiser le vote électronique . \n\n\n\n L’attaque repose sur un  afflux massif de connexions générées par des robots  afin de saturer le service et de compliquer l’accès des véritables électeurs. Les organisateurs assurent cependant que  les votes déjà enregistrés n’ont pas été compromis  et que la plateforme n’a jamais complètement cessé de fonctionner. \n\n\n\n Plus de 140 000 électeurs appelés à voter en ligne \n\n\n\n La primaire « Choisir 2027 » doit départager cinq candidats :  Olivier Faure, Raphaël Glucksmann, Jérôme Guedj, Emmanuel Maurel et Ségolène Royal . \n\n\n\n Au total,  140 282 personnes se sont inscrites  pour participer au premier tour. Le scrutin est organisé exclusivement en ligne du  vendredi 9 octobre à 8 heures au samedi 10 octobre à 20 heures . \n\n\n\n C’est donc dès les premières minutes d’un scrutin réunissant plus de 140 000 électeurs que la plateforme e-votez a commencé à rencontrer d’importantes difficultés d’accès. \n\n\n\n Des milliers de connexions générées par des robots \n\n\n\n Selon la commission d’organisation, les attaquants cherchent à  atteindre artificiellement le nombre maximal de connexions simultanées  accepté par la plateforme en utilisant des bots. \n\n\n\n Un membre de l’organisation cité par Le Parisien indique que l’infrastructure serait normalement dimensionnée pour environ  10 000 connexions simultanées . L’attaque aurait provoqué des pointes pouvant atteindre  20 000 connexions , entraînant des ralentissements et des refus temporaires d’accès. \n\n\n\n Le scénario décrit s’apparente à une  attaque par déni de service  : l’objectif est de saturer les ressources disponibles en multipliant artificiellement les requêtes. Le site existe toujours et continue de traiter certaines connexions, mais les utilisateurs légitimes peuvent avoir beaucoup plus de difficultés à y accéder. \n\n\n\n Perturber le vote ne signifie pas modifier les votes \n\n\n\n C’est une distinction essentielle dans cet incident. Les éléments rendus publics décrivent pour le moment une attaque contre la  disponibilité de la plateforme , et non une intrusion permettant de consulter, supprimer ou modifier les suffrages. \n\n\n\n La commission d’organisation affirme qu’ « à aucun moment » la plateforme n’a été interrompue  et que le scrutin a continué depuis son ouverture. Elle assure également que  l’intégrité des votes enregistrés n’est pas compromise . \n\n\n\n À ce stade, aucune information publique ne fait état d’un  accès aux données des électeurs, d’une modification de bulletins ou d’une compromission du mécanisme de dépouillement . Cette assurance concernant l’intégrité du scrutin provient toutefois des organisateurs : aucun rapport technique indépendant détaillant l’incident n’a encore été rendu public. \n\n\n\n L’ANSSI mobilisée et la justice saisie \n\n\n\n L’incident a rapidement pris une dimension nationale en raison de sa cible. Selon les informations communiquées dans la journée, le Premier ministre  Sébastien Lecornu a demandé l’intervention de l’Agence nationale de la sécurité des systèmes d’information (ANSSI) . \n\n\n\n Les organisations politiques participant à la primaire ont également annoncé  saisir la justice , qualifiant l’attaque de tentative de perturbation d’un processus démocratique. \n\n\n\n L’origine des connexions malveillantes n’est pour le moment pas connue. Aucun groupe cybercriminel ou acteur étatique n’a été publiquement identifié comme responsable et  aucune attribution ne peut être faite à ce stade . \n\n\n\n Une attaque simple mais particulièrement efficace pendant une élection \n\n\n\n Une attaque de saturation ne nécessite pas forcément de pénétrer dans les serveurs de vote. Des réseaux de machines ou de services automatisés peuvent générer simultanément un très grand nombre de connexions afin de  consommer les ressources disponibles et empêcher les véritables utilisateurs d’accéder normalement au service . \n\n\n\n Dans le contexte d’un scrutin, le risque est particulier : même sans toucher directement aux bulletins, un attaquant peut chercher à  empêcher ou décourager une partie des électeurs de voter , créer de la confusion et surtout alimenter le doute autour de la fiabilité du processus. \n\n\n\n C’est précisément pour cette raison qu’il est important de distinguer une attaque affectant l’accès au site d’une compromission de l’intégrité du vote. Pour le moment,  seule la première est établie . \n\n\n\n Le scrutin reste ouvert jusqu’à samedi soir \n\n\n\n Les électeurs rencontrant des difficultés sont invités à  réessayer ultérieurement plutôt qu’à actualiser continuellement la page , ce qui ajoute inutilement des requêtes à une infrastructure déjà sous pression. \n\n\n\n Les organisateurs rappellent également que le premier tour reste ouvert jusqu’au  samedi 10 octobre à 20 heures . Un éventuel second tour est prévu les  16 et 17 octobre 2026 . \n\n\n\n La cyberattaque constitue donc à ce stade une  tentative de perturbation du vote en ligne  plutôt qu’une compromission démontrée des suffrages. Les investigations de l’ANSSI et de la justice devront désormais permettre d’identifier l’origine de l’attaque et de déterminer plus précisément son ampleur.",
-    "entity": "",
-    "event_date": "",
-    "location": "",
-    "organisation": "",
-    "published": "2026-10-09",
-    "sector": "",
-    "source_item_id": "4063",
-    "source_metadata": {
-     "rich_facts": {
-      "affected_counts": [
-       {
-        "date": "",
-        "evidence": "Au total,  140 282 personnes se sont inscrites  pour participer au premier tour.",
-        "raw": "140 282 personnes",
-        "scope": "",
-        "status": "unknown",
-        "unit": "people",
-        "value": 140282
-       }
-      ],
-      "affected_datasets": [],
-      "affected_systems": [],
-      "claims": [
-       {
-        "date": "",
-        "evidence": "Au total,  140 282 personnes se sont inscrites  pour participer au premier tour.",
-        "scope": "",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "people",
-        "value": 140282
-       },
-       {
-        "date": "2026-10-09",
-        "evidence": "La  primaire de la gauche sociale-démocrate pour l’élection présidentielle de 2027  est perturbée par une cyberattaque depuis l’ouverture du scrutin, ce  vendredi 9 octobre 2026 à 8 heures .",
-        "kind": "statement",
-        "scope": "Chronologie",
-        "status": "unknown",
-        "value": "La  primaire de la gauche sociale-démocrate pour l’élection présidentielle de 2027  est perturbée par une cyberattaque depuis l’ouverture du scrutin, ce  vendredi 9 octobre 2026 à 8 heures ."
-       }
-      ],
-      "data_types": [],
-      "data_volumes": [],
-      "profile": {
-       "chars": 5617,
-       "claims": 1,
-       "dates": 2,
-       "hypotheses": 0,
-       "numbers": 1,
-       "sentences": 42
-      },
-      "relations": [],
-      "semantic": {
-       "used": false
-      },
-      "timeline": [
-       {
-        "date": "2026-10-09",
-        "event": "La  primaire de la gauche sociale-démocrate pour l’élection présidentielle de 2027  est perturbée par une cyberattaque depuis l’ouverture du scrutin, ce  vendredi 9 octobre 2026 à 8 heures .",
-        "evidence": "La  primaire de la gauche sociale-démocrate pour l’élection présidentielle de 2027  est perturbée par une cyberattaque depuis l’ouverture du scrutin, ce  vendredi 9 octobre 2026 à 8 heures .",
-        "status": "unknown"
-       }
-      ],
-      "version": "2",
-      "vulnerabilities": []
-     }
-    },
-    "summary": "La primaire de la gauche sociale-démocrate pour l’élection présidentielle de 2027 est perturbée par une cyberattaque depuis l’ouverture…",
-    "threat": "",
-    "title": "Primaire de la gauche : une cyberattaque perturbe le vote en ligne dès son ouverture",
-    "url": "https://www.cyberattaque.org/primaire-de-la-gauche-une-cyberattaque-perturbe-le-vote-en-ligne-des-son-ouverture/"
-   },
-   "exhausted_fields": {},
-   "field_reasons": {
-    "activity_description": "ACTIVITY_IDENTITY_AMBIGUOUS",
-    "activity_sector_match": "NO_VALID_ACTIVITY_PAIR"
-   },
-   "first_queued_at": "2026-10-11T06:14:59.701944+00:00",
-   "item": {
-    "Collected_As_Of": "2026-10-11T10:14:17.452530+04:00",
-    "Event_Date": "",
-    "Item_ID": "ITM-320e000af50cee1c",
-    "Location": "Inconnu",
-    "Organisation_Key": "primaire de la gauche",
-    "Organisation_Raw": "Primaire de la gauche",
-    "Published_Date": "2026-10-09",
-    "Sector": "Inconnu",
-    "Source_ID": "CYBERATTAQUE_ORG",
-    "Source_Item_ID": "4063",
-    "Threat": "Ransomware",
-    "Threat_Raw": "",
-    "Title": "Primaire de la gauche : une cyberattaque perturbe le vote en ligne dès son ouverture",
-    "URL": "https://www.cyberattaque.org/primaire-de-la-gauche-une-cyberattaque-perturbe-le-vote-en-ligne-des-son-ouverture/"
-   },
-   "key": "ITM-320e000af50cee1c:b5e0e396069849c2e6f370d1bcf76a964a5f8d94f91106f7c4bb8231c496c5a0",
-   "last_queued_at": "2026-11-03T14:45:28.841345+00:00",
-   "pending_fields": [
-    "activity_description",
-    "activity_sector_match"
-   ],
-   "reason": "SEMANTIC_REJECTED"
-  },
-  {
-   "attempts": 0,
-   "entry": {
-    "content": "SL\nPar Seblatombe, rédacteur FrenchBreaches\nPublié le 11/10/2026\n— Secteur Commerce\nGrand Delta Habitat : 188 010 enregistrements de locataires et d'interventions mis en vente par un pirate\nGrand Delta Habitat, acteur français du logement social, est visé par une revendication de fuite de données. Le 11 octobre 2026, un pirate informatique a annoncé la mise en vente d'une base contenant 188 010 enregistrements, représentant 272 Mo de données. Les informations présentées comprennent notamment des noms, adresses, numéros de téléphone, e-mails et détails d'interventions dans des logements.\nUn pirate revendique 188 010 enregistrements provenant de Grand Delta Habitat\nLe 11 octobre 2026, un individu utilisant le pseudonyme mica a publié une annonce sur le forum cybercriminel, affirmant détenir une base de données associée à Grand Delta Habitat (granddelta.fr).\nGrand Delta Habitat est un organisme français spécialisé dans le logement social, la gestion locative, la construction et l'entretien de logements.\nDans son annonce, le pirate affirme proposer un fichier contenant :\n188 010 enregistrements ;\n272 Mo de données ;\nUn fichier unique regroupant des informations de gestion et de suivi ;\nDes données relatives aux locataires, aux interventions techniques et aux prestations.\nLe volume revendiqué est important, mais le chiffre de 188 010 correspond à des enregistrements et ne permet pas d'établir le nombre exact de personnes concernées.\nNoms, adresses, téléphones et e-mails dans les données présentées\nL'échantillon de données associé à cette revendication contient des fiches structurées relatives à des interventions réalisées dans des logements.\nLes informations visibles comprennent notamment :\nNoms et prénoms de locataires et d'occupants ;\nAdresses postales de logements et de résidences ;\nNuméros de téléphone fixes et mobiles ;\nAdresses e-mail personnelles et professionnelles ;\nNoms et coordonnées de gestionnaires ou d'interlocuteurs ;\nRéférences de commandes et d'interventions ;\nDescriptions de travaux et de demandes de maintenance ;\nMontants de facturation et détails des prestations ;\nHistorique des interventions et statuts administratifs.\nLes fichiers présentés utilisent notamment des champs tels que ref, client, montantTTC, description_demande, events_history, prestations, patrimoine et occupants_info.\nCe dernier champ peut contenir des informations associant directement des occupants à leur adresse, leurs coordonnées et leur logement.\nDes informations détaillées sur les logements et les interventions\nL'échantillon consulté contient des références à plusieurs secteurs géographiques, notamment Avignon, Arles, Le Pontet, Mallemort et Pont-Saint-Esprit.\nLes enregistrements présentés concernent différentes opérations de gestion immobilière :\nRéparations de plomberie et recherches de fuites ;\nTravaux de maintenance et interventions électriques ;\nRemplacement d'équipements dans les logements ;\nOpérations de déménagement ;\nPrestations d'entretien et travaux techniques ;\nSuivi administratif et facturation.\nCertaines fiches associent des coordonnées personnelles à des informations précises sur les logements, les bâtiments, les étages ou les interventions effectuées.\nCette combinaison de données pourrait présenter un risque particulier pour les personnes concernées en cas de réutilisation malveillante.\nDes risques de phishing et d'arnaques ciblant les locataires\nSi l'authenticité de la fuite est confirmée, les informations pourraient être exploitées pour organiser des campagnes de phishing, de démarchage frauduleux ou d'usurpation d'identité.\nUn escroc disposant du nom d'un locataire, de son adresse et de détails concernant une intervention pourrait notamment se faire passer pour un agent de Grand Delta Habitat ou un prestataire chargé de travaux.\nLes personnes concernées pourraient recevoir des communications frauduleuses évoquant :\nUne intervention de maintenance à confirmer ;\nUne facture ou un paiement en attente ;\nUne régularisation de charges locatives ;\nUne mise à jour du dossier locataire ;\nUne demande de documents ou de coordonnées bancaires.\nLes informations relatives aux interventions techniques pourraient rendre ces tentatives de fraude plus crédibles.\nUne fuite de 272 Mo dont l'origine reste à établir\nÀ ce stade, la publication repose sur les déclarations du pirate et l'échantillon de données présenté.\nL'authenticité de l'ensemble des 188 010 enregistrements, leur provenance exacte et le nombre de personnes réellement concernées n'ont pas été vérifiés indépendamment.\nLa présence de données attribuées à Grand Delta Habitat ne démontre pas nécessairement une intrusion directe dans ses systèmes informatiques. Les fichiers pourraient également provenir d'un prestataire, d'un outil de gestion ou d'une autre source non identifiée.\nAucune confirmation officielle de Grand Delta Habitat n'est établie à partir des éléments disponibles.\nLes locataires de Grand Delta Habitat appelés à la vigilance\nDans l'attente d'éventuelles précisions sur cette revendication, les locataires et interlocuteurs professionnels de Grand Delta Habitat doivent rester vigilants face aux communications inhabituelles.\nIl est notamment recommandé de ne pas communiquer de coordonnées bancaires, de mots de passe ou de documents personnels à la suite d'un appel, d'un SMS ou d'un e-mail inattendu.\nToute demande évoquant des travaux, une facture ou une démarche administrative devrait être vérifiée directement auprès de l'organisme par ses canaux officiels.\nCette revendication illustre les risques associés à l'exposition de données de gestion immobilière, particulièrement lorsque les informations personnelles sont accompagnées de détails sur les logements et leurs occupants.",
-    "entity": "",
-    "event_date": "",
-    "location": "",
-    "organisation": "",
-    "published": "2026-10-11",
-    "sector": "",
-    "source_item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
-    "source_metadata": {
-     "detail_hydration": {
-      "chars": 5737,
-      "extractor_version": "editorial-html-2026-09-06.1",
-      "fallback": "",
-      "status": "HYDRATED",
-      "truncated": false
-     },
-     "rich_facts": {
-      "affected_counts": [
-       {
-        "date": "",
-        "evidence": "Un pirate revendique 188 010 enregistrements provenant de Grand Delta Habitat",
-        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
-        "raw": "188 010 enregistrements",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "unit": "records",
-        "value": 188010
-       },
-       {
-        "date": "",
-        "evidence": "L'authenticité de l'ensemble des 188 010 enregistrements, leur provenance exacte et le nombre de personnes réellement concernées n'ont pas été vérifiés indépendamment.",
-        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
-        "raw": "188 010 enregistrements",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "negated",
-        "unit": "records",
-        "value": 188010
-       },
-       {
-        "date": "",
-        "evidence": "Grand Delta Habitat : 188 010 enregistrements de locataires et d'interventions mis en vente par un pirate Grand Delta Habitat, acteur français du logement social, est visé par une revendication de fuite de données.",
-        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
-        "raw": "188 010 enregistrements",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "unit": "records",
-        "value": 188010
-       }
-      ],
-      "affected_datasets": [],
-      "affected_systems": [],
-      "claims": [
-       {
-        "date": "",
-        "evidence": "Un pirate revendique 188 010 enregistrements provenant de Grand Delta Habitat",
-        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "claimed",
-        "type": "affected_count",
-        "unit": "records",
-        "value": 188010
-       },
-       {
-        "date": "",
-        "evidence": "L'authenticité de l'ensemble des 188 010 enregistrements, leur provenance exacte et le nombre de personnes réellement concernées n'ont pas été vérifiés indépendamment.",
-        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "negated",
-        "type": "affected_count",
-        "unit": "records",
-        "value": 188010
-       },
-       {
-        "date": "",
-        "evidence": "Grand Delta Habitat : 188 010 enregistrements de locataires et d'interventions mis en vente par un pirate Grand Delta Habitat, acteur français du logement social, est visé par une revendication de fuite de données.",
-        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "records",
-        "value": 188010
-       },
-       {
-        "date": "2026-10-11",
-        "evidence": "Le 11 octobre 2026, un pirate informatique a annoncé la mise en vente d'une base contenant 188 010 enregistrements, représentant 272 Mo de données.",
-        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_volume",
-        "unit": "MO",
-        "value": 272.0
-       },
-       {
-        "date": "",
-        "evidence": "Les informations présentées comprennent notamment des noms, adresses, numéros de téléphone, e-mails et détails d'interventions dans des logements.",
-        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "Les informations présentées comprennent notamment des noms, adresses, numéros de téléphone, e-mails et détails d'interventions dans des logements.",
-        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "numéros de téléphone"
-       },
-       {
-        "date": "",
-        "evidence": "Noms et prénoms de locataires et d'occupants ;",
-        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "noms et prénoms"
-       },
-       {
-        "date": "",
-        "evidence": "Adresses postales de logements et de résidences ;",
-        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "adresses postales"
-       },
-       {
-        "date": "",
-        "evidence": "Références de commandes et d'interventions ;",
-        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "références de commande"
-       },
-       {
-        "date": "",
-        "evidence": "Références de commandes et d'interventions ;",
-        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "informations de commandes"
-       },
-       {
-        "date": "",
-        "evidence": "Montants de facturation et détails des prestations ;",
-        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "montants"
-       },
-       {
-        "date": "",
-        "evidence": "Montants de facturation et détails des prestations ;",
-        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "facturation"
-       },
-       {
-        "date": "",
-        "evidence": "Une facture ou un paiement en attente ;",
-        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "type": "data_type",
-        "value": "factures"
-       },
-       {
-        "date": "",
-        "evidence": "Une demande de documents ou de coordonnées bancaires.",
-        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "type": "data_type",
-        "value": "données bancaires"
-       }
-      ],
-      "data_types": [
-       {
-        "date": "",
-        "evidence": "Les informations présentées comprennent notamment des noms, adresses, numéros de téléphone, e-mails et détails d'interventions dans des logements.",
-        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "Les informations présentées comprennent notamment des noms, adresses, numéros de téléphone, e-mails et détails d'interventions dans des logements.",
-        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "numéros de téléphone"
-       },
-       {
-        "date": "",
-        "evidence": "Noms et prénoms de locataires et d'occupants ;",
-        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "noms et prénoms"
-       },
-       {
-        "date": "",
-        "evidence": "Adresses postales de logements et de résidences ;",
-        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "adresses postales"
-       },
-       {
-        "date": "",
-        "evidence": "Références de commandes et d'interventions ;",
-        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "références de commande"
-       },
-       {
-        "date": "",
-        "evidence": "Références de commandes et d'interventions ;",
-        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "informations de commandes"
-       },
-       {
-        "date": "",
-        "evidence": "Montants de facturation et détails des prestations ;",
-        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "montants"
-       },
-       {
-        "date": "",
-        "evidence": "Montants de facturation et détails des prestations ;",
-        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "facturation"
-       },
-       {
-        "date": "",
-        "evidence": "Une facture ou un paiement en attente ;",
-        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "value": "factures"
-       },
-       {
-        "date": "",
-        "evidence": "Une demande de documents ou de coordonnées bancaires.",
-        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "value": "données bancaires"
-       }
-      ],
-      "data_volumes": [
-       {
-        "date": "2026-10-11",
-        "evidence": "Le 11 octobre 2026, un pirate informatique a annoncé la mise en vente d'une base contenant 188 010 enregistrements, représentant 272 Mo de données.",
-        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
-        "scope": "",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "unit": "MO",
-        "value": 272.0
-       }
-      ],
-      "engine": "generic-rich-facts",
-      "profile": {
-       "chars": 6039,
-       "claims": 14,
-       "hypotheses": 2,
-       "semantic_candidate": true,
-       "sentences": 66
-      },
-      "relations": [],
-      "semantic": {
-       "candidate": true,
-       "used": false
-      },
-      "source_adapter": "frenchbreaches",
-      "timeline": [
-       {
-        "date": "2026-10-11",
-        "event": "Le 11 octobre 2026, un individu utilisant le pseudonyme mica a publié une annonce sur le forum cybercriminel, affirmant détenir une base de données associée à Grand Delta Habitat (granddelta.fr).",
-        "evidence": "Le 11 octobre 2026, un individu utilisant le pseudonyme mica a publié une annonce sur le forum cybercriminel, affirmant détenir une base de données associée à Grand Delta Habitat (granddelta.fr).",
-        "item_id": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown"
-       }
-      ],
-      "version": "2",
-      "vulnerabilities": []
-     }
-    },
-    "summary": "Grand Delta Habitat : 188 010 enregistrements de locataires et d'interventions mis en vente par un pirate Grand Delta Habitat, acteur français du logement social, est visé par une revendication de fuite de données. Le 11 octobre 2026, un pirate informatique a annoncé la mise en v…",
-    "threat": "Fuite de données",
-    "title": "Grand Delta Habitat",
-    "url": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9"
-   },
-   "exhausted_fields": {},
-   "field_reasons": {},
-   "first_queued_at": "2026-10-11T13:36:15.995569+00:00",
-   "item": {
-    "Collected_As_Of": "2026-10-12T20:13:04.877362+04:00",
-    "Event_Date": "",
-    "Item_ID": "ITM-cdd61dbd45b99c7e",
-    "Location": "France métropolitaine",
-    "Organisation_Key": "grand delta habitat",
-    "Organisation_Raw": "Grand Delta Habitat",
-    "Published_Date": "2026-10-11",
-    "Sector": "Inconnu",
-    "Source_ID": "FRENCHBREACHES",
-    "Source_Item_ID": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
-    "Threat": "Fuite de données",
-    "Threat_Raw": "Fuite de données",
-    "Title": "Grand Delta Habitat",
-    "URL": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9"
-   },
-   "key": "ITM-cdd61dbd45b99c7e:02b2e6bc98f38f780157fcf7c0a5a948559a35061a712fd363fde85d4f05bba2",
-   "last_queued_at": "2026-10-12T16:13:16.597591+00:00",
-   "pending_fields": [
-    "incident_summary",
-    "summary"
-   ],
-   "reason": "TECHNICAL_FAILURE"
-  },
-  {
-   "attempts": 0,
-   "entry": {
     "content": "SL\nPar Seblatombe, rédacteur FrenchBreaches\nPublié le 12/10/2026\n— Secteur Finance\nFuite de données KIASSURE : plus de 31 000 identités et des informations sensibles potentiellement exposées\nLe courtier français KIASSURE, spécialisé dans l'assurance santé et la prévoyance, est visé par une revendication de fuite de données. Un pirate affirme avoir publié gratuitement une base contenant plus de 128 000 enregistrements. L'analyse du fichier attribué à l'entreprise révèle notamment 22 738 adresses e-mail distinctes, 31 749 combinaisons de noms et prénoms, ainsi que des numéros de sécurité sociale et des coordonnées bancaires. Le nombre exact de personnes concernées reste à déterminer.\nUne base de données attribuée à KIASSURE diffusée gratuitement\nUne importante quantité d'informations personnelles attribuées à KIASSURE, courtier grossiste en assurances basé à Marseille, circule sur un forum de pirates informatiques.\nL'examen du fichier obtenu par FrenchBreaches permet de préciser ces chiffres. Il contient 128 242 enregistrements JSON valides, répartis entre plusieurs catégories : historiques d'activité, comptes utilisateurs, ressources, fiches, catalogues et documents.\nLa majorité des lignes, soit 114 669 enregistrements, correspondent à des événements d'activité. Le fichier comporte également 10 514 enregistrements de comptes utilisateurs.\nIl ne s'agit donc pas de 128 242 dossiers individuels d'assurés. Une même personne peut apparaître à plusieurs reprises, notamment à travers ses coordonnées, ses contrats ou les différentes opérations effectuées sur son dossier.\nL'analyse confirme la présence d'informations personnelles dans le fichier, sans établir à elle seule les circonstances de leur extraction ni une intrusion directe dans les systèmes de KIASSURE.\nLa publication attribuée au pirate Syrv4x annonce la diffusion gratuite d'une base de données de KIASSURE.\nPlus de 22 700 e-mails et 31 700 identités distinctes recensés\nL'analyse des données permet d'aller au-delà des volumes annoncés par le pirate.\nAprès normalisation et dédoublonnage des informations, FrenchBreaches a recensé :\n31 749 combinaisons distinctes de noms et prénoms ;\n22 738 adresses e-mail uniques présentant un format valide ;\n1 586 numéros de téléphone distincts présentant une longueur plausible ;\n4 178 valeurs distinctes présentant le format d'un numéro de sécurité sociale français ;\n24 IBAN distincts, dont 22 passent la vérification de leur clé de contrôle.\nCes chiffres correspondent à des valeurs uniques par catégorie, et non à des personnes nécessairement différentes.\nUn assuré peut posséder plusieurs adresses e-mail ou figurer dans plusieurs contrats. À l'inverse, des personnes différentes peuvent partager un nom et un prénom.\nLe rapprochement des noms, prénoms et dates de naissance a également permis de distinguer 3 669 combinaisons uniques dans les enregistrements réunissant ces trois informations.\nIl n'est donc pas possible d'affirmer que 31 749 personnes distinctes ont été touchées. Ce chiffre constitue un indicateur du nombre d'identités textuelles présentes, mais pas un décompte fiable des victimes.\nLe nombre réel de personnes concernées devra être précisé à partir d'une analyse plus approfondie des correspondances entre dossiers et, idéalement, d'une confirmation de l'entreprise.\nDes numéros de sécurité sociale et des coordonnées bancaires présents dans les fichiers\nLa nature des informations identifiées rend cette fuite présumée particulièrement sensible.\nLes données ne se limitent pas à des noms ou à des adresses électroniques. Le fichier contient également des informations relatives à l'identité des assurés, à leurs contrats et à leurs démarches de souscription.\nParmi les catégories observées figurent notamment :\nIdentité : noms, prénoms, civilité, dates de naissance, sexe et professions ;\nCoordonnées : adresses e-mail, numéros de téléphone et adresses postales ;\nIdentifiants personnels : numéros présentant le format d'un numéro de sécurité sociale français ;\nInformations bancaires : IBAN et champs associés aux coordonnées bancaires ;\nContrats d'assurance : produits souscrits, garanties, montants de cotisation, dates d'effet et statuts de souscription ;\nInformations de couverture santé : régimes, garanties et données relatives aux bénéficiaires ;\nInformations professionnelles : comptes utilisateurs, raisons sociales, courtiers et conseillers.\nContrairement à ce que pouvait laisser supposer le seul échantillon publié par le pirate, des valeurs d'IBAN et de numéros de sécurité sociale sont effectivement présentes dans le fichier analysé.\nLes 4 178 valeurs présentant le format d'un numéro de sécurité sociale ne constituent toutefois pas autant de numéros dont l'authenticité aurait été confirmée.\nDe même, les 24 IBAN recensés comprennent 22 valeurs dont la clé de contrôle est valide, sans que cela démontre l'existence ou l'activité des comptes bancaires correspondants.\nConcernant la santé, les données identifiées portent notamment sur les régimes d'assurance, les garanties et les bénéficiaires. L'analyse ne permet pas d'affirmer que des diagnostics médicaux ou des dossiers médicaux complets ont été divulgués.\nDes données de particuliers, mais aussi des informations professionnelles\nLe fichier attribué à KIASSURE ne concerne pas uniquement des assurés.\nIl comprend également des informations relatives à des comptes professionnels, à des courtiers et à des partenaires intervenant dans la distribution des contrats.\nSur les 22 738 adresses e-mail distinctes recensées, 15 474 utilisent des domaines de messagerie grand public, tels que Gmail, Orange, Outlook ou Hotmail.\nLes 7 264 autres adresses utilisent des domaines qui ne figurent pas dans cette catégorie, notamment des domaines associés à des entreprises ou à des activités professionnelles.\nCette répartition ne permet cependant pas de déterminer avec certitude le statut de chaque titulaire. Une adresse personnelle peut être utilisée dans un cadre professionnel, tandis qu'une adresse d'entreprise peut identifier directement un salarié.\nLa présence de coordonnées professionnelles ne signifie pas non plus que toutes les informations seraient publiques.\nLes dates de naissance, les numéros de sécurité sociale, les coordonnées bancaires et les renseignements contractuels individuels relèvent d'informations personnelles qui ne peuvent pas être assimilées à un simple annuaire commercial.\nKIASSURE, un intermédiaire spécialisé dans l'assurance santé\nBasé à Marseille, KIASSURE est un courtier grossiste qui conçoit et distribue des solutions d'assurance santé et de prévoyance par l'intermédiaire d'un réseau de partenaires indépendants.\nSon activité implique le traitement de nombreuses informations nécessaires à l'établissement des contrats, à la gestion des adhésions et au suivi des garanties.\nLa base attribuée à l'entreprise semble ainsi réunir plusieurs catégories de données : celles des assurés, celles des partenaires commerciaux et celles liées aux opérations réalisées sur les dossiers.\nCette diversité explique pourquoi le nombre total d'enregistrements est nettement supérieur au nombre d'identités ou de coordonnées uniques identifiées.\nQuels risques pour les personnes concernées ?\nSi l'origine et la diffusion non autorisée de ces données étaient confirmées, les conséquences pourraient être importantes pour les personnes concernées.\nLes noms, adresses, numéros de téléphone et informations contractuelles pourraient notamment être utilisés pour préparer des tentatives d'hameçonnage ciblées.\nUn fraudeur disposant de renseignements sur un contrat d'assurance pourrait se faire passer pour un courtier, un assureur ou un conseiller afin de réclamer un document, un paiement ou des informations complémentaires.\nLa présence de numéros de sécurité sociale et de coordonnées bancaires accroît également la sensibilité des informations exposées, notamment face aux risques d'usurpation d'identité et de fraude.\nIl convient toutefois de distinguer ces risques potentiels d'une exploitation frauduleuse avérée : les éléments analysés ne démontrent pas que les informations ont déjà été utilisées pour commettre des escroqueries.\nUne fuite revendiquée, dont l'origine reste à établir\nL'analyse du fichier attribué à KIASSURE confirme qu'il contient un volume important de données personnelles, comprenant des informations d'identité, de contact, d'assurance et certaines coordonnées bancaires.\nElle permet également de corriger un point essentiel de la revendication initiale : les 128 242 enregistrements analysés ne correspondent pas à 128 242 personnes distinctes.\nEn revanche, plusieurs questions demeurent sans réponse.\nLe fichier provient-il directement des systèmes de KIASSURE ? A-t-il été extrait d'une plateforme utilisée par un prestataire ? Quelle est la période exacte couverte par les informations ? Et combien de personnes différentes sont réellement concernées ?\nÀ ce stade, aucune confirmation officielle de KIASSURE concernant l'origine de cette fuite n'a été établie à partir des éléments disponibles.\nFrenchBreaches continuera de suivre les éventuelles communications de l'entreprise et les précisions permettant de déterminer le périmètre réel de l'incident.",
     "entity": "",
     "event_date": "",
@@ -11560,7 +10574,10 @@
     "url": "https://frenchbreaches.com/alertes/kiassure-mv4fc0mzhzpeqr8upub"
    },
    "exhausted_fields": {},
-   "field_reasons": {},
+   "field_reasons": {
+    "incident_summary": "FIELD_VALIDATION_REJECTED",
+    "summary": "HEADLINE_TOO_LONG"
+   },
    "first_queued_at": "2026-10-12T16:13:16.095015+00:00",
    "item": {
     "Collected_As_Of": "2026-10-13T18:38:38.188311+04:00",
@@ -11579,12 +10596,12 @@
     "URL": "https://frenchbreaches.com/alertes/kiassure-mv4fc0mzhzpeqr8upub"
    },
    "key": "ITM-704e55cff86bbee1:a47662071f45ff9a079f01f3ca45ee6e4dde697f6a44d811ee735d121d1155a7",
-   "last_queued_at": "2026-10-13T14:38:49.769426+00:00",
+   "last_queued_at": "2026-11-04T14:59:09.919201+00:00",
    "pending_fields": [
     "incident_summary",
     "summary"
    ],
-   "reason": "TECHNICAL_FAILURE"
+   "reason": "SEMANTIC_MISS"
   },
   {
    "attempts": 0,
@@ -54784,6 +53801,908 @@
    },
    "key": "ITM-2d4a65559ccb30dd:e0de861b45c8d6f5bca3b5d3f4daf5cfb05eea8059a7b2e558acd2a250e1e448",
    "last_queued_at": "2026-11-03T14:43:58.898884+00:00",
+   "pending_fields": [
+    "activity_description",
+    "activity_sector_match"
+   ],
+   "reason": "SEMANTIC_REJECTED"
+  },
+  {
+   "attempts": 0,
+   "entry": {
+    "content": "SL\nPar Seblatombe, rédacteur FrenchBreaches\nPublié le 03/11/2026\n— Secteur Technologie\nCyberattaque : des pirates ciblent les réserves de sang en France, jusqu'à 110 °C programmés\nUne cyberattaque particulièrement inquiétante a visé un prestataire de l'Établissement français du sang (EFS) dans la nuit du 1er au 2 novembre 2026. Selon les révélations du Canard enchaîné, des pirates informatiques ont manipulé les systèmes de refroidissement de chambres froides contenant des échantillons sanguins et du plasma destiné à la transfusion.\nLes installations, normalement maintenues à -30 °C, auraient été reprogrammées pour atteindre 110 °C, faisant craindre une rupture de la chaîne du froid.\nLe ministère de la Santé assure toutefois que l'incident a été détecté à temps et n'a entraîné aucune conséquence opérationnelle.\nDes chambres froides de l'EFS prises pour cible\nLa cyberattaque a touché Coolworld, une entreprise chargée notamment de la maintenance de conteneurs frigorifiques utilisés par l'Établissement français du sang.\nCes équipements servent à conserver à très basse température des produits et échantillons biologiques, notamment dans la région Bourgogne-Franche-Comté.\nD'après les informations publiées le 3 novembre 2026 par Le Canard enchaîné, les cybercriminels seraient parvenus à modifier les paramètres de température des installations.\nAlors que les chambres froides devaient normalement fonctionner à -30 °C, leur température cible aurait été portée à 110 °C.\nCette valeur correspond à la température programmée par les attaquants. Elle ne signifie pas nécessairement que les produits sanguins ont effectivement atteint 110 °C.\nUne anomalie détectée pendant la nuit\nL'incident aurait été découvert par un technicien de permanence, qui a constaté une remontée anormale de la température des chambres froides dans la nuit du dimanche 1er au lundi 2 novembre.\nCette détection aurait permis d'intervenir avant que la situation ne provoque des conséquences opérationnelles.\nSelon les déclarations du ministère de la Santé rapportées par Le Canard enchaîné, aucune conséquence opérationnelle n'a été constatée, la situation ayant été repérée.\nL'ampleur exacte de la hausse de température, sa durée et le nombre d'équipements concernés n'ont toutefois pas été précisés dans les informations accessibles.\nDu plasma destiné aux transfusions également concerné\nL'incident ne concernerait pas uniquement des échantillons conservés à des fins de surveillance sanitaire.\nSelon Le Canard enchaîné, l'EFS a également reconnu que du plasma congelé destiné à la transfusion sanguine figurait parmi les produits visés.\nCette précision renforce la sensibilité de l'attaque : la conservation des produits sanguins repose sur des conditions de température strictement contrôlées.\nUne modification malveillante des systèmes frigorifiques pourrait, si elle n'était pas détectée rapidement, compromettre la qualité de certains produits biologiques.\nÀ ce stade, aucune information publique consultée ne permet cependant d'établir que des transfusions ont été perturbées ou que des patients ont subi des conséquences.\nUne cyberattaque qui vise directement des équipements physiques\nContrairement aux cyberattaques habituellement médiatisées, cet incident ne repose pas sur une revendication de vol de données personnelles ou de déploiement de ransomware.\nLes faits rapportés concernent une manipulation du fonctionnement d'équipements frigorifiques.\nCe type d'attaque illustre les risques liés aux systèmes informatiques qui pilotent des installations physiques, notamment dans le secteur de la santé.\nLorsqu'un prestataire technique est compromis, les conséquences peuvent potentiellement dépasser son propre réseau et affecter les équipements utilisés par ses clients.\nLa méthode d'intrusion employée contre Coolworld n'a pas été précisée. Aucun groupe de cybercriminels n'a été publiquement identifié dans les informations disponibles.\nAprès les supermarchés, les installations sanitaires visées\nCette affaire intervient quelques semaines après une autre cyberattaque ayant affecté des systèmes frigorifiques de plusieurs enseignes françaises de grande distribution.\nDans la nuit du 11 au 12 octobre 2026, des pirates avaient manipulé des dispositifs de refroidissement dans de nombreux supermarchés, entraînant des pertes de marchandises et des perturbations.\nLe nouvel incident concernant un prestataire de l'EFS soulève ainsi des interrogations sur la protection des équipements connectés et des systèmes de contrôle de température.\nAucun lien technique ou opérationnel entre ces deux cyberattaques n'est toutefois établi à ce stade.\nAucune fuite de données personnelles annoncée\nLes informations publiées concernent avant tout la sécurité des installations frigorifiques et la conservation des produits sanguins.\nAucun élément disponible ne permet d'affirmer que des données personnelles de donneurs, des dossiers médicaux ou des informations de patients ont été dérobés.\nLes circonstances exactes de l'intrusion, le nombre d'installations touchées et les éventuelles mesures de sécurité supplémentaires restent à préciser.\nConclusion\nCette cyberattaque visant Coolworld, prestataire de l'Établissement français du sang, montre qu'une intrusion informatique peut avoir des conséquences potentielles bien au-delà de la confidentialité des données.\nEn manipulant les paramètres de chambres froides destinées à conserver des produits sanguins, les attaquants auraient ciblé un élément essentiel de la chaîne de conservation sanitaire.\nSi les autorités indiquent qu'aucune conséquence opérationnelle n'a été constatée, l'incident rappelle l'importance de sécuriser les systèmes techniques utilisés dans les établissements de santé.\nCet article vous est proposé en relation avec cette fuite de donnée\nCyberattaque : les réserves de l'Établissement français du sang ciblées\nUn prestataire de l'Établissement français du sang a subi une cyberattaque. Des pirates auraient manipulé des chambres froides contenant des produits sanguins.\nLire l'article lié ➔",
+    "entity": "",
+    "event_date": "",
+    "location": "",
+    "organisation": "",
+    "published": "2026-11-03",
+    "sector": "",
+    "source_item_id": "https://frenchbreaches.com/alertes/coolworld-mw17qluzro5uv8dn4l",
+    "source_metadata": {
+     "detail_hydration": {
+      "chars": 6053,
+      "extractor_version": "editorial-html-2026-09-06.1",
+      "fallback": "",
+      "status": "HYDRATED",
+      "truncated": false
+     },
+     "rich_facts": {
+      "affected_counts": [],
+      "affected_datasets": [],
+      "affected_systems": [],
+      "claims": [],
+      "data_types": [],
+      "data_volumes": [],
+      "engine": "generic-rich-facts",
+      "profile": {
+       "chars": 6345,
+       "claims": 0,
+       "hypotheses": 0,
+       "semantic_candidate": true,
+       "sentences": 55
+      },
+      "relations": [],
+      "semantic": {
+       "candidate": true,
+       "used": false
+      },
+      "source_adapter": "frenchbreaches",
+      "timeline": [
+       {
+        "date": "2026-11-02",
+        "event": "Cyberattaque : des pirates ciblent les réserves de sang en France, jusqu'à 110 °C programmés Une cyberattaque particulièrement inquiétante a visé un prestataire de l'Établissement français du sang (EFS) dans la nuit du 1er au 2 novembre 202",
+        "evidence": "Cyberattaque : des pirates ciblent les réserves de sang en France, jusqu'à 110 °C programmés Une cyberattaque particulièrement inquiétante a visé un prestataire de l'Établissement français du sang (EFS) dans la nuit du 1er au 2 novembre 2026.",
+        "item_id": "https://frenchbreaches.com/alertes/coolworld-mw17qluzro5uv8dn4l",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown"
+       },
+       {
+        "date": "2026-11-02",
+        "event": "Une cyberattaque particulièrement inquiétante a visé un prestataire de l'Établissement français du sang (EFS) dans la nuit du 1er au 2 novembre 2026.",
+        "evidence": "Une cyberattaque particulièrement inquiétante a visé un prestataire de l'Établissement français du sang (EFS) dans la nuit du 1er au 2 novembre 2026.",
+        "item_id": "https://frenchbreaches.com/alertes/coolworld-mw17qluzro5uv8dn4l",
+        "source_id": "FRENCHBREACHES",
+        "status": "unknown"
+       },
+       {
+        "date": "2026-11-03",
+        "event": "D'après les informations publiées le 3 novembre 2026 par Le Canard enchaîné, les cybercriminels seraient parvenus à modifier les paramètres de température des installations.",
+        "evidence": "D'après les informations publiées le 3 novembre 2026 par Le Canard enchaîné, les cybercriminels seraient parvenus à modifier les paramètres de température des installations.",
+        "item_id": "https://frenchbreaches.com/alertes/coolworld-mw17qluzro5uv8dn4l",
+        "source_id": "FRENCHBREACHES",
+        "status": "hypothesis"
+       }
+      ],
+      "version": "2",
+      "vulnerabilities": []
+     }
+    },
+    "summary": "Cyberattaque : des pirates ciblent les réserves de sang en France, jusqu'à 110 °C programmés Une cyberattaque particulièrement inquiétante a visé un prestataire de l'Établissement français du sang (EFS) dans la nuit du 1er au 2 novembre 2026. Selon les révélations du Canard encha…",
+    "threat": "Fuite de données",
+    "title": "Coolworld",
+    "url": "https://frenchbreaches.com/alertes/coolworld-mw17qluzro5uv8dn4l"
+   },
+   "exhausted_fields": {},
+   "field_reasons": {
+    "incident_summary": "CONFIDENCE_REJECTED",
+    "summary": "CONFIDENCE_REJECTED",
+    "threat_candidate": "FIELD_VALIDATION_REJECTED"
+   },
+   "first_queued_at": "2026-11-04T14:55:50.531303+00:00",
+   "item": {
+    "Collected_As_Of": "2026-11-04T18:55:23.930359+04:00",
+    "Event_Date": "",
+    "Item_ID": "ITM-12ac670d6d69a12c",
+    "Location": "France métropolitaine",
+    "Organisation_Key": "coolworld",
+    "Organisation_Raw": "Coolworld",
+    "Published_Date": "2026-11-03",
+    "Sector": "Inconnu",
+    "Source_ID": "FRENCHBREACHES",
+    "Source_Item_ID": "https://frenchbreaches.com/alertes/coolworld-mw17qluzro5uv8dn4l",
+    "Threat": "Incident tiers",
+    "Threat_Raw": "Fuite de données",
+    "Title": "Coolworld",
+    "URL": "https://frenchbreaches.com/alertes/coolworld-mw17qluzro5uv8dn4l"
+   },
+   "key": "ITM-12ac670d6d69a12c:2e12493219af6b0c32390f6b6eda1dd140efa956a7db83f0e1a8ca5e087e18ff",
+   "last_queued_at": "2026-11-04T14:55:50.531303+00:00",
+   "pending_fields": [
+    "incident_summary",
+    "summary",
+    "threat_candidate"
+   ],
+   "reason": "SEMANTIC_MISS"
+  },
+  {
+   "attempts": 0,
+   "entry": {
+    "content": "Les noms, prénoms, numéros de licence et clubs de milliers de joueurs de pelote basque, dont de nombreux enfants, ont été regroupés dans un fichier diffusé le 4 novembre 2026.  Un individu utilisant le pseudonyme camillelellouche affirme avoir récupéré 31 814 enregistrements attribués à la Fédération française de pelote basque (FFPB). \n\n\n\n  Cyberattaque.org s’est procuré et a analysé l’intégralité du fichier de 9,2 Mo.  L’examen révèle une importante compilation de résultats sportifs couvrant douze années, mais soulève également des doutes sur la réalité d’un piratage informatique. \n\n\n\n La Fédération française de pelote basque organise et encadre la pratique de cette discipline en France. Elle supervise notamment les compétitions nationales, les championnats et les clubs affiliés, depuis les catégories jeunes jusqu’aux vétérans. \n\n\n\n   \n\n\n\n 31 814 lignes, mais seulement 6 271 numéros de licence différents \n\n\n\n Le fichier a été présenté le  4 novembre 2026 à 10 h 01 . Son auteur affirme avoir procédé à une collecte le 3 novembre. \n\n\n\n L’analyse de Cyberattaque.org confirme la présence de  31 814 enregistrements, répartis entre 2015 et 2026 . Mais ces lignes ne correspondent pas à autant de personnes différentes. \n\n\n\n  Seulement 6 271 numéros de licence distincts  apparaissent dans les données. Un même sportif peut en effet figurer plusieurs fois, selon les années, les disciplines et les compétitions auxquelles il a participé. \n\n\n\n Les informations comprennent les noms et prénoms des joueurs, leurs numéros de licence, les clubs, les spécialités pratiquées, les catégories d’âge et les résultats obtenus dans les championnats. \n\n\n\n Plus de 12 000 enregistrements concernent des catégories d’enfants \n\n\n\n  La présence de jeunes sportifs constitue l’un des principaux points de vigilance.  L’analyse identifie 12 198 lignes associées aux catégories des moins de 10, 12, 14 et 16 ans, représentant 3 318 numéros de licence distincts. \n\n\n\n Le fichier contient également 3 466 lignes relatives aux moins de 19 ans. Ces catégories comprennent des jeunes sportifs, sans permettre de déterminer l’âge exact de chaque personne. \n\n\n\n Ces informations permettent notamment d’associer un jeune joueur à son club, à sa catégorie sportive et à ses participations aux compétitions nationales. \n\n\n\n  Aucune adresse personnelle, adresse email, numéro de téléphone, date de naissance complète ou information bancaire n’a été identifiée dans le fichier analysé.  \n\n\n\n Les données sont déjà accessibles publiquement \n\n\n\n  La vérification révèle un élément essentiel : les informations diffusées correspondent à des données de compétition déjà consultables sur le site officiel de la fédération.  \n\n\n\n Cyberattaque.org a retrouvé sur la plateforme publique des compétitions de la FFPB des résultats présentant les mêmes associations entre joueurs, numéros de licence, clubs et épreuves. \n\n\n\n La structure des données est donc compatible avec une  collecte automatisée de résultats sportifs accessibles au public , plutôt qu’avec l’extraction d’une base confidentielle de licenciés. \n\n\n\n Le diffuseur ne fournit d’ailleurs aucune preuve d’intrusion, de compromission d’un compte ou d’exploitation d’une vulnérabilité informatique. \n\n\n\n Quels risques pour les sportifs et la fédération ? \n\n\n\n La centralisation de plusieurs années de résultats facilite la recherche et le croisement d’informations sur les sportifs, notamment les plus jeunes. Elle pourrait favoriser des sollicitations indésirables ou l’exploitation de leur identité dans des démarches frauduleuses. \n\n\n\n Le risque reste néanmoins différent de celui d’une fuite de coordonnées privées ou d’identifiants de connexion, qui ne figurent pas dans les données examinées. \n\n\n\n  Au 4 novembre 2026, aucune cyberattaque contre la Fédération française de pelote basque n’est établie à partir des éléments présentés.  La diffusion du fichier est réelle, mais son contenu semble provenir de résultats sportifs publics. \n\n\n\n Cette affaire illustre une pratique courante :  présenter comme une fuite informatique une extraction massive de données librement accessibles . Elle pose néanmoins la question de la réutilisation et de la diffusion à grande échelle d’informations permettant d’identifier des sportifs mineurs.",
+    "entity": "",
+    "event_date": "",
+    "location": "",
+    "organisation": "",
+    "published": "2026-11-04",
+    "sector": "",
+    "source_item_id": "4918",
+    "source_metadata": {
+     "rich_facts": {
+      "affected_counts": [
+       {
+        "date": "",
+        "evidence": "L’analyse de Cyberattaque.org confirme la présence de  31 814 enregistrements, répartis entre 2015 et 2026 .",
+        "raw": "31 814 enregistrements",
+        "scope": "",
+        "status": "confirmed",
+        "unit": "records",
+        "value": 31814
+       },
+       {
+        "date": "",
+        "evidence": "Un individu utilisant le pseudonyme camillelellouche affirme avoir récupéré 31 814 enregistrements attribués à la Fédération française de pelote basque (FFPB).",
+        "raw": "31 814 enregistrements",
+        "scope": "",
+        "status": "claimed",
+        "unit": "records",
+        "value": 31814
+       },
+       {
+        "date": "",
+        "evidence": "31 814 lignes, mais seulement 6 271 numéros de licence différents",
+        "raw": "31 814 lignes",
+        "scope": "",
+        "status": "unknown",
+        "unit": "records",
+        "value": 31814
+       },
+       {
+        "date": "",
+        "evidence": "L’analyse identifie 12 198 lignes associées aux catégories des moins de 10, 12, 14 et 16 ans, représentant 3 318 numéros de licence distincts.",
+        "raw": "12 198 lignes",
+        "scope": "",
+        "status": "unknown",
+        "unit": "records",
+        "value": 12198
+       },
+       {
+        "date": "",
+        "evidence": "Plus de 12 000 enregistrements concernent des catégories d’enfants",
+        "raw": "12 000 enregistrements",
+        "scope": "",
+        "status": "unknown",
+        "unit": "records",
+        "value": 12000
+       },
+       {
+        "date": "",
+        "evidence": "Le fichier contient également 3 466 lignes relatives aux moins de 19 ans.",
+        "raw": "3 466 lignes",
+        "scope": "",
+        "status": "unknown",
+        "unit": "records",
+        "value": 3466
+       }
+      ],
+      "affected_datasets": [],
+      "affected_systems": [],
+      "claims": [
+       {
+        "date": "",
+        "evidence": "L’analyse de Cyberattaque.org confirme la présence de  31 814 enregistrements, répartis entre 2015 et 2026 .",
+        "scope": "",
+        "status": "confirmed",
+        "type": "affected_count",
+        "unit": "records",
+        "value": 31814
+       },
+       {
+        "date": "",
+        "evidence": "Un individu utilisant le pseudonyme camillelellouche affirme avoir récupéré 31 814 enregistrements attribués à la Fédération française de pelote basque (FFPB).",
+        "scope": "",
+        "status": "claimed",
+        "type": "affected_count",
+        "unit": "records",
+        "value": 31814
+       },
+       {
+        "date": "",
+        "evidence": "31 814 lignes, mais seulement 6 271 numéros de licence différents",
+        "scope": "",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "records",
+        "value": 31814
+       },
+       {
+        "date": "",
+        "evidence": "L’analyse identifie 12 198 lignes associées aux catégories des moins de 10, 12, 14 et 16 ans, représentant 3 318 numéros de licence distincts.",
+        "scope": "",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "records",
+        "value": 12198
+       },
+       {
+        "date": "",
+        "evidence": "Plus de 12 000 enregistrements concernent des catégories d’enfants",
+        "scope": "",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "records",
+        "value": 12000
+       },
+       {
+        "date": "",
+        "evidence": "Le fichier contient également 3 466 lignes relatives aux moins de 19 ans.",
+        "scope": "",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "records",
+        "value": 3466
+       },
+       {
+        "date": "",
+        "evidence": "Cyberattaque.org s’est procuré et a analysé l’intégralité du fichier de 9,2 Mo.",
+        "scope": "",
+        "status": "unknown",
+        "type": "data_volume",
+        "unit": "MO",
+        "value": 9.2
+       },
+       {
+        "date": "",
+        "evidence": "Les noms, prénoms, numéros de licence et clubs de milliers de joueurs de pelote basque, dont de nombreux…",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "noms et prénoms"
+       },
+       {
+        "date": "2026-11-04",
+        "evidence": "Au 4 novembre 2026, aucune cyberattaque contre la Fédération française de pelote basque n’est établie à partir des éléments présentés.",
+        "kind": "statement",
+        "scope": "Négation · Chronologie",
+        "status": "unknown",
+        "value": "Au 4 novembre 2026, aucune cyberattaque contre la Fédération française de pelote basque n’est établie à partir des éléments présentés."
+       }
+      ],
+      "data_types": [
+       {
+        "date": "",
+        "evidence": "Les noms, prénoms, numéros de licence et clubs de milliers de joueurs de pelote basque, dont de nombreux…",
+        "status": "unknown",
+        "value": "noms et prénoms"
+       }
+      ],
+      "data_volumes": [
+       {
+        "date": "",
+        "evidence": "Cyberattaque.org s’est procuré et a analysé l’intégralité du fichier de 9,2 Mo.",
+        "scope": "",
+        "status": "unknown",
+        "unit": "MO",
+        "value": 9.2
+       }
+      ],
+      "profile": {
+       "chars": 4473,
+       "claims": 8,
+       "dates": 3,
+       "hypotheses": 0,
+       "numbers": 6,
+       "sentences": 36
+      },
+      "relations": [],
+      "semantic": {
+       "used": false
+      },
+      "timeline": [
+       {
+        "date": "2026-11-04",
+        "event": "Au 4 novembre 2026, aucune cyberattaque contre la Fédération française de pelote basque n’est établie à partir des éléments présentés.",
+        "evidence": "Au 4 novembre 2026, aucune cyberattaque contre la Fédération française de pelote basque n’est établie à partir des éléments présentés.",
+        "status": "negated"
+       }
+      ],
+      "version": "2",
+      "vulnerabilities": []
+     }
+    },
+    "summary": "Les noms, prénoms, numéros de licence et clubs de milliers de joueurs de pelote basque, dont de nombreux…",
+    "threat": "",
+    "title": "Fédération française de pelote basque : 31 814 données de compétition diffusées sur le darkweb",
+    "url": "https://www.cyberattaque.org/federation-francaise-de-pelote-basque-cyberattaque/"
+   },
+   "exhausted_fields": {},
+   "field_reasons": {
+    "activity_description": "ACTIVITY_NOT_DESCRIBED",
+    "activity_sector_match": "NO_VALID_ACTIVITY_PAIR"
+   },
+   "first_queued_at": "2026-11-04T14:57:00.838997+00:00",
+   "item": {
+    "Collected_As_Of": "2026-11-04T18:55:23.930359+04:00",
+    "Event_Date": "",
+    "Item_ID": "ITM-e9d5f7176d5c4e52",
+    "Location": "Inconnu",
+    "Organisation_Key": "federation francaise de pelote basque",
+    "Organisation_Raw": "Fédération française de pelote basque",
+    "Published_Date": "2026-11-04",
+    "Sector": "Inconnu",
+    "Source_ID": "CYBERATTAQUE_ORG",
+    "Source_Item_ID": "4918",
+    "Threat": "Intrusion",
+    "Threat_Raw": "",
+    "Title": "Fédération française de pelote basque : 31 814 données de compétition diffusées sur le darkweb",
+    "URL": "https://www.cyberattaque.org/federation-francaise-de-pelote-basque-cyberattaque/"
+   },
+   "key": "ITM-e9d5f7176d5c4e52:346015d426783f19fdc9a75910a7d16092a375b53d5069accf1c6773f6d1fcdb",
+   "last_queued_at": "2026-11-04T14:57:00.838997+00:00",
+   "pending_fields": [
+    "activity_description",
+    "activity_sector_match"
+   ],
+   "reason": "SEMANTIC_REJECTED"
+  },
+  {
+   "attempts": 0,
+   "entry": {
+    "content": "Un site Internet de l’INRAE a été détourné le 3 novembre 2026, tandis qu’une revendication fait état du vol de 1,2 Go de données informatiques.  Neuf bases de données auraient été récupérées, comprenant notamment des informations sur des personnels de recherche, des comptes administrateurs et des mots de passe hachés. À ce stade, cette extraction n’est pas confirmée. \n\n\n\n La page concernée, accessible à l’adresse  base-pcb.inrae.fr , a été remplacée par une illustration représentant une scène de cirque avec plusieurs personnages. Cette opération, appelée défiguration ou « defacement », consiste à modifier sans autorisation l’apparence d’un site Internet. \n\n\n\n L’ Institut national de recherche pour l’agriculture, l’alimentation et l’environnement (INRAE)  est un établissement public français créé en 2020 par la fusion de l’Inra et d’Irstea. Il conduit des recherches notamment sur l’agriculture, la biodiversité, l’alimentation et les enjeux environnementaux. \n\n\n\n   \n\n\n\n Un site scientifique remplacé par une page de pirates \n\n\n\n Le site visé n’était pas le portail principal de l’institut. Il s’agissait d’une plateforme scientifique consacrée à des données environnementales, proposant encore en avril 2026 des fonctionnalités d’export d’informations sur les micropolluants présents dans les poissons et les sédiments. \n\n\n\n  Le 3 novembre, son contenu habituel a laissé place à une page de défiguration.  Une capture de cette page montre une illustration de cirque, sans rapport avec les activités scientifiques de l’établissement. \n\n\n\n Cette modification constitue un indice concret d’une altération du site. Elle ne permet cependant pas, à elle seule, de déterminer comment les attaquants ont obtenu cet accès ni s’ils ont réussi à pénétrer d’autres systèmes de l’INRAE. \n\n\n\n Neuf bases de données et des comptes de personnels revendiqués \n\n\n\n Parallèlement à la défiguration, une revendication affirme que  neuf bases de données, des archives du serveur et du code source auraient été copiés . L’ensemble représenterait environ 1,2 Go. \n\n\n\n Les informations revendiquées comprendraient notamment : \n\n\n\n \n Des  noms et identifiants de comptes  associés à des personnels ; \n\n\n\n Des  adresses email professionnelles  ; \n\n\n\n Des  mots de passe hachés  ; \n\n\n\n Des comptes disposant de droits d’administration ; \n\n\n\n Des informations professionnelles associées aux utilisateurs ; \n\n\n\n Des fichiers techniques, du code source et des sauvegardes. \n \n\n\n\n  Ces éléments n’ont pas été authentifiés indépendamment.  Le nombre de personnes potentiellement concernées reste inconnu, tout comme l’origine précise des données annoncées. \n\n\n\n Des risques de compromission de comptes et d’attaques ciblées \n\n\n\n Si la revendication se confirme, l’exposition de comptes professionnels pourrait représenter un risque important pour les personnels concernés. \n\n\n\n Des cybercriminels pourraient exploiter les identités et les adresses professionnelles pour préparer des messages frauduleux imitant des communications internes, notamment des demandes de connexion, de changement de mot de passe ou de partage de documents. \n\n\n\n  La présence éventuelle de mots de passe hachés serait également préoccupante.  Selon la méthode utilisée pour les protéger, certains mots de passe faibles pourraient être retrouvés, puis testés sur d’autres services en cas de réutilisation. \n\n\n\n Des comptes administrateurs ou du code source pourraient, s’ils étaient réellement compromis, fournir aux attaquants des informations utiles pour préparer d’autres intrusions. Rien ne démontre toutefois que des accès supplémentaires aient été obtenus. \n\n\n\n Aucune confirmation officielle d’une fuite de données \n\n\n\n  Au 4 novembre 2026, aucune communication publique relative à cet incident n’a été identifiée dans la salle de presse officielle de l’INRAE.  L’établissement n’a donc pas publiquement confirmé le vol des 1,2 Go revendiqués ni précisé le périmètre des systèmes éventuellement touchés. \n\n\n\n La méthode utilisée pour modifier le site demeure inconnue. Une faille applicative, des identifiants compromis ou une mauvaise configuration pourraient permettre ce type d’opération, mais aucun de ces scénarios n’est établi. \n\n\n\n  La défiguration du site scientifique est l’élément visible de cette affaire. Le vol de neuf bases de données et la compromission de comptes de personnels restent, pour leur part, des affirmations non vérifiées.  \n\n\n\n Les investigations devront notamment déterminer si l’incident se limite à un site scientifique isolé ou si des informations professionnelles ont effectivement quitté les systèmes de l’établissement public de recherche.",
+    "entity": "",
+    "event_date": "",
+    "location": "",
+    "organisation": "",
+    "published": "2026-11-04",
+    "sector": "",
+    "source_item_id": "4898",
+    "source_metadata": {
+     "rich_facts": {
+      "affected_counts": [],
+      "affected_datasets": [],
+      "affected_systems": [],
+      "claims": [
+       {
+        "date": "",
+        "evidence": "Le site de l’INRAE piraté : 1,2 Go de données revendiqués par les hackers",
+        "scope": "",
+        "status": "claimed",
+        "type": "data_volume",
+        "unit": "GO",
+        "value": 1.2
+       },
+       {
+        "date": "2026-11-03",
+        "evidence": "Un site Internet de l’INRAE a été détourné le 3 novembre 2026, tandis qu’une revendication fait état du vol de 1,2 Go de données informatiques.",
+        "scope": "",
+        "status": "unknown",
+        "type": "data_volume",
+        "unit": "GO",
+        "value": 1.2
+       },
+       {
+        "date": "",
+        "evidence": "L’établissement n’a donc pas publiquement confirmé le vol des 1,2 Go revendiqués ni précisé le périmètre des systèmes éventuellement touchés.",
+        "scope": "",
+        "status": "confirmed",
+        "type": "data_volume",
+        "unit": "GO",
+        "value": 1.2
+       },
+       {
+        "date": "",
+        "evidence": "Neuf bases de données auraient été récupérées, comprenant notamment des informations sur des personnels de recherche, des comptes administrateurs et des mots de passe hachés.",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "mots de passe"
+       },
+       {
+        "date": "",
+        "evidence": "Des  noms et identifiants de comptes  associés à des personnels ;",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "identifiants"
+       },
+       {
+        "date": "",
+        "evidence": "Des  adresses email professionnelles  ;",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "2026-11-04",
+        "evidence": "Au 4 novembre 2026, aucune communication publique relative à cet incident n’a été identifiée dans la salle de presse officielle de l’INRAE.",
+        "kind": "statement",
+        "scope": "Négation · Chronologie",
+        "status": "unknown",
+        "value": "Au 4 novembre 2026, aucune communication publique relative à cet incident n’a été identifiée dans la salle de presse officielle de l’INRAE."
+       }
+      ],
+      "data_types": [
+       {
+        "date": "",
+        "evidence": "Neuf bases de données auraient été récupérées, comprenant notamment des informations sur des personnels de recherche, des comptes administrateurs et des mots de passe hachés.",
+        "status": "hypothesis",
+        "value": "mots de passe"
+       },
+       {
+        "date": "",
+        "evidence": "Des  noms et identifiants de comptes  associés à des personnels ;",
+        "status": "hypothesis",
+        "value": "identifiants"
+       },
+       {
+        "date": "",
+        "evidence": "Des  adresses email professionnelles  ;",
+        "status": "hypothesis",
+        "value": "adresses e-mail"
+       }
+      ],
+      "data_volumes": [
+       {
+        "date": "",
+        "evidence": "Le site de l’INRAE piraté : 1,2 Go de données revendiqués par les hackers",
+        "scope": "",
+        "status": "claimed",
+        "unit": "GO",
+        "value": 1.2
+       },
+       {
+        "date": "2026-11-03",
+        "evidence": "Un site Internet de l’INRAE a été détourné le 3 novembre 2026, tandis qu’une revendication fait état du vol de 1,2 Go de données informatiques.",
+        "scope": "",
+        "status": "unknown",
+        "unit": "GO",
+        "value": 1.2
+       },
+       {
+        "date": "",
+        "evidence": "L’établissement n’a donc pas publiquement confirmé le vol des 1,2 Go revendiqués ni précisé le périmètre des systèmes éventuellement touchés.",
+        "scope": "",
+        "status": "confirmed",
+        "unit": "GO",
+        "value": 1.2
+       }
+      ],
+      "profile": {
+       "chars": 4818,
+       "claims": 6,
+       "dates": 3,
+       "hypotheses": 3,
+       "numbers": 0,
+       "sentences": 43
+      },
+      "relations": [],
+      "semantic": {
+       "used": false
+      },
+      "timeline": [
+       {
+        "date": "2026-11-03",
+        "event": "Un site Internet de l’INRAE a été détourné le 3 novembre 2026, tandis qu’une revendication fait état du vol de 1,2 Go de données informatiques.",
+        "evidence": "Un site Internet de l’INRAE a été détourné le 3 novembre 2026, tandis qu’une revendication fait état du vol de 1,2 Go de données informatiques.",
+        "status": "unknown"
+       },
+       {
+        "date": "2026-11-04",
+        "event": "Au 4 novembre 2026, aucune communication publique relative à cet incident n’a été identifiée dans la salle de presse officielle de l’INRAE.",
+        "evidence": "Au 4 novembre 2026, aucune communication publique relative à cet incident n’a été identifiée dans la salle de presse officielle de l’INRAE.",
+        "status": "negated"
+       }
+      ],
+      "version": "2",
+      "vulnerabilities": []
+     }
+    },
+    "summary": "Un site Internet de l’INRAE a été détourné le 3 novembre 2026, tandis qu’une revendication fait état du…",
+    "threat": "",
+    "title": "Le site de l’INRAE piraté : 1,2 Go de données revendiqués par les hackers",
+    "url": "https://www.cyberattaque.org/le-site-de-linrae-pirate-12-go-de-donnees-revendiques-par-les-hackers/"
+   },
+   "exhausted_fields": {},
+   "field_reasons": {
+    "activity_description": "EVIDENCE_TOO_LONG",
+    "activity_sector_match": "CONFIDENCE_REJECTED"
+   },
+   "first_queued_at": "2026-11-04T14:57:42.791386+00:00",
+   "item": {
+    "Collected_As_Of": "2026-11-04T18:55:23.930359+04:00",
+    "Event_Date": "",
+    "Item_ID": "ITM-288bd5d5693a65be",
+    "Location": "Inconnu",
+    "Organisation_Key": "le site de l inrae",
+    "Organisation_Raw": "Le site de l’INRAE",
+    "Published_Date": "2026-11-04",
+    "Sector": "Inconnu",
+    "Source_ID": "CYBERATTAQUE_ORG",
+    "Source_Item_ID": "4898",
+    "Threat": "Fuite de données",
+    "Threat_Raw": "",
+    "Title": "Le site de l’INRAE piraté : 1,2 Go de données revendiqués par les hackers",
+    "URL": "https://www.cyberattaque.org/le-site-de-linrae-pirate-12-go-de-donnees-revendiques-par-les-hackers/"
+   },
+   "key": "ITM-288bd5d5693a65be:906e013f3e96edc9275e321d10104ac38cedbf9f99f8d788c42f934277f43e03",
+   "last_queued_at": "2026-11-04T14:57:42.791386+00:00",
+   "pending_fields": [
+    "activity_description",
+    "activity_sector_match"
+   ],
+   "reason": "SEMANTIC_REJECTED"
+  },
+  {
+   "attempts": 0,
+   "entry": {
+    "content": "Les coordonnées de milliers de professionnels du crédit et de l’assurance ont été diffusées par un pirate informatique.  Le 3 novembre 2026, le hacker Alduin a revendiqué une fuite de données attribuée à l’Association Française des Intermédiaires en Bancassurance (AFIB). Cyberattaque.org a analysé le fichier diffusé : il contient exactement  3 848 fiches , associant identités, adresses postales, numéros de téléphone, emails et références professionnelles. \n\n\n\n L’analyse révèle également un élément important :  les informations les plus récentes portent la date du 2 novembre 2026 , soit la veille de la publication du pirate. Certaines données remontent néanmoins à 2022. À ce stade, l’origine exacte de cette base et la méthode utilisée pour y accéder restent à confirmer. \n\n\n\n Fondée en 1997,  l’Association Française des Intermédiaires en Bancassurance (AFIB)  est une organisation professionnelle représentant les acteurs de l’intermédiation bancaire et de l’assurance. Elle accompagne notamment les courtiers en crédit et leurs mandataires dans leurs obligations professionnelles et réglementaires. Son siège social est situé à Paris. \n\n\n\n   \n\n\n\n Une faille dans l’API de l’AFIB revendiquée par Alduin \n\n\n\n Dans une publication datée du  3 novembre 2026 à 17 h 47 , le hacker Alduin affirme avoir exploité une vulnérabilité de type  BOLA (Broken Object Level Authorization) , également appelée IDOR, pour récupérer les informations contenues dans la base. \n\n\n\n Cette vulnérabilité concerne les contrôles d’accès d’une application ou de son interface de programmation (API). Lorsqu’un serveur ne vérifie pas correctement qu’un utilisateur est autorisé à consulter une ressource, la modification d’un identifiant peut permettre d’accéder aux informations appartenant à d’autres utilisateurs. \n\n\n\n Dans certaines configurations, ce défaut de sécurité permet d’extraire successivement de nombreux enregistrements, sans nécessairement disposer de privilèges administrateur. \n\n\n\n  Alduin avait déjà revendiqué l’exploitation d’une vulnérabilité similaire contre HelloDepann le 1er novembre 2026 , dans une affaire impliquant la diffusion de milliers de fiches clients et d’informations relatives à des interventions à domicile. \n\n\n\n Concernant l’AFIB,  le fichier analysé ne permet toutefois pas de démontrer la méthode d’extraction revendiquée . Il ne permet pas non plus de déterminer si une éventuelle vulnérabilité est toujours exploitable. \n\n\n\n Confirmation des 3 848 fiches dans le fichier diffusé \n\n\n\n Cyberattaque.org a procédé à une analyse de l’intégralité du fichier JSONL attribué à l’AFIB, représentant  1,19 Mo de données . \n\n\n\n Le document contient  3 848 enregistrements exploitables , tous organisés selon une structure identique de douze champs. Chaque fiche possède des identifiants internes distincts. \n\n\n\n Les informations présentes comprennent : \n\n\n\n \n  Les noms et prénoms  des professionnels, accompagnés de leur civilité lorsqu’elle est renseignée ; \n\n\n\n  Les adresses postales complètes , pouvant correspondre à un domicile ou à une adresse professionnelle ; \n\n\n\n  Les adresses email  utilisées par les personnes enregistrées ; \n\n\n\n  Les numéros de téléphone , notamment fixes et mobiles ; \n\n\n\n Les noms des entreprises ou cabinets de courtage associés ; \n\n\n\n Des identifiants d’entreprise au format SIREN ; \n\n\n\n  Les références d’immatriculation ORIAS , lorsqu’elles sont renseignées ; \n\n\n\n Les identifiants internes des fiches et des utilisateurs ; \n\n\n\n Des dates de création et un champ relatif à la vérification des enregistrements. \n \n\n\n\n  Les quatre principales coordonnées personnelles, à savoir le nom, l’adresse postale, l’email et le téléphone, sont renseignées dans les 3 848 fiches.  La présence de ces informations au sein d’un même fichier constitue un élément important de cette exposition. \n\n\n\n En revanche,  aucun mot de passe, numéro de compte bancaire, document d’identité ou dossier de crédit de particulier n’a été identifié  dans les données analysées. Ce constat concerne uniquement le fichier examiné et ne permet pas d’exclure l’existence d’autres informations éventuellement compromises. \n\n\n\n 3 613 adresses email distinctes : le nombre de personnes touchées reste incertain \n\n\n\n Si le fichier contient 3 848 fiches,  cela ne signifie pas nécessairement que 3 848 personnes différentes sont concernées . \n\n\n\n Notre analyse a identifié  3 613 adresses email distinctes . Certaines apparaissent dans plusieurs enregistrements, parfois avec des informations professionnelles différentes. Des répétitions concernent également des noms, des numéros de téléphone et des adresses postales. \n\n\n\n Ces doublons peuvent notamment correspondre à des personnes rattachées à plusieurs activités, à des changements de situation professionnelle ou à la réutilisation d’une même adresse de contact. \n\n\n\n Par ailleurs, une proportion significative des emails utilise des services de messagerie grand public, notamment Gmail, Outlook, Yahoo ou Orange. Ces coordonnées ne correspondent donc pas exclusivement à des adresses professionnelles personnalisées. \n\n\n\n  Le nombre exact de personnes physiques et d’entreprises distinctes concernées ne peut pas être établi à partir du seul nombre de lignes.  \n\n\n\n Des informations enregistrées jusqu’au 2 novembre 2026 \n\n\n\n L’examen des dates constitue l’un des éléments les plus intéressants du fichier. \n\n\n\n Les enregistrements portent des dates de création comprises entre  le 14 avril 2022 et le 2 novembre 2026 . Les fiches ne proviennent donc pas toutes de la même période. \n\n\n\n La répartition fait apparaître  980 fiches datées de 2022, 1 566 de 2023, 488 de 2024, 380 de 2025 et 434 de 2026 . \n\n\n\n Au total, 33 fiches portent une date de création en octobre 2026 et trois autres en novembre 2026. \n\n\n\n  La présence d’enregistrements datés de la veille de la revendication suggère que le fichier pourrait provenir d’une base encore alimentée récemment.  Elle ne démontre cependant pas que les données ont été extraites le 2 ou le 3 novembre : les dates sont celles inscrites dans le fichier, et leur exactitude n’a pas été vérifiée auprès de l’association. \n\n\n\n Une particularité dans les dates de vérification \n\n\n\n Un autre détail ressort de l’analyse technique. Le champ intitulé  « verification »  présente une régularité particulièrement marquée. \n\n\n\n Dans  3 843 enregistrements sur 3 848 , la date indiquée correspond exactement à 60 jours après celle de la création de la fiche. Les cinq autres présentent un décalage de 59 ou 61 jours. \n\n\n\n Le fichier contient même  60 dates de vérification postérieures au 3 novembre 2026 , certaines allant jusqu’au 1er janvier 2027. \n\n\n\n Cette régularité laisse penser que le champ pourrait correspondre à  une échéance automatiquement calculée , plutôt qu’à la date d’une vérification effectivement réalisée. Sa fonction exacte reste néanmoins inconnue. \n\n\n\n Des numéros ORIAS et SIREN présents dans la base \n\n\n\n Les données exposées comprennent également des références utilisées pour identifier les intermédiaires et leurs entreprises dans le secteur financier. \n\n\n\n Le fichier comporte  3 526 champs ORIAS renseignés , tandis que 322 enregistrements ne contiennent aucune valeur dans cette rubrique. Parmi les valeurs présentes, 67 ne respectent pas le format habituel de huit chiffres numériques. \n\n\n\n Une autre particularité concerne le champ nommé « siret » dans le fichier.  Les 3 848 valeurs correspondantes comportent neuf chiffres et non quatorze.  Elles correspondent donc au format des numéros SIREN, qui identifient les entreprises, et non à celui des SIRET, utilisés pour identifier les établissements. \n\n\n\n Un contrôle algorithmique de ces identifiants montre que  3 825 valeurs satisfont au mécanisme de vérification des numéros SIREN , contre 23 qui présentent une anomalie. Cela constitue un indice de cohérence des données, mais ne suffit pas à prouver leur authenticité ni leur provenance. \n\n\n\n Certaines références professionnelles peuvent être accessibles publiquement à travers les registres officiels. Le caractère confidentiel de chaque champ ne peut donc pas être présumé. En revanche,  leur regroupement avec des coordonnées directes dans une même base facilite leur exploitation à grande échelle . \n\n\n\n Un risque d’usurpation d’identité particulièrement sensible dans le secteur bancaire \n\n\n\n La combinaison des informations diffusées présente plusieurs risques pour les professionnels concernés. \n\n\n\n  Un escroc disposant du nom d’un courtier, de ses coordonnées, de son entreprise et de sa référence ORIAS pourrait construire une fausse identité professionnelle particulièrement crédible.  \n\n\n\n Un fraudeur pourrait par exemple contacter des particuliers en se faisant passer pour un intermédiaire bancaire légitime, utiliser ses références réglementaires pour instaurer un climat de confiance, puis tenter d’obtenir des documents personnels ou de détourner des paiements. \n\n\n\n Les professionnels eux-mêmes pourraient également être visés par des campagnes de phishing ciblées. Les informations disponibles permettraient de personnaliser de faux messages provenant supposément d’une banque partenaire, d’un assureur, d’un organisme professionnel ou d’une autorité réglementaire. \n\n\n\n La présence de numéros de téléphone et d’adresses postales accroît également les possibilités de démarchage frauduleux, d’appels d’usurpation et d’autres tentatives d’ingénierie sociale. \n\n\n\n  À ce stade, aucune exploitation frauduleuse effective de ces informations n’a été établie.  Il s’agit de risques potentiels liés à la nature et au regroupement des données. \n\n\n\n L’AFIB n’a pas confirmé publiquement cette fuite de données \n\n\n\n Au 3 novembre 2026,  aucune communication officielle de l’AFIB confirmant cette revendication n’a été identifiée par Cyberattaque.org . \n\n\n\n L’analyse du fichier permet de confirmer matériellement la présence de  3 848 enregistrements structurés contenant des coordonnées personnelles et des informations professionnelles . Plusieurs caractéristiques, notamment les formats des identifiants et les dates, présentent une cohérence interne. \n\n\n\n En revanche, ces éléments ne permettent pas de confirmer indépendamment que la base provient directement des systèmes de l’association, que toutes les personnes répertoriées sont actuellement adhérentes ou que l’extraction a effectivement été réalisée au moyen d’une vulnérabilité BOLA. \n\n\n\n La date de récupération des données, l’éventuelle persistance de la faille et les mesures de sécurité prises par l’organisation restent également inconnues. \n\n\n\n  Cette affaire illustre néanmoins les conséquences potentielles d’une exposition d’annuaire professionnel dans un secteur réglementé.  Même lorsque certains identifiants sont publics, leur association avec des coordonnées personnelles peut faciliter des tentatives d’usurpation d’identité, de phishing et d’escroquerie financière. \n\n\n\n  Cyberattaque.org a analysé les 3 848 enregistrements du fichier communiqué. Aucune identité, adresse personnelle, coordonnée téléphonique ou référence individuelle issue de cette base n’est reproduite dans cet article.",
+    "entity": "",
+    "event_date": "",
+    "location": "",
+    "organisation": "",
+    "published": "2026-11-03",
+    "sector": "",
+    "source_item_id": "4880",
+    "source_metadata": {
+     "rich_facts": {
+      "affected_counts": [
+       {
+        "date": "",
+        "evidence": "Le document contient  3 848 enregistrements exploitables , tous organisés selon une structure identique de douze champs.",
+        "raw": "3 848 enregistrements",
+        "scope": "",
+        "status": "reported",
+        "unit": "records",
+        "value": 3848
+       },
+       {
+        "date": "",
+        "evidence": "Si le fichier contient 3 848 fiches,  cela ne signifie pas nécessairement que 3 848 personnes différentes sont concernées .",
+        "raw": "3 848 personnes",
+        "scope": "",
+        "status": "negated",
+        "unit": "people",
+        "value": 3848
+       },
+       {
+        "date": "",
+        "evidence": "Le fichier comporte  3 526 champs ORIAS renseignés , tandis que 322 enregistrements ne contiennent aucune valeur dans cette rubrique.",
+        "raw": "322 enregistrements",
+        "scope": "",
+        "status": "negated",
+        "unit": "records",
+        "value": 322
+       },
+       {
+        "date": "",
+        "evidence": "L’analyse du fichier permet de confirmer matériellement la présence de  3 848 enregistrements structurés contenant des coordonnées personnelles et des informations professionnelles .",
+        "raw": "3 848 enregistrements",
+        "scope": "",
+        "status": "unknown",
+        "unit": "records",
+        "value": 3848
+       },
+       {
+        "date": "",
+        "evidence": "Dans  3 843 enregistrements sur 3 848 , la date indiquée correspond exactement à 60 jours après celle de la création de la fiche.",
+        "raw": "3 843 enregistrements",
+        "scope": "",
+        "status": "unknown",
+        "unit": "records",
+        "value": 3843
+       }
+      ],
+      "affected_datasets": [],
+      "affected_systems": [],
+      "claims": [
+       {
+        "date": "",
+        "evidence": "Le document contient  3 848 enregistrements exploitables , tous organisés selon une structure identique de douze champs.",
+        "scope": "",
+        "status": "reported",
+        "type": "affected_count",
+        "unit": "records",
+        "value": 3848
+       },
+       {
+        "date": "",
+        "evidence": "Si le fichier contient 3 848 fiches,  cela ne signifie pas nécessairement que 3 848 personnes différentes sont concernées .",
+        "scope": "",
+        "status": "negated",
+        "type": "affected_count",
+        "unit": "people",
+        "value": 3848
+       },
+       {
+        "date": "",
+        "evidence": "Le fichier comporte  3 526 champs ORIAS renseignés , tandis que 322 enregistrements ne contiennent aucune valeur dans cette rubrique.",
+        "scope": "",
+        "status": "negated",
+        "type": "affected_count",
+        "unit": "records",
+        "value": 322
+       },
+       {
+        "date": "",
+        "evidence": "L’analyse du fichier permet de confirmer matériellement la présence de  3 848 enregistrements structurés contenant des coordonnées personnelles et des informations professionnelles .",
+        "scope": "",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "records",
+        "value": 3848
+       },
+       {
+        "date": "",
+        "evidence": "Dans  3 843 enregistrements sur 3 848 , la date indiquée correspond exactement à 60 jours après celle de la création de la fiche.",
+        "scope": "",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "records",
+        "value": 3843
+       },
+       {
+        "date": "",
+        "evidence": "Cyberattaque.org a procédé à une analyse de l’intégralité du fichier JSONL attribué à l’AFIB, représentant  1,19 Mo de données .",
+        "scope": "",
+        "status": "unknown",
+        "type": "data_volume",
+        "unit": "MO",
+        "value": 1.19
+       },
+       {
+        "date": "",
+        "evidence": "Cyberattaque.org a analysé le fichier diffusé : il contient exactement  3 848 fiches , associant identités, adresses postales, numéros de téléphone, emails et références professionnelles.",
+        "status": "claimed",
+        "type": "data_type",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Cyberattaque.org a analysé le fichier diffusé : il contient exactement  3 848 fiches , associant identités, adresses postales, numéros de téléphone, emails et références professionnelles.",
+        "status": "claimed",
+        "type": "data_type",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "Cyberattaque.org a analysé le fichier diffusé : il contient exactement  3 848 fiches , associant identités, adresses postales, numéros de téléphone, emails et références professionnelles.",
+        "status": "claimed",
+        "type": "data_type",
+        "value": "adresses postales"
+       },
+       {
+        "date": "",
+        "evidence": "Lorsqu’un serveur ne vérifie pas correctement qu’un utilisateur est autorisé à consulter une ressource, la modification d’un identifiant peut permettre d’accéder aux informations appartenant à d’autres utilisateurs.",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "identifiants"
+       },
+       {
+        "date": "",
+        "evidence": "Chaque fiche possède des identifiants internes distincts.",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "identifiants techniques"
+       },
+       {
+        "date": "",
+        "evidence": "Chaque fiche possède des identifiants internes distincts.",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "identifiants"
+       },
+       {
+        "date": "",
+        "evidence": "Les noms et prénoms  des professionnels, accompagnés de leur civilité lorsqu’elle est renseignée ;",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "noms et prénoms"
+       },
+       {
+        "date": "",
+        "evidence": "Les adresses postales complètes , pouvant correspondre à un domicile ou à une adresse professionnelle ;",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "adresses postales"
+       },
+       {
+        "date": "",
+        "evidence": "Les adresses email  utilisées par les personnes enregistrées ;",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Les numéros de téléphone , notamment fixes et mobiles ;",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "Des identifiants d’entreprise au format SIREN ;",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "SIREN / SIRET"
+       },
+       {
+        "date": "2026-11-03",
+        "evidence": "Le 3 novembre 2026, le hacker Alduin a revendiqué une fuite de données attribuée à l’Association Française des Intermédiaires en Bancassurance (AFIB).",
+        "kind": "statement",
+        "scope": "Chronologie",
+        "status": "claimed",
+        "value": "Le 3 novembre 2026, le hacker Alduin a revendiqué une fuite de données attribuée à l’Association Française des Intermédiaires en Bancassurance (AFIB)."
+       },
+       {
+        "date": "2026-11-02",
+        "evidence": "L’analyse révèle également un élément important :  les informations les plus récentes portent la date du 2 novembre 2026 , soit la veille de la publication du pirate.",
+        "kind": "statement",
+        "scope": "Chronologie",
+        "status": "unknown",
+        "value": "L’analyse révèle également un élément important :  les informations les plus récentes portent la date du 2 novembre 2026 , soit la veille de la publication du pirate."
+       },
+       {
+        "date": "2026-11-03",
+        "evidence": "Dans une publication datée du  3 novembre 2026 à 17 h 47 , le hacker Alduin affirme avoir exploité une vulnérabilité de type  BOLA (Broken Object Level Authorization) , également appelée IDOR, pour récupérer les informations contenues dans la base.",
+        "kind": "statement",
+        "scope": "Chronologie",
+        "status": "claimed",
+        "value": "Dans une publication datée du  3 novembre 2026 à 17 h 47 , le hacker Alduin affirme avoir exploité une vulnérabilité de type  BOLA (Broken Object Level Authorization) , également appelée IDOR, pour récupérer les informations contenues dans "
+       },
+       {
+        "date": "2026-11-03",
+        "evidence": "Au 3 novembre 2026,  aucune communication officielle de l’AFIB confirmant cette revendication n’a été identifiée par Cyberattaque.org .",
+        "kind": "statement",
+        "scope": "Négation · Chronologie",
+        "status": "unknown",
+        "value": "Au 3 novembre 2026,  aucune communication officielle de l’AFIB confirmant cette revendication n’a été identifiée par Cyberattaque.org ."
+       }
+      ],
+      "data_types": [
+       {
+        "date": "",
+        "evidence": "Cyberattaque.org a analysé le fichier diffusé : il contient exactement  3 848 fiches , associant identités, adresses postales, numéros de téléphone, emails et références professionnelles.",
+        "status": "claimed",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Cyberattaque.org a analysé le fichier diffusé : il contient exactement  3 848 fiches , associant identités, adresses postales, numéros de téléphone, emails et références professionnelles.",
+        "status": "claimed",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "Cyberattaque.org a analysé le fichier diffusé : il contient exactement  3 848 fiches , associant identités, adresses postales, numéros de téléphone, emails et références professionnelles.",
+        "status": "claimed",
+        "value": "adresses postales"
+       },
+       {
+        "date": "",
+        "evidence": "Lorsqu’un serveur ne vérifie pas correctement qu’un utilisateur est autorisé à consulter une ressource, la modification d’un identifiant peut permettre d’accéder aux informations appartenant à d’autres utilisateurs.",
+        "status": "hypothesis",
+        "value": "identifiants"
+       },
+       {
+        "date": "",
+        "evidence": "Chaque fiche possède des identifiants internes distincts.",
+        "status": "unknown",
+        "value": "identifiants techniques"
+       },
+       {
+        "date": "",
+        "evidence": "Chaque fiche possède des identifiants internes distincts.",
+        "status": "unknown",
+        "value": "identifiants"
+       },
+       {
+        "date": "",
+        "evidence": "Les noms et prénoms  des professionnels, accompagnés de leur civilité lorsqu’elle est renseignée ;",
+        "status": "unknown",
+        "value": "noms et prénoms"
+       },
+       {
+        "date": "",
+        "evidence": "Les adresses postales complètes , pouvant correspondre à un domicile ou à une adresse professionnelle ;",
+        "status": "unknown",
+        "value": "adresses postales"
+       },
+       {
+        "date": "",
+        "evidence": "Les adresses email  utilisées par les personnes enregistrées ;",
+        "status": "unknown",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Les numéros de téléphone , notamment fixes et mobiles ;",
+        "status": "unknown",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "Des identifiants d’entreprise au format SIREN ;",
+        "status": "unknown",
+        "value": "SIREN / SIRET"
+       }
+      ],
+      "data_volumes": [
+       {
+        "date": "",
+        "evidence": "Cyberattaque.org a procédé à une analyse de l’intégralité du fichier JSONL attribué à l’AFIB, représentant  1,19 Mo de données .",
+        "scope": "",
+        "status": "unknown",
+        "unit": "MO",
+        "value": 1.19
+       }
+      ],
+      "profile": {
+       "chars": 11358,
+       "claims": 17,
+       "dates": 8,
+       "hypotheses": 1,
+       "numbers": 6,
+       "sentences": 93
+      },
+      "relations": [],
+      "semantic": {
+       "used": false
+      },
+      "timeline": [
+       {
+        "date": "2026-11-03",
+        "event": "Le 3 novembre 2026, le hacker Alduin a revendiqué une fuite de données attribuée à l’Association Française des Intermédiaires en Bancassurance (AFIB).",
+        "evidence": "Le 3 novembre 2026, le hacker Alduin a revendiqué une fuite de données attribuée à l’Association Française des Intermédiaires en Bancassurance (AFIB).",
+        "status": "claimed"
+       },
+       {
+        "date": "2026-11-02",
+        "event": "L’analyse révèle également un élément important :  les informations les plus récentes portent la date du 2 novembre 2026 , soit la veille de la publication du pirate.",
+        "evidence": "L’analyse révèle également un élément important :  les informations les plus récentes portent la date du 2 novembre 2026 , soit la veille de la publication du pirate.",
+        "status": "unknown"
+       },
+       {
+        "date": "2026-11-03",
+        "event": "Dans une publication datée du  3 novembre 2026 à 17 h 47 , le hacker Alduin affirme avoir exploité une vulnérabilité de type  BOLA (Broken Object Level Authorization) , également appelée IDOR, pour récupérer les informations contenues dans ",
+        "evidence": "Dans une publication datée du  3 novembre 2026 à 17 h 47 , le hacker Alduin affirme avoir exploité une vulnérabilité de type  BOLA (Broken Object Level Authorization) , également appelée IDOR, pour récupérer les informations contenues dans la base.",
+        "status": "claimed"
+       },
+       {
+        "date": "2026-11-03",
+        "event": "Au 3 novembre 2026,  aucune communication officielle de l’AFIB confirmant cette revendication n’a été identifiée par Cyberattaque.org .",
+        "evidence": "Au 3 novembre 2026,  aucune communication officielle de l’AFIB confirmant cette revendication n’a été identifiée par Cyberattaque.org .",
+        "status": "negated"
+       }
+      ],
+      "version": "2",
+      "vulnerabilities": []
+     }
+    },
+    "summary": "Les coordonnées de milliers de professionnels du crédit et de l’assurance ont été diffusées par un pirate informatique….",
+    "threat": "",
+    "title": "AFIB : près de 3 800 professionnels de la banque et de l’assurance concernés par une fuite de données",
+    "url": "https://www.cyberattaque.org/afib-pres-de-3-800-professionnels-de-la-banque-et-de-lassurance-concernes-par-une-fuite-de-donnees/"
+   },
+   "exhausted_fields": {},
+   "field_reasons": {
+    "activity_description": "EVIDENCE_TOO_LONG",
+    "activity_sector_match": "EVIDENCE_TOO_LONG"
+   },
+   "first_queued_at": "2026-11-04T14:58:28.248002+00:00",
+   "item": {
+    "Collected_As_Of": "2026-11-04T18:55:23.930359+04:00",
+    "Event_Date": "",
+    "Item_ID": "ITM-ca61e521da13247b",
+    "Location": "Inconnu",
+    "Organisation_Key": "afib",
+    "Organisation_Raw": "AFIB",
+    "Published_Date": "2026-11-03",
+    "Sector": "Inconnu",
+    "Source_ID": "CYBERATTAQUE_ORG",
+    "Source_Item_ID": "4880",
+    "Threat": "Fuite de données",
+    "Threat_Raw": "",
+    "Title": "AFIB : près de 3 800 professionnels de la banque et de l’assurance concernés par une fuite de données",
+    "URL": "https://www.cyberattaque.org/afib-pres-de-3-800-professionnels-de-la-banque-et-de-lassurance-concernes-par-une-fuite-de-donnees/"
+   },
+   "key": "ITM-ca61e521da13247b:6b281b9ed10a8f84371175fae1c9884619634eb7eddff106eec09143d0a3dc20",
+   "last_queued_at": "2026-11-04T14:58:28.248002+00:00",
    "pending_fields": [
     "activity_description",
     "activity_sector_match"
