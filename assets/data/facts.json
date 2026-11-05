@@ -170,6 +170,14 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-06AC2A6F5725": {
+  "display_summary": "Inovie confirme une perte de confidentialité de noms, prénoms et adresses postales de patients suite à la cyberattaque de Maileva.",
+  "summary_paragraphs": [
+   "Inovie reconnaît une perte de confidentialité de noms, prénoms et adresses postales de patients après l'incident Maileva.",
+   "Inovie indique ne pas être en mesure d’établir la liste des patients potentiellement concernés et n’a pas communiqué de bilan chiffré."
+  ],
+  "version": 3
+ },
  "INC-06EA4DA7F8BB": {
   "display_summary": "FFTir : 40 Go de données revendiqués, 586 854 personnes et des certificats médicaux dans les fichiers",
   "summary_paragraphs": [],
@@ -1006,6 +1014,27 @@
   ],
   "version": 3
  },
+ "INC-2B9ABE7FD227": {
+  "display_summary": "Le hacker ChimeraZ revendique la mise en vente d'une base attribuée à la FFTT contenant 1,64 million de personnes et 9,3 Go de données.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "pièces d'identité"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Le 5 novembre 2026, un individu a publié une annonce proposant à la vente une base attribuée à FFTT.com de 9,3 Go et 2 220 815 lignes.",
+   "L'annonce revendique 1 645 606 fiches, 42 796 fichiers dont 1 864 documents d'identité et évoque photographies et pièces d'identité."
+  ],
+  "version": 3
+ },
  "INC-2CAC467A2EC3": {
   "display_summary": "La FSCF fait l’objet d’une revendication de fuite de données portant sur plus de 30 000 enregistrements, incluant des mineurs.",
   "sensitive_data": {
@@ -1195,6 +1224,11 @@
   ],
   "version": 3
  },
+ "INC-32E392ADD672": {
+  "display_summary": "Des noms, prénoms et adresses postales de patients de plusieurs laboratoires du groupe Inovie ont été exposés via un incident chez le prestataire Maileva.",
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-3336EBD9F855": {
   "display_summary": "Diamonds Factory : 24 094 lignes de données clients revendiquées à la vente après une fuite de données.",
   "summary_paragraphs": [
@@ -1258,6 +1292,13 @@
   "summary_paragraphs": [
    "Un pirate affirme avoir publié une base de données provenant du site partyradicaldegauche.fr et présente un extrait au format JSON.",
    "Le fichier contiendrait 825 enregistrements concernant environ 820 personnes avec noms, adresses, téléphones, professions et dates de naissance."
+  ],
+  "version": 3
+ },
+ "INC-34B0E88FDA6C": {
+  "display_summary": "Bureau Vallée confirme deux incidents distincts ayant entraîné l'extraction de données personnelles de clients.",
+  "summary_paragraphs": [
+   "La société reconnaît deux incidents distincts ayant permis à des personnes non autorisées d'accéder et d'extraire des informations personnelles."
   ],
   "version": 3
  },
@@ -2110,6 +2151,35 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-5724B9E8EFB6": {
+  "display_summary": "Flandre Opale Habitat signale que des données de locataires sur dix ans pourraient avoir été compromises via une cyberattaque chez son prestataire Maileva.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Flandre Opale Habitat indique que l’incident pourrait concerner des informations figurant dans des courriers envoyés au cours des dix dernières années.",
+   "Les catégories potentiellement concernées incluent noms, adresses, numéros de client, références de logement et informations financières."
+  ],
+  "version": 3
+ },
  "INC-5752F4E0EEB5": {
   "display_summary": "Une revendication diffuse une sauvegarde du site WordPress d'AMCEN avec des données personnelles revendiquées.",
   "sensitive_data": {
@@ -2438,9 +2508,44 @@
   ],
   "version": 3
  },
+ "INC-61455AF17036": {
+  "display_summary": "Novabio signale un incident affectant son système Qualité avec des données d'identité et de santé de patients potentiellement exposées.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données de santé"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-618A0DE79479": {
+  "display_summary": "BonjourLaFuite signale une fuite de données concernant Aqua Store.",
+  "summary_paragraphs": [
+   "BonjourLaFuite signale une fuite de données concernant Aqua Store."
+  ],
+  "version": 3
+ },
  "INC-624936F92BC4": {
   "display_summary": "AK Transport : 11 681 livraisons dont des colis encore en transit en fuite",
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "Un individu revendique la diffusion d'un fichier attribué à AK Transport contenant 11 681 lignes et des informations sur des expéditions et destinataires."
+  ],
   "version": 3
  },
  "INC-630FE3AFB253": {
@@ -2484,7 +2589,10 @@
  },
  "INC-64F708830C0C": {
   "display_summary": "RGIS : 30 366 candidatures de son site de recrutement en fuite après une cyberattaque",
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "Le 11 octobre 2026, un pirate a revendiqué la diffusion de données de recrutement attribuées à RGIS, soit 30 366 lignes et 28 Mo de fichiers.",
+   "Les données revendiquées comprendraient noms, numéros de téléphone, adresses e-mail, candidatures et historiques de recrutement."
+  ],
   "version": 3
  },
  "INC-6670B08468DD": {
@@ -2573,6 +2681,14 @@
    "vulnerable_people": false
   },
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-686E3DC9D98C": {
+  "display_summary": "",
+  "summary_paragraphs": [
+   "Un cybercriminel affirme avoir publié une base de données contenant les informations personnelles de 708 employés de Lazeo.",
+   "L'authenticité des fichiers et l'origine des informations n'ont pas été confirmées indépendamment."
+  ],
   "version": 3
  },
  "INC-6883A7E582E7": {
@@ -3001,6 +3117,24 @@
   ],
   "version": 3
  },
+ "INC-702BCF3FBB49": {
+  "display_summary": "Grand Paris Grand Est a confirmé une fuite de données sur la plateforme Wastreet exposant des adresses e-mail et des numéros de téléphone d'usagers.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "reported",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-70737EF727A7": {
   "display_summary": "",
   "summary_paragraphs": [],
@@ -3262,6 +3396,27 @@
   ],
   "version": 3
  },
+ "INC-7A3DBAD8E723": {
+  "display_summary": "Le laboratoire Novabio signale un incident sur son Système Qualité avec une possible fuite de données personnelles et médicales.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données de santé"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Novabio a subi une attaque touchant son Système Qualité avec des données personnelles et médicales pouvant avoir été divulguées.",
+   "Une seconde fuite chez le prestataire Maileva a entraîné la divulgation de noms, prénoms et adresses postales de patients de laboratoires du groupe Inovie."
+  ],
+  "version": 3
+ },
  "INC-7AAA2E982784": {
   "display_summary": "Carrefour : des données clients exposées après la cyberattaque de son prestataire",
   "summary_paragraphs": [],
@@ -3500,6 +3655,14 @@
   ],
   "version": 3
  },
+ "INC-85B2301BAAAA": {
+  "display_summary": "Un pirate affirme avoir mis en vente les données personnelles de plus de 3 millions de clients de Beauty Success.",
+  "summary_paragraphs": [
+   "Un cybercriminel prétend détenir une base de données de plus de 3 millions de personnes liée au programme de fidélité de Beauty Success.",
+   "L'annonce inclut un échantillon montrant noms, e-mails et dates de naissance, mais l'origine et le nombre exact restent non confirmés."
+  ],
+  "version": 3
+ },
  "INC-85B65263A155": {
   "display_summary": "Eau Cœur d’Essonne : 55 000 contrats d’eau en fuite après une cyberattaque",
   "summary_paragraphs": [],
@@ -3580,6 +3743,14 @@
   "summary_paragraphs": [
    "Le hacker ChimeraZ affirme avoir compromis une large partie de l'infrastructure de KEL et récupéré les données d’environ 1,3 million de personnes.",
    "ChimeraZ revendique aussi 142 913 IBAN et environ 200 000 PDF représentant 110 Go compressés."
+  ],
+  "version": 3
+ },
+ "INC-87132B2DE76A": {
+  "display_summary": "BonjourLaFuite signale une fuite de données concernant Grand Paris Grand Est.",
+  "summary_paragraphs": [
+   "BonjourLaFuite signale une fuite de données concernant Grand Paris Grand Est.",
+   "Les données indiquées comprennent : Adresse email ; Numéro de téléphone."
   ],
   "version": 3
  },
@@ -3727,7 +3898,10 @@
  },
  "INC-8C617A0F4FB3": {
   "display_summary": "Egide frappé par une cyberattaque : son site de Bollène partiellement interrompu",
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "L'intrusion a été détectée chez un prestataire informatique externe, point d'entrée vers certaines infrastructures de l'établissement de Bollène.",
+   "L'incident a entraîné une interruption partielle de l'activité du site industriel de Bollène pendant les opérations de sécurisation."
+  ],
   "version": 3
  },
  "INC-8C6C97916F72": {
@@ -4957,6 +5131,37 @@
   ],
   "version": 3
  },
+ "INC-BA8703C6B04B": {
+  "display_summary": "La plateforme Le Code by DEKRA signale une fuite de données personnelles de candidats comprenant noms, dates de naissance et mots de passe.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "reported",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "reported",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Des informations personnelles de candidats sur la plateforme Le Code by DEKRA, dont noms, dates de naissance et mots de passe, sont signalées comme compromises.",
+   "Le nombre exact de personnes touchées et si d'autres données (NEPH, résultats, données bancaires) sont concernées n'ont pas été établis."
+  ],
+  "version": 3
+ },
  "INC-BA871580CC08": {
   "display_summary": "Afflelou : 49 761 factures d’un ancien portail interne en fuite après une cyberattaque",
   "summary_paragraphs": [],
@@ -5350,6 +5555,11 @@
   ],
   "version": 3
  },
+ "INC-C9AB61E265C9": {
+  "display_summary": "Réseau Mutu piraté : une porte dérobée pendant des semaines menace l’anonymat des auteurs et lecteurs",
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-CA02BD802A13": {
   "display_summary": "Biocorp : une cyberattaque WordPress piège les visiteurs avec un faux reCAPTCHA",
   "summary_paragraphs": [
@@ -5372,7 +5582,7 @@
   "version": 3
  },
  "INC-CB116813D04D": {
-  "display_summary": "Fortuneo : une cyberattaque aurait permis de détourner plus de 133M$ du Crédit Mutuel Arkéa",
+  "display_summary": "Crédit Mutuel Arkéa confirme une cyberattaque via la plateforme d’un prestataire ayant permis des transactions frauduleuses depuis un compte du groupe.",
   "summary_paragraphs": [],
   "version": 3
  },
@@ -5499,6 +5709,11 @@
    "Un pirate a publié le 30 septembre 2026 une base de 6 768 lignes contenant identités, NIR et informations bancaires de stagiaires.",
    "FrenchBreaches analyse 6 767 enregistrements exploitables et ~5 400 identifiants individuels distincts, sans confirmation officielle de la Région."
   ],
+  "version": 3
+ },
+ "INC-CFD41FB9FF44": {
+  "display_summary": "",
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-D063B76AE259": {
@@ -6558,7 +6773,9 @@
    ],
    "vulnerable_people": false
   },
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "Une base de données attribuée à KIASSURE a été diffusée gratuitement sur un forum, contenant 128 242 enregistrements attribués à l'entreprise."
+  ],
   "version": 3
  },
  "INC-F2C5F9D520CA": {
