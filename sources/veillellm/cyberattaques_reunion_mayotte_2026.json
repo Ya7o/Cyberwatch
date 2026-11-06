@@ -5,7 +5,7 @@
       "Mayotte"
     ],
     "year": 2026,
-    "generated_at": "2026-11-05T09:34:49+04:00",
+    "generated_at": "2026-11-06T09:19:49+04:00",
     "record_count": 18,
     "accepted_count": 10,
     "candidate_count": 8,
@@ -14,11 +14,11 @@
       "new_incidents": 0,
       "enriched_incidents": 0,
       "corrected_incidents": 0,
-      "note": "Veille complémentaire menée le 5 novembre 2026 depuis le snapshot courant de main. Aucun nouvel incident, enrichissement ou correctif métier n’a été retenu. Les 18 dossiers, leurs dates et tous les enrichissements publiés sont conservés, dont Jean Joly du 29 septembre, Le Tampon, Leader Price, la CSSM et L’Île en Glace. L’incident EFS du 4 novembre ne documente aucun site réunionnais ou mahorais ; l’exercice Cybermois n’est pas une attaque réelle ; les résultats sur L’Île en Glace et Le Tampon reprennent les informations déjà enregistrées."
+      "note": "Veille complémentaire menée le 6 novembre 2026 depuis le snapshot courant de main. Aucun nouvel incident, enrichissement ou correctif métier n’a été retenu. Les 18 dossiers, leurs dates et tous les enrichissements publiés sont conservés, dont Jean Joly du 29 septembre, Le Tampon, Leader Price, la CSSM et L’Île en Glace. Le signal SIKOA a été exclu après vérification : malgré son classement erroné en 974 par un agrégateur, le répertoire SIRENE situe cette SA HLM de la Guadeloupe à Pointe-à-Pitre."
     },
     "coverage": {
-      "method": "Veille cumulative Réunion/Mayotte vérifiée le 5 novembre 2026 depuis le snapshot courant de main. Les nouveaux incidents ou signaux publiés les 4 et 5 novembre ont été recherchés séparément des enrichissements des dossiers existants. La couverture a ciblé les autorités et collectivités indexées, LINFO.re, Imaz Press, Zinfos974, Réunion La 1ère, Journal de Mayotte, Info976, les services de l’État, le CERT-FR, Cyber Réunion et des sources cyber. Les pages effectivement ouvertes comprennent Imaz Press sur l’incident national touchant des chambres froides de l’EFS, Imaz Press sur l’exercice Cybermois, Mémento sur L’Île en Glace, Acturadar sur la revendication déjà connue visant Le Tampon et LINFO.re sur les fermetures préventives CAF/CGSS. Les recherches d’enrichissement ont porté sur L’Île en Glace, Le Tampon/Qilin, Leader Price, CSSM, Jean Joly et DTPN 974. Aucun changement métier distinct du snapshot courant n’a été retenu.",
-      "limitations": "La recherche publique indexée n’est pas exhaustive. Pour L’Île en Glace, aucune communication directe de la victime, confirmation d’autorité, seconde source journalistique, revendication, analyse forensique, vecteur exact, perte de marchandises, interruption d’activité ou montant de préjudice n’est public. L’incident EFS est documenté sur trois sites régionaux, notamment en Bourgogne-Franche-Comté, sans source établissant un site ou des stocks de La Réunion ou Mayotte dans le périmètre ; sa présence dans la presse locale ne suffit donc pas à l’admettre. Les indisponibilités CAF/CGSS sont décrites comme préventives, avec continuité téléphonique et physique, sans compromission locale démontrée. Pour Le Tampon, aucune infection par rançongiciel, exfiltration ou publication effective de données n’est confirmée. Pour la CSSM, aucune compromission propre à Mayotte n’est démontrée. La seconde enseigne réunionnaise reste non nommée, et DTPN 974 demeure sans suivi officiel public nouveau.",
+      "method": "Veille cumulative Réunion/Mayotte vérifiée le 6 novembre 2026 depuis le snapshot courant de main. Les nouveaux incidents ou signaux publiés les 5 et 6 novembre ont été recherchés séparément des enrichissements des dossiers existants. La couverture a ciblé les autorités et collectivités indexées, LINFO.re, Imaz Press, Zinfos974, Réunion La 1ère, Journal de Mayotte, Info976, les services de l’État, le CERT-FR, Cyber Réunion et des sources cyber. Les pages effectivement ouvertes comprennent Acturadar sur le signal SIKOA, l’avis officiel SIRENE situant SIKOA à Pointe-à-Pitre, Mémento sur L’Île en Glace, les communiqués du Tampon et le Journal de Mayotte sur la CSSM. Les recherches d’enrichissement ont porté sur L’Île en Glace, Le Tampon/Qilin, Leader Price, CSSM, Jean Joly et DTPN 974. Aucun changement métier distinct du snapshot courant n’a été retenu.",
+      "limitations": "La recherche publique indexée n’est pas exhaustive et la page source La 1ère consacrée à SIKOA a été bloquée par robots.txt. Acturadar associe à tort SIKOA au département 974 ; l’avis SIRENE officiel établit qu’il s’agit de la SA HLM de la Guadeloupe, située à Pointe-à-Pitre, sans périmètre réunionnais ou mahorais démontré. Pour L’Île en Glace, aucune communication directe de la victime, confirmation d’autorité, seconde source journalistique, revendication, analyse forensique, vecteur exact, perte de marchandises, interruption d’activité ou montant de préjudice n’est public. Pour Le Tampon, aucune infection par rançongiciel, exfiltration ou publication effective de données n’est confirmée. Pour la CSSM, aucune compromission propre à Mayotte n’est démontrée. La seconde enseigne réunionnaise reste non nommée, et DTPN 974 demeure sans suivi officiel public nouveau.",
       "excluded_candidates": [
         {
           "organisation": "SFR — cyberattaque nationale de juillet 2026",
@@ -51,6 +51,10 @@
         {
           "organisation": "Autres sites administratifs de La Réunion et Mayotte — 21-22 octobre 2026",
           "reason": "La CSSM est désormais suivie séparément en CANDIDATE en raison de son impact local documenté. Pour les autres sites, mesures préventives ou lien cyber territorial non établi, sans preuve de compromission locale."
+        },
+        {
+          "organisation": "SIKOA — cyberattaque du 2 novembre 2026",
+          "reason": "Acturadar classe ce signal dans le département 974, mais le répertoire SIRENE identifie SIKOA comme la SA HLM de la Guadeloupe, dont le siège est à Pointe-à-Pitre (97110). Aucun périmètre réunionnais ou mahorais n’est démontré ; incident hors champ."
         }
       ],
       "unresolved_social_signals": [
