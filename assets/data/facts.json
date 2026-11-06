@@ -171,10 +171,10 @@
   "version": 3
  },
  "INC-06AC2A6F5725": {
-  "display_summary": "Inovie confirme une perte de confidentialité de noms, prénoms et adresses postales de patients suite à la cyberattaque de Maileva.",
+  "display_summary": "Inovie confirme une perte de confidentialité de noms, prénoms et adresses postales de patients de plusieurs de ses laboratoires après l'incident chez Maileva.",
   "summary_paragraphs": [
-   "Inovie reconnaît une perte de confidentialité de noms, prénoms et adresses postales de patients après l'incident Maileva.",
-   "Inovie indique ne pas être en mesure d’établir la liste des patients potentiellement concernés et n’a pas communiqué de bilan chiffré."
+   "Inovie confirme une perte de confidentialité de noms, prénoms et adresses postales de patients de plusieurs de ses laboratoires.",
+   "Le groupe indique ne pas être en mesure d'établir la liste des patients potentiellement concernés et n'a pas communiqué de bilan chiffré."
   ],
   "version": 3
  },
@@ -194,6 +194,14 @@
  "INC-07A263B26D50": {
   "display_summary": "King Jouet : près de 196 000 fiches clients diffusées sur le darkweb",
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-086C12B8F086": {
+  "display_summary": "Illicado a confirmé une cyberattaque le 1er novembre 2026 permettant de récupérer frauduleusement des copies de cartes-cadeaux numériques.",
+  "summary_paragraphs": [
+   "Un attaquant a contourné les protections du service et récupéré des documents PDF contenant les numéros de cartes et leurs cryptogrammes.",
+   "Certaines cartes compromises ont été utilisées frauduleusement avant leur blocage et réédition."
+  ],
   "version": 3
  },
  "INC-08D80AA8EF71": {
@@ -607,6 +615,27 @@
   "summary_paragraphs": [
    "Oceania Hotels indique qu'un tiers non autorisé a pu consulter des données de réservation via un prestataire compromis.",
    "Les données consultées concernent des séjours entre août 2026 et juillet 2027 et incluent nom, email, téléphone, numéro de réservation, dates et tarifs."
+  ],
+  "version": 3
+ },
+ "INC-195ED3DED78E": {
+  "display_summary": "Un individu revendique le vol de 65 694 comptes et d'extraits de la base de données du site Forum-Pompier.com.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "reported",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Un pirate affirme avoir compromis l'intégralité de la base de données et divulgue des extraits pour appuyer sa revendication.",
+   "Il revendique 65 694 comptes, 65 613 adresses e-mail uniques et 128 701 messages privés en métadonnées."
   ],
   "version": 3
  },
@@ -1128,6 +1157,13 @@
   },
   "summary_paragraphs": [
    "Un pirate affirme avoir récupéré une base de 8 915 lignes liée aux inscriptions du CUC Loisirs & Vacances."
+  ],
+  "version": 3
+ },
+ "INC-2E3AE6A9B2EB": {
+  "display_summary": "Le CCAS de Dunkerque voit une base de données de 66 659 usagers republiée sur un forum par un individu se présentant comme l'auteur.",
+  "summary_paragraphs": [
+   "Un utilisateur nommé « Cruel » affirme avoir republié une base attribuée au CCAS de Dunkerque contenant 66 659 enregistrements d'usagers."
   ],
   "version": 3
  },
@@ -3647,6 +3683,14 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-85266063E9B9": {
+  "display_summary": "ISAE-Supméca a été victime d'une cyberattaque par rançongiciel le 31 octobre 2026 affectant l'ensemble de son infrastructure informatique.",
+  "summary_paragraphs": [
+   "L’attaque par rançongiciel du 31 octobre 2026 a affecté l’intégralité de l’infrastructure informatique d’ISAE-Supméca et perturbé ses services numériques.",
+   "La messagerie et le site internet ont été rétablis après plusieurs jours, et une plainte a été déposée le 2 novembre tandis que l’ANSSI a été saisie."
+  ],
+  "version": 3
+ },
  "INC-8568A4E43460": {
   "display_summary": "Spareka signale une fuite revendiquée de 7 770 fiches de demandes de réparation contenant des coordonnées clients.",
   "summary_paragraphs": [
@@ -3898,10 +3942,7 @@
  },
  "INC-8C617A0F4FB3": {
   "display_summary": "Egide frappé par une cyberattaque : son site de Bollène partiellement interrompu",
-  "summary_paragraphs": [
-   "L'intrusion a été détectée chez un prestataire informatique externe, point d'entrée vers certaines infrastructures de l'établissement de Bollène.",
-   "L'incident a entraîné une interruption partielle de l'activité du site industriel de Bollène pendant les opérations de sécurisation."
-  ],
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-8C6C97916F72": {
@@ -4045,6 +4086,32 @@
      ],
      "specifics": [],
      "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-8E6C49E09413": {
+  "display_summary": "Pharmagest : une faille de sécurité pourrait exposer les données de patients de milliers de pharmacies françaises",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données de santé"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "confirmed",
      "value": "mots de passe"
     }
    ],
@@ -4269,6 +4336,14 @@
  "INC-973F96955D58": {
   "display_summary": "",
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-992315755B61": {
+  "display_summary": "Le Rassemblement national confirme une cyberattaque ayant entraîné la divulgation non autorisée de données personnelles d'adhérents.",
+  "summary_paragraphs": [
+   "Le RN confirme une cyberattaque ayant entraîné la divulgation non autorisée de données personnelles de certains adhérents.",
+   "Un pirate revendiquait la diffusion d'une base et FrenchBreaches indique une revendication de 150 000 fiches diffusées."
+  ],
   "version": 3
  },
  "INC-9A1F0AC130B2": {
@@ -5099,7 +5174,9 @@
    ],
    "vulnerable_people": false
   },
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "Le 11 octobre 2026, un pirate a annoncé la diffusion gratuite d'une base attribuée à G La Dalle contenant 46 757 lignes et 318 Mo de données."
+  ],
   "version": 3
  },
  "INC-B9C05B36A12A": {
