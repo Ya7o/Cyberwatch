@@ -5,20 +5,20 @@
       "Mayotte"
     ],
     "year": 2026,
-    "generated_at": "2026-11-06T09:19:49+04:00",
-    "record_count": 18,
-    "accepted_count": 10,
+    "generated_at": "2026-11-07T09:20:51+04:00",
+    "record_count": 19,
+    "accepted_count": 11,
     "candidate_count": 8,
     "schema": "cyberwatch-veille-v2",
     "watch_result": {
-      "new_incidents": 0,
+      "new_incidents": 1,
       "enriched_incidents": 0,
       "corrected_incidents": 0,
-      "note": "Veille complémentaire menée le 6 novembre 2026 depuis le snapshot courant de main. Aucun nouvel incident, enrichissement ou correctif métier n’a été retenu. Les 18 dossiers, leurs dates et tous les enrichissements publiés sont conservés, dont Jean Joly du 29 septembre, Le Tampon, Leader Price, la CSSM et L’Île en Glace. Le signal SIKOA a été exclu après vérification : malgré son classement erroné en 974 par un agrégateur, le répertoire SIRENE situe cette SA HLM de la Guadeloupe à Pointe-à-Pitre."
+      "note": "Veille complémentaire menée le 7 novembre 2026 depuis le snapshot courant de main. Un nouvel incident est retenu : Transcontinents Réunion confirme un accès non autorisé à son outil de réservation les 20 et 21 octobre, avec extraction de données personnelles et de réservation utilisées dans des tentatives d’hameçonnage ciblées. Le dossier est admis en ACCEPTED / Fuite de données. Aucun enrichissement ni correctif métier n’est retenu pour les 18 dossiers antérieurs, dont Jean Joly du 29 septembre, Le Tampon, Leader Price, la CSSM et L’Île en Glace."
     },
     "coverage": {
-      "method": "Veille cumulative Réunion/Mayotte vérifiée le 6 novembre 2026 depuis le snapshot courant de main. Les nouveaux incidents ou signaux publiés les 5 et 6 novembre ont été recherchés séparément des enrichissements des dossiers existants. La couverture a ciblé les autorités et collectivités indexées, LINFO.re, Imaz Press, Zinfos974, Réunion La 1ère, Journal de Mayotte, Info976, les services de l’État, le CERT-FR, Cyber Réunion et des sources cyber. Les pages effectivement ouvertes comprennent Acturadar sur le signal SIKOA, l’avis officiel SIRENE situant SIKOA à Pointe-à-Pitre, Mémento sur L’Île en Glace, les communiqués du Tampon et le Journal de Mayotte sur la CSSM. Les recherches d’enrichissement ont porté sur L’Île en Glace, Le Tampon/Qilin, Leader Price, CSSM, Jean Joly et DTPN 974. Aucun changement métier distinct du snapshot courant n’a été retenu.",
-      "limitations": "La recherche publique indexée n’est pas exhaustive et la page source La 1ère consacrée à SIKOA a été bloquée par robots.txt. Acturadar associe à tort SIKOA au département 974 ; l’avis SIRENE officiel établit qu’il s’agit de la SA HLM de la Guadeloupe, située à Pointe-à-Pitre, sans périmètre réunionnais ou mahorais démontré. Pour L’Île en Glace, aucune communication directe de la victime, confirmation d’autorité, seconde source journalistique, revendication, analyse forensique, vecteur exact, perte de marchandises, interruption d’activité ou montant de préjudice n’est public. Pour Le Tampon, aucune infection par rançongiciel, exfiltration ou publication effective de données n’est confirmée. Pour la CSSM, aucune compromission propre à Mayotte n’est démontrée. La seconde enseigne réunionnaise reste non nommée, et DTPN 974 demeure sans suivi officiel public nouveau.",
+      "method": "Veille cumulative Réunion/Mayotte vérifiée le 7 novembre 2026 depuis le snapshot courant de main. Les nouveaux incidents ou signaux publiés les 6 et 7 novembre ont été recherchés séparément des enrichissements des dossiers existants. La couverture a ciblé les autorités et collectivités indexées, LINFO.re, Imaz Press, Zinfos974, Réunion La 1ère, Journal de Mayotte, Info976, les services de l’État, le CERT-FR, Cyber Réunion et des sources cyber. Les pages effectivement ouvertes comprennent l’alerte officielle de Transcontinents, les analyses de Cyberattaque.org et FrenchBreaches sur ce dossier, Mémento sur L’Île en Glace et un suivi spécialisé des entrées Qilin concernant Le Tampon. Les recherches d’enrichissement ont porté sur L’Île en Glace, Le Tampon/Qilin, Leader Price, CSSM, Jean Joly et DTPN 974. Un nouvel incident régional identifiable a été retenu ; aucun enrichissement ou correctif des dossiers existants n’a été établi.",
+      "limitations": "La recherche publique indexée n’est pas exhaustive. Pour Transcontinents, l’entreprise confirme l’extraction de données mais ne publie ni le nombre de clients concernés, ni le volume extrait, ni le vecteur initial, ni d’éventuelles pertes financières ; aucun lien technique avec les incidents touchant d’autres logiciels de réservation n’est démontré. Pour L’Île en Glace, aucune communication directe de la victime, confirmation d’autorité, seconde source journalistique, analyse forensique, perte de marchandises ou montant de préjudice n’est public. Pour Le Tampon, aucune infection par rançongiciel, exfiltration ou publication effective de données n’est confirmée. Pour la CSSM, aucune compromission propre à Mayotte n’est démontrée. La seconde enseigne réunionnaise reste non nommée, DTPN 974 demeure sans suivi officiel public nouveau et SIKOA reste exclue comme entité guadeloupéenne.",
       "excluded_candidates": [
         {
           "organisation": "SFR — cyberattaque nationale de juillet 2026",
@@ -392,6 +392,27 @@
       ],
       "synthese": "Dans la nuit du 11 au 12 octobre 2026, les installations frigorifiques du Leader Price de Saint-André ont été piratées à distance et portées jusqu’à 50 °C. Le propriétaire a confirmé l’incident à LINFO.re, fait état de pertes globales estimées à 100 000 euros et indiqué qu’une plainte avait été déposée. Les publications antérieures estimaient la perte de marchandises entre 60 000 et 66 000 euros. L’auteur, le vecteur technique exact et le rattachement aux attaques de l’Hexagone restent non établis.",
       "evolution": "enrichi"
+    },
+    {
+      "date": "2026-10-20",
+      "organisation": "Transcontinents Réunion",
+      "admission": "ACCEPTED",
+      "admission_reason": "Transcontinents confirme sur son site officiel qu’un accès non autorisé à son outil de réservation, les 20 et 21 octobre 2026, a permis l’extraction de données personnelles et d’informations de réservation de clients.",
+      "territoire": "La Réunion",
+      "localisation": "La Réunion",
+      "secteur": "Transport / Logistique",
+      "type_menace": "Fuite de données",
+      "acteur": "Non identifié",
+      "statut": "Incident confirmé par l’entreprise ; accès bloqué, sécurité renforcée, CNIL informée et plainte déposée",
+      "score_cyberattaque": 100,
+      "impact_connu": "Des noms, adresses électroniques, numéros de téléphone et informations de réservation (hôtel, vols et dates) ont été extraits. Des clients ont reçu de faux messages WhatsApp reprenant de véritables détails de séjour afin de les pousser vers un lien frauduleux. Aucune donnée bancaire n’était conservée dans l’outil ; le nombre de clients concernés et d’éventuelles pertes financières ne sont pas publics.",
+      "sources": [
+        "https://transcontinents.com/alerte-fraude/",
+        "https://www.cyberattaque.org/transcontinents-des-hackers-exploitent-les-reservations-de-lagence-de-voyages-reunionnaise/",
+        "https://frenchbreaches.com/blog/hotels-gites-voyages-une-vague-de-cyberattaques-inquiete-avant-noel"
+      ],
+      "synthese": "Transcontinents Réunion a confirmé qu’un tiers non autorisé avait accédé à son outil de réservation les 20 et 21 octobre 2026 et extrait des données de voyageurs. Les informations compromises servent à des tentatives d’hameçonnage ciblées par WhatsApp. L’entreprise a bloqué l’accès, renforcé la sécurité, informé la CNIL et déposé plainte. Le vecteur initial, le nombre de personnes concernées et tout lien technique avec d’autres incidents du secteur touristique restent inconnus.",
+      "evolution": "nouveau"
     },
     {
       "date": "2026-10-22",
