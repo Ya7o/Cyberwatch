@@ -2,13 +2,81 @@
  {
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
+  "date": "2026-11-07",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-21B6F9C9441C",
+  "location": "France métropolitaine",
+  "org": "Aréas Assurance",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Santé",
+   "evidence_url": "https://frenchbreaches.com/alertes/ar-as-assurance-mw6baq6okzuyarkesx",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/ar-as-assurance-mw6baq6okzuyarkesx"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-07",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-D4E318AB1B7A",
+  "location": "France métropolitaine",
+  "org": "Caverne des Jouets",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/caverne-des-jouets-mw6azxay5sfe24oknka",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/caverne-des-jouets-mw6azxay5sfe24oknka"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "La Caverne des Jouets fait l'objet d'une revendication de fuite de données revendiquant 4,5 Go et près d'un million d'adresses e-mail.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-11-06",
   "high_sensitivity_data_exposed": false,
   "id": "INC-2E3AE6A9B2EB",
   "location": "France métropolitaine",
   "org": "Centre communal d'action sociale de Dunkerque",
   "organisation_links": [],
-  "personal_data_exposed": false,
+  "personal_data_exposed": true,
   "sector": "Administration / Collectivité",
   "sector_status": {
    "confidence": 0.8,
@@ -27,10 +95,94 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Le CCAS de Dunkerque voit une base de données de 66 659 usagers republiée sur un forum par un individu se présentant comme l'auteur.",
+  "summary": "Le CCAS de Dunkerque voit la republication revendiquée de données personnelles de 66 659 usagers sur un forum de cybercriminels.",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-06",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-DCD15D2C8EC1",
+  "location": "France métropolitaine",
+  "org": "Delcampe",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Delcampe, plateforme de vente en ligne spécialisée dans les objets de collection, confirme un incident de sécurité ayant entraîné l'exposition de données personnelles de certains utilisateurs.",
+   "evidence_url": "https://frenchbreaches.com/alertes/delcampe-mw5j6omoqu90qlrib2",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/delcampe.png"
+   },
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/delcampe-les-adresses-et-les-achats-de-collectionneurs-derobes-lors-dune-cyberattaque/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/delcampe-mw5j6omoqu90qlrib2"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE",
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Delcampe confirme le téléchargement non autorisé de fichiers contenant des données personnelles de certains utilisateurs les 5-6 novembre 2026.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-06",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-8E6B412709A5",
+  "location": "France métropolitaine",
+  "org": "Ligne Roset",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Industrie / Manufacture",
+  "sector_status": {
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Commerce / Distribution"
+   ],
+   "evidence": "Ligne Roset est une marque française de mobilier contemporain créée en 1973, dont les origines remontent à 1860.",
+   "evidence_url": "https://www.cyberattaque.org/ligne-roset-150-go-de-documents-confidentiels-menaces-de-publication-par-un-ransomware/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/ligne-roset-150-go-de-documents-confidentiels-menaces-de-publication-par-un-ransomware/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "Le groupe de ransomware Akira revendique détenir 150 Go de données internes de Ligne Roset, dont des passeports et des documents financiers.",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "reported"
   }
  },
  {
@@ -62,6 +214,83 @@
   "threat": "Fuite de données",
   "threat_status": {
    "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-06",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-EA83064F35C1",
+  "location": "France métropolitaine",
+  "org": "Secours Islamique France",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/secours-islamique-france-sif-mw5dy2dqdh2n7otqgxd",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/secours-islamique-france-sif-mw5dy2dqdh2n7otqgxd"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Le Secours Islamique France confirme une cyberattaque ayant exposé des données personnelles de donateurs.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-06",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-047C6D219D56",
+  "location": "La Réunion",
+  "org": "Transcontinents",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Hébergement / Tourisme / Restauration",
+  "sector_status": {
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Transport / Logistique"
+   ],
+   "evidence": "Transcontinents est une agence de voyages réunionnaise fondée en 1959.",
+   "evidence_url": "https://www.cyberattaque.org/transcontinents-des-hackers-exploitent-les-reservations-de-lagence-de-voyages-reunionnaise/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/transcontinents-des-hackers-exploitent-les-reservations-de-lagence-de-voyages-reunionnaise/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/transcontinents-mw5am0zv9dgfruhlnxs"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Transcontinents a subi une cyberattaque les 20 et 21 octobre 2026 entraînant l'extraction de données personnelles et d'informations de réservation de clients.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
   }
  },
  {
@@ -826,10 +1055,10 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Le Rassemblement national confirme une cyberattaque ayant entraîné la divulgation non autorisée de données personnelles d'adhérents.",
-  "threat": "Intrusion",
+  "summary": "",
+  "threat": "Fuite de données",
   "threat_status": {
-   "status": "confirmed"
+   "status": "unknown"
   }
  },
  {
@@ -1062,6 +1291,40 @@
   "threat": "Phishing / fraude",
   "threat_status": {
    "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-03",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-02CC190A2E00",
+  "location": "France métropolitaine",
+  "org": "Smartbox",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/smartbox-mw6cp9hcqplas85uka",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/smartbox-mw6cp9hcqplas85uka"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Smartbox confirme une cyberattaque le 3 novembre 2026 ayant pu exposer des noms et adresses e-mail de clients.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
   }
  },
  {
@@ -5584,6 +5847,51 @@
   "threat": "Inconnu",
   "threat_status": {
    "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "admission_reason": "Transcontinents confirme sur son site officiel qu’un accès non autorisé à son outil de réservation, les 20 et 21 octobre 2026, a permis l’extraction de données personnelles et d’informations de réservation de clients.",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-20",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-CE234E7943B8",
+  "location": "La Réunion",
+  "org": "Transcontinents Réunion",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Transport / Logistique",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Transport / Logistique",
+   "evidence_url": "https://transcontinents.com/alerte-fraude/",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "transcontinents.com",
+    "source": "VEILLE_LLM",
+    "url": "https://transcontinents.com/alerte-fraude/"
+   },
+   {
+    "label": "Cyberattaque.org",
+    "source": "VEILLE_LLM",
+    "url": "https://www.cyberattaque.org/transcontinents-des-hackers-exploitent-les-reservations-de-lagence-de-voyages-reunionnaise/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "VEILLE_LLM",
+    "url": "https://frenchbreaches.com/blog/hotels-gites-voyages-une-vague-de-cyberattaques-inquiete-avant-noel"
+   }
+  ],
+  "sources": [
+   "VEILLE_LLM"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
   }
  },
  {

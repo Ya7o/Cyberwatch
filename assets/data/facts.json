@@ -139,6 +139,14 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-02CC190A2E00": {
+  "display_summary": "Smartbox confirme une cyberattaque le 3 novembre 2026 ayant pu exposer des noms et adresses e-mail de clients.",
+  "summary_paragraphs": [
+   "Un accès non autorisé à l'une de ses plateformes pourrait avoir exposé des noms et des adresses e-mail de clients.",
+   "Smartbox indique que les mots de passe et les coordonnées bancaires n'auraient pas été compromis."
+  ],
+  "version": 3
+ },
  "INC-0369B007BDB8": {
   "display_summary": "La Fédération suisse de hockey sur glace fait l'objet d'une revendication de fuite massive de données mise en vente.",
   "sensitive_data": {
@@ -162,6 +170,28 @@
   "summary_paragraphs": [
    "Plusieurs services municipaux et intercommunaux sont injoignables par téléphone et par e-mail depuis le 30 octobre 2026.",
    "La collectivité soupçonne une cyberattaque et a activé une cellule de crise, mais aucune attaque n'est encore formellement confirmée."
+  ],
+  "version": 3
+ },
+ "INC-047C6D219D56": {
+  "display_summary": "Transcontinents a subi une cyberattaque les 20 et 21 octobre 2026 entraînant l'extraction de données personnelles et d'informations de réservation de clients.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "confirmed",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Un accès non autorisé les 20 et 21 octobre 2026 a permis l’extraction de noms, coordonnées et détails de réservations de clients.",
+   "Des clients reçoivent des messages frauduleux reprenant leurs véritables informations de séjour pour tenter de récupérer des coordonnées bancaires."
   ],
   "version": 3
  },
@@ -915,6 +945,11 @@
   ],
   "version": 3
  },
+ "INC-21B6F9C9441C": {
+  "display_summary": "",
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-224E6558FA08": {
   "display_summary": "Un pirate revendique la mise en vente d'une base de données attribuée à la Zone de secours Hainaut-Est contenant des contacts et des références de site.",
   "summary_paragraphs": [
@@ -1161,10 +1196,8 @@
   "version": 3
  },
  "INC-2E3AE6A9B2EB": {
-  "display_summary": "Le CCAS de Dunkerque voit une base de données de 66 659 usagers republiée sur un forum par un individu se présentant comme l'auteur.",
-  "summary_paragraphs": [
-   "Un utilisateur nommé « Cruel » affirme avoir republié une base attribuée au CCAS de Dunkerque contenant 66 659 enregistrements d'usagers."
-  ],
+  "display_summary": "Le CCAS de Dunkerque voit la republication revendiquée de données personnelles de 66 659 usagers sur un forum de cybercriminels.",
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-2E9A68445846": {
@@ -4091,7 +4124,29 @@
    ],
    "vulnerable_people": false
   },
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "Un pirate affirme avoir récupéré et mis en vente environ 369 000 messages médicaux échangés entre 2019 et 2026."
+  ],
+  "version": 3
+ },
+ "INC-8E6B412709A5": {
+  "display_summary": "Le groupe de ransomware Akira revendique détenir 150 Go de données internes de Ligne Roset, dont des passeports et des documents financiers.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "pièces d'identité"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Akira revendique avoir récupéré 150 Go de fichiers internes de Ligne Roset et menace de les diffuser prochainement."
+  ],
   "version": 3
  },
  "INC-8E6C49E09413": {
@@ -4339,11 +4394,8 @@
   "version": 3
  },
  "INC-992315755B61": {
-  "display_summary": "Le Rassemblement national confirme une cyberattaque ayant entraîné la divulgation non autorisée de données personnelles d'adhérents.",
-  "summary_paragraphs": [
-   "Le RN confirme une cyberattaque ayant entraîné la divulgation non autorisée de données personnelles de certains adhérents.",
-   "Un pirate revendiquait la diffusion d'une base et FrenchBreaches indique une revendication de 150 000 fiches diffusées."
-  ],
+  "display_summary": "",
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-9A1F0AC130B2": {
@@ -5743,6 +5795,24 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-CE234E7943B8": {
+  "display_summary": "",
+  "regional_watch": [
+   {
+    "acteur": "Non identifié",
+    "admission_reason": "Transcontinents confirme sur son site officiel qu’un accès non autorisé à son outil de réservation, les 20 et 21 octobre 2026, a permis l’extraction de données personnelles et d’informations de réservation de clients.",
+    "impact_connu": "Des noms, adresses électroniques, numéros de téléphone et informations de réservation (hôtel, vols et dates) ont été extraits. Des clients ont reçu de faux messages WhatsApp reprenant de véritables détails de séjour afin de les pousser vers un lien frauduleux. Aucune donnée bancaire n’était conservée dans l’outil ; le nombre de clients concernés et d’éventuelles pertes financières ne sont pas publics.",
+    "localisation": "La Réunion",
+    "score": 100,
+    "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
+    "statut": "Incident confirmé par l’entreprise ; accès bloqué, sécurité renforcée, CNIL informée et plainte déposée"
+   }
+  ],
+  "summary_paragraphs": [
+   "Transcontinents Réunion a confirmé qu’un tiers non autorisé avait accédé à son outil de réservation les 20 et 21 octobre 2026 et extrait des données de voyageurs. Les informations compromises servent à des tentatives d’hameçonnage ciblées par WhatsApp. L’entreprise a bloqué l’accès, renforcé la sécurité, informé la CNIL et déposé plainte. Le vecteur initial, le nombre de personnes concernées et tout lien technique avec d’autres incidents du secteur touristique restent inconnus."
+  ],
+  "version": 3
+ },
  "INC-CEAB26927F32": {
   "display_summary": "France Utilitaires : près de 10 000 comptes clients exposés après une cyberattaque",
   "sensitive_data": {
@@ -5861,6 +5931,27 @@
    "vulnerable_people": false
   },
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-D4E318AB1B7A": {
+  "display_summary": "La Caverne des Jouets fait l'objet d'une revendication de fuite de données revendiquant 4,5 Go et près d'un million d'adresses e-mail.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Un pirate affirme vendre 4,5 Go de données clients attribuées au site caverne-des-jouets.com, comprenant 969 386 adresses e-mail et divers autres champs.",
+   "La revendication est qualifiée de crédible mais non confirmée et l'authenticité des fichiers n'a pas été vérifiée indépendamment."
+  ],
   "version": 3
  },
  "INC-D5DE3AD49366": {
@@ -6158,6 +6249,34 @@
   "summary_paragraphs": [
    "Un individu affirme avoir publié une archive de 20 Mo au format JSON de 39 207 enregistrements concernant 36 981 personnes.",
    "L'extrait diffusé contient noms, prénoms, adresses e-mail et informations liées aux adhésions, mais l'origine et l'authenticité restent à confirmer."
+  ],
+  "version": 3
+ },
+ "INC-DCD15D2C8EC1": {
+  "display_summary": "Delcampe confirme le téléchargement non autorisé de fichiers contenant des données personnelles de certains utilisateurs les 5-6 novembre 2026.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Des fichiers contenant des noms, adresses postales et détails d'achats ont été téléchargés sans autorisation."
   ],
   "version": 3
  },
@@ -6578,6 +6697,14 @@
   },
   "summary_paragraphs": [
    "Acaia.fr, site lié à un aéroclub de Clermont-Ferrand, fait l’objet d’une importante fuite de données publiée ce 24 septembre 2026."
+  ],
+  "version": 3
+ },
+ "INC-EA83064F35C1": {
+  "display_summary": "Le Secours Islamique France confirme une cyberattaque ayant exposé des données personnelles de donateurs.",
+  "summary_paragraphs": [
+   "Le SIF indique avoir détecté un accès non autorisé à une partie de ses données informatiques et avoir corrigé la faille.",
+   "Des noms, adresses, e-mails, numéros de téléphone et informations sur les dons ont été exposés selon le communiqué."
   ],
   "version": 3
  },
