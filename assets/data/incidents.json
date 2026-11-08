@@ -1,6 +1,74 @@
 [
  {
   "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-08",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-7B47FA0345A4",
+  "location": "Inconnu",
+  "org": "La Caverne des Jouets",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "La Caverne des Jouets est une boutique française spécialisée dans la vente en ligne de jeux et jouets , proposant notamment des produits Lego, Playmobil, Barbie et Corolle.",
+   "evidence_url": "https://www.cyberattaque.org/la-caverne-des-jouets-cyberattaque/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/la-caverne-des-jouets-cyberattaque/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "La Caverne des Jouets : près d’un million d’emails revendues pour du spam sur le darkweb",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-08",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-DC44BD091E3A",
+  "location": "France métropolitaine",
+  "org": "SGS Group – Sécuritest, Auto Sécurité et Vérif'Autos",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/sgs-group-s-curitest-auto-s-curit-et-v-rif-autos-mw6vd1rbumwau7gc4g",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/sgs-group-s-curitest-auto-s-curit-et-v-rif-autos-mw6vd1rbumwau7gc4g"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Revendication crédible non confirmée de la mise en vente de 96 Go de données attribuées à Sécuritest, incluant 40,9 M de plaques et 22,68 M de personnes.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
   "date": "2026-11-07",
   "high_sensitivity_data_exposed": false,
@@ -19,18 +87,143 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-areas-assurances-numeros-securite-sociale-21-732-assures-fuite/"
+   },
+   {
     "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/ar-as-assurance-mw6baq6okzuyarkesx"
    }
   ],
   "sources": [
+   "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "",
+  "summary": "21 732 numéros de Sécurité sociale d'assurés d'Aréas Assurances seraient proposés à la vente par un hacker.",
   "threat": "Fuite de données",
   "threat_status": {
-   "status": "unknown"
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-07",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-EB848A190BEB",
+  "location": "France métropolitaine",
+  "org": "Auto-Planning",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Industrie / Manufacture",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Auto-Planning est une entreprise française proposant aux professionnels de l'automobile des outils de prise de rendez-vous en ligne, des agendas numériques, des sites Internet et des rappels automatiques par SMS. [étiquette source écartée : Commerce]",
+   "evidence_url": "https://frenchbreaches.com/alertes/auto-planning-mvsr5k8z732ik7zcded",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/auto-planning-mvsr5k8z732ik7zcded"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Un pirate revendique la mise en vente d'une base de données attribuée à Auto-Planning, de 242,46 millions de lignes et 34,6 Go.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-07",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-A3B8E9D52A8E",
+  "location": "France métropolitaine",
+  "org": "AXE EXPERTS",
+  "organisation_links": [
+   "https://axe-experts.com"
+  ],
+  "personal_data_exposed": false,
+  "sector": "Services aux entreprises",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Professional Services",
+   "evidence_url": "http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=ad19ac70-c97e-4b6d-b610-829af43b6896",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion",
+    "source": "RANSOMWARE_LIVE",
+    "url": "http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=ad19ac70-c97e-4b6d-b610-829af43b6896"
+   }
+  ],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-07",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-1C285486CEC3",
+  "location": "France métropolitaine",
+  "org": "Burda Style",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Culture / Médias / Loisirs",
+  "sector_status": {
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Commerce / Distribution"
+   ],
+   "evidence": "Burda Style est une marque historique de l’univers de la couture, dont les publications remontent aux années 1950.",
+   "evidence_url": "https://www.cyberattaque.org/burda-style-les-donnees-personnelles-de-ses-clients-exposees-apres-une-cyberattaque/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/burda-style.png"
+   },
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/burda-style-les-donnees-personnelles-de-ses-clients-exposees-apres-une-cyberattaque/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/burda-style-mw6qlcon9wdev310pd5"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE",
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Burda Style a confirmé une cyberattaque à la mi-octobre 2026 entraînant une possible exposition de données clients.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
   }
  },
  {
@@ -63,6 +256,40 @@
   ],
   "summary": "La Caverne des Jouets fait l'objet d'une revendication de fuite de données revendiquant 4,5 Go et près d'un million d'adresses e-mail.",
   "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-07",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-418776628C2D",
+  "location": "France métropolitaine",
+  "org": "Titres Services",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/titres-services-mw49chlrygke8bvq1b",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/titres-services-mw49chlrygke8bvq1b"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Ransomware",
   "threat_status": {
    "status": "unknown"
   }
@@ -347,18 +574,24 @@
   },
   "source_links": [
    {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/beauty-success.png"
+   },
+   {
     "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/beauty-success-novi-mw3dloy5vziu3xxamr"
    }
   ],
   "sources": [
+   "BONJOURLAFUITE",
    "FRENCHBREACHES"
   ],
   "summary": "Un pirate affirme avoir mis en vente les données personnelles de plus de 3 millions de clients de Beauty Success.",
   "threat": "Fuite de données",
   "threat_status": {
-   "status": "unknown"
+   "status": "confirmed"
   }
  },
  {
@@ -1313,15 +1546,21 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/smartbox-a-lapproche-de-noel-un-hacker-sintroduit-dans-dans-le-geant-des-coffrets-cadeaux/"
+   },
+   {
     "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/smartbox-mw6cp9hcqplas85uka"
    }
   ],
   "sources": [
+   "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Smartbox confirme une cyberattaque le 3 novembre 2026 ayant pu exposer des noms et adresses e-mail de clients.",
+  "summary": "Smartbox confirme une intrusion le 3 novembre 2026 exposant potentiellement noms et adresses email de clients.",
   "threat": "Intrusion",
   "threat_status": {
    "status": "confirmed"
@@ -2981,35 +3220,26 @@
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
   "date": "2026-10-29",
-  "high_sensitivity_data_exposed": true,
+  "high_sensitivity_data_exposed": false,
   "id": "INC-5C85D745AB05",
-  "location": "France métropolitaine",
+  "location": "Inconnu",
   "org": "Auto-Planning",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
+  "sector": "Inconnu",
   "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Commerce",
-   "evidence_url": "https://frenchbreaches.com/alertes/auto-planning-mvsr5k8z732ik7zcded",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
   },
   "source_links": [
    {
     "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/auto-planning-14-millions-de-plaques-dimmatriculation-revendiquees-par-des-pirates/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/auto-planning-mvsr5k8z732ik7zcded"
    }
   ],
   "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
+   "CYBERATTAQUE_ORG"
   ],
   "summary": "Des pirates revendiquent la détention de données incluant 14 millions de plaques d'immatriculation liées à Auto-Planning.",
   "threat": "Ransomware",

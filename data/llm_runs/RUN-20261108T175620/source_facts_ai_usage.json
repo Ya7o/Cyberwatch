@@ -1,0 +1,127 @@
+{
+  "run_id": "RUN-20261108T175620",
+  "enabled": true,
+  "disabled_reason": "",
+  "model": "gpt-5-nano",
+  "requested_model": "gpt-5-nano",
+  "effective_model": "gpt-5-mini",
+  "prompt_version": "2026-09-11.source-facts.20",
+  "schema_version": "11",
+  "cache_format": "source-facts-ai-field-cache-v1",
+  "items_eligible": 16,
+  "items_would_call": 16,
+  "items_skipped_no_missing_fields": 0,
+  "items_fully_cached": 0,
+  "items_partially_cached": 1,
+  "cache_hits": 0,
+  "field_cache_hits": 2,
+  "accepted_field_cache_hits": 2,
+  "abstained_field_cache_hits": 0,
+  "rejected_field_cache_hits": 0,
+  "activity_pairs": {
+    "requested": 5,
+    "accepted": {
+      "total": 2,
+      "from_cache": 0,
+      "from_call": 2
+    },
+    "rejected": {
+      "total": 2,
+      "from_cache": 0,
+      "from_call": 2
+    },
+    "rejected_exhausted": {
+      "total": 1,
+      "from_cache": 0,
+      "from_call": 1
+    }
+  },
+  "legacy_null_migrations": 0,
+  "legacy_null_skips": 0,
+  "semantic_first_misses": 7,
+  "semantic_retries": 7,
+  "semantic_recovered_on_retry": 2,
+  "semantic_new_abstentions": 8,
+  "legacy_field_cache_hits": 0,
+  "fields_invalidated": 0,
+  "calls_attempted": 16,
+  "calls_success": 16,
+  "calls_failed": 0,
+  "calls_budget_blocked": 0,
+  "retries": 0,
+  "timeouts": 0,
+  "http_429": 0,
+  "http_5xx": 0,
+  "total_duration_seconds": 76.652,
+  "average_duration_seconds": 4.791,
+  "p50_duration_seconds": 3.878,
+  "p95_duration_seconds": 15.406,
+  "max_duration_seconds": 15.406,
+  "input_tokens": 48096,
+  "output_tokens": 4901,
+  "estimated_cost_usd": 0.023875,
+  "fields_requested": {
+    "activity_description": 5,
+    "activity_sector_match": 5,
+    "incident_summary": 13,
+    "summary": 14,
+    "threat_candidate": 11
+  },
+  "fields_requested_new": {
+    "activity_description": 5,
+    "activity_sector_match": 5,
+    "incident_summary": 13,
+    "summary": 14,
+    "threat_candidate": 11
+  },
+  "field_outcomes": {
+    "abstained": 4,
+    "accepted": 31,
+    "miss": 7,
+    "rejected": 4,
+    "rejected_exhausted": 2
+  },
+  "field_outcomes_by_name": {
+    "activity_description": {
+      "accepted": 2,
+      "rejected": 2,
+      "rejected_exhausted": 1
+    },
+    "activity_sector_match": {
+      "accepted": 2,
+      "rejected": 2,
+      "rejected_exhausted": 1
+    },
+    "incident_summary": {
+      "accepted": 11,
+      "miss": 2
+    },
+    "summary": {
+      "abstained": 1,
+      "accepted": 10,
+      "miss": 3
+    },
+    "threat_candidate": {
+      "abstained": 3,
+      "accepted": 6,
+      "miss": 2
+    }
+  },
+  "repair_eligible": 8,
+  "repair_attempted": 8,
+  "repair_deterministic_success": 2,
+  "repair_llm_calls": 2,
+  "repair_llm_success": 0,
+  "repair_failed": 6,
+  "repair_cost_usd": 0.00204885,
+  "initial_accepted": 29,
+  "final_accepted": 31,
+  "healthy_abstentions": 4,
+  "unsafe_proposals_rejected": 4,
+  "evidence_failures": 7,
+  "initial_acceptance_rate": 0.6042,
+  "final_acceptance_rate": 0.6458,
+  "accepted_field_rate": 0.6458,
+  "cost_per_accepted_field_usd": 0.00077016,
+  "error_reasons": {}
+}

@@ -140,10 +140,10 @@
   "version": 3
  },
  "INC-02CC190A2E00": {
-  "display_summary": "Smartbox confirme une cyberattaque le 3 novembre 2026 ayant pu exposer des noms et adresses e-mail de clients.",
+  "display_summary": "Smartbox confirme une intrusion le 3 novembre 2026 exposant potentiellement noms et adresses email de clients.",
   "summary_paragraphs": [
-   "Un accès non autorisé à l'une de ses plateformes pourrait avoir exposé des noms et des adresses e-mail de clients.",
-   "Smartbox indique que les mots de passe et les coordonnées bancaires n'auraient pas été compromis."
+   "Un individu non autorisé a accédé à une plateforme Smartbox, exposant potentiellement noms et adresses email de clients.",
+   "Smartbox affirme que mots de passe et coordonnées bancaires n’ont pas été compromis."
   ],
   "version": 3
  },
@@ -739,6 +739,36 @@
   ],
   "version": 3
  },
+ "INC-1C285486CEC3": {
+  "display_summary": "Burda Style a confirmé une cyberattaque à la mi-octobre 2026 entraînant une possible exposition de données clients.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "BONJOURLAFUITE"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "4 derniers chiffres du numéro de carte bancaire"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Burda Style indique qu’un accès informatique malveillant a été détecté et bloqué, sans preuve d’extraction de données à ce stade.",
+   "L’entreprise précise que les coordonnées personnelles, les historiques de commandes et certaines informations de paiement pourraient avoir été exposés."
+  ],
+  "version": 3
+ },
  "INC-1C4D92961F4E": {
   "display_summary": "Revolut a transmis à un tiers des données sensibles de certains clients en réponse à de fausses demandes se faisant passer pour une administration.",
   "sensitive_data": {
@@ -946,8 +976,11 @@
   "version": 3
  },
  "INC-21B6F9C9441C": {
-  "display_summary": "",
-  "summary_paragraphs": [],
+  "display_summary": "21 732 numéros de Sécurité sociale d'assurés d'Aréas Assurances seraient proposés à la vente par un hacker.",
+  "summary_paragraphs": [
+   "Un hacker nommé webshell annonce détenir et vendre une base attribuée à Aréas Assurances contenant 21 732 assurés distincts.",
+   "La revendication inclut des numéros de Sécurité sociale complets et des informations sur les contrats et droits de couverture santé."
+  ],
   "version": 3
  },
  "INC-224E6558FA08": {
@@ -1548,7 +1581,10 @@
    ],
    "vulnerable_people": false
   },
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "Un individu a publié sur PwnForums une annonce affirmant vendre une base de données provenant du site alloextra.com.",
+   "Le pirate affirme avoir extrait les profils par scraping plutôt que par compromission des serveurs, mais l'authenticité n'est pas vérifiée."
+  ],
   "version": 3
  },
  "INC-3B8C2F71BF60": {
@@ -1691,6 +1727,27 @@
  "INC-4150ADA99F17": {
   "display_summary": "Cyberattaque contre Renaissance : 4,1 millions de lignes revendiquées et des données sur l’organisation du parti exposées",
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-418776628C2D": {
+  "display_summary": "",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "pièces d'identité"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Le groupe de ransomware SafePay a inscrit I.L. & C. – Titres Services sur sa plateforme de divulgation le 4 novembre 2026, accompagné d'une revendication.",
+   "L'inventaire attribué répertorie 244 364 fichiers et environ 71,06 Go, mais l'exfiltration effective et le contenu exact restent non confirmés."
+  ],
   "version": 3
  },
  "INC-41D3A5E68E62": {
@@ -2381,19 +2438,6 @@
  },
  "INC-5C85D745AB05": {
   "display_summary": "Des pirates revendiquent la détention de données incluant 14 millions de plaques d'immatriculation liées à Auto-Planning.",
-  "sensitive_data": {
-   "types": [
-    {
-     "sources": [
-      "FRENCHBREACHES"
-     ],
-     "specifics": [],
-     "status": "unknown",
-     "value": "données bancaires"
-    }
-   ],
-   "vulnerable_people": false
-  },
   "summary_paragraphs": [
    "Des attaquants revendiquent détenir des données concernant jusqu’à 18 millions de personnes et 14 millions de plaques d’immatriculation liées à Auto-Planning.",
    "Une demande de rançon est évoquée par les revendiquants."
@@ -3491,6 +3535,27 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-7B47FA0345A4": {
+  "display_summary": "La Caverne des Jouets : près d’un million d’emails revendues pour du spam sur le darkweb",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "confirmed",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "ChimeraZ annonce la vente d'une base attribuée à caverne-des-jouets.com comprenant 9,361,144 lignes et 969,386 adresses email.",
+   "Cyberattaque.org a analysé des échantillons confirmant la présence de données personnelles, d'historiques d'achats et de mots de passe hachés."
+  ],
+  "version": 3
+ },
  "INC-7BF9828040F8": {
   "display_summary": "La Ville de Joigny a subi 268 795 tentatives d’intrusion détectées en une semaine, sans équipement endommagé ni données personnelles volées.",
   "summary_paragraphs": [
@@ -4124,9 +4189,7 @@
    ],
    "vulnerable_people": false
   },
-  "summary_paragraphs": [
-   "Un pirate affirme avoir récupéré et mis en vente environ 369 000 messages médicaux échangés entre 2019 et 2026."
-  ],
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-8E6B412709A5": {
@@ -4600,6 +4663,11 @@
   "summary_paragraphs": [
    "Revendication KillNet contre un datacenter de STOR Solutions à La Réunion. La veille spécialisée la qualifie de non vérifiée ; aucune preuve indépendante d'une intrusion ou d'un impact n'est publique."
   ],
+  "version": 3
+ },
+ "INC-A3B8E9D52A8E": {
+  "display_summary": "",
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-A3EBCA6EA6BA": {
@@ -5829,7 +5897,10 @@
    ],
    "vulnerable_people": false
   },
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "Un pirate affirme avoir extrait les données de 10 000 comptes, incluant noms, adresses, téléphones, e-mails et mots de passe hachés",
+   "La compromission et l'authenticité des données restent à confirmer indépendamment par la source"
+  ],
   "version": 3
  },
  "INC-CF293FAA403B": {
@@ -6130,6 +6201,14 @@
   ],
   "summary_paragraphs": [
    "La Ville de Mamoudzou confirme un incident affectant sa messagerie et l'envoi de courriels non sollicités. Elle indique n'avoir identifié aucune fuite de données ; elle ne précise pas si un compte ou un serveur a été compromis."
+  ],
+  "version": 3
+ },
+ "INC-DC44BD091E3A": {
+  "display_summary": "Revendication crédible non confirmée de la mise en vente de 96 Go de données attribuées à Sécuritest, incluant 40,9 M de plaques et 22,68 M de personnes.",
+  "summary_paragraphs": [
+   "Un pirate, ChimeraZ, revendique la mise en vente d'environ 96 Go de fichiers attribués à Sécuritest, soit près de 259 millions de lignes.",
+   "Les fichiers revendiqués comprendraient 40,920,439 plaques uniques et 22 688 152 personnes, mais l'authenticité et l'origine restent à confirmer."
   ],
   "version": 3
  },
@@ -6743,6 +6822,27 @@
   "summary_paragraphs": [
    "Un utilisateur d’un forum affirme avoir récupéré et publié environ 9,1 millions d’enregistrements issus de la base publique Transparence Santé.",
    "FrenchBreaches indique que les données publiées correspondent à des informations déjà rendues publiques par le ministère chargé de la Santé."
+  ],
+  "version": 3
+ },
+ "INC-EB848A190BEB": {
+  "display_summary": "Un pirate revendique la mise en vente d'une base de données attribuée à Auto-Planning, de 242,46 millions de lignes et 34,6 Go.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Le 7 novembre 2026, un cybercriminel a mis en vente une base de données attribuée à Auto-Planning.",
+   "Auto-Planning a confirmé une cyberattaque début novembre, mais n'a pas confirmé les volumes revendiqués par le pirate."
   ],
   "version": 3
  },
