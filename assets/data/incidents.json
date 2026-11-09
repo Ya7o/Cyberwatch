@@ -1,6 +1,333 @@
 [
  {
   "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-09",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-D1A1920EEF00",
+  "location": "Inconnu",
+  "org": "Abritel",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-ransomware-expedia-abritel-vrbo/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Abritel (Vrbo) : des hackers revendiquent un vol massif de 830 millions de données chez Expedia",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-09",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-0981AAF62C2E",
+  "location": "Inconnu",
+  "org": "Auto Sécurité",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "ACTIVITY_TAXONOMY_UNRESOLVED",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/auto-securite-fuite-donnees-clients-vehicules/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-09",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-422FB0FBCC18",
+  "location": "France métropolitaine",
+  "org": "Company #155",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "SOURCE_SECTOR_RAW_AMBIGUOUS",
+   "status": "unknown"
+  },
+  "source_links": [],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-09",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-19A20C8A10E8",
+  "location": "France métropolitaine",
+  "org": "Fédération Française de Tennis de Table",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Sport",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Fédération Française de Tennis de Table",
+   "evidence_url": "https://bonjourlafuite.eu.org/img/fftt-2.png",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/fftt-2.png"
+   },
+   {
+    "label": "fftt.com",
+    "source": "BONJOURLAFUITE",
+    "url": "https://www.fftt.com/actualites/federation/la-fftt-victime-dune-cyberattaque-et-dun-vol-de-donnees/"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE"
+  ],
+  "summary": "BonjourLaFuite signale une fuite de données concernant Fédération Française de Tennis de Table.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-09",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-86F9B6AFB61C",
+  "location": "France métropolitaine",
+  "org": "Nature et Découvertes",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/nature-et-d-couvertes-mu1euyvui0h3fnzm19",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/nature-et-d-couvertes-mu1euyvui0h3fnzm19"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Plus de 500 000 enregistrements de commandes attribuées aux clients de Nature et Découvertes sont proposés à la vente sur un forum cybercriminel.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-09",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-658EF8921962",
+  "location": "Inconnu",
+  "org": "Next One",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Fondée en 2000, Next One est une entreprise française spécialisée dans l’affichage publicitaire dans les lieux de vie.",
+   "evidence_url": "https://www.cyberattaque.org/next-one-cyberattaque-affichage-publicitaire/",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/next-one-cyberattaque-affichage-publicitaire/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Next One, leader français de l’affichage publicitaire indoor, a été victime d'une attaque par rançongiciel qui a chiffré sa base de données et ses sauvegardes.",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-09",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-D9E0F5221401",
+  "location": "Inconnu",
+  "org": "Sécuritest",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/securitest-fuite-donnees-acces-internes-centres/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Sécuritest nommé dans une publication revendiquant une fuite contenant mots de passe, paramètres d'accès distants et IBAN.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-09",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-D9A4EA087ED3",
+  "location": "Inconnu",
+  "org": "Vérif’Autos",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Vérif’Autos est une enseigne de contrôle technique créée en 2004 par Sécuritest, au sein du groupe SGS.",
+   "evidence_url": "https://www.cyberattaque.org/verif-autos-fuite-donnees-reservations-confidentialite/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/verif-autos-fuite-donnees-reservations-confidentialite/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Vérif’Autos : des données de clients et de véhicules compromises par un prestataire",
+  "threat": "Phishing / fraude",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-08",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-CF07FC9A6522",
+  "location": "France métropolitaine",
+  "org": "Arromanches Militaria",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Arromanches Militaria est une boutique située à Arromanches-les-Bains, dans le Calvados, en Normandie.",
+   "evidence_url": "https://frenchbreaches.com/alertes/arromanches-militaria-mw82y9kueg1l6o9wyi5",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/arromanches-militaria-mw82y9kueg1l6o9wyi5"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Revendication de mise en vente de 5 000 adresses e-mail et mots de passe attribués à Arromanches Militaria.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-08",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-981F34CB9239",
+  "location": "France métropolitaine",
+  "org": "InOutlet",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "InOutlet est une enseigne française spécialisée dans la vente de carrelage, faïence, pierres naturelles et équipements pour l'aménagement intérieur et extérieur.",
+   "evidence_url": "https://frenchbreaches.com/alertes/inoutlet-mw80csk0um2pilxg0f",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/inoutlet-mw80csk0um2pilxg0f"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": true,
   "date": "2026-11-08",
   "high_sensitivity_data_exposed": false,
@@ -35,6 +362,108 @@
  },
  {
   "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-08",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-9CA48D75C2EE",
+  "location": "France métropolitaine",
+  "org": "MBS Design",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "MBS Design est une entreprise française associée au site mbsdesign.fr, présentée dans l'annonce du cybercriminel comme spécialisée dans le mobilier et la décoration de la maison.",
+   "evidence_url": "https://frenchbreaches.com/alertes/mbs-design-mw83a2bgoigw0ivkvwr",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/mbs-design-mw83a2bgoigw0ivkvwr"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Un pirate revendique le vol et la publication d'extraits de bases de données clients et de transactions de MBS Design.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-08",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-FF95D614307A",
+  "location": "France métropolitaine",
+  "org": "Omnicasa",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Construction / BTP",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Omnicasa est une solution de gestion immobilière destinée aux professionnels du secteur, notamment en Belgique. [étiquette source écartée : Commerce]",
+   "evidence_url": "https://frenchbreaches.com/alertes/omnicasa-mw803aa86ora2wgn4r9",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/omnicasa-mw803aa86ora2wgn4r9"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Annonce de vente de 3,9 Go de données attribuées à Omnicasa, dont 465 225 adresses e-mail, revendiquée sur un forum cybercriminel.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-08",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-0E77F81BAAC5",
+  "location": "France métropolitaine",
+  "org": "Pharmatomic",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Pharmatomic est une entreprise française associée au site pharmatomic.fr, présentée dans l'annonce comme appartenant au secteur de la pharmacie et de la santé.",
+   "evidence_url": "https://frenchbreaches.com/alertes/pharmatomic-mw83jrx4jmw1xda8ud8",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/pharmatomic-mw83jrx4jmw1xda8ud8"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
   "date": "2026-11-08",
   "high_sensitivity_data_exposed": false,
@@ -61,7 +490,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Revendication crédible non confirmée de la mise en vente de 96 Go de données attribuées à Sécuritest, incluant 40,9 M de plaques et 22,68 M de personnes.",
+  "summary": "",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "unknown"

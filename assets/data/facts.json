@@ -297,6 +297,11 @@
   ],
   "version": 3
  },
+ "INC-0981AAF62C2E": {
+  "display_summary": "",
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-0A7579664EAF": {
   "display_summary": "",
   "summary_paragraphs": [
@@ -452,6 +457,27 @@
  "INC-0E75E6FDF77D": {
   "display_summary": "",
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-0E77F81BAAC5": {
+  "display_summary": "",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Sophia a publié des extraits attribués à Pharmatomic montrant noms, adresses, téléphones et e-mails de pharmacies.",
+   "La revendication inclut aussi des champs liés aux comptes utilisateurs et à l'authentification, potentiellement sensibles."
+  ],
   "version": 3
  },
  "INC-0F486B50ABB2": {
@@ -674,6 +700,29 @@
   "summary_paragraphs": [
    "Autobacs France fait l’objet d’une fuite de données revendiquée le 22 septembre 2026 avec 34 017 enregistrements diffusés selon le hacker.",
    "Les échantillons montrent des rendez‑vous atelier incluant noms, coordonnées et plaques d’immatriculation."
+  ],
+  "version": 3
+ },
+ "INC-19A20C8A10E8": {
+  "display_summary": "BonjourLaFuite signale une fuite de données concernant Fédération Française de Tennis de Table.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "BONJOURLAFUITE"
+     ],
+     "specifics": [
+      "Carte d’identité",
+      "Passeport"
+     ],
+     "status": "unknown",
+     "value": "pièces d'identité"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "BonjourLaFuite signale une fuite de données concernant Fédération Française de Tennis de Table."
   ],
   "version": 3
  },
@@ -1521,7 +1570,10 @@
    ],
    "vulnerable_people": false
   },
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "Une sauvegarde SQL liée à Assu-Risk (Assupro) contenant des informations personnelles et financières a été identifiée.",
+   "Jusqu'à 56 000 personnes pourraient être concernées selon une estimation qui reste à confirmer."
+  ],
   "version": 3
  },
  "INC-39AC99DC698D": {
@@ -1756,6 +1808,11 @@
    "La Maison du souvenir de Maillé a été victime d’une cyberattaque ayant rendu inaccessibles plus de vingt années d’archives et de travaux de recherche.",
    "Les pirates réclament une rançon de 5 000 dollars en bitcoins et indiquent fournir une clé de déchiffrement en échange."
   ],
+  "version": 3
+ },
+ "INC-422FB0FBCC18": {
+  "display_summary": "",
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-428941FDD31E": {
@@ -2705,6 +2762,14 @@
   "summary_paragraphs": [
    "Le 11 octobre 2026, un pirate a revendiqué la diffusion de données de recrutement attribuées à RGIS, soit 30 366 lignes et 28 Mo de fichiers.",
    "Les données revendiquées comprendraient noms, numéros de téléphone, adresses e-mail, candidatures et historiques de recrutement."
+  ],
+  "version": 3
+ },
+ "INC-658EF8921962": {
+  "display_summary": "Next One, leader français de l’affichage publicitaire indoor, a été victime d'une attaque par rançongiciel qui a chiffré sa base de données et ses sauvegardes.",
+  "summary_paragraphs": [
+   "Les pirates ont chiffré la base de données SQL Server de l'ERP WAVESOFT et les serveurs de sauvegarde, paralysant la gestion commerciale de Next One.",
+   "Un serveur de secours a été mis en place en moins de 48 heures et la reprise normale a été retrouvée environ un mois après l'incident."
   ],
   "version": 3
  },
@@ -3851,6 +3916,14 @@
   ],
   "version": 3
  },
+ "INC-86F9B6AFB61C": {
+  "display_summary": "Plus de 500 000 enregistrements de commandes attribuées aux clients de Nature et Découvertes sont proposés à la vente sur un forum cybercriminel.",
+  "summary_paragraphs": [
+   "Un individu affirme détenir 501 700 enregistrements de commandes de Nature et Découvertes couvrant 2020-septembre 2026 et les propose à la vente.",
+   "La mise en vente pourrait provenir du piratage déjà confirmé chez un prestataire, mais ce lien n'est pas vérifié."
+  ],
+  "version": 3
+ },
  "INC-87031C7549CF": {
   "display_summary": "ChimeraZ revendique l'exfiltration de données de KEL/Orisha, soit environ 1,3 million de personnes et 142 913 IBAN.",
   "sensitive_data": {
@@ -4456,6 +4529,27 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-981F34CB9239": {
+  "display_summary": "",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Le 8 novembre 2026, un pirate a publié des extraits d'une base de données attribuée à InOutlet et revendique l'accès à des comptes clients.",
+   "Les extraits présentés contiennent des noms, adresses postales, numéros de téléphone, adresses e-mail et empreintes de mots de passe de clients."
+  ],
+  "version": 3
+ },
  "INC-992315755B61": {
   "display_summary": "",
   "summary_paragraphs": [],
@@ -4521,6 +4615,27 @@
   "summary_paragraphs": [
    "Un utilisateur pseudonyme affirme avoir exploité une injection SQL accessible sans authentification sur le site qpm-pro.com et extrait une base de données.",
    "L'attaquant revendique l'extraction de comptes internes et clients, 54 commandes et 112 adresses de livraison."
+  ],
+  "version": 3
+ },
+ "INC-9CA48D75C2EE": {
+  "display_summary": "Un pirate revendique le vol et la publication d'extraits de bases de données clients et de transactions de MBS Design.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Le 8 novembre 2026, un cybercriminel a publié des extraits d'une base de données attribuée à MBS Design, comprenant comptes clients et transactions de paiement.",
+   "La publication contient des noms, adresses, e-mails, mots de passe hachés et informations relatives aux paiements, revendiquées par l'auteur."
   ],
   "version": 3
  },
@@ -5903,6 +6018,26 @@
   ],
   "version": 3
  },
+ "INC-CF07FC9A6522": {
+  "display_summary": "Revendication de mise en vente de 5 000 adresses e-mail et mots de passe attribués à Arromanches Militaria.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "reported",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Le 7 novembre 2026, un utilisateur nommé vandiho a publié une annonce affirmant détenir et vendre environ 5 000 identifiants clients d'Arromanches Militaria."
+  ],
+  "version": 3
+ },
  "INC-CF293FAA403B": {
   "display_summary": "Icantec (retraites)",
   "summary_paragraphs": [],
@@ -5965,6 +6100,14 @@
   "summary_paragraphs": [
    "Le nom d'AC Environnement figure sur une page attribuée au groupe de cybercriminels The Gentlemen, qui revendique l'attaque.",
    "Aucune preuve d'intrusion, de fuite de fichiers ou de chiffrement n'est officiellement confirmée à ce stade."
+  ],
+  "version": 3
+ },
+ "INC-D1A1920EEF00": {
+  "display_summary": "Abritel (Vrbo) : des hackers revendiquent un vol massif de 830 millions de données chez Expedia",
+  "summary_paragraphs": [
+   "Le groupe n0n affirme détenir 830 069 282 lignes de fidélité, 58 380 209 profils de voyageurs et 333 298 275 entrées de comptes chez Expedia Group.",
+   "Aucun échantillon public ne permet actuellement d'authentifier ces données et Expedia n'a pas confirmé la compromission."
   ],
   "version": 3
  },
@@ -6137,6 +6280,40 @@
   ],
   "version": 3
  },
+ "INC-D9A4EA087ED3": {
+  "display_summary": "Vérif’Autos : des données de clients et de véhicules compromises par un prestataire",
+  "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-D9E0F5221401": {
+  "display_summary": "Sécuritest nommé dans une publication revendiquant une fuite contenant mots de passe, paramètres d'accès distants et IBAN.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "confirmed",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Des mots de passe lisibles, des paramètres de connexion distante et des coordonnées bancaires apparaissent dans les échantillons d’une fuite attribuée à SGS.",
+   "Une table de 1 000 entrées rassemble des codes de centres, des identifiants, des mots de passe et des paramètres techniques."
+  ],
+  "version": 3
+ },
  "INC-D9E27A4834F8": {
   "display_summary": "Aqua-Store : les données clients et historiques de commandes volés après une cyberattaque",
   "summary_paragraphs": [
@@ -6205,11 +6382,8 @@
   "version": 3
  },
  "INC-DC44BD091E3A": {
-  "display_summary": "Revendication crédible non confirmée de la mise en vente de 96 Go de données attribuées à Sécuritest, incluant 40,9 M de plaques et 22,68 M de personnes.",
-  "summary_paragraphs": [
-   "Un pirate, ChimeraZ, revendique la mise en vente d'environ 96 Go de fichiers attribués à Sécuritest, soit près de 259 millions de lignes.",
-   "Les fichiers revendiqués comprendraient 40,920,439 plaques uniques et 22 688 152 personnes, mais l'authenticité et l'origine restent à confirmer."
-  ],
+  "display_summary": "",
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-DC7E4C78A066": {
@@ -6542,7 +6716,9 @@
  },
  "INC-E1DA055D023A": {
   "display_summary": "Solutions30 : 10,3 millions de lignes mises en vente, les clients de grands groupes exposés",
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "Le pirate Syrv4x a annoncé la mise en vente d’une base attribuée à solutions30.com contenant 10 376 950 enregistrements et 34 Go de données."
+  ],
   "version": 3
  },
  "INC-E1DAFF22CE19": {
@@ -7365,6 +7541,27 @@
   "summary_paragraphs": [
    "ChimeraZ revendique l'extraction et la mise en vente de 3,8 Go et 3 824 749 enregistrements attribués à MPA, incluant 1 133 713 plaques d’immatriculation.",
    "Les fichiers examinés associent des plaques à des noms, adresses, téléphones et commandes, et contiennent 969 921 empreintes de mots de passe SHA-256."
+  ],
+  "version": 3
+ },
+ "INC-FF95D614307A": {
+  "display_summary": "Annonce de vente de 3,9 Go de données attribuées à Omnicasa, dont 465 225 adresses e-mail, revendiquée sur un forum cybercriminel.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "pièces d'identité"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Un pirate affirme vendre une base de données attribuée à Omnicasa, contenant 4 770 639 lignes et 465 225 adresses e-mail.",
+   "La revendication est présentée comme crédible mais non confirmée et l'origine et l'authenticité des fichiers restent à vérifier."
   ],
   "version": 3
  },
