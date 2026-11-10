@@ -1,6 +1,216 @@
 [
  {
   "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-10",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-F0763FBD8E3C",
+  "location": "France métropolitaine",
+  "org": "Futura",
+  "organisation_links": [
+   "https://vf-distribution.fr"
+  ],
+  "personal_data_exposed": false,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Retail & E-Commerce",
+   "evidence_url": "http://climaxf4srk4qzr5g7smfodx6q5ocpiwmls5qujfl7g3j33us4cksdad.onion/p/4bef45dd-549f-4b80-8512-ecf57a9180fd/",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "climaxf4srk4qzr5g7smfodx6q5ocpiwmls5qujfl7g3j33us4cksdad.onion",
+    "source": "RANSOMWARE_LIVE",
+    "url": "http://climaxf4srk4qzr5g7smfodx6q5ocpiwmls5qujfl7g3j33us4cksdad.onion/p/4bef45dd-549f-4b80-8512-ecf57a9180fd/"
+   }
+  ],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-10",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-E697FC1CA889",
+  "location": "Inconnu",
+  "org": "Cartes-cadeaux",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cartes-cadeaux-une-serie-de-cyberattaques-inquiete-le-secteur-a-lapproche-de-noel/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Cartes-cadeaux : une série de cyberattaques inquiète le secteur à l’approche de Noël",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-10",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-9454026327B6",
+  "location": "France métropolitaine",
+  "org": "Softway Medical",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "evidence": "Hébergement / Tourisme / Restauration | Santé",
+   "reason": "SOURCE_SECTOR_CONFLICT",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/softway-medical-une-cyberattaque-compromet-des-donnees-sur-un-logiciel-utilise-par-les-centres-de-radiologie/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/softway-medical-mwat712goehadd13u5r"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Softway Medical confirme une violation de données sur One Manager, son logiciel utilisé par des centres et services de radiologie.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-10",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-55A8B253AE7C",
+  "location": "France métropolitaine",
+  "org": "SOS Oxygène",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Fondé en 1991, SOS Oxygène est un groupe français spécialisé dans les prestations de santé à domicile.",
+   "evidence_url": "https://www.cyberattaque.org/sos-oxygene-une-faille-de-securite-pourrait-exposer-les-donnees-de-plus-de-15-000-patients/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/sos-oxygene-une-faille-de-securite-pourrait-exposer-les-donnees-de-plus-de-15-000-patients/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/sos-oxyg-ne-mwaolkk5amxzzehojql"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Une vulnérabilité IDOR pourrait exposer plus de 15 171 lignes de données de patients suivis par SOS Oxygène.",
+  "threat": "Inconnu",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-10",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-16823A993CB4",
+  "location": "Inconnu",
+  "org": "QNAP",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/qnap-le-fabricant-reconnait-des-cyberattaques-contre-les-nas-de-ses-clients/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "QNAP reconnaît avoir reçu plusieurs signalements de clients dont des NAS semblent avoir été piratés via des vulnérabilités Plex2Shell.",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-09",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-F4B084A3BE74",
+  "location": "France métropolitaine",
+  "org": "ADEMS",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/adems-mw9n9kzy4t9ybhn7s02",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/adems-mw9n9kzy4t9ybhn7s02"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Revendication crédible d'une fuite de données chez ADEMS14 exposant des informations sur environ 36 628 personnes.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": true,
   "date": "2026-11-09",
   "high_sensitivity_data_exposed": true,
@@ -66,6 +276,46 @@
  },
  {
   "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-09",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-D8058099A88E",
+  "location": "France métropolitaine",
+  "org": "Color Box",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/color-box-mw9n5pk24gh3ajbtzyt",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/colorbox-un-hacker-diffuse-une-base-de-76-millions-de-lignes-contenant-des-donnees-de-clients-et-de-garages-automobiles/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/color-box-mw9n5pk24gh3ajbtzyt"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "ColorBox : un hacker diffuse une base de 7,6 millions de lignes contenant des données de clients et de garages automobiles",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
   "date": "2026-11-09",
   "high_sensitivity_data_exposed": false,
@@ -89,7 +339,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "Abritel (Vrbo) : des hackers revendiquent un vol massif de 830 millions de données chez Expedia",
+  "summary": "Le groupe n0n revendique avoir volé 830 069 282 lignes de fidélité et des millions d'autres enregistrements chez Expedia Group, incluant Vrbo/Abritel.",
   "threat": "Ransomware",
   "threat_status": {
    "status": "unknown"
@@ -190,38 +440,30 @@
  },
  {
   "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
+  "credentials_or_secrets_exposed": true,
   "date": "2026-11-09",
-  "high_sensitivity_data_exposed": true,
-  "id": "INC-19A20C8A10E8",
-  "location": "France métropolitaine",
-  "org": "Fédération Française de Tennis de Table",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-33D29A2117E0",
+  "location": "Inconnu",
+  "org": "ADEMS14",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Sport",
+  "sector": "Inconnu",
   "sector_status": {
-   "confidence": 0.8,
-   "evidence": "Fédération Française de Tennis de Table",
-   "evidence_url": "https://bonjourlafuite.eu.org/img/fftt-2.png",
-   "reason": "ORGANISATION_NAME_RULE",
-   "status": "inferred"
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
   },
   "source_links": [
    {
-    "label": "BonjourLaFuite",
-    "source": "BONJOURLAFUITE",
-    "url": "https://bonjourlafuite.eu.org/img/fftt-2.png"
-   },
-   {
-    "label": "fftt.com",
-    "source": "BONJOURLAFUITE",
-    "url": "https://www.fftt.com/actualites/federation/la-fftt-victime-dune-cyberattaque-et-dun-vol-de-donnees/"
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/adems14-cyberattaque/"
    }
   ],
   "sources": [
-   "BONJOURLAFUITE"
+   "CYBERATTAQUE_ORG"
   ],
-  "summary": "BonjourLaFuite signale une fuite de données concernant Fédération Française de Tennis de Table.",
+  "summary": "ADEMS14 voit divulguer une base de plus de 100 000 enregistrements après une annonce de fuite par le hacker ChimeraZ.",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "confirmed"
@@ -237,10 +479,13 @@
   "org": "Auto Sécurité",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Transport / Logistique",
   "sector_status": {
-   "reason": "ACTIVITY_TAXONOMY_UNRESOLVED",
-   "status": "unknown"
+   "confidence": 0.8,
+   "evidence": "Auto Sécurité est un réseau français de contrôle technique membre du groupe SGS.",
+   "evidence_url": "https://www.cyberattaque.org/auto-securite-fuite-donnees-clients-vehicules/",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
   },
   "source_links": [
    {
@@ -1341,7 +1586,7 @@
   "high_sensitivity_data_exposed": true,
   "id": "INC-2B9ABE7FD227",
   "location": "France métropolitaine",
-  "org": "Fédération Francaise de Tennis de Table",
+  "org": "Fédération Française de Tennis de Table",
   "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Sport",
@@ -1354,6 +1599,11 @@
   },
   "source_links": [
    {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/fftt-2.png"
+   },
+   {
     "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/fftt-cyberattaque-federation-francaise-de-tennis-de-table/"
@@ -1362,16 +1612,22 @@
     "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/f-d-ration-fran-aise-de-tennis-de-table-fftt-mvnyw9h9gkut53mlyyj"
+   },
+   {
+    "label": "fftt.com",
+    "source": "BONJOURLAFUITE",
+    "url": "https://www.fftt.com/actualites/federation/la-fftt-victime-dune-cyberattaque-et-dun-vol-de-donnees/"
    }
   ],
   "sources": [
+   "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
   "summary": "Le hacker ChimeraZ revendique la mise en vente d'une base attribuée à la FFTT contenant 1,64 million de personnes et 9,3 Go de données.",
   "threat": "Fuite de données",
   "threat_status": {
-   "status": "reported"
+   "status": "confirmed"
   }
  },
  {
@@ -8579,7 +8835,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "",
+  "summary": "Une sauvegarde SQL associée à Assu-Risk (Assupro) contenant potentiellement des données de 56 000 personnes a été identifiée.",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "unknown"
@@ -9017,7 +9273,7 @@
  },
  {
   "admission": "ACCEPTED",
-  "admission_reason": "Zinfos974 et Imaz Press documentent le piratage des installations frigorifiques du magasin identifié ; le propriétaire du Leader Price de Saint-André confirme à LINFO.re une attaque informatique à distance, chiffre les pertes globales et indique avoir déposé plainte. L’auteur et le vecteur technique exact ne sont pas établis.",
+  "admission_reason": "Zinfos974 et Imaz Press documentent le piratage des installations frigorifiques du magasin identifié ; le propriétaire du Leader Price de Saint-André confirme à LINFO.re une attaque informatique à distance, chiffre les pertes globales et indique avoir déposé plainte. Imaz Press rattache l’incident, survenu au même moment et selon le même mode opératoire, à la campagne nationale contre les contrôleurs frigorifiques. Le C4 et France Diplomatie attribuent officiellement cette campagne à l’unité cyber-offensive Shahid Kaveh du centre électronique et cyber du Corps des Gardiens de la Révolution Islamique iranien. Le vecteur technique exact du magasin reste non public.",
   "credentials_or_secrets_exposed": false,
   "date": "2026-10-12",
   "high_sensitivity_data_exposed": false,
@@ -9049,6 +9305,16 @@
     "label": "Linfo.re",
     "source": "VEILLE_LLM",
     "url": "https://www.linfo.re/la-reunion/faits-divers/saint-andre-les-congelateurs-d-un-supermarche-pirates-100-000-euros-de-pertes"
+   },
+   {
+    "label": "diplomatie.gouv.fr",
+    "source": "VEILLE_LLM",
+    "url": "https://www.diplomatie.gouv.fr/fr/presse-et-ressources/decouvrir-et-informer/actualites/declaration-d-attribution-a-l-iran-de-cyberattaques-visant-la-france"
+   },
+   {
+    "label": "cert.cyber.gouv.fr",
+    "source": "VEILLE_LLM",
+    "url": "https://cert.cyber.gouv.fr/cti/CERTFR-2026-CTI-009/"
    }
   ],
   "sources": [
@@ -9098,232 +9364,6 @@
   "threat": "Intrusion",
   "threat_status": {
    "status": "confirmed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-11",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-F20034DB3A78",
-  "location": "France métropolitaine",
-  "org": "Grand Delta Habitat",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Construction / BTP",
-  "sector_status": {
-   "confidence": 0.8,
-   "evidence": "Grand Delta Habitat est un organisme français spécialisé dans le logement social, la gestion locative, la construction et l'entretien de logements. [étiquette source écartée : Commerce]",
-   "evidence_url": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9",
-   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/grand-delta-habitat-mv3it6f3q58tp1jpda9"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "Un pirate revendique la mise en vente de 188 010 enregistrements (272 Mo) liés à Grand Delta Habitat contenant noms, adresses, téléphones et e-mails.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "unknown"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
-  "date": "2026-10-11",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-B9B7E2BD936C",
-  "location": "France métropolitaine",
-  "org": "G La Dalle",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Commerce",
-   "evidence_url": "https://frenchbreaches.com/alertes/g-la-dalle-mv3xc2n46n3e6glqle",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/g-la-dalle-les-clients-dune-centaine-de-restaurants-en-fuite-apres-une-cyberattaque/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/g-la-dalle-mv3xc2n46n3e6glqle"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "G La Dalle : les clients d’une centaine de restaurants en fuite après une cyberattaque",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "confirmed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
-  "date": "2026-10-11",
-  "high_sensitivity_data_exposed": true,
-  "id": "INC-6C763C3BB763",
-  "location": "France métropolitaine",
-  "org": "Armurerie du Bocage",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Commerce",
-   "evidence_url": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/cyberattaque-armurerie-du-bocage-pres-de-1-000-clients-exposes-avec-leurs-pieces-didentite/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/armurerie-du-bocage-mv3j10sh5cptx1hgung"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "Armurerie du Bocage : les achats d’armes d’un millier de clients exposés dans fuite de données",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-11",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-64F708830C0C",
-  "location": "France métropolitaine",
-  "org": "RGIS",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Inconnu",
-  "sector_status": {
-   "evidence": "Numérique / Technologie | Services aux entreprises",
-   "reason": "SOURCE_SECTOR_CONFLICT",
-   "status": "unknown"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/rgis-30-366-candidatures-de-son-site-de-recrutement-en-fuite-apres-une-cyberattaque/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/rgis-mv3xepguzoelpdbi1bo"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "RGIS : 30 366 candidatures de son site de recrutement en fuite après une cyberattaque",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "confirmed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-11",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-624936F92BC4",
-  "location": "France métropolitaine",
-  "org": "AK Transport",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Transport / Logistique",
-  "sector_status": {
-   "confidence": 0.8,
-   "evidence": "AK Transport, société de transport routier basée à Saint-Étienne, fait l’objet d’une importante revendication de fuite de données….",
-   "evidence_url": "https://www.cyberattaque.org/cyberattaque-ak-transport-11-681-livraisons-dont-des-colis-encore-en-transit-en-fuite/",
-   "reason": "ACTIVITY_RULE",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/cyberattaque-ak-transport-11-681-livraisons-dont-des-colis-encore-en-transit-en-fuite/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/ak-transport-mv3xwqhui7pi030y058"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "AK Transport : 11 681 livraisons dont des colis encore en transit en fuite",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "confirmed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-11",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-272FE22FDE61",
-  "location": "Inconnu",
-  "org": "VD2E",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Énergie / Utilities",
-  "sector_status": {
-   "confidence": 0.8,
-   "evidence": "VD2E intervient dans la gestion administrative de projets liés aux  énergies renouvelables et à la rénovation énergétique .",
-   "evidence_url": "https://www.cyberattaque.org/vd2e-86-000-fiches-clients-de-la-renovation-energetique-mises-en-vente-sur-le-darkweb/",
-   "reason": "SEMANTIC_ACTIVITY_MATCH",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/vd2e-86-000-fiches-clients-de-la-renovation-energetique-mises-en-vente-sur-le-darkweb/"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG"
-  ],
-  "summary": "VD2E : 86 000 fiches clients de la rénovation énergétique mises en vente sur le darkweb",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "unknown"
   }
  }
 ]

@@ -612,6 +612,27 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-16823A993CB4": {
+  "display_summary": "QNAP reconnaît avoir reçu plusieurs signalements de clients dont des NAS semblent avoir été piratés via des vulnérabilités Plex2Shell.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Des serveurs NAS QNAP ont été compromis via quatre vulnérabilités de Plex Media Server regroupées sous le nom de Plex2Shell.",
+   "QNAP indique accompagner des utilisateurs ayant signalé une possible compromission de leur serveur, sans avoir constaté de perte de données pour les cas suivis."
+  ],
+  "version": 3
+ },
  "INC-182F9EE2F8D0": {
   "display_summary": "",
   "sensitive_data": {
@@ -700,29 +721,6 @@
   "summary_paragraphs": [
    "Autobacs France fait l’objet d’une fuite de données revendiquée le 22 septembre 2026 avec 34 017 enregistrements diffusés selon le hacker.",
    "Les échantillons montrent des rendez‑vous atelier incluant noms, coordonnées et plaques d’immatriculation."
-  ],
-  "version": 3
- },
- "INC-19A20C8A10E8": {
-  "display_summary": "BonjourLaFuite signale une fuite de données concernant Fédération Française de Tennis de Table.",
-  "sensitive_data": {
-   "types": [
-    {
-     "sources": [
-      "BONJOURLAFUITE"
-     ],
-     "specifics": [
-      "Carte d’identité",
-      "Passeport"
-     ],
-     "status": "unknown",
-     "value": "pièces d'identité"
-    }
-   ],
-   "vulnerable_people": false
-  },
-  "summary_paragraphs": [
-   "BonjourLaFuite signale une fuite de données concernant Fédération Française de Tennis de Table."
   ],
   "version": 3
  },
@@ -855,7 +853,9 @@
  },
  "INC-1CDA6F2D1E3B": {
   "display_summary": "WeFix : 6 009 dossiers de réparation en fuite après une cyberattaque",
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "Le pirate « Syrv4x » revendique la diffusion gratuite d'une base attribuée à WeFix contenant 6 009 enregistrements de clients et dossiers de réparation."
+  ],
   "version": 3
  },
  "INC-1D4141D387DB": {
@@ -1166,9 +1166,13 @@
    "types": [
     {
      "sources": [
-      "FRENCHBREACHES"
+      "FRENCHBREACHES",
+      "BONJOURLAFUITE"
      ],
-     "specifics": [],
+     "specifics": [
+      "Carte d’identité",
+      "Passeport"
+     ],
      "status": "unknown",
      "value": "pièces d'identité"
     }
@@ -1446,6 +1450,26 @@
   ],
   "version": 3
  },
+ "INC-33D29A2117E0": {
+  "display_summary": "ADEMS14 voit divulguer une base de plus de 100 000 enregistrements après une annonce de fuite par le hacker ChimeraZ.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "ChimeraZ affirme avoir récupéré et diffusé une base attribuée au domaine adems14.fr contenant 100 826 enregistrements et 36 628 personnes."
+  ],
+  "version": 3
+ },
  "INC-34B0E88FDA6C": {
   "display_summary": "Bureau Vallée confirme deux incidents distincts ayant entraîné l'extraction de données personnelles de clients.",
   "summary_paragraphs": [
@@ -1548,7 +1572,7 @@
   "version": 3
  },
  "INC-3968EAFD86F6": {
-  "display_summary": "",
+  "display_summary": "Une sauvegarde SQL associée à Assu-Risk (Assupro) contenant potentiellement des données de 56 000 personnes a été identifiée.",
   "sensitive_data": {
    "types": [
     {
@@ -1570,10 +1594,7 @@
    ],
    "vulnerable_people": false
   },
-  "summary_paragraphs": [
-   "Une sauvegarde SQL liée à Assu-Risk (Assupro) contenant des informations personnelles et financières a été identifiée.",
-   "Jusqu'à 56 000 personnes pourraient être concernées selon une estimation qui reste à confirmer."
-  ],
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-39AC99DC698D": {
@@ -2209,6 +2230,27 @@
  "INC-554DBDFBB62B": {
   "display_summary": "École d'ingénieurs du numérique (ISEP)",
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-55A8B253AE7C": {
+  "display_summary": "Une vulnérabilité IDOR pourrait exposer plus de 15 171 lignes de données de patients suivis par SOS Oxygène.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données de santé"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Une faille IDOR signalée par LunarisSec pourrait rendre accessibles 15 171 lignes de données liées à des patients de SOS Oxygène.",
+   "Aucun exploit ou confirmation officielle de SOS Oxygène n’a été identifié au 10 novembre 2026."
+  ],
   "version": 3
  },
  "INC-55B78F7C08BD": {
@@ -3445,17 +3487,17 @@
   "display_summary": "",
   "regional_watch": [
    {
-    "acteur": "Inconnu",
-    "admission_reason": "Zinfos974 et Imaz Press documentent le piratage des installations frigorifiques du magasin identifié ; le propriétaire du Leader Price de Saint-André confirme à LINFO.re une attaque informatique à distance, chiffre les pertes globales et indique avoir déposé plainte. L’auteur et le vecteur technique exact ne sont pas établis.",
+    "acteur": "Unité cyber-offensive Shahid Kaveh (CGRI-CEC, Iran)",
+    "admission_reason": "Zinfos974 et Imaz Press documentent le piratage des installations frigorifiques du magasin identifié ; le propriétaire du Leader Price de Saint-André confirme à LINFO.re une attaque informatique à distance, chiffre les pertes globales et indique avoir déposé plainte. Imaz Press rattache l’incident, survenu au même moment et selon le même mode opératoire, à la campagne nationale contre les contrôleurs frigorifiques. Le C4 et France Diplomatie attribuent officiellement cette campagne à l’unité cyber-offensive Shahid Kaveh du centre électronique et cyber du Corps des Gardiens de la Révolution Islamique iranien. Le vecteur technique exact du magasin reste non public.",
     "impact_connu": "Les températures des congélateurs ont atteint 50 °C et les produits frais et surgelés ont été perdus. Zinfos974 rapporte 60 000 euros de préjudice et Imaz Press 66 000 euros ; le propriétaire estime auprès de LINFO.re les pertes globales à 100 000 euros, avec une fréquentation en baisse de 20 % la semaine suivante et un déficit d’image.",
     "localisation": "Saint-André",
     "score": 100,
     "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
-    "statut": "Cyberattaque confirmée publiquement par le propriétaire ; plainte déposée ; attribution et vecteur technique exact non établis"
+    "statut": "Cyberattaque confirmée publiquement par le propriétaire ; plainte déposée ; campagne officiellement attribuée par la France à l’unité Shahid Kaveh du CGRI-CEC ; vecteur technique exact du magasin non public"
    }
   ],
   "summary_paragraphs": [
-   "Dans la nuit du 11 au 12 octobre 2026, les installations frigorifiques du Leader Price de Saint-André ont été piratées à distance et portées jusqu’à 50 °C. Le propriétaire a confirmé l’incident à LINFO.re, fait état de pertes globales estimées à 100 000 euros et indiqué qu’une plainte avait été déposée. Les publications antérieures estimaient la perte de marchandises entre 60 000 et 66 000 euros. L’auteur, le vecteur technique exact et le rattachement aux attaques de l’Hexagone restent non établis."
+   "Dans la nuit du 11 au 12 octobre 2026, les installations frigorifiques du Leader Price de Saint-André ont été piratées à distance et portées jusqu’à 50 °C. Le propriétaire a confirmé l’incident à LINFO.re, fait état de pertes globales estimées à 100 000 euros et indiqué qu’une plainte avait été déposée. Imaz Press indique que le magasin, équipé de contrôleurs Danfoss, a été touché au même moment et de la même manière que les sites de l’Hexagone. Le 9 novembre, le C4 et France Diplomatie ont attribué la campagne nationale contre plus de 700 sites de la grande distribution à l’unité cyber-offensive Shahid Kaveh, affiliée au centre électronique et cyber du Corps des Gardiens de la Révolution Islamique iranien. Le vecteur technique exact propre au magasin reste non public."
   ],
   "version": 3
  },
@@ -4487,6 +4529,27 @@
    "vulnerable_people": false
   },
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-9454026327B6": {
+  "display_summary": "Softway Medical confirme une violation de données sur One Manager, son logiciel utilisé par des centres et services de radiologie.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "confirmed",
+     "value": "données de santé"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Softway Medical reconnaît avoir subi une cyberattaque entraînant une violation de données sur One Manager.",
+   "L'entreprise indique que certains accès au logiciel ont été temporairement suspendus et que des clients ont été avertis."
+  ],
   "version": 3
  },
  "INC-947343AC5270": {
@@ -6104,7 +6167,7 @@
   "version": 3
  },
  "INC-D1A1920EEF00": {
-  "display_summary": "Abritel (Vrbo) : des hackers revendiquent un vol massif de 830 millions de données chez Expedia",
+  "display_summary": "Le groupe n0n revendique avoir volé 830 069 282 lignes de fidélité et des millions d'autres enregistrements chez Expedia Group, incluant Vrbo/Abritel.",
   "summary_paragraphs": [
    "Le groupe n0n affirme détenir 830 069 282 lignes de fidélité, 58 380 209 profils de voyageurs et 333 298 275 entrées de comptes chez Expedia Group.",
    "Aucun échantillon public ne permet actuellement d'authentifier ces données et Expedia n'a pas confirmé la compromission."
@@ -6216,6 +6279,27 @@
   "display_summary": "Un pirate revendique la fuite de fichiers d'adhérents de Carte-de-pêche.fr couvrant 2012-2026 et visant plusieurs milliers d'adhérents.",
   "summary_paragraphs": [
    "Un pirate revendique avoir récupéré plusieurs fichiers de Carte-de-pêche.fr contenant des données d’adhérents entre 2012 et 2026."
+  ],
+  "version": 3
+ },
+ "INC-D8058099A88E": {
+  "display_summary": "ColorBox : un hacker diffuse une base de 7,6 millions de lignes contenant des données de clients et de garages automobiles",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "ChimeraZ affirme avoir récupéré et diffusé une base de données attribuée à ColorBox comprenant plus de 7,6 millions de lignes et 2,2 Go de données.",
+   "Les fichiers publiés comprendraient des noms, adresses, coordonnées, factures, historiques de livraison et des empreintes de mots de passe MD5."
   ],
   "version": 3
  },
@@ -6857,6 +6941,14 @@
   ],
   "version": 3
  },
+ "INC-E697FC1CA889": {
+  "display_summary": "Cartes-cadeaux : une série de cyberattaques inquiète le secteur à l’approche de Noël",
+  "summary_paragraphs": [
+   "Le 1er novembre 2026, Illicado a subi une attaque visant son service de génération de PDF et 15 000 cartes-cadeaux numériques ont été compromises.",
+   "Le 3 novembre 2026, Smartbox a détecté un accès non autorisé à l’une de ses plateformes, avec potentielle consultation de noms et adresses électroniques."
+  ],
+  "version": 3
+ },
  "INC-E6CCB8C573E7": {
   "display_summary": "Swedish Fit : 253 000 profils clients et autant de photos revendiqués après une cyberattaque",
   "summary_paragraphs": [
@@ -7213,6 +7305,11 @@
   ],
   "version": 3
  },
+ "INC-F0763FBD8E3C": {
+  "display_summary": "",
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-F116E43D6A1B": {
   "display_summary": "Frenchy Sushi : 3 424 clients exposés, avec téléphones et historique de commandes",
   "summary_paragraphs": [],
@@ -7332,6 +7429,14 @@
  "INC-F45C849F1F86": {
   "display_summary": "Le Havre : une cyberattaque paralyse les Terminaux de Normandie",
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-F4B084A3BE74": {
+  "display_summary": "Revendication crédible d'une fuite de données chez ADEMS14 exposant des informations sur environ 36 628 personnes.",
+  "summary_paragraphs": [
+   "Le 9 novembre 2026, un pirate affirme avoir divulgué une base contenant des informations sur plus de 36 000 personnes attribuée au site ADEMS14.fr.",
+   "La publication revendique 100 826 lignes, 36 628 personnes et 67 Mo de fichiers, statut : revendication crédible, non confirmée."
+  ],
   "version": 3
  },
  "INC-F6EA93C0805A": {
