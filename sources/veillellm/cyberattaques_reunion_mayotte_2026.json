@@ -5,20 +5,20 @@
       "Mayotte"
     ],
     "year": 2026,
-    "generated_at": "2026-11-09T09:18:20+04:00",
+    "generated_at": "2026-11-10T08:52:18+04:00",
     "record_count": 19,
     "accepted_count": 11,
     "candidate_count": 8,
     "schema": "cyberwatch-veille-v2",
     "watch_result": {
       "new_incidents": 0,
-      "enriched_incidents": 0,
+      "enriched_incidents": 1,
       "corrected_incidents": 0,
-      "note": "Veille complémentaire menée le 9 novembre 2026 depuis le snapshot courant de main. Aucun nouvel incident, enrichissement ou correctif métier n’a été retenu. Les 19 dossiers, leurs dates et tous les enrichissements publiés sont conservés, dont Transcontinents Réunion, L’Île en Glace, Le Tampon, Leader Price, la CSSM et Jean Joly du 29 septembre."
+      "note": "Veille complémentaire menée le 10 novembre 2026 depuis le snapshot courant de main. Aucun nouvel incident ni correctif métier n’est retenu. Le dossier Leader Price de Saint-André est enrichi : l’incident local est rattaché par la presse locale à la campagne du 11 au 12 octobre contre les contrôleurs frigorifiques, désormais officiellement attribuée par le C4 et France Diplomatie à l’unité cyber-offensive Shahid Kaveh du CGRI-CEC iranien. Les 19 dossiers et leurs dates sont conservés, dont Jean Joly du 29 septembre."
     },
     "coverage": {
-      "method": "Veille cumulative Réunion/Mayotte vérifiée le 9 novembre 2026 depuis le snapshot courant de main. Les nouveaux incidents ou signaux publiés les 8 et 9 novembre ont été recherchés séparément des enrichissements des dossiers existants. La couverture a ciblé les autorités et collectivités indexées, LINFO.re, Imaz Press, Zinfos974, Réunion La 1ère, Journal de Mayotte, Info976, les services de l’État, le CERT-FR, Cyber Réunion et des sources cyber. Les pages effectivement consultées comprennent l’alerte officielle de Transcontinents, Mémento sur L’Île en Glace, Imaz Press sur Le Tampon, le Journal de Mayotte sur la CSSM et CyberScope sur les alertes récentes. Les recherches d’enrichissement ont porté sur Transcontinents, L’Île en Glace, Le Tampon/Qilin, Leader Price, CSSM, Jean Joly et DTPN 974. Aucun changement métier distinct du snapshot courant n’a été établi.",
-      "limitations": "La recherche publique indexée n’est pas exhaustive. Pour Transcontinents, la page officielle reste datée du 30 octobre et ne publie ni le nombre de clients concernés, ni le volume extrait, ni le vecteur initial, ni d’éventuelles pertes financières ; aucun lien technique avec d’autres incidents de réservation n’est démontré. Pour L’Île en Glace, aucune communication directe de la victime, confirmation d’autorité, seconde source journalistique, analyse forensique, perte de marchandises ou montant de préjudice n’est public. Pour Le Tampon, aucune infection par rançongiciel, exfiltration ou publication effective de données n’est confirmée. Pour la CSSM, aucune compromission propre à Mayotte n’est démontrée. La seconde enseigne réunionnaise reste non nommée, DTPN 974 demeure sans suivi officiel public nouveau et SIKOA reste exclue comme entité guadeloupéenne.",
+      "method": "Veille cumulative Réunion/Mayotte vérifiée le 10 novembre 2026 depuis le snapshot courant de main. Les nouveaux incidents ou signaux publiés les 9 et 10 novembre ont été recherchés séparément des enrichissements des dossiers existants. La couverture a ciblé les autorités et collectivités indexées, LINFO.re, Imaz Press, Zinfos974, Réunion La 1ère, Journal de Mayotte, Info976, les services de l’État, le CERT-FR, Cyber Réunion et des sources cyber. Les pages effectivement consultées comprennent la déclaration d’attribution de France Diplomatie, le rapport CERTFR-2026-CTI-009 du C4/CERT-FR, Imaz Press et LINFO.re sur Leader Price, ainsi que les résultats récents de la presse locale réunionnaise et mahoraise. Les recherches d’enrichissement ont également porté sur Transcontinents, L’Île en Glace, Le Tampon/Qilin, CSSM, Jean Joly et DTPN 974. Un enrichissement d’attribution est retenu pour Leader Price ; aucun autre changement métier n’a été établi.",
+      "limitations": "La recherche publique indexée n’est pas exhaustive. L’attribution officielle porte sur la campagne nationale contre les contrôleurs frigorifiques ; Imaz Press rattache le Leader Price de Saint-André à cette vague par la date, le mode opératoire et les équipements Danfoss, mais le rapport C4 public ne nomme pas individuellement le magasin et son vecteur technique exact reste non public. Pour Transcontinents, le nombre de clients, le volume extrait, le vecteur initial et les pertes éventuelles ne sont pas publics. Pour L’Île en Glace, aucune seconde source journalistique, confirmation d’autorité, analyse forensique, perte de marchandises ou montant de préjudice n’est public. Pour Le Tampon, aucune exfiltration ou publication effective de données n’est confirmée. Pour la CSSM, aucune compromission propre à Mayotte n’est démontrée. La seconde enseigne réunionnaise reste non nommée, DTPN 974 demeure sans suivi officiel public nouveau et SIKOA reste exclue comme entité guadeloupéenne.",
       "excluded_candidates": [
         {
           "organisation": "SFR — cyberattaque nationale de juillet 2026",
@@ -376,21 +376,23 @@
       "date": "2026-10-12",
       "organisation": "Leader Price de Saint-André",
       "admission": "ACCEPTED",
-      "admission_reason": "Zinfos974 et Imaz Press documentent le piratage des installations frigorifiques du magasin identifié ; le propriétaire du Leader Price de Saint-André confirme à LINFO.re une attaque informatique à distance, chiffre les pertes globales et indique avoir déposé plainte. L’auteur et le vecteur technique exact ne sont pas établis.",
+      "admission_reason": "Zinfos974 et Imaz Press documentent le piratage des installations frigorifiques du magasin identifié ; le propriétaire du Leader Price de Saint-André confirme à LINFO.re une attaque informatique à distance, chiffre les pertes globales et indique avoir déposé plainte. Imaz Press rattache l’incident, survenu au même moment et selon le même mode opératoire, à la campagne nationale contre les contrôleurs frigorifiques. Le C4 et France Diplomatie attribuent officiellement cette campagne à l’unité cyber-offensive Shahid Kaveh du centre électronique et cyber du Corps des Gardiens de la Révolution Islamique iranien. Le vecteur technique exact du magasin reste non public.",
       "territoire": "La Réunion",
       "localisation": "Saint-André",
       "secteur": "Commerce / Distribution",
       "type_menace": "Autre cyber",
-      "acteur": "Inconnu",
-      "statut": "Cyberattaque confirmée publiquement par le propriétaire ; plainte déposée ; attribution et vecteur technique exact non établis",
+      "acteur": "Unité cyber-offensive Shahid Kaveh (CGRI-CEC, Iran)",
+      "statut": "Cyberattaque confirmée publiquement par le propriétaire ; plainte déposée ; campagne officiellement attribuée par la France à l’unité Shahid Kaveh du CGRI-CEC ; vecteur technique exact du magasin non public",
       "score_cyberattaque": 100,
       "impact_connu": "Les températures des congélateurs ont atteint 50 °C et les produits frais et surgelés ont été perdus. Zinfos974 rapporte 60 000 euros de préjudice et Imaz Press 66 000 euros ; le propriétaire estime auprès de LINFO.re les pertes globales à 100 000 euros, avec une fréquentation en baisse de 20 % la semaine suivante et un déficit d’image.",
       "sources": [
         "https://www.zinfos974.com/saint-andre-les-congelateurs-du-leader-price-pirates-60-000-euros-de-prejudice/",
         "https://imazpress.com/selection-de-la-redaction/congelateurs-pirates",
-        "https://www.linfo.re/la-reunion/faits-divers/saint-andre-les-congelateurs-d-un-supermarche-pirates-100-000-euros-de-pertes"
+        "https://www.linfo.re/la-reunion/faits-divers/saint-andre-les-congelateurs-d-un-supermarche-pirates-100-000-euros-de-pertes",
+        "https://www.diplomatie.gouv.fr/fr/presse-et-ressources/decouvrir-et-informer/actualites/declaration-d-attribution-a-l-iran-de-cyberattaques-visant-la-france",
+        "https://cert.cyber.gouv.fr/cti/CERTFR-2026-CTI-009/"
       ],
-      "synthese": "Dans la nuit du 11 au 12 octobre 2026, les installations frigorifiques du Leader Price de Saint-André ont été piratées à distance et portées jusqu’à 50 °C. Le propriétaire a confirmé l’incident à LINFO.re, fait état de pertes globales estimées à 100 000 euros et indiqué qu’une plainte avait été déposée. Les publications antérieures estimaient la perte de marchandises entre 60 000 et 66 000 euros. L’auteur, le vecteur technique exact et le rattachement aux attaques de l’Hexagone restent non établis.",
+      "synthese": "Dans la nuit du 11 au 12 octobre 2026, les installations frigorifiques du Leader Price de Saint-André ont été piratées à distance et portées jusqu’à 50 °C. Le propriétaire a confirmé l’incident à LINFO.re, fait état de pertes globales estimées à 100 000 euros et indiqué qu’une plainte avait été déposée. Imaz Press indique que le magasin, équipé de contrôleurs Danfoss, a été touché au même moment et de la même manière que les sites de l’Hexagone. Le 9 novembre, le C4 et France Diplomatie ont attribué la campagne nationale contre plus de 700 sites de la grande distribution à l’unité cyber-offensive Shahid Kaveh, affiliée au centre électronique et cyber du Corps des Gardiens de la Révolution Islamique iranien. Le vecteur technique exact propre au magasin reste non public.",
       "evolution": "enrichi"
     },
     {
