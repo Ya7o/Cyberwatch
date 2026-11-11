@@ -480,6 +480,24 @@
   ],
   "version": 3
  },
+ "INC-0EAD212E261B": {
+  "display_summary": "Geofixe fait l'objet d'une revendication crédible de fuite de données incluant des informations personnelles et des références de paiement.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-0F486B50ABB2": {
   "display_summary": "Le Groupe Adéquat signale des accès non autorisés sur jobadequat.fr entre le 24 avril et le 22 juillet 2026, exposant potentiellement des données de candidats.",
   "summary_paragraphs": [
@@ -853,9 +871,7 @@
  },
  "INC-1CDA6F2D1E3B": {
   "display_summary": "WeFix : 6 009 dossiers de réparation en fuite après une cyberattaque",
-  "summary_paragraphs": [
-   "Le pirate « Syrv4x » revendique la diffusion gratuite d'une base attribuée à WeFix contenant 6 009 enregistrements de clients et dossiers de réparation."
-  ],
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-1D4141D387DB": {
@@ -929,6 +945,11 @@
   "version": 3
  },
  "INC-1F5B15404E86": {
+  "display_summary": "",
+  "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-20006EC41FF8": {
   "display_summary": "",
   "summary_paragraphs": [],
   "version": 3
@@ -1064,6 +1085,13 @@
   },
   "summary_paragraphs": [
    "BonjourLaFuite signale une fuite de données concernant La halle du sommeil."
+  ],
+  "version": 3
+ },
+ "INC-2480CB00E430": {
+  "display_summary": "Letsignit indique la découverte de clés d'accès involontaires dans une ancienne version de son application pouvant exposer des données professionnelles.",
+  "summary_paragraphs": [
+   "Letsignit a identifié des clés d'accès présentes involontairement dans certains environnements de stockage."
   ],
   "version": 3
  },
@@ -1975,6 +2003,35 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-49488C91F341": {
+  "display_summary": "Effy confirme un accès frauduleux via les identifiants d’un artisan exposant des données personnelles et projets de rénovation de clients.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Un individu non autorisé a utilisé les identifiants de la société Airtech pour accéder à l'espace professionnel Effy Pro et consulter des dossiers clients.",
+   "Les données accessibles incluent noms, adresses, adresses des chantiers, numéros de téléphone, emails, nature des travaux et créneaux de disponibilité."
+  ],
+  "version": 3
+ },
  "INC-49CFE67751C8": {
   "display_summary": "Azaé fait l'objet d'une revendication de fuite de données de 3 731 fichiers attribuée au pseudonyme « ChimeraZ ».",
   "summary_paragraphs": [
@@ -2165,6 +2222,14 @@
   "summary_paragraphs": [
    "Un utilisateur nommé « ChimeraZ » a publié le 3 octobre 2026 des revendications visant des services numériques de la Région Hauts-de-France.",
    "L'auteur revendique 782 583 lignes (~708 000 personnes) et 48 Go correspondant à 90 011 fichiers, dont RIB, contrats d'apprentissage et pièces d'identité."
+  ],
+  "version": 3
+ },
+ "INC-505218EBF84D": {
+  "display_summary": "Le groupe MGEL / MVS confirme une fuite de données sur une ancienne base contenant potentiellement des informations personnelles et bancaires.",
+  "summary_paragraphs": [
+   "MGEL signale des connexions non autorisées sur une ancienne base de données antérieure à mai 2022, pouvant avoir exposé des données personnelles.",
+   "Parmi les informations potentiellement concernées figurent noms, dates de naissance, adresses, numéros de sécurité sociale et certaines coordonnées bancaires."
   ],
   "version": 3
  },
@@ -2807,6 +2872,14 @@
   ],
   "version": 3
  },
+ "INC-650EDF6A13E1": {
+  "display_summary": "BonjourLaFuite signale une fuite de données concernant Mistertemp Group.",
+  "summary_paragraphs": [
+   "BonjourLaFuite signale une fuite de données concernant Mistertemp Group.",
+   "Les données indiquées comprennent : Nom, prénom ; Adresse email ; Numéro de téléphone ; Nationalité."
+  ],
+  "version": 3
+ },
  "INC-658EF8921962": {
   "display_summary": "Next One, leader français de l’affichage publicitaire indoor, a été victime d'une attaque par rançongiciel qui a chiffré sa base de données et ses sauvegardes.",
   "summary_paragraphs": [
@@ -3337,6 +3410,14 @@
   ],
   "version": 3
  },
+ "INC-702A75E1A86F": {
+  "display_summary": "La mairie de Chambourcy a été visée par une cyberattaque, poussant la municipalité à couper préventivement son réseau informatique.",
+  "summary_paragraphs": [
+   "La mairie de Chambourcy confirme avoir été la cible d’une cyberattaque durant le week-end du 7 novembre.",
+   "La municipalité a coupé préventivement son réseau informatique et bascule de nombreuses activités sur des procédures papier."
+  ],
+  "version": 3
+ },
  "INC-702BCF3FBB49": {
   "display_summary": "Grand Paris Grand Est a confirmé une fuite de données sur la plateforme Wastreet exposant des adresses e-mail et des numéros de téléphone d'usagers.",
   "sensitive_data": {
@@ -3475,6 +3556,27 @@
   ],
   "version": 3
  },
+ "INC-7636351BC463": {
+  "display_summary": "Une annonce revendique la vente de 2 134 242 lignes de dossiers médicaux prétendument liées à Cerballiance, revendication crédible mais non confirmée.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données de santé"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Un individu affirme vendre une base de données liée à Cerballiance contenant 2 134 242 lignes de dossiers médicaux, publiée le 10 novembre 2026.",
+   "La revendication est qualifiée de « revendication crédible, non confirmée » et l'authenticité et l'origine des données restent à vérifier."
+  ],
+  "version": 3
+ },
  "INC-76971BFA51B9": {
   "display_summary": "BonjourLaFuite signale une fuite de données concernant Distinxion.",
   "summary_paragraphs": [
@@ -3493,11 +3595,11 @@
     "localisation": "Saint-André",
     "score": 100,
     "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
-    "statut": "Cyberattaque confirmée publiquement par le propriétaire ; plainte déposée ; campagne officiellement attribuée par la France à l’unité Shahid Kaveh du CGRI-CEC ; vecteur technique exact du magasin non public"
+    "statut": "Cyberattaque confirmée publiquement par le propriétaire ; plainte déposée ; campagne officiellement attribuée par la France à l’unité Shahid Kaveh du CGRI-CEC ; information judiciaire ouverte à Paris et mandats d’arrêt internationaux requis contre trois responsables ; vecteur technique exact du magasin non public"
    }
   ],
   "summary_paragraphs": [
-   "Dans la nuit du 11 au 12 octobre 2026, les installations frigorifiques du Leader Price de Saint-André ont été piratées à distance et portées jusqu’à 50 °C. Le propriétaire a confirmé l’incident à LINFO.re, fait état de pertes globales estimées à 100 000 euros et indiqué qu’une plainte avait été déposée. Imaz Press indique que le magasin, équipé de contrôleurs Danfoss, a été touché au même moment et de la même manière que les sites de l’Hexagone. Le 9 novembre, le C4 et France Diplomatie ont attribué la campagne nationale contre plus de 700 sites de la grande distribution à l’unité cyber-offensive Shahid Kaveh, affiliée au centre électronique et cyber du Corps des Gardiens de la Révolution Islamique iranien. Le vecteur technique exact propre au magasin reste non public."
+   "Dans la nuit du 11 au 12 octobre 2026, les installations frigorifiques du Leader Price de Saint-André ont été piratées à distance et portées jusqu’à 50 °C. Le propriétaire a confirmé l’incident à LINFO.re, fait état de pertes globales estimées à 100 000 euros et indiqué qu’une plainte avait été déposée. Imaz Press indique que le magasin, équipé de contrôleurs Danfoss, a été touché au même moment et de la même manière que les sites de l’Hexagone. Le 9 novembre, le C4 et France Diplomatie ont attribué la campagne nationale contre plus de 700 sites de la grande distribution à l’unité cyber-offensive Shahid Kaveh du CGRI-CEC iranien. Le parquet de Paris a ouvert une information judiciaire, confiée à l’Ofac et à la DGSI, et requis des mandats d’arrêt internationaux contre le chef du groupe et ses deux adjoints. Le vecteur technique exact propre au magasin reste non public."
   ],
   "version": 3
  },
@@ -3731,6 +3833,27 @@
   ],
   "version": 3
  },
+ "INC-7F3498C32854": {
+  "display_summary": "Altéal informe d'une exposition potentielle de noms, prénoms et adresses postales suite à une cyberattaque touchant son prestataire Maileva.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Altéal indique que son prestataire Maileva a été victime d'une cyberattaque entraînant une exposition de données personnelles.",
+   "Noms, prénoms et adresses postales pourraient avoir été compromis selon la notification d'Altéal."
+  ],
+  "version": 3
+ },
  "INC-7F396298E98C": {
   "display_summary": "École 42 : 140 080 profils en fuite après scraping",
   "summary_paragraphs": [],
@@ -3886,6 +4009,27 @@
  "INC-845CF3A0AFE4": {
   "display_summary": "Le Club TotalEnergies touché par une cyberattaque : les historiques de transactions en fuite",
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-852094683481": {
+  "display_summary": "EduGroupe : un organisme qui forme à la cybersécurité voit fuiter 93 000 enregistrements",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "confirmed",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Un individu dit détenir une base attribuée à EduGroupe, revendiquant 93 415 lignes et 41 868 adresses email, avec des extraits publiés.",
+   "La revendication est qualifiée de crédible mais non confirmée; l'authenticité et l'origine des données restent à vérifier."
+  ],
   "version": 3
  },
  "INC-85266063E9B9": {
@@ -4502,7 +4646,9 @@
    ],
    "vulnerable_people": false
   },
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "Un pirate nommé « Syrv4x » affirme avoir publié gratuitement une base attribuée à Ecologic France contenant 46 467 fiches accessibles au téléchargement."
+  ],
   "version": 3
  },
  "INC-9351E1D07BE3": {
@@ -5457,6 +5603,13 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-B8A2C026BAC1": {
+  "display_summary": "Une cyberattaque chez un prestataire a permis l'extraction de données clients des enseignes du groupe Emova, dont Monceau Fleurs.",
+  "summary_paragraphs": [
+   "Une cyberattaque le 30 octobre 2026 contre le prestataire gérant les caisses a permis l'accès et l'extraction de données clients."
+  ],
+  "version": 3
+ },
  "INC-B9B7E2BD936C": {
   "display_summary": "G La Dalle : les clients d’une centaine de restaurants en fuite après une cyberattaque",
   "sensitive_data": {
@@ -5503,6 +5656,56 @@
   "summary_paragraphs": [
    "483 953 enregistrements, représentant environ 907 Mo, sont proposés directement en téléchargement libre.",
    "Les extraits montrent des réservations avec nom, pays, ville, adresse, email, magasin Sport 2000, dates du séjour et statut de la réservation."
+  ],
+  "version": 3
+ },
+ "INC-B9F47B251F94": {
+  "display_summary": "Des courriers de relance de l’Hôpital Foch envoyés entre le 9 et le 23 septembre 2026 ont pu être consultés après la cyberattaque du prestataire Maileva.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "L'Hôpital Foch indique que des courriers de relance traités par Maileva ont pu être consultés par un pirate, exposant des informations de patients."
+  ],
+  "version": 3
+ },
+ "INC-BA024AF208D1": {
+  "display_summary": "BonjourLaFuite signale une fuite de données concernant Garanka.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "BONJOURLAFUITE"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "Informations de paiement"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "BonjourLaFuite signale une fuite de données concernant Garanka.",
+   "Les données indiquées comprennent : Nom, prénom ; Coordonnées ; Système de chauffage ; Prestations de services ; Factures ; Informations de paiement."
   ],
   "version": 3
  },
@@ -6942,7 +7145,7 @@
   "version": 3
  },
  "INC-E697FC1CA889": {
-  "display_summary": "Cartes-cadeaux : une série de cyberattaques inquiète le secteur à l’approche de Noël",
+  "display_summary": "Une série de cyberattaques vise depuis mi-octobre 2026 l’écosystème des cartes-cadeaux, touchant plusieurs entreprises dont Illicado et Smartbox.",
   "summary_paragraphs": [
    "Le 1er novembre 2026, Illicado a subi une attaque visant son service de génération de PDF et 15 000 cartes-cadeaux numériques ont été compromises.",
    "Le 3 novembre 2026, Smartbox a détecté un accès non autorisé à l’une de ses plateformes, avec potentielle consultation de noms et adresses électroniques."
@@ -7526,6 +7729,14 @@
    "vulnerable_people": false
   },
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-FABA4EDBE721": {
+  "display_summary": "Des conversations Notion AI ont été exposées après deux compromissions du fournisseur Fireworks AI affectant moins de 1 % des espaces de travail.",
+  "summary_paragraphs": [
+   "Notion indique que moins de 1 % de ses espaces de travail sont concernés par l'exposition de conversations avec Notion AI.",
+   "Fireworks AI a subi deux épisodes de compromission en octobre entraînant exposition de clés, données de facturation, jeux de données et modèles."
+  ],
   "version": 3
  },
  "INC-FABD16004BFF": {

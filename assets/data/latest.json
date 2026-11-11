@@ -2,6 +2,289 @@
  {
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
+  "date": "2026-11-11",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-FABA4EDBE721",
+  "location": "Inconnu",
+  "org": "Notion AI",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/notion-ai-des-conversations-dutilisateurs-exposees-apres-une-double-cyberattaque-chez-fireworks-ai/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Des conversations Notion AI ont été exposées après deux compromissions du fournisseur Fireworks AI affectant moins de 1 % des espaces de travail.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-11",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-BA024AF208D1",
+  "location": "France métropolitaine",
+  "org": "Garanka",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "BLF_ACTIVITY_CONFLICT",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/garanka.png"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE"
+  ],
+  "summary": "BonjourLaFuite signale une fuite de données concernant Garanka.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-11",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-B9F47B251F94",
+  "location": "France métropolitaine",
+  "org": "Hôpital Foch",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Hôpital Foch",
+   "evidence_url": "https://www.cyberattaque.org/hopital-foch-des-factures-medicales-de-patients-exposees-apres-une-cyberattaque/",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/hopital-foch-des-factures-medicales-de-patients-exposees-apres-une-cyberattaque/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/h-pital-foch-mwc2c69j52j9n2rnqb6"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Des courriers de relance de l’Hôpital Foch envoyés entre le 9 et le 23 septembre 2026 ont pu être consultés après la cyberattaque du prestataire Maileva.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-11",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-7636351BC463",
+  "location": "France métropolitaine",
+  "org": "Cerballiance",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Cerballiance est un réseau français de laboratoires de biologie médicale appartenant au groupe Cerba HealthCare, spécialisé dans le diagnostic médical.",
+   "evidence_url": "https://frenchbreaches.com/alertes/cerballiance-mwc1a4xgry7gewnhac",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/cerballiance-mwc1a4xgry7gewnhac"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Une annonce revendique la vente de 2 134 242 lignes de dossiers médicaux prétendument liées à Cerballiance, revendication crédible mais non confirmée.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-11",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-650EDF6A13E1",
+  "location": "France métropolitaine",
+  "org": "Mistertemp Group",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/mistertemp.png"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE"
+  ],
+  "summary": "BonjourLaFuite signale une fuite de données concernant Mistertemp Group.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-11",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-505218EBF84D",
+  "location": "France métropolitaine",
+  "org": "Groupe MGEL / MVS",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Santé",
+   "evidence_url": "https://frenchbreaches.com/alertes/groupe-mgel-mvs-mwbvyd1s60d6xygo7vh",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/groupe-mgel-mvs-mwbvyd1s60d6xygo7vh"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Le groupe MGEL / MVS confirme une fuite de données sur une ancienne base contenant potentiellement des informations personnelles et bancaires.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-11",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-49488C91F341",
+  "location": "France métropolitaine",
+  "org": "Effy",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Construction / BTP",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Effy est une entreprise française spécialisée dans l'accompagnement des particuliers souhaitant améliorer les performances énergétiques de leur logement. [étiquette source écartée : Commerce]",
+   "evidence_url": "https://frenchbreaches.com/alertes/effy-airtech-mwc29dnnzabvhpzxkup",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/effy.png"
+   },
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/effy-une-cyberattaque-expose-les-donnees-et-les-projets-de-renovation-de-clients/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/effy-airtech-mwc29dnnzabvhpzxkup"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE",
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Effy confirme un accès frauduleux via les identifiants d’un artisan exposant des données personnelles et projets de rénovation de clients.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-11",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-20006EC41FF8",
+  "location": "France métropolitaine",
+  "org": "Parti Communiste Français",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/pcf.png"
+   },
+   {
+    "label": "pcf.fr",
+    "source": "BONJOURLAFUITE",
+    "url": "https://www.pcf.fr/le_parti_communiste_francais_fait_l_objet_d_une_fuite_de_donnees"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-11-10",
   "high_sensitivity_data_exposed": false,
   "id": "INC-F0763FBD8E3C",
@@ -60,7 +343,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "Cartes-cadeaux : une série de cyberattaques inquiète le secteur à l’approche de Noël",
+  "summary": "Une série de cyberattaques vise depuis mi-octobre 2026 l’écosystème des cartes-cadeaux, touchant plusieurs entreprises dont Illicado et Smartbox.",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "unknown"
@@ -100,6 +383,80 @@
   ],
   "summary": "Softway Medical confirme une violation de données sur One Manager, son logiciel utilisé par des centres et services de radiologie.",
   "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-10",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-852094683481",
+  "location": "France métropolitaine",
+  "org": "EduGroupe",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Éducation / Formation",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "EduGroupe, organisme français de formation informatique, visé par une fuite de données Une nouvelle fuite de données présumée touche le secteur français de la formation professionnelle.",
+   "evidence_url": "https://frenchbreaches.com/alertes/edugroupe-mwb1h5mwykuf9f5xce",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-edugroupe-un-organisme-qui-forme-a-la-cybersecurite-voit-fuiter-93-000-enregistrements/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/edugroupe-mwb1h5mwykuf9f5xce"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "EduGroupe : un organisme qui forme à la cybersécurité voit fuiter 93 000 enregistrements",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-10",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-7F3498C32854",
+  "location": "France métropolitaine",
+  "org": "Altéal",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Construction / BTP",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Altéal est un organisme de logement social basé à Colomiers, près de Toulouse, en Haute-Garonne. [étiquette source écartée : Commerce]",
+   "evidence_url": "https://frenchbreaches.com/alertes/alt-al-maileva-mwau4xby5g6dfmapyv7",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/alt-al-maileva-mwau4xby5g6dfmapyv7"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Altéal informe d'une exposition potentielle de noms, prénoms et adresses postales suite à une cyberattaque touchant son prestataire Maileva.",
+  "threat": "Intrusion",
   "threat_status": {
    "status": "confirmed"
   }
@@ -146,6 +503,40 @@
  },
  {
   "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-10",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-2480CB00E430",
+  "location": "France métropolitaine",
+  "org": "Letsignit",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Technologie",
+   "evidence_url": "https://frenchbreaches.com/alertes/letsignit-mwb0k7o4zusncty4xf",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/letsignit-mwb0k7o4zusncty4xf"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Letsignit indique la découverte de clés d'accès involontaires dans une ancienne version de son application pouvant exposer des données professionnelles.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": true,
   "date": "2026-11-10",
   "high_sensitivity_data_exposed": false,
@@ -171,6 +562,37 @@
   ],
   "summary": "QNAP reconnaît avoir reçu plusieurs signalements de clients dont des NAS semblent avoir été piratés via des vulnérabilités Plex2Shell.",
   "threat": "Ransomware",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-10",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-0EAD212E261B",
+  "location": "France métropolitaine",
+  "org": "Geofixe",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "SOURCE_SECTOR_RAW_AMBIGUOUS",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/geofixe-mwb1l72h9v4in2jyrj"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Geofixe fait l'objet d'une revendication crédible de fuite de données incluant des informations personnelles et des références de paiement.",
+  "threat": "Fuite de données",
   "threat_status": {
    "status": "unknown"
   }
@@ -705,6 +1127,40 @@
   "threat": "Fuite de données",
   "threat_status": {
    "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-08",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-702A75E1A86F",
+  "location": "Inconnu",
+  "org": "Chambourcy",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Chambourcy est une commune française située dans les Yvelines, en Île-de-France, à proximité de Saint-Germain-en-Laye.",
+   "evidence_url": "https://www.cyberattaque.org/chambourcy-une-cyberattaque-contraint-la-mairie-a-couper-son-reseau-informatique-et-a-revenir-au-papier/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/chambourcy-une-cyberattaque-contraint-la-mairie-a-couper-son-reseau-informatique-et-a-revenir-au-papier/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "La mairie de Chambourcy a été visée par une cyberattaque, poussant la municipalité à couper préventivement son réseau informatique.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
   }
  },
  {
@@ -3521,6 +3977,37 @@
   ],
   "summary": "Une cyberattaque a affecté la boutique en ligne de la distillerie Cherry Rocher, exposant potentiellement des données personnelles de clients.",
   "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-30",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-B8A2C026BAC1",
+  "location": "Inconnu",
+  "org": "Monceau Fleurs",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "ACTIVITY_TAXONOMY_UNRESOLVED",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/monceau-fleurs-une-cyberattaque-expose-les-donnees-clients-de-quatre-enseignes-du-groupe-emova/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Une cyberattaque chez un prestataire a permis l'extraction de données clients des enseignes du groupe Emova, dont Monceau Fleurs.",
+  "threat": "Fuite de données",
   "threat_status": {
    "status": "confirmed"
   }
@@ -9130,238 +9617,6 @@
   ],
   "summary": "WeFix : 6 009 dossiers de réparation en fuite après une cyberattaque",
   "threat": "Fuite de données",
-  "threat_status": {
-   "status": "confirmed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-12",
-  "high_sensitivity_data_exposed": true,
-  "id": "INC-F29ACDC2C7FF",
-  "location": "France métropolitaine",
-  "org": "Kiassure",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Finance / Assurance",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Finance",
-   "evidence_url": "https://frenchbreaches.com/alertes/kiassure-mv4fc0mzhzpeqr8upub",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/kiassure-mv4fc0mzhzpeqr8upub"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "unknown"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-12",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-E1DA055D023A",
-  "location": "France métropolitaine",
-  "org": "Solutions30",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Numérique / Technologie",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Technologie",
-   "evidence_url": "https://frenchbreaches.com/alertes/solutions-30-mv5nto6keh511e3t4k7",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/solutions30-103-millions-de-lignes-mises-en-vente-les-clients-de-grands-groupes-exposes/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/solutions-30-mv5nto6keh511e3t4k7"
-   }
-  ],
-  "sources": [
-   "BONJOURLAFUITE",
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "Solutions30 : 10,3 millions de lignes mises en vente, les clients de grands groupes exposés",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "unknown"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-12",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-DD426ED425CD",
-  "location": "Inconnu",
-  "org": "Intermarché et Super U",
-  "organisation_links": [],
-  "personal_data_exposed": false,
-  "sector": "Inconnu",
-  "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/intermarche-et-super-u-une-cyberattaque-deregle-le-froid-dans-des-centaines-de-magasins/"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG"
-  ],
-  "summary": "Intermarché et Super U : une cyberattaque dérègle le froid dans des centaines de magasins",
-  "threat": "Intrusion",
-  "threat_status": {
-   "status": "confirmed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-12",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-C6C111EC6F92",
-  "location": "Inconnu",
-  "org": "Portes du Berry",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Inconnu",
-  "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/portes-du-berry-une-cyberattaque-menace-les-dossiers-personnels-des-habitants/"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG"
-  ],
-  "summary": "Portes du Berry : une cyberattaque menace les dossiers personnels des habitants",
-  "threat": "Intrusion",
-  "threat_status": {
-   "status": "confirmed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "admission_reason": "Zinfos974 et Imaz Press documentent le piratage des installations frigorifiques du magasin identifié ; le propriétaire du Leader Price de Saint-André confirme à LINFO.re une attaque informatique à distance, chiffre les pertes globales et indique avoir déposé plainte. Imaz Press rattache l’incident, survenu au même moment et selon le même mode opératoire, à la campagne nationale contre les contrôleurs frigorifiques. Le C4 et France Diplomatie attribuent officiellement cette campagne à l’unité cyber-offensive Shahid Kaveh du centre électronique et cyber du Corps des Gardiens de la Révolution Islamique iranien. Le vecteur technique exact du magasin reste non public.",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-12",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-76D14B45CE67",
-  "location": "La Réunion",
-  "org": "Leader Price de Saint-André",
-  "organisation_links": [],
-  "personal_data_exposed": false,
-  "sector": "Commerce / Distribution",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Commerce / Distribution",
-   "evidence_url": "https://www.zinfos974.com/saint-andre-les-congelateurs-du-leader-price-pirates-60-000-euros-de-prejudice/",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "zinfos974.com",
-    "source": "VEILLE_LLM",
-    "url": "https://www.zinfos974.com/saint-andre-les-congelateurs-du-leader-price-pirates-60-000-euros-de-prejudice/"
-   },
-   {
-    "label": "Imaz Press",
-    "source": "VEILLE_LLM",
-    "url": "https://imazpress.com/selection-de-la-redaction/congelateurs-pirates"
-   },
-   {
-    "label": "Linfo.re",
-    "source": "VEILLE_LLM",
-    "url": "https://www.linfo.re/la-reunion/faits-divers/saint-andre-les-congelateurs-d-un-supermarche-pirates-100-000-euros-de-pertes"
-   },
-   {
-    "label": "diplomatie.gouv.fr",
-    "source": "VEILLE_LLM",
-    "url": "https://www.diplomatie.gouv.fr/fr/presse-et-ressources/decouvrir-et-informer/actualites/declaration-d-attribution-a-l-iran-de-cyberattaques-visant-la-france"
-   },
-   {
-    "label": "cert.cyber.gouv.fr",
-    "source": "VEILLE_LLM",
-    "url": "https://cert.cyber.gouv.fr/cti/CERTFR-2026-CTI-009/"
-   }
-  ],
-  "sources": [
-   "VEILLE_LLM"
-  ],
-  "summary": "",
-  "threat": "Autre cyber",
-  "threat_status": {
-   "status": "unknown"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-12",
-  "high_sensitivity_data_exposed": true,
-  "id": "INC-3B12E9BC1C38",
-  "location": "France métropolitaine",
-  "org": "AlloExtra",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Hébergement / Tourisme / Restauration",
-  "sector_status": {
-   "confidence": 0.8,
-   "evidence": "AlloExtra, plateforme française spécialisée dans l’emploi en hôtellerie-restauration, fait l’objet d’une revendication particulièrement sensible.",
-   "evidence_url": "https://www.cyberattaque.org/alloextra-14-516-cv-de-candidats-mis-en-vente-apres-une-cyberattaque/",
-   "reason": "ACTIVITY_RULE",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/alloextra-14-516-cv-de-candidats-mis-en-vente-apres-une-cyberattaque/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/alloextra-mv4mhd0168xtcvl3oeh"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "AlloExtra : 14 516 CV de candidats mis en vente après une cyberattaque",
-  "threat": "Intrusion",
   "threat_status": {
    "status": "confirmed"
   }
