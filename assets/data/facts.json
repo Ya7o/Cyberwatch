@@ -535,10 +535,47 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-1287BAEB9F29": {
+  "display_summary": "1001RDV Santé (Logicielnet)",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données de santé"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Des pirates affirment avoir compromis des serveurs associés à Logicielnet et récupéré 22,7 Go de données potentiellement liées à 9 016 504 patients.",
+   "La revendication n'est pas confirmée indépendamment et la capture ne permet pas de vérifier l'authenticité des fichiers ni la date ou la méthode de l'intrusion."
+  ],
+  "version": 3
+ },
  "INC-13200FD49444": {
   "display_summary": "Quick : les données des membres du programme fidélité exposées après une intrusion",
   "summary_paragraphs": [
    "L'intrusion a exposé noms, adresses e-mail, numéros de téléphone, dates de naissance, numéros de carte de fidélité et soldes de points."
+  ],
+  "version": 3
+ },
+ "INC-133C2F622907": {
+  "display_summary": "Revendication non confirmée d'une fuite de données touchant ARTE TV, prétendant exposer plus de 600 000 adresses e-mail de membres.",
+  "summary_paragraphs": [
+   "Un individu affirme sur un forum avoir divulgué une base contenant plus de 673 000 enregistrements, dont 604 083 adresses e-mail.",
+   "La revendication est qualifiée de \"Revendication crédible, non confirmée\" et l'authenticité reste à vérifier."
   ],
   "version": 3
  },
@@ -1384,6 +1421,14 @@
    "vulnerable_people": false
   },
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-30587B962720": {
+  "display_summary": "Groupe Alternance : un ransomware menace le réseau de 70 campus après une cyberattaque",
+  "summary_paragraphs": [
+   "The Gentlemen a ajouté Groupe Alternance à son site de revendications le 11 novembre 2026 avec un compte à rebours.",
+   "Aucun fichier volé n’a cependant été publié pour le moment et l'authenticité de l'intrusion n'est pas établie."
+  ],
   "version": 3
  },
  "INC-3139AFB2614E": {
@@ -2818,6 +2863,11 @@
   ],
   "version": 3
  },
+ "INC-61F520A8CB38": {
+  "display_summary": "",
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-624936F92BC4": {
   "display_summary": "AK Transport : 11 681 livraisons dont des colis encore en transit en fuite",
   "summary_paragraphs": [
@@ -3293,6 +3343,14 @@
   ],
   "version": 3
  },
+ "INC-6F5C0CBD492B": {
+  "display_summary": "Une cyberattaque est signalée contre 1001RDV, plateforme française de prise de rendez-vous médicaux, sans confirmation publique des conséquences.",
+  "summary_paragraphs": [
+   "Une cyberattaque est signalée contre 1001RDV, plateforme française de prise de rendez-vous médicaux, sans détails publics sur nature, périmètre ou conséquences.",
+   "Les recherches n’ont pas permis d’obtenir de confirmation publique détaillant la nature de l’attaque, son périmètre ou ses conséquences."
+  ],
+  "version": 3
+ },
  "INC-6F760CFC7E64": {
   "display_summary": "",
   "summary_paragraphs": [],
@@ -3697,6 +3755,14 @@
   ],
   "summary_paragraphs": [
    "Fuite de données revendiquée via un tiers et concernant explicitement l’EPF Réunion, sans confirmation publique retrouvée de l’EPF."
+  ],
+  "version": 3
+ },
+ "INC-78FAA10FA9DA": {
+  "display_summary": "ARTE : 643 760 fiches diffusées avec des données d’élèves et d’enseignants après une cyberattaque",
+  "summary_paragraphs": [
+   "Une base de données attribuée à ARTE a été diffusée par le hacker Chimera le 11 novembre 2026.",
+   "L’analyse relève 643 760 fiches, 57 962 jetons de confirmation et plus de 170 000 enregistrements associés à des comptes Educ’ARTE."
   ],
   "version": 3
  },
@@ -4632,7 +4698,7 @@
   "version": 3
  },
  "INC-9341E56F0230": {
-  "display_summary": "",
+  "display_summary": "Revendication de diffusion d'une base attribuée à Ecologic France contenant 46 467 fiches d'utilisateurs et partenaires.",
   "sensitive_data": {
    "types": [
     {
@@ -4646,9 +4712,7 @@
    ],
    "vulnerable_people": false
   },
-  "summary_paragraphs": [
-   "Un pirate nommé « Syrv4x » affirme avoir publié gratuitement une base attribuée à Ecologic France contenant 46 467 fiches accessibles au téléchargement."
-  ],
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-9351E1D07BE3": {
@@ -4850,6 +4914,11 @@
  },
  "INC-9D94800B90F1": {
   "display_summary": "Transporteur.com : 1 201 clients exposés sur le darkweb après une cyberattaque",
+  "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-9E3A7748C51D": {
+  "display_summary": "L’ANSSI rapporte que 25 des 30 académies de l’Éducation nationale ont été visées par des incidents de sécurité entre juillet et septembre 2026.",
   "summary_paragraphs": [],
   "version": 3
  },
@@ -5221,6 +5290,27 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-ACB3324A1F08": {
+  "display_summary": "Qare confirme une cyberattaque le 31 octobre 2026 ayant exposé des données personnelles de comptes utilisateurs.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "données de santé"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Qare indique qu'un tiers non autorisé a accédé à certaines données personnelles associées aux comptes utilisateurs.",
+   "Les données potentiellement exposées comprennent noms, adresses email, numéros de téléphone et dates de naissance."
+  ],
+  "version": 3
+ },
  "INC-AD8302014420": {
   "display_summary": "Incognito.fr visé par la diffusion d'une base de 21 352 commandes et 14 996 combinaisons noms+adresses couvrant près de 17 ans.",
   "summary_paragraphs": [
@@ -5458,6 +5548,13 @@
   ],
   "version": 3
  },
+ "INC-B4006024A59F": {
+  "display_summary": "Visionix : le spécialiste français du diagnostic ophtalmologique victime d’une cyberattaque",
+  "summary_paragraphs": [
+   "Revenio confirme qu’un serveur de sa filiale française a été compromis et contenait notamment des demandes internes d’assistance informatique."
+  ],
+  "version": 3
+ },
  "INC-B52A1013C987": {
   "display_summary": "",
   "summary_paragraphs": [],
@@ -5606,7 +5703,8 @@
  "INC-B8A2C026BAC1": {
   "display_summary": "Une cyberattaque chez un prestataire a permis l'extraction de données clients des enseignes du groupe Emova, dont Monceau Fleurs.",
   "summary_paragraphs": [
-   "Une cyberattaque le 30 octobre 2026 contre le prestataire gérant les caisses a permis l'accès et l'extraction de données clients."
+   "Monceau Fleurs alerte ses clients après une cyberattaque survenue le 30 octobre 2026 chez un prestataire chargé de la gestion des caisses de ses magasins.",
+   "Des informations personnelles ont été consultées et extraites sans autorisation, notamment des noms, adresses, dates de naissance et coordonnées."
   ],
   "version": 3
  },
@@ -5684,7 +5782,7 @@
    "vulnerable_people": false
   },
   "summary_paragraphs": [
-   "L'Hôpital Foch indique que des courriers de relance traités par Maileva ont pu être consultés par un pirate, exposant des informations de patients."
+   "Des courriers contenant des informations personnelles et financières de patients ont pu être consultés par un cybercriminel après la cyberattaque de Maileva."
   ],
   "version": 3
  },
@@ -5706,6 +5804,13 @@
   "summary_paragraphs": [
    "BonjourLaFuite signale une fuite de données concernant Garanka.",
    "Les données indiquées comprennent : Nom, prénom ; Coordonnées ; Système de chauffage ; Prestations de services ; Factures ; Informations de paiement."
+  ],
+  "version": 3
+ },
+ "INC-BA6B1499689A": {
+  "display_summary": "Ciblex : les coordonnées et informations de livraison de milliers de destinataires exposées",
+  "summary_paragraphs": [
+   "Le 12 novembre 2026, un internaute affirme avoir publié une base associée au transporteur Ciblex contenant plus de 3 000 enregistrements."
   ],
   "version": 3
  },
@@ -5779,6 +5884,14 @@
   "summary_paragraphs": [
    "Un pirate revendique une base liée à Group-Activa.com avec 18 765 lignes; FrenchBreaches a analysé 18 764 enregistrements.",
    "FrenchBreaches estime qu'environ 10 758 personnes distinctes sont identifiables après déduplication des 18 764 enregistrements analysés."
+  ],
+  "version": 3
+ },
+ "INC-BB87756AAFB5": {
+  "display_summary": "BonjourLaFuite signale une fuite de données concernant Notion.",
+  "summary_paragraphs": [
+   "BonjourLaFuite signale une fuite de données concernant Notion.",
+   "Les données indiquées comprennent : Transcription des discussions."
   ],
   "version": 3
  },
@@ -6820,6 +6933,13 @@
   ],
   "version": 3
  },
+ "INC-DD31CE33D30E": {
+  "display_summary": "Ministère des Affaires étrangères : une cyberattaque expose les données personnelles d’agents et d’usagers",
+  "summary_paragraphs": [
+   "L’ANSSI confirme un accès frauduleux aux environnements de production du portail des bibliothèques du ministère, utilisant des comptes techniques volés."
+  ],
+  "version": 3
+ },
  "INC-DD426ED425CD": {
   "display_summary": "Intermarché et Super U : une cyberattaque dérègle le froid dans des centaines de magasins",
   "summary_paragraphs": [],
@@ -7640,6 +7760,11 @@
    "Le 9 novembre 2026, un pirate affirme avoir divulgué une base contenant des informations sur plus de 36 000 personnes attribuée au site ADEMS14.fr.",
    "La publication revendique 100 826 lignes, 36 628 personnes et 67 Mo de fichiers, statut : revendication crédible, non confirmée."
   ],
+  "version": 3
+ },
+ "INC-F508693E9260": {
+  "display_summary": "",
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-F6EA93C0805A": {

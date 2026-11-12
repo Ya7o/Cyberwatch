@@ -2,6 +2,337 @@
  {
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
+  "date": "2026-11-12",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-F508693E9260",
+  "location": "France métropolitaine",
+  "org": "Association «ENSEMBLE»",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "SOURCE_SECTOR_RAW_AMBIGUOUS",
+   "status": "unknown"
+  },
+  "source_links": [],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-12",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-DD31CE33D30E",
+  "location": "Inconnu",
+  "org": "Ministère des Affaires étrangères",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Ministère des Affaires étrangères",
+   "evidence_url": "https://www.cyberattaque.org/ministere-des-affaires-etrangeres-une-cyberattaque-expose-les-donnees-personnelles-dagents-et-dusagers/",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/ministere-des-affaires-etrangeres-une-cyberattaque-expose-les-donnees-personnelles-dagents-et-dusagers/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Ministère des Affaires étrangères : une cyberattaque expose les données personnelles d’agents et d’usagers",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-12",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-BA6B1499689A",
+  "location": "France métropolitaine",
+  "org": "Ciblex",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Transport / Logistique",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Transport",
+   "evidence_url": "https://frenchbreaches.com/alertes/ciblex-mwdghdju6bib09ixczr",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/ciblex-les-coordonnees-et-informations-de-livraison-de-milliers-de-destinataires-exposees/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/ciblex-mwdghdju6bib09ixczr"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Ciblex : les coordonnées et informations de livraison de milliers de destinataires exposées",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-12",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-B4006024A59F",
+  "location": "Inconnu",
+  "org": "Visionix",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Visionix est une entreprise française spécialisée dans la conception et la fabrication de dispositifs destinés aux professionnels de la santé visuelle.",
+   "evidence_url": "https://www.cyberattaque.org/visionix-le-specialiste-francais-du-diagnostic-ophtalmologique-victime-dune-cyberattaque/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/visionix-le-specialiste-francais-du-diagnostic-ophtalmologique-victime-dune-cyberattaque/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Visionix : le spécialiste français du diagnostic ophtalmologique victime d’une cyberattaque",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-12",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-9E3A7748C51D",
+  "location": "Inconnu",
+  "org": "Éducation nationale",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/education-nationale-25-academies-sur-30-visees-par-des-cyberattaques-lanssi-revele-lampleur-des-intrusions/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "L’ANSSI rapporte que 25 des 30 académies de l’Éducation nationale ont été visées par des incidents de sécurité entre juillet et septembre 2026.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-12",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-78FAA10FA9DA",
+  "location": "Inconnu",
+  "org": "ARTE",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "ACTIVITY_TAXONOMY_UNRESOLVED",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/arte-643-760-fiches-diffusees-avec-des-donnees-deleves-et-denseignants-apres-une-cyberattaque/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "ARTE : 643 760 fiches diffusées avec des données d’élèves et d’enseignants après une cyberattaque",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-12",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-6F5C0CBD492B",
+  "location": "Inconnu",
+  "org": "1001RDV",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "1001RDV est également référencé dans le cadre du Ségur du numérique en santé.",
+   "evidence_url": "https://www.cyberattaque.org/1001rdv-une-cyberattaque-signalee-contre-la-plateforme-francaise-de-rendez-vous-medicaux/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/1001rdv-une-cyberattaque-signalee-contre-la-plateforme-francaise-de-rendez-vous-medicaux/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Une cyberattaque est signalée contre 1001RDV, plateforme française de prise de rendez-vous médicaux, sans confirmation publique des conséquences.",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-12",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-61F520A8CB38",
+  "location": "France métropolitaine",
+  "org": "SANTEX SAS",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Industrie / Manufacture",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Manufacturing",
+   "evidence_url": "http://lthicpjqc7gkn5eq3epxndc2uig3yngvcbdya4u3m3byjod5km4yuwqd.onion/#post/blog-33",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-12",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-30587B962720",
+  "location": "France métropolitaine",
+  "org": "Groupe Alternance",
+  "organisation_links": [
+   "https://groupe-alternance.com"
+  ],
+  "personal_data_exposed": true,
+  "sector": "Éducation / Formation",
+  "sector_status": {
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Services aux entreprises"
+   ],
+   "evidence": "Fondé en 1998 à Rochefort par Laurent Chauveau, Groupe Alternance est un réseau privé d’enseignement supérieur spécialisé dans la formation en alternance.",
+   "evidence_url": "https://www.cyberattaque.org/groupe-alternance-un-ransomware-menace-le-reseau-de-70-campus-apres-une-cyberattaque/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/groupe-alternance-un-ransomware-menace-le-reseau-de-70-campus-apres-une-cyberattaque/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "Groupe Alternance : un ransomware menace le réseau de 70 campus après une cyberattaque",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-12",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-1287BAEB9F29",
+  "location": "France métropolitaine",
+  "org": "1001RDV Santé",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Santé",
+   "evidence_url": "https://frenchbreaches.com/alertes/1001rdv-sant-logicielnet-mwdia94d23smfjnrr15",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/1001rdv-sant-logicielnet-mwdia94d23smfjnrr15"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "1001RDV Santé (Logicielnet)",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-11-11",
   "high_sensitivity_data_exposed": false,
   "id": "INC-FABA4EDBE721",
@@ -28,6 +359,42 @@
   "threat": "Intrusion",
   "threat_status": {
    "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-11",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-BB87756AAFB5",
+  "location": "France métropolitaine",
+  "org": "Notion",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/notion.png"
+   },
+   {
+    "label": "notion.com",
+    "source": "BONJOURLAFUITE",
+    "url": "https://www.notion.com/fr/help/security-incident-involving-a-third-party-ai-vendor"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE"
+  ],
+  "summary": "BonjourLaFuite signale une fuite de données concernant Notion.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
   }
  },
  {
@@ -210,13 +577,11 @@
   "org": "Effy",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Construction / BTP",
+  "sector": "Inconnu",
   "sector_status": {
-   "confidence": 0.8,
-   "evidence": "Effy est une entreprise française spécialisée dans l'accompagnement des particuliers souhaitant améliorer les performances énergétiques de leur logement. [étiquette source écartée : Commerce]",
-   "evidence_url": "https://frenchbreaches.com/alertes/effy-airtech-mwc29dnnzabvhpzxkup",
-   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
-   "status": "inferred"
+   "evidence": "Construction / BTP | Énergie / Utilities",
+   "reason": "SOURCE_SECTOR_CONFLICT",
+   "status": "unknown"
   },
   "source_links": [
    {
@@ -277,6 +642,37 @@
    "BONJOURLAFUITE"
   ],
   "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-11",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-133C2F622907",
+  "location": "France métropolitaine",
+  "org": "ARTE TV",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "SOURCE_SECTOR_RAW_AMBIGUOUS",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/arte-tv-mwci00v7k0eq5jt966i"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Revendication non confirmée d'une fuite de données touchant ARTE TV, prétendant exposer plus de 600 000 adresses e-mail de membres.",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "unknown"
@@ -3587,6 +3983,40 @@
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
   "date": "2026-10-31",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-ACB3324A1F08",
+  "location": "France métropolitaine",
+  "org": "Qare",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.9,
+   "evidence": "Société de téléconsultation médicale agréée",
+   "evidence_url": "https://consultation.qare.fr/rdv-medecin-app/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/qare-mwdouz7ym8s0q1o7h4"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Qare confirme une cyberattaque le 31 octobre 2026 ayant exposé des données personnelles de comptes utilisateurs.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-10-31",
   "high_sensitivity_data_exposed": false,
   "id": "INC-A0A76EEC8EAA",
   "location": "France métropolitaine",
@@ -3987,24 +4417,33 @@
   "date": "2026-10-30",
   "high_sensitivity_data_exposed": false,
   "id": "INC-B8A2C026BAC1",
-  "location": "Inconnu",
+  "location": "France métropolitaine",
   "org": "Monceau Fleurs",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Commerce / Distribution",
   "sector_status": {
-   "reason": "ACTIVITY_TAXONOMY_UNRESOLVED",
-   "status": "unknown"
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/monceau-fleurs-mwcjxgef1vk3k83cnmx",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
   },
   "source_links": [
    {
     "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/monceau-fleurs-une-cyberattaque-expose-les-donnees-clients-de-quatre-enseignes-du-groupe-emova/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/monceau-fleurs-mwcjxgef1vk3k83cnmx"
    }
   ],
   "sources": [
-   "CYBERATTAQUE_ORG"
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
   ],
   "summary": "Une cyberattaque chez un prestataire a permis l'extraction de données clients des enseignes du groupe Emova, dont Monceau Fleurs.",
   "threat": "Fuite de données",
@@ -9363,259 +9802,6 @@
    "FRENCHBREACHES"
   ],
   "summary": "BodySwap : les données de 10 309 utilisateurs du service d’images pour adultes en fuite",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "confirmed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-13",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-DFBEB9D7610E",
-  "location": "France métropolitaine",
-  "org": "Valode & Pistre",
-  "organisation_links": [],
-  "personal_data_exposed": false,
-  "sector": "Services aux entreprises",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Professional Services",
-   "evidence_url": "http://pnzruro7syvwvefx5mpo2fhzi4jftgquynsqf3vy5x3no57yp2iz4nyd.onion/company/valode-pistre",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "pnzruro7syvwvefx5mpo2fhzi4jftgquynsqf3vy5x3no57yp2iz4nyd.onion",
-    "source": "RANSOMWARE_LIVE",
-    "url": "http://pnzruro7syvwvefx5mpo2fhzi4jftgquynsqf3vy5x3no57yp2iz4nyd.onion/company/valode-pistre"
-   }
-  ],
-  "sources": [
-   "RANSOMWARE_LIVE"
-  ],
-  "summary": "",
-  "threat": "Ransomware",
-  "threat_status": {
-   "status": "claimed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
-  "date": "2026-10-13",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-CEAB26927F32",
-  "location": "France métropolitaine",
-  "org": "France Utilitaires",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Commerce",
-   "evidence_url": "https://frenchbreaches.com/alertes/france-utilitaires-mv5xi5w8a4r8mr0wsxg",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/france-utilitaires-pres-de-10-000-comptes-clients-exposes-apres-une-cyberattaque/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/france-utilitaires-mv5xi5w8a4r8mr0wsxg"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "France Utilitaires : près de 10 000 comptes clients exposés après une cyberattaque",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
-  "date": "2026-10-13",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-9341E56F0230",
-  "location": "France métropolitaine",
-  "org": "Ecologic France",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Industrie / Manufacture",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Industrie",
-   "evidence_url": "https://frenchbreaches.com/alertes/ecologic-france-mv71q9shbfyhej3662l",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/ecologic-france-mv71q9shbfyhej3662l"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "unknown"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-13",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-9108AA77446B",
-  "location": "France métropolitaine",
-  "org": "IAD France",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Commerce",
-   "evidence_url": "https://frenchbreaches.com/alertes/iad-france-mv60poi55e132pdo0yh",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/iad-france-mv60poi55e132pdo0yh"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "unknown"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
-  "date": "2026-10-13",
-  "high_sensitivity_data_exposed": true,
-  "id": "INC-8E26077851C5",
-  "location": "France métropolitaine",
-  "org": "MaQuestionMedicale",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Santé",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Santé",
-   "evidence_url": "https://frenchbreaches.com/alertes/maquestionmedicale-mv5zlw7q3bikze9keg7",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/maquestionmedicale-369-899-echanges-de-teleconsultation-mis-en-vente-sur-le-darkweb/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/maquestionmedicale-mv5zlw7q3bikze9keg7"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "MaQuestionMedicale : 369 899 échanges de téléconsultation mis en vente sur le darkweb",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "unknown"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
-  "date": "2026-10-13",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-82D3BE3E095E",
-  "location": "Inconnu",
-  "org": "Ecologic",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Inconnu",
-  "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/ecologic-46-467-lignes-exposent-des-comptes-utilisateurs-et-des-incidents-internes/"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG"
-  ],
-  "summary": "Ecologic : 46 467 lignes exposent des comptes utilisateurs et des incidents internes",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "unknown"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-13",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-1CDA6F2D1E3B",
-  "location": "France métropolitaine",
-  "org": "WeFix",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Commerce",
-   "evidence_url": "https://frenchbreaches.com/alertes/wefix-mv71ytsbqzi558m93c",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/wefix-6-009-dossiers-de-reparation-en-fuite-apres-une-cyberattaque/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/wefix-mv71ytsbqzi558m93c"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "WeFix : 6 009 dossiers de réparation en fuite après une cyberattaque",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "confirmed"
