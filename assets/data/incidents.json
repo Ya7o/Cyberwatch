@@ -2,6 +2,191 @@
  {
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
+  "date": "2026-11-13",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-026EAF294728",
+  "location": "France métropolitaine",
+  "org": "CHU de Reims",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Santé"
+   ],
+   "evidence": "Le Centre hospitalier universitaire de Reims est l’un des principaux établissements de santé de la région Grand Est. Implanté dans la Marne, il assure des missions de soins, d’enseignement et de recherche.",
+   "evidence_url": "https://www.cyberattaque.org/chu-de-reims-des-donnees-de-patients-exposees-apres-la-cyberattaque-dun-logiciel/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/chu-de-reims-des-donnees-de-patients-exposees-apres-la-cyberattaque-dun-logiciel/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/chu-de-reims-via-softway-medical-mwewyeju95i6tlgwbfq"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Le CHU de Reims signale une exposition de données de patients liée à la cyberattaque de l'éditeur Softway Medical.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-13",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-013B23C8E538",
+  "location": "France métropolitaine",
+  "org": "Cuisine Addict",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/cuisine-addict-mwf11w4zqatdts3ihj",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/cuisine-addict.png"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/cuisine-addict-mwf11w4zqatdts3ihj"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE",
+   "FRENCHBREACHES"
+  ],
+  "summary": "CuisineAddict signale une tentative d'accès non autorisé à ses systèmes et indique que des données clients auraient potentiellement été dérobées.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-13",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-A2EDAE17F0D1",
+  "location": "Inconnu",
+  "org": "CuisineAddict",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Fondé en 2009, CuisineAddict est un site français de commerce électronique spécialisé dans les ustensiles de cuisine, le matériel de pâtisserie et les ingrédients professionnels.",
+   "evidence_url": "https://www.cyberattaque.org/cuisineaddict-victime-dune-cyberattaque-ses-clients-cibles-par-du-phishing/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cuisineaddict-victime-dune-cyberattaque-ses-clients-cibles-par-du-phishing/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "CuisineAddict signale une tentative d'accès non autorisé et recommande à ses clients de changer leurs mots de passe.",
+  "threat": "Phishing / fraude",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-13",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-93026E986785",
+  "location": "France métropolitaine",
+  "org": "Location-Etudiant",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Construction / BTP",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Location-Étudiant permet notamment aux utilisateurs de consulter des annonces immobilières et de contacter des propriétaires ou des gestionnaires de résidences pour obtenir des renseignements. [étiquette source écartée : Éducation]",
+   "evidence_url": "https://frenchbreaches.com/alertes/location-etudiant-mwe6xjvslqe6ohbbzel",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/location-etudiant-mwe6xjvslqe6ohbbzel"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Les données personnelles d'environ 825 000 utilisateurs de Location-Étudiant seraient proposées à la vente sur un forum cybercriminel.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-13",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-1319B6565D55",
+  "location": "France métropolitaine",
+  "org": "Union française des œuvres laïques d'éducation physique",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Éducation / Formation",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Éducation",
+   "evidence_url": "https://frenchbreaches.com/alertes/union-fran-aise-des-uvres-la-ques-d-ducation-physique-ufolep-mweyewmv3xnit6jbgiw",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/union-fran-aise-des-uvres-la-ques-d-ducation-physique-ufolep-mweyewmv3xnit6jbgiw"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Des données personnelles de 564 944 personnes liées à l'UFOLEP seraient proposées à la vente sur un forum cybercriminel.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-11-12",
   "high_sensitivity_data_exposed": false,
   "id": "INC-6F5C0CBD492B",
@@ -27,10 +212,10 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "Une cyberattaque est signalée contre 1001RDV, plateforme française de prise de rendez-vous médicaux, sans confirmation publique des conséquences.",
-  "threat": "Ransomware",
+  "summary": "La plateforme 1001RDV a subi une cyberattaque le 12 novembre 2026, limitée selon l'éditeur au site vitrine WordPress.",
+  "threat": "DDoS",
   "threat_status": {
-   "status": "confirmed"
+   "status": "reported"
   }
  },
  {
@@ -92,7 +277,7 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "ARTE : 643 760 fiches diffusées avec des données d’élèves et d’enseignants après une cyberattaque",
+  "summary": "643 760 fiches attribuées à ARTE diffusées publiquement après la revendication d'un pirate, incluant des comptes Educ'ARTE et 57 962 jetons de confirmation.",
   "threat": "Intrusion",
   "threat_status": {
    "status": "reported"
@@ -197,10 +382,189 @@
    "CYBERATTAQUE_ORG",
    "RANSOMWARE_LIVE"
   ],
-  "summary": "Groupe Alternance : un ransomware menace le réseau de 70 campus après une cyberattaque",
+  "summary": "Groupe Alternance apparaît parmi les nouvelles cibles revendiquées par le groupe de ransomware The Gentlemen.",
   "threat": "Ransomware",
   "threat_status": {
    "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-12",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-F381855AEDA3",
+  "location": "France métropolitaine",
+  "org": "HomeMaison",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/homemaison-mwdvazyv3mb86n3dls6",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/homemaison-sylius-cyberattaque-million-demails-revendiques-dans-une-fuite-massive/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/homemaison-mwdvazyv3mb86n3dls6"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Un hacker revendique la mise en vente d'une base attribuée à HomeMaison contenant environ 1,6 million d'emails et 330 000 mots de passe en clair.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-12",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-ACDF33488003",
+  "location": "France métropolitaine",
+  "org": "La Rez",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Hébergement / Tourisme / Restauration",
+  "sector_status": {
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Commerce / Distribution"
+   ],
+   "evidence": "La Rez est une résidence étudiante située à Vandœuvre-lès-Nancy, en Meurthe-et-Moselle, à proximité des grandes écoles d’ingénieurs de Lorraine INP.",
+   "evidence_url": "https://www.cyberattaque.org/cyberattaque-la-rez-des-milliers-de-dossiers-de-locataires-diffuses-avec-des-iban/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-la-rez-des-milliers-de-dossiers-de-locataires-diffuses-avec-des-iban/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/la-rez-mwdv3l7xq5l0ihms94l"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "La Rez : environ 3 000 enregistrements attribués diffusés, incluant identités, adresses, IBAN et mots de passe en clair.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-12",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-910F29242B2C",
+  "location": "France métropolitaine",
+  "org": "LaSante.net",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Santé",
+   "evidence_url": "https://frenchbreaches.com/alertes/lasante-net-mwdnilalmh5f4qoohd",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/lasante-net-mwdnilalmh5f4qoohd"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-12",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-D09D20EA2543",
+  "location": "France métropolitaine",
+  "org": "Macif",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/macif-2.png"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE"
+  ],
+  "summary": "BonjourLaFuite signale une fuite de données concernant Macif.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-12",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-B2A4A687E3F0",
+  "location": "Inconnu",
+  "org": "Macif Avantages",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/macif-avantages-une-cyberattaque-chez-qwertys-expose-les-donnees-personnelles-de-clients-de-lassureur/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "La Macif confirme l'exposition des données personnelles de certains clients après une cyberattaque visant son prestataire Qwertys.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
   }
  },
  {
@@ -233,6 +597,40 @@
   ],
   "summary": "Ministère des Affaires étrangères : une cyberattaque expose les données personnelles d’agents et d’usagers",
   "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-12",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-068CAEB32D8C",
+  "location": "France métropolitaine",
+  "org": "Qwertys",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Finance / Assurance",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Finance",
+   "evidence_url": "https://frenchbreaches.com/alertes/macif-avantages-qwertys-mwdsq50je5xpxp9xx7",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/macif-avantages-qwertys-mwdsq50je5xpxp9xx7"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Fuite de données chez Qwertys, partenaire de la Macif, exposant noms, prénoms, adresses postales, emails et dates de naissance.",
+  "threat": "Fuite de données",
   "threat_status": {
    "status": "confirmed"
   }
@@ -4144,15 +4542,21 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/qare-une-cyberattaque-expose-les-donnees-de-patients-du-geant-francais-de-la-teleconsultation/"
+   },
+   {
     "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/qare-mwdouz7ym8s0q1o7h4"
    }
   ],
   "sources": [
+   "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Qare confirme une cyberattaque le 31 octobre 2026 ayant exposé des données personnelles de comptes utilisateurs.",
+  "summary": "Qare confirme une cyberattaque du 31 octobre 2026 ayant permis l'accès non autorisé à certaines données personnelles de patients.",
   "threat": "Intrusion",
   "threat_status": {
    "status": "confirmed"

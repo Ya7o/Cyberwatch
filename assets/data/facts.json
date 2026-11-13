@@ -28,6 +28,30 @@
   ],
   "version": 3
  },
+ "INC-013B23C8E538": {
+  "display_summary": "CuisineAddict signale une tentative d'accès non autorisé à ses systèmes et indique que des données clients auraient potentiellement été dérobées.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES",
+      "BONJOURLAFUITE"
+     ],
+     "specifics": [
+      "Mot de passe"
+     ],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "CuisineAddict indique avoir subi une tentative d'accès non autorisé à ses systèmes informatiques.",
+   "L'entreprise reconnaît que des informations personnelles, dont des mots de passe, ont potentiellement été dérobées."
+  ],
+  "version": 3
+ },
  "INC-015E0D4D14C0": {
   "display_summary": "Un pirate revendique l'exfiltration d'environ 1,69 Go de données visant l’AFTT et la FRBTT, incluant 66 852 adhérents et 17 441 utilisateurs.",
   "sensitive_data": {
@@ -82,6 +106,14 @@
    "vulnerable_people": false
   },
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-026EAF294728": {
+  "display_summary": "Le CHU de Reims signale une exposition de données de patients liée à la cyberattaque de l'éditeur Softway Medical.",
+  "summary_paragraphs": [
+   "Le CHU de Reims a été informé d'une violation de données personnelles survenue chez Softway Medical Imaging.",
+   "La solution touchée permettait aux patients de consulter leurs résultats d'imagerie et concernait des prises en charge entre octobre 2019 et avril 2026."
+  ],
   "version": 3
  },
  "INC-02896BC656BE": {
@@ -198,6 +230,27 @@
  "INC-06066B2EEF57": {
   "display_summary": "Grande Loge Traditionnelle de France (GLTF)",
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-068CAEB32D8C": {
+  "display_summary": "Fuite de données chez Qwertys, partenaire de la Macif, exposant noms, prénoms, adresses postales, emails et dates de naissance.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "La Macif informe qu'un partenaire, Qwertys, a été victime d'un incident de sécurité exposant des données personnelles d'utilisateurs.",
+   "Les données exposées comprennent noms, prénoms, adresses postales, adresses email et dates de naissance, sans données bancaires ni identifiants compromis."
+  ],
   "version": 3
  },
  "INC-06AC2A6F5725": {
@@ -561,6 +614,14 @@
   "summary_paragraphs": [
    "Des pirates affirment avoir compromis des serveurs associés à Logicielnet et récupéré 22,7 Go de données potentiellement liées à 9 016 504 patients.",
    "La revendication n'est pas confirmée indépendamment et la capture ne permet pas de vérifier l'authenticité des fichiers ni la date ou la méthode de l'intrusion."
+  ],
+  "version": 3
+ },
+ "INC-1319B6565D55": {
+  "display_summary": "Des données personnelles de 564 944 personnes liées à l'UFOLEP seraient proposées à la vente sur un forum cybercriminel.",
+  "summary_paragraphs": [
+   "Un pirate affirme détenir et vendre une base de données attribuée à l'UFOLEP contenant 564 944 enregistrements et a publié des échantillons.",
+   "Les échantillons publiés montrent noms, prénoms, dates de naissance, emails, téléphones et adresses postales, dont des fiches concernant des mineurs."
   ],
   "version": 3
  },
@@ -1424,7 +1485,7 @@
   "version": 3
  },
  "INC-30587B962720": {
-  "display_summary": "Groupe Alternance : un ransomware menace le réseau de 70 campus après une cyberattaque",
+  "display_summary": "Groupe Alternance apparaît parmi les nouvelles cibles revendiquées par le groupe de ransomware The Gentlemen.",
   "summary_paragraphs": [
    "The Gentlemen a ajouté Groupe Alternance à son site de revendications le 11 novembre 2026 avec un compte à rebours.",
    "Aucun fichier volé n’a cependant été publié pour le moment et l'authenticité de l'intrusion n'est pas établie."
@@ -3344,10 +3405,10 @@
   "version": 3
  },
  "INC-6F5C0CBD492B": {
-  "display_summary": "Une cyberattaque est signalée contre 1001RDV, plateforme française de prise de rendez-vous médicaux, sans confirmation publique des conséquences.",
+  "display_summary": "La plateforme 1001RDV a subi une cyberattaque le 12 novembre 2026, limitée selon l'éditeur au site vitrine WordPress.",
   "summary_paragraphs": [
-   "Une cyberattaque est signalée contre 1001RDV, plateforme française de prise de rendez-vous médicaux, sans détails publics sur nature, périmètre ou conséquences.",
-   "Les recherches n’ont pas permis d’obtenir de confirmation publique détaillant la nature de l’attaque, son périmètre ou ses conséquences."
+   "Logicielnet reconnaît que son site internet 1001rdv.com a été victime d’une cyberattaque le 12 novembre 2026.",
+   "L’incident aurait exclusivement concerné le site vitrine développé sous WordPress, temporairement mis hors ligne."
   ],
   "version": 3
  },
@@ -3759,7 +3820,7 @@
   "version": 3
  },
  "INC-78FAA10FA9DA": {
-  "display_summary": "ARTE : 643 760 fiches diffusées avec des données d’élèves et d’enseignants après une cyberattaque",
+  "display_summary": "643 760 fiches attribuées à ARTE diffusées publiquement après la revendication d'un pirate, incluant des comptes Educ'ARTE et 57 962 jetons de confirmation.",
   "summary_paragraphs": [
    "Une base de données attribuée à ARTE a été diffusée par le hacker Chimera le 11 novembre 2026.",
    "L’analyse relève 643 760 fiches, 57 962 jetons de confirmation et plus de 170 000 enregistrements associés à des comptes Educ’ARTE."
@@ -4644,6 +4705,42 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-910F29242B2C": {
+  "display_summary": "",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données de santé"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "confirmed",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Un pirate a publié le 12 novembre 2026 une annonce proposant à la vente une base de données attribuée à LaSante.net contenant 430 556 lignes."
+  ],
+  "version": 3
+ },
  "INC-911E74AADDEB": {
   "display_summary": "Greffe du Tribunal de Paris : des adresses privées et données familiales de juges en fuite",
   "summary_paragraphs": [],
@@ -4694,6 +4791,24 @@
  },
  "INC-922ADE9AC953": {
   "display_summary": "Grande Pharmacie des Halles : les ordonnances de patients diffusées après une cyberattaque",
+  "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-93026E986785": {
+  "display_summary": "Les données personnelles d'environ 825 000 utilisateurs de Location-Étudiant seraient proposées à la vente sur un forum cybercriminel.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [],
   "version": 3
  },
@@ -4919,7 +5034,9 @@
  },
  "INC-9E3A7748C51D": {
   "display_summary": "L’ANSSI rapporte que 25 des 30 académies de l’Éducation nationale ont été visées par des incidents de sécurité entre juillet et septembre 2026.",
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "L’ANSSI rapporte que 25 des 30 académies de l’Éducation nationale ont été visées par des incidents de sécurité entre juillet et septembre 2026."
+  ],
   "version": 3
  },
  "INC-9EE84A2D2888": {
@@ -5032,6 +5149,27 @@
   "summary_paragraphs": [
    "Le hacker Venus1337 affirme avoir récupéré 57 109 enregistrements et accédé aux factures du service de location.",
    "L’analyse du fichier par Cyberattaque.org a identifié 57 108 enregistrements exploitables et 41 740 adresses email distinctes."
+  ],
+  "version": 3
+ },
+ "INC-A2EDAE17F0D1": {
+  "display_summary": "CuisineAddict signale une tentative d'accès non autorisé et recommande à ses clients de changer leurs mots de passe.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "CuisineAddict indique avoir été victime d’une tentative d’accès non autorisé et affirme l’avoir déjouée.",
+   "L’entreprise recommande aux clients de modifier leurs mots de passe et signale des emails frauduleux de paiement PayPal."
   ],
   "version": 3
  },
@@ -5291,15 +5429,16 @@
   "version": 3
  },
  "INC-ACB3324A1F08": {
-  "display_summary": "Qare confirme une cyberattaque le 31 octobre 2026 ayant exposé des données personnelles de comptes utilisateurs.",
+  "display_summary": "Qare confirme une cyberattaque du 31 octobre 2026 ayant permis l'accès non autorisé à certaines données personnelles de patients.",
   "sensitive_data": {
    "types": [
     {
      "sources": [
+      "CYBERATTAQUE_ORG",
       "FRENCHBREACHES"
      ],
      "specifics": [],
-     "status": "claimed",
+     "status": "reported",
      "value": "données de santé"
     }
    ],
@@ -5308,6 +5447,37 @@
   "summary_paragraphs": [
    "Qare indique qu'un tiers non autorisé a accédé à certaines données personnelles associées aux comptes utilisateurs.",
    "Les données potentiellement exposées comprennent noms, adresses email, numéros de téléphone et dates de naissance."
+  ],
+  "version": 3
+ },
+ "INC-ACDF33488003": {
+  "display_summary": "La Rez : environ 3 000 enregistrements attribués diffusés, incluant identités, adresses, IBAN et mots de passe en clair.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "confirmed",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "confirmed",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Un pirate revendique la publication d'environ 3 000 enregistrements attribués à La Rez, avec IBAN et mots de passe en clair.",
+   "L'authenticité des données et les circonstances de leur obtention n'ont pas été confirmées indépendamment."
   ],
   "version": 3
  },
@@ -5545,6 +5715,14 @@
   "summary_paragraphs": [
    "Un pirate a annoncé la diffusion gratuite d'une base de 16 425 fiches clients attribuées à France Bourse.",
    "Les extraits consultés indiquent des noms, adresses, e‑mails, téléphones, mots de passe et informations sur les revenus, mais l'authenticité reste à confirmer."
+  ],
+  "version": 3
+ },
+ "INC-B2A4A687E3F0": {
+  "display_summary": "La Macif confirme l'exposition des données personnelles de certains clients après une cyberattaque visant son prestataire Qwertys.",
+  "summary_paragraphs": [
+   "Un cybercriminel a accédé aux noms, prénoms, adresses postales, adresses email et dates de naissance de bénéficiaires via une attaque contre Qwertys.",
+   "La Macif indique que coordonnées bancaires, identifiants de connexion et contrats d’assurance ne sont pas concernés."
   ],
   "version": 3
  },
@@ -6471,6 +6649,14 @@
   "summary_paragraphs": [
    "Un hacker affirme détenir 2 249 970 lignes de données liées à Citya et près de 50 000 digicodes.",
    "Snexi avait reconnu une violation de données personnelles après l’attaque, citant noms, e‑mails, adresses et téléphones mais pas de données financières."
+  ],
+  "version": 3
+ },
+ "INC-D09D20EA2543": {
+  "display_summary": "BonjourLaFuite signale une fuite de données concernant Macif.",
+  "summary_paragraphs": [
+   "BonjourLaFuite signale une fuite de données concernant Macif.",
+   "Les données indiquées comprennent : Nom, prénom ; Adresse postale ; Adresse email ; Date de naissance."
   ],
   "version": 3
  },
@@ -7719,6 +7905,28 @@
   "summary_paragraphs": [
    "Un cybercriminel affirme mettre en vente une base de données associée au domaine afpa.fr contenant 971 420 enregistrements revendiqués.",
    "L’origine et l’authenticité des enregistrements ne sont pas confirmées et la publication pourrait n’être qu’une revendication."
+  ],
+  "version": 3
+ },
+ "INC-F381855AEDA3": {
+  "display_summary": "Un hacker revendique la mise en vente d'une base attribuée à HomeMaison contenant environ 1,6 million d'emails et 330 000 mots de passe en clair.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "confirmed",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Le pirate « Chiméra » affirme avoir récupéré 10,4 Go de fichiers et environ 1,6 million d'adresses email attribués à HomeMaison.",
+   "La revendication reste non confirmée par HomeMaison selon l'article."
   ],
   "version": 3
  },
