@@ -2,6 +2,74 @@
  {
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
+  "date": "2026-11-14",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-1287BAEB9F29",
+  "location": "France métropolitaine",
+  "org": "1001RDV Santé",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Santé",
+   "evidence_url": "https://frenchbreaches.com/alertes/1001rdv-sant-logicielnet-mwdia94d23smfjnrr15",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/1001rdv-sant-logicielnet-mwdia94d23smfjnrr15"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Les données de plus de 9 millions de patients de 1001RDV Santé sont proposées à la vente par un pirate.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-13",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-979574C4A481",
+  "location": "France métropolitaine",
+  "org": "Centre Hospitalier d'Armentières",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Centre Hospitalier d'Armentières",
+   "evidence_url": "https://frenchbreaches.com/alertes/centre-hospitalier-d-armenti-res-mwfft916jbpzxl5xg0q",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/centre-hospitalier-d-armenti-res-mwfft916jbpzxl5xg0q"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Une ancienne fuite de données du Centre hospitalier d'Armentières de 2024 a été republiée sur un forum de cybercriminalité avec 261 948 enregistrements.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-11-13",
   "high_sensitivity_data_exposed": false,
   "id": "INC-026EAF294728",
@@ -44,6 +112,37 @@
  },
  {
   "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-13",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-D710ACF5DF9D",
+  "location": "France métropolitaine",
+  "org": "Communauté de Communes d'Entre Bièvre et Rhône",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/communaut-de-communes-d-entre-bi-vre-et-rh-ne-mwf9txigpk5flbkvnm"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "La Communauté de communes Entre Bièvre et Rhône fait l'objet d'une revendication de cyberattaque avec divulgation de données.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": true,
   "date": "2026-11-13",
   "high_sensitivity_data_exposed": false,
@@ -76,7 +175,7 @@
    "BONJOURLAFUITE",
    "FRENCHBREACHES"
   ],
-  "summary": "CuisineAddict signale une tentative d'accès non autorisé à ses systèmes et indique que des données clients auraient potentiellement été dérobées.",
+  "summary": "Le site CuisineAddict a signalé une tentative d'accès non autorisé pouvant avoir entraîné le vol potentiel de données clients.",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "confirmed"
@@ -118,7 +217,47 @@
  },
  {
   "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-13",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-81CF6EB04450",
+  "location": "France métropolitaine",
+  "org": "Grand Est Automobiles",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Grand Est Automobiles est l’un des principaux groupes de distribution automobile en Alsace. Basé à Schiltigheim, près de Strasbourg, il dispose de 48 concessions et emploie environ 1 100 collaborateurs.",
+   "evidence_url": "https://www.cyberattaque.org/grand-est-automobiles-plus-de-2-500-fiches-clients-diffusees-avec-leurs-plaques-dimmatriculation-et-adresses/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/grand-est-automobiles-plus-de-2-500-fiches-clients-diffusees-avec-leurs-plaques-dimmatriculation-et-adresses/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/grand-est-automobiles-mwf8zgypdbx61epdqx5"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Grand Est Automobiles : plus de 2 500 fiches clients diffusées avec leurs plaques d’immatriculation et adresses",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-11-13",
   "high_sensitivity_data_exposed": false,
   "id": "INC-93026E986785",
@@ -154,7 +293,7 @@
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
   "date": "2026-11-13",
-  "high_sensitivity_data_exposed": false,
+  "high_sensitivity_data_exposed": true,
   "id": "INC-1319B6565D55",
   "location": "France métropolitaine",
   "org": "Union française des œuvres laïques d'éducation physique",
@@ -178,7 +317,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Des données personnelles de 564 944 personnes liées à l'UFOLEP seraient proposées à la vente sur un forum cybercriminel.",
+  "summary": "Les données personnelles de plus de 564 000 personnes liées à l'UFOLEP seraient proposées à la vente sur un forum cybercriminel.",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "unknown"
@@ -220,40 +359,6 @@
  },
  {
   "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
-  "date": "2026-11-12",
-  "high_sensitivity_data_exposed": true,
-  "id": "INC-1287BAEB9F29",
-  "location": "France métropolitaine",
-  "org": "1001RDV Santé",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Santé",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Santé",
-   "evidence_url": "https://frenchbreaches.com/alertes/1001rdv-sant-logicielnet-mwdia94d23smfjnrr15",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/1001rdv-sant-logicielnet-mwdia94d23smfjnrr15"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "1001RDV Santé (Logicielnet)",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "unknown"
-  }
- },
- {
-  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
   "date": "2026-11-12",
   "high_sensitivity_data_exposed": false,
@@ -262,10 +367,13 @@
   "org": "ARTE",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Culture / Médias / Loisirs",
   "sector_status": {
-   "reason": "ACTIVITY_TAXONOMY_UNRESOLVED",
-   "status": "unknown"
+   "confidence": 0.8,
+   "evidence": "ARTE est une chaîne de télévision publique franco-allemande créée en 1990 et diffusée depuis 1992. Basée à Strasbourg, elle propose des documentaires, des films, des séries et des programmes culturels sur sa chaîne et sa plateforme arte.tv.",
+   "evidence_url": "https://www.cyberattaque.org/arte-643-760-fiches-diffusees-avec-des-donnees-deleves-et-denseignants-apres-une-cyberattaque/",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
   },
   "source_links": [
    {
@@ -320,11 +428,11 @@
   "personal_data_exposed": true,
   "sector": "Transport / Logistique",
   "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Transport",
-   "evidence_url": "https://frenchbreaches.com/alertes/ciblex-mwdghdju6bib09ixczr",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
+   "confidence": 0.8,
+   "evidence": "Fondé en 1977, Ciblex est un transporteur français spécialisé dans la livraison express entre professionnels, dont le siège se trouve à Ivry-sur-Seine, dans le Val-de-Marne.",
+   "evidence_url": "https://www.cyberattaque.org/ciblex-les-coordonnees-et-informations-de-livraison-de-milliers-de-destinataires-exposees/",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
   },
   "source_links": [
    {
@@ -1260,11 +1368,11 @@
   "personal_data_exposed": true,
   "sector": "Numérique / Technologie",
   "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Technologie",
+   "confidence": 0.8,
+   "evidence": "Letsignit est une solution spécialisée dans la création et la gestion centralisée des signatures électroniques professionnelles.",
    "evidence_url": "https://frenchbreaches.com/alertes/letsignit-mwb0k7o4zusncty4xf",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
   },
   "source_links": [
    {
@@ -6766,37 +6874,6 @@
   "credentials_or_secrets_exposed": false,
   "date": "2026-10-24",
   "high_sensitivity_data_exposed": false,
-  "id": "INC-C2248ACAC277",
-  "location": "Inconnu",
-  "org": "Le Parti communiste français",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Inconnu",
-  "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/le-parti-communiste-francais-victime-dune-cyberattaque-pres-de-190-000-personnes-exposees/"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG"
-  ],
-  "summary": "Le Parti communiste français victime d’une cyberattaque : près de 190 000 personnes exposées",
-  "threat": "Intrusion",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-24",
-  "high_sensitivity_data_exposed": false,
   "id": "INC-4150ADA99F17",
   "location": "France métropolitaine",
   "org": "Renaissance",
@@ -7051,7 +7128,7 @@
   "high_sensitivity_data_exposed": true,
   "id": "INC-B7F0248C35F0",
   "location": "France métropolitaine",
-  "org": "Parti Communiste Français",
+  "org": "Le Parti communiste français",
   "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Administration / Collectivité",
@@ -7064,18 +7141,24 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/le-parti-communiste-francais-victime-dune-cyberattaque-pres-de-190-000-personnes-exposees/"
+   },
+   {
     "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/parti-communiste-fran-ais-pcf-mvl13xuxyt1dju2rbve"
    }
   ],
   "sources": [
+   "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Parti Communiste Français (PCF)",
-  "threat": "Fuite de données",
+  "summary": "Le Parti communiste français victime d’une cyberattaque : près de 190 000 personnes exposées",
+  "threat": "Intrusion",
   "threat_status": {
-   "status": "unknown"
+   "status": "reported"
   }
  },
  {
@@ -7107,37 +7190,6 @@
    "BONJOURLAFUITE"
   ],
   "summary": "BonjourLaFuite signale une fuite de données concernant Point Vision.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "confirmed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-23",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-6FDE34AF395B",
-  "location": "France métropolitaine",
-  "org": "Tailleur Auto",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Inconnu",
-  "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
-  },
-  "source_links": [
-   {
-    "label": "BonjourLaFuite",
-    "source": "BONJOURLAFUITE",
-    "url": "https://bonjourlafuite.eu.org/img/tailleur-auto.png"
-   }
-  ],
-  "sources": [
-   "BONJOURLAFUITE"
-  ],
-  "summary": "BonjourLaFuite signale une fuite de données concernant Tailleur Auto.",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "confirmed"
@@ -10005,18 +10057,24 @@
   },
   "source_links": [
    {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/tailleur-auto.png"
+   },
+   {
     "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/tailleur-auto-mv9fdaoyn4mk3ep2ta8"
    }
   ],
   "sources": [
+   "BONJOURLAFUITE",
    "FRENCHBREACHES"
   ],
-  "summary": "",
+  "summary": "TailleurAuto signale un code malveillant sur sa page de commande ayant potentiellement intercepté des données personnelles de clients.",
   "threat": "Fuite de données",
   "threat_status": {
-   "status": "unknown"
+   "status": "confirmed"
   }
  },
  {
@@ -21180,6 +21238,40 @@
   "threat": "Fuite de données",
   "threat_status": {
    "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2022-10-13",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-AEE560CCAC9D",
+  "location": "Inconnu",
+  "org": "Entre Bièvre et Rhône",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Entre Bièvre et Rhône est une intercommunalité de 37 communes , comme l’indique son site officiel.",
+   "evidence_url": "https://www.cyberattaque.org/entre-bievre-et-rhone-les-serveurs-de-lintercommunalite-pilles-par-des-hackers-apres-une-cyberattaque/",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/entre-bievre-et-rhone-les-serveurs-de-lintercommunalite-pilles-par-des-hackers-apres-une-cyberattaque/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Les serveurs de l’intercommunalité Entre Bièvre et Rhône ont été revendiqués comme pillés par des hackers avec des fichiers contenant des données personnelles.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "reported"
   }
  }
 ]

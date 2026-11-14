@@ -1,6 +1,71 @@
 [
  {
   "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-14",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-1287BAEB9F29",
+  "location": "France métropolitaine",
+  "org": "1001RDV Santé",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Santé",
+   "evidence_url": "https://frenchbreaches.com/alertes/1001rdv-sant-logicielnet-mwdia94d23smfjnrr15",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/1001rdv-sant-logicielnet-mwdia94d23smfjnrr15"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Les données de plus de 9 millions de patients de 1001RDV Santé sont proposées à la vente par un pirate.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-13",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-D710ACF5DF9D",
+  "location": "France métropolitaine",
+  "org": "Communauté de Communes d'Entre Bièvre et Rhône",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/communaut-de-communes-d-entre-bi-vre-et-rh-ne-mwf9txigpk5flbkvnm"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "La Communauté de communes Entre Bièvre et Rhône fait l'objet d'une revendication de cyberattaque avec divulgation de données.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": true,
   "date": "2026-11-13",
   "high_sensitivity_data_exposed": false,
@@ -35,7 +100,41 @@
  },
  {
   "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-13",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-979574C4A481",
+  "location": "France métropolitaine",
+  "org": "Centre Hospitalier d'Armentières",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Centre Hospitalier d'Armentières",
+   "evidence_url": "https://frenchbreaches.com/alertes/centre-hospitalier-d-armenti-res-mwfft916jbpzxl5xg0q",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/centre-hospitalier-d-armenti-res-mwfft916jbpzxl5xg0q"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Une ancienne fuite de données du Centre hospitalier d'Armentières de 2024 a été republiée sur un forum de cybercriminalité avec 261 948 enregistrements.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-11-13",
   "high_sensitivity_data_exposed": false,
   "id": "INC-93026E986785",
@@ -72,6 +171,46 @@
   "credentials_or_secrets_exposed": false,
   "date": "2026-11-13",
   "high_sensitivity_data_exposed": false,
+  "id": "INC-81CF6EB04450",
+  "location": "France métropolitaine",
+  "org": "Grand Est Automobiles",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Grand Est Automobiles est l’un des principaux groupes de distribution automobile en Alsace. Basé à Schiltigheim, près de Strasbourg, il dispose de 48 concessions et emploie environ 1 100 collaborateurs.",
+   "evidence_url": "https://www.cyberattaque.org/grand-est-automobiles-plus-de-2-500-fiches-clients-diffusees-avec-leurs-plaques-dimmatriculation-et-adresses/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/grand-est-automobiles-plus-de-2-500-fiches-clients-diffusees-avec-leurs-plaques-dimmatriculation-et-adresses/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/grand-est-automobiles-mwf8zgypdbx61epdqx5"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Grand Est Automobiles : plus de 2 500 fiches clients diffusées avec leurs plaques d’immatriculation et adresses",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-13",
+  "high_sensitivity_data_exposed": true,
   "id": "INC-1319B6565D55",
   "location": "France métropolitaine",
   "org": "Union française des œuvres laïques d'éducation physique",
@@ -95,7 +234,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Des données personnelles de 564 944 personnes liées à l'UFOLEP seraient proposées à la vente sur un forum cybercriminel.",
+  "summary": "Les données personnelles de plus de 564 000 personnes liées à l'UFOLEP seraient proposées à la vente sur un forum cybercriminel.",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "unknown"
@@ -178,7 +317,7 @@
    "BONJOURLAFUITE",
    "FRENCHBREACHES"
   ],
-  "summary": "CuisineAddict signale une tentative d'accès non autorisé à ses systèmes et indique que des données clients auraient potentiellement été dérobées.",
+  "summary": "Le site CuisineAddict a signalé une tentative d'accès non autorisé pouvant avoir entraîné le vol potentiel de données clients.",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "confirmed"
@@ -326,11 +465,11 @@
   "personal_data_exposed": true,
   "sector": "Transport / Logistique",
   "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Transport",
-   "evidence_url": "https://frenchbreaches.com/alertes/ciblex-mwdghdju6bib09ixczr",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
+   "confidence": 0.8,
+   "evidence": "Fondé en 1977, Ciblex est un transporteur français spécialisé dans la livraison express entre professionnels, dont le siège se trouve à Ivry-sur-Seine, dans le Val-de-Marne.",
+   "evidence_url": "https://www.cyberattaque.org/ciblex-les-coordonnees-et-informations-de-livraison-de-milliers-de-destinataires-exposees/",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
   },
   "source_links": [
    {
@@ -537,10 +676,13 @@
   "org": "ARTE",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Culture / Médias / Loisirs",
   "sector_status": {
-   "reason": "ACTIVITY_TAXONOMY_UNRESOLVED",
-   "status": "unknown"
+   "confidence": 0.8,
+   "evidence": "ARTE est une chaîne de télévision publique franco-allemande créée en 1990 et diffusée depuis 1992. Basée à Strasbourg, elle propose des documentaires, des films, des séries et des programmes culturels sur sa chaîne et sa plateforme arte.tv.",
+   "evidence_url": "https://www.cyberattaque.org/arte-643-760-fiches-diffusees-avec-des-donnees-deleves-et-denseignants-apres-une-cyberattaque/",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
   },
   "source_links": [
    {
@@ -658,40 +800,6 @@
   "threat": "Ransomware",
   "threat_status": {
    "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
-  "date": "2026-11-12",
-  "high_sensitivity_data_exposed": true,
-  "id": "INC-1287BAEB9F29",
-  "location": "France métropolitaine",
-  "org": "1001RDV Santé",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Santé",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Santé",
-   "evidence_url": "https://frenchbreaches.com/alertes/1001rdv-sant-logicielnet-mwdia94d23smfjnrr15",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/1001rdv-sant-logicielnet-mwdia94d23smfjnrr15"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "1001RDV Santé (Logicielnet)",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "unknown"
   }
  },
  {
@@ -1307,11 +1415,11 @@
   "personal_data_exposed": true,
   "sector": "Numérique / Technologie",
   "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Technologie",
+   "confidence": 0.8,
+   "evidence": "Letsignit est une solution spécialisée dans la création et la gestion centralisée des signatures électroniques professionnelles.",
    "evidence_url": "https://frenchbreaches.com/alertes/letsignit-mwb0k7o4zusncty4xf",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
   },
   "source_links": [
    {
@@ -6695,37 +6803,6 @@
   "credentials_or_secrets_exposed": false,
   "date": "2026-10-24",
   "high_sensitivity_data_exposed": false,
-  "id": "INC-C2248ACAC277",
-  "location": "Inconnu",
-  "org": "Le Parti communiste français",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Inconnu",
-  "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/le-parti-communiste-francais-victime-dune-cyberattaque-pres-de-190-000-personnes-exposees/"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG"
-  ],
-  "summary": "Le Parti communiste français victime d’une cyberattaque : près de 190 000 personnes exposées",
-  "threat": "Intrusion",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-24",
-  "high_sensitivity_data_exposed": false,
   "id": "INC-5047691EB008",
   "location": "France métropolitaine",
   "org": "Vins Viallet",
@@ -6940,7 +7017,7 @@
   "high_sensitivity_data_exposed": true,
   "id": "INC-B7F0248C35F0",
   "location": "France métropolitaine",
-  "org": "Parti Communiste Français",
+  "org": "Le Parti communiste français",
   "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Administration / Collectivité",
@@ -6953,18 +7030,24 @@
   },
   "source_links": [
    {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/le-parti-communiste-francais-victime-dune-cyberattaque-pres-de-190-000-personnes-exposees/"
+   },
+   {
     "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/parti-communiste-fran-ais-pcf-mvl13xuxyt1dju2rbve"
    }
   ],
   "sources": [
+   "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Parti Communiste Français (PCF)",
-  "threat": "Fuite de données",
+  "summary": "Le Parti communiste français victime d’une cyberattaque : près de 190 000 personnes exposées",
+  "threat": "Intrusion",
   "threat_status": {
-   "status": "unknown"
+   "status": "reported"
   }
  },
  {
@@ -7030,37 +7113,6 @@
   "threat": "Fuite de données",
   "threat_status": {
    "status": "unknown"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-23",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-6FDE34AF395B",
-  "location": "France métropolitaine",
-  "org": "Tailleur Auto",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Inconnu",
-  "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
-  },
-  "source_links": [
-   {
-    "label": "BonjourLaFuite",
-    "source": "BONJOURLAFUITE",
-    "url": "https://bonjourlafuite.eu.org/img/tailleur-auto.png"
-   }
-  ],
-  "sources": [
-   "BONJOURLAFUITE"
-  ],
-  "summary": "BonjourLaFuite signale une fuite de données concernant Tailleur Auto.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "confirmed"
   }
  },
  {
@@ -9703,354 +9755,6 @@
   "threat": "Fuite de données",
   "threat_status": {
    "status": "confirmed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
-  "date": "2026-10-15",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-E57490F0E0D4",
-  "location": "France métropolitaine",
-  "org": "Mairie de Saillans",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Administration / Collectivité",
-  "sector_status": {
-   "confidence": 0.8,
-   "evidence": "Mairie de Saillans",
-   "evidence_url": "https://www.cyberattaque.org/mairie-de-saillans-sa-messagerie-utilisee-pour-envoyer-de-fausses-factures-apres-une-cyberattaque/",
-   "reason": "ORGANISATION_NAME_RULE",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/mairie-de-saillans-sa-messagerie-utilisee-pour-envoyer-de-fausses-factures-apres-une-cyberattaque/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/mairie-de-saillans-mva4u7duoeidk4s95hb"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "Mairie de Saillans : sa messagerie utilisée pour envoyer de fausses factures après une cyberattaque",
-  "threat": "Intrusion",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-15",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-E169348335AE",
-  "location": "France métropolitaine",
-  "org": "Grand Orient de France",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Administration / Collectivité",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "public",
-   "evidence_url": "https://frenchbreaches.com/alertes/grand-orient-de-france-godf-mv9oi8r1g2i8nqlg8uh",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/grand-orient-de-france-godf-mv9oi8r1g2i8nqlg8uh"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "Grand Orient de France (GODF)",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "unknown"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-15",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-D7DA5F0D4FBE",
-  "location": "Inconnu",
-  "org": "La clinique vétérinaire Voltaire à Dijon",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Inconnu",
-  "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/la-clinique-veterinaire-voltaire-a-dijon-victime-dune-cyberattaque/"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG"
-  ],
-  "summary": "La clinique vétérinaire Voltaire à Dijon victime d’une cyberattaque",
-  "threat": "Intrusion",
-  "threat_status": {
-   "status": "confirmed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
-  "date": "2026-10-15",
-  "high_sensitivity_data_exposed": true,
-  "id": "INC-B20D9C9A2C7A",
-  "location": "France métropolitaine",
-  "org": "Couleur CE",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Culture / Médias / Loisirs",
-  "sector_status": {
-   "confidence": 0.8,
-   "evidence": "La plateforme Couleur CE, spécialisée notamment dans la billetterie destinée aux comités sociaux et économiques (CSE), est concernée par un incident de sécurité ayant entraîné une fuite de données personnelles liées aux achats de billets de cinéma. [étiquette source écartée : Commerce]",
-   "evidence_url": "https://frenchbreaches.com/alertes/couleur-ce-mv9tv3s8eqb7umy8io6",
-   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/couleur-ce-des-billets-de-cinema-exposes-apres-une-cyberattaque/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/couleur-ce-mv9tv3s8eqb7umy8io6"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "Couleur CE : des billets de cinéma exposés après une cyberattaque",
-  "threat": "Intrusion",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-15",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-922ADE9AC953",
-  "location": "Inconnu",
-  "org": "Grande Pharmacie des Halles",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Inconnu",
-  "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/grande-pharmacie-des-halles-les-ordonnances-de-patients-diffusees-apres-une-cyberattaque/"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG"
-  ],
-  "summary": "Grande Pharmacie des Halles : les ordonnances de patients diffusées après une cyberattaque",
-  "threat": "Intrusion",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-15",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-6F760CFC7E64",
-  "location": "France métropolitaine",
-  "org": "Tailleur Auto",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Commerce",
-   "evidence_url": "https://frenchbreaches.com/alertes/tailleur-auto-mv9fdaoyn4mk3ep2ta8",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/tailleur-auto-mv9fdaoyn4mk3ep2ta8"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "unknown"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-15",
-  "high_sensitivity_data_exposed": true,
-  "id": "INC-6670B08468DD",
-  "location": "France métropolitaine",
-  "org": "Grande Pharmarcie des Halles",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Santé",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Santé",
-   "evidence_url": "https://frenchbreaches.com/alertes/grande-pharmarcie-des-halles-mv9f3l34xvwhlhz1g7",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/grande-pharmarcie-des-halles-mv9f3l34xvwhlhz1g7"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "unknown"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-15",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-33569EB21902",
-  "location": "La Réunion",
-  "org": "Commune Du Tampon",
-  "organisation_links": [
-   "https://www.letampon.fr"
-  ],
-  "personal_data_exposed": false,
-  "sector": "Administration / Collectivité",
-  "sector_status": {
-   "confidence": 0.8,
-   "evidence": "Commune Du Tampon",
-   "evidence_url": "http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=17857655-4f48-478d-95f2-8b1f5b8cf529",
-   "reason": "ORGANISATION_NAME_RULE",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion",
-    "source": "RANSOMWARE_LIVE",
-    "url": "http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=17857655-4f48-478d-95f2-8b1f5b8cf529"
-   }
-  ],
-  "sources": [
-   "RANSOMWARE_LIVE"
-  ],
-  "summary": "",
-  "threat": "Ransomware",
-  "threat_status": {
-   "status": "claimed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-15",
-  "high_sensitivity_data_exposed": true,
-  "id": "INC-1951E7B97C26",
-  "location": "Inconnu",
-  "org": "TailleurAuto",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
-  "sector_status": {
-   "confidence": 0.8,
-   "evidence": "TailleurAuto, spécialiste français des housses et tapis automobiles sur mesure, informe actuellement certains de ses clients d’un incident…",
-   "evidence_url": "https://www.cyberattaque.org/cyberattaque-tailleurauto-un-code-malveillant-a-siphonne-les-donnees-saisies-lors-des-commandes/",
-   "reason": "ACTIVITY_RULE",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/cyberattaque-tailleurauto-un-code-malveillant-a-siphonne-les-donnees-saisies-lors-des-commandes/"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG"
-  ],
-  "summary": "TailleurAuto : un code malveillant a siphonné les données saisies lors des commandes",
-  "threat": "Intrusion",
-  "threat_status": {
-   "status": "unknown"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-15",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-135E28CAB136",
-  "location": "France métropolitaine",
-  "org": "ASCOR",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Éducation / Formation",
-  "sector_status": {
-   "confidence": 0.8,
-   "evidence": "ASCOR, organisme français de formation à distance, a été victime d'une fuite de données personnelles liée à une intrusion chez l'un de ses prestataires informatiques.",
-   "evidence_url": "https://frenchbreaches.com/alertes/ascor-mv8mz9u8fiazbkptdgm",
-   "reason": "ACTIVITY_RULE",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/ascor-mv8mz9u8fiazbkptdgm"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "unknown"
   }
  }
 ]

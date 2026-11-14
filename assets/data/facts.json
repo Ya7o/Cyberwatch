@@ -29,7 +29,7 @@
   "version": 3
  },
  "INC-013B23C8E538": {
-  "display_summary": "CuisineAddict signale une tentative d'accès non autorisé à ses systèmes et indique que des données clients auraient potentiellement été dérobées.",
+  "display_summary": "Le site CuisineAddict a signalé une tentative d'accès non autorisé pouvant avoir entraîné le vol potentiel de données clients.",
   "sensitive_data": {
    "types": [
     {
@@ -47,8 +47,7 @@
    "vulnerable_people": false
   },
   "summary_paragraphs": [
-   "CuisineAddict indique avoir subi une tentative d'accès non autorisé à ses systèmes informatiques.",
-   "L'entreprise reconnaît que des informations personnelles, dont des mots de passe, ont potentiellement été dérobées."
+   "Le site français de vente d'ustensiles et d'accessoires de cuisine CuisineAddict a alerté ses clients après une tentative d'accès non autorisé à ses systèmes."
   ],
   "version": 3
  },
@@ -110,10 +109,7 @@
  },
  "INC-026EAF294728": {
   "display_summary": "Le CHU de Reims signale une exposition de données de patients liée à la cyberattaque de l'éditeur Softway Medical.",
-  "summary_paragraphs": [
-   "Le CHU de Reims a été informé d'une violation de données personnelles survenue chez Softway Medical Imaging.",
-   "La solution touchée permettait aux patients de consulter leurs résultats d'imagerie et concernait des prises en charge entre octobre 2019 et avril 2026."
-  ],
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-02896BC656BE": {
@@ -589,7 +585,27 @@
   "version": 3
  },
  "INC-1287BAEB9F29": {
-  "display_summary": "1001RDV Santé (Logicielnet)",
+  "display_summary": "Les données de plus de 9 millions de patients de 1001RDV Santé sont proposées à la vente par un pirate.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "numéros de sécurité sociale"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Les données de plus de 9 millions de patients français seraient proposées à la vente sur un forum cybercriminel par un pirate."
+  ],
+  "version": 3
+ },
+ "INC-1319B6565D55": {
+  "display_summary": "Les données personnelles de plus de 564 000 personnes liées à l'UFOLEP seraient proposées à la vente sur un forum cybercriminel.",
   "sensitive_data": {
    "types": [
     {
@@ -599,29 +615,12 @@
      "specifics": [],
      "status": "unknown",
      "value": "données de santé"
-    },
-    {
-     "sources": [
-      "FRENCHBREACHES"
-     ],
-     "specifics": [],
-     "status": "claimed",
-     "value": "mots de passe"
     }
    ],
    "vulnerable_people": false
   },
   "summary_paragraphs": [
-   "Des pirates affirment avoir compromis des serveurs associés à Logicielnet et récupéré 22,7 Go de données potentiellement liées à 9 016 504 patients.",
-   "La revendication n'est pas confirmée indépendamment et la capture ne permet pas de vérifier l'authenticité des fichiers ni la date ou la méthode de l'intrusion."
-  ],
-  "version": 3
- },
- "INC-1319B6565D55": {
-  "display_summary": "Des données personnelles de 564 944 personnes liées à l'UFOLEP seraient proposées à la vente sur un forum cybercriminel.",
-  "summary_paragraphs": [
-   "Un pirate affirme détenir et vendre une base de données attribuée à l'UFOLEP contenant 564 944 enregistrements et a publié des échantillons.",
-   "Les échantillons publiés montrent noms, prénoms, dates de naissance, emails, téléphones et adresses postales, dont des fiches concernant des mineurs."
+   "Les informations personnelles de plus de 564 000 personnes liées à l'UFOLEP seraient proposées à la vente sur un forum cybercriminel."
   ],
   "version": 3
  },
@@ -1660,7 +1659,9 @@
    ],
    "vulnerable_people": false
   },
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "Un utilisateur prétend avoir publié la base de données attribuée à BodySwap, accessible à l'adresse bodyswap.ai."
+  ],
   "version": 3
  },
  "INC-36BF040BEA60": {
@@ -3413,7 +3414,7 @@
   "version": 3
  },
  "INC-6F760CFC7E64": {
-  "display_summary": "",
+  "display_summary": "TailleurAuto signale un code malveillant sur sa page de commande ayant potentiellement intercepté des données personnelles de clients.",
   "summary_paragraphs": [],
   "version": 3
  },
@@ -3435,14 +3436,6 @@
   "summary_paragraphs": [
    "Salt indique avoir identifié une utilisation abusive d’un accès existant à un système périphérique, sans intrusion dans ses systèmes principaux.",
    "Les données potentiellement concernées comprennent noms, prénoms, adresses postales, numéros de téléphone mobile, dates de naissance et adresses e-mail."
-  ],
-  "version": 3
- },
- "INC-6FDE34AF395B": {
-  "display_summary": "BonjourLaFuite signale une fuite de données concernant Tailleur Auto.",
-  "summary_paragraphs": [
-   "BonjourLaFuite signale une fuite de données concernant Tailleur Auto.",
-   "Les données indiquées comprennent : Nom, prénom ; Adresse postale ; Adresse email ; Numéro de téléphone."
   ],
   "version": 3
  },
@@ -4028,6 +4021,13 @@
    "vulnerable_people": false
   },
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-81CF6EB04450": {
+  "display_summary": "Grand Est Automobiles : plus de 2 500 fiches clients diffusées avec leurs plaques d’immatriculation et adresses",
+  "summary_paragraphs": [
+   "Alduin a publié une base attribuée à Grand Est Automobiles comprenant 2 540 fiches clients et 360 fiches de vendeurs."
+  ],
   "version": 3
  },
  "INC-823A16F66FCB": {
@@ -4796,20 +4796,9 @@
  },
  "INC-93026E986785": {
   "display_summary": "Les données personnelles d'environ 825 000 utilisateurs de Location-Étudiant seraient proposées à la vente sur un forum cybercriminel.",
-  "sensitive_data": {
-   "types": [
-    {
-     "sources": [
-      "FRENCHBREACHES"
-     ],
-     "specifics": [],
-     "status": "unknown",
-     "value": "mots de passe"
-    }
-   ],
-   "vulnerable_people": false
-  },
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "Les données personnelles d'environ 825 000 personnes ayant utilisé Location-Étudiant seraient proposées à la vente sur un forum cybercriminel."
+  ],
   "version": 3
  },
  "INC-9341E56F0230": {
@@ -4915,6 +4904,14 @@
  "INC-973F96955D58": {
   "display_summary": "",
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-979574C4A481": {
+  "display_summary": "Une ancienne fuite de données du Centre hospitalier d'Armentières de 2024 a été republiée sur un forum de cybercriminalité avec 261 948 enregistrements.",
+  "summary_paragraphs": [
+   "Une ancienne fuite de données attribuée au Centre hospitalier d'Armentières en 2024 a refait surface sur un forum de cybercriminalité.",
+   "La republication concerne 261 948 enregistrements."
+  ],
   "version": 3
  },
  "INC-981F34CB9239": {
@@ -5587,6 +5584,34 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-AEE560CCAC9D": {
+  "display_summary": "Les serveurs de l’intercommunalité Entre Bièvre et Rhône ont été revendiqués comme pillés par des hackers avec des fichiers contenant des données personnelles.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "pièces d'identité"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Cyberattaque revendiquée contre Entre Bièvre et Rhône avec des fichiers transmis montrant l’exposition de données personnelles."
+  ],
+  "version": 3
+ },
  "INC-AEF41727FCA2": {
   "display_summary": "",
   "summary_paragraphs": [],
@@ -5861,7 +5886,7 @@
   "version": 3
  },
  "INC-B7F0248C35F0": {
-  "display_summary": "Parti Communiste Français (PCF)",
+  "display_summary": "Le Parti communiste français victime d’une cyberattaque : près de 190 000 personnes exposées",
   "sensitive_data": {
    "types": [
     {
@@ -6154,11 +6179,6 @@
    "Une base attribuée à Renault et contenant environ 12 000 entrées a été publiée sur un forum cybercriminel.",
    "L’échantillon inclut immatriculation, numéro VIN, kilométrage, modèle et d'autres champs, et semble provenir d'un fichier daté de mai 2025."
   ],
-  "version": 3
- },
- "INC-C2248ACAC277": {
-  "display_summary": "Le Parti communiste français victime d’une cyberattaque : près de 190 000 personnes exposées",
-  "summary_paragraphs": [],
   "version": 3
  },
  "INC-C22941539BC1": {
@@ -6764,6 +6784,14 @@
   ],
   "version": 3
  },
+ "INC-D710ACF5DF9D": {
+  "display_summary": "La Communauté de communes Entre Bièvre et Rhône fait l'objet d'une revendication de cyberattaque avec divulgation de données.",
+  "summary_paragraphs": [
+   "La communauté de communes Entre Bièvre et Rhône fait l'objet d'une importante revendication de cyberattaque.",
+   "Des hackers se présentant sous les noms de Blackhatsect0r, DXQR revendiquent la divulgation de données de milliers d'habitants."
+  ],
+  "version": 3
+ },
  "INC-D7D9458445F1": {
   "display_summary": "Gold Service confirme une fuite de données clients liées à des transactions en ligne, certains clients ayant déjà été contactés par des fraudeurs.",
   "summary_paragraphs": [
@@ -7242,7 +7270,10 @@
  },
  "INC-DFEC634D689C": {
   "display_summary": "Climb Up : près de 151 000 profils en vente sur le darkweb après une cyberattaque",
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "Un pirate affirme détenir et proposer à la vente environ 151 000 fiches clients provenant de 29 établissements en France.",
+   "Les données annoncées comprennent notamment des noms, coordonnées, dates de naissance et données relatives aux comptes des adhérents."
+  ],
   "version": 3
  },
  "INC-DFF0558417B7": {
