@@ -6476,6 +6476,421 @@
    "reason": "SEMANTIC_REJECTED"
   },
   {
+   "attempts": 5,
+   "entry": {
+    "content": "Ecologic , éco-organisme français agréé par les pouvoirs publics pour organiser la collecte et le recyclage de plusieurs catégories de déchets, fait l’objet d’une  revendication de fuite de données . Le hacker  Syrv4x  affirme avoir récupéré une base de  46 467 lignes pour environ 32 Mo , qu’il a mise à disposition gratuitement. \n\n\n\n Ce volume ne correspond toutefois pas à 46 467 personnes. La base mélange plusieurs types d’enregistrements et une même personne peut apparaître à plusieurs reprises. D’après l’analyse des données,  environ 12 000 personnes différentes seraient réellement concernées . \n\n\n\n Les données revendiquées ne correspondent pas à un simple fichier de contacts. Elles proviennent visiblement d’un outil métier et mélangent  incidents, partenaires et comptes utilisateurs , avec de nombreux champs internes liés au fonctionnement quotidien d’Ecologic. \n\n\n\n Les fichiers diffusés montrent notamment des fiches d’incidents avec les coordonnées des interlocuteurs, des partenaires avec leurs informations administratives et des utilisateurs avec leur login, leurs coordonnées et une valeur associée au mot de passe. \n\n\n\n   \n\n\n\n 46 467 lignes, environ 12 000 personnes \n\n\n\n Le chiffre avancé par Syrv4x doit donc être interprété avec précaution. Les  46 467 lignes revendiquées représentent des enregistrements  et non autant de victimes uniques. \n\n\n\n Une ligne peut correspondre à un incident, une fiche partenaire ou un compte utilisateur. Un même interlocuteur peut également être rattaché à plusieurs incidents ou apparaître dans plusieurs parties de la base. \n\n\n\n En tenant compte de ces répétitions, le périmètre humain apparaît nettement inférieur au volume brut :  moins de 12 000 personnes distinctes sont concernées . \n\n\n\n Des incidents opérationnels apparaissent dans la fuite revendiquée \n\n\n\n Une partie des enregistrements correspond à des  incidents déclarés dans l’environnement d’Ecologic . \n\n\n\n Les champs publiés prévoient notamment l’identifiant de l’incident, le site concerné, son objet, le nom du contact, son téléphone, son adresse email, une description, son niveau, son statut ainsi que les dates de création et de modification. \n\n\n\n Des zones de commentaires sont également présentes pour documenter la clôture ou l’annulation des incidents. L’un des exemples diffusés par Syrv4x fait ainsi référence à un incident remonté après une collecte en déchèterie, avec les coordonnées de l’interlocuteur et un commentaire interne sur le traitement du dossier. \n\n\n\n La fuite revendiquée pourrait donc exposer non seulement des coordonnées professionnelles, mais aussi une partie des  échanges opérationnels entre Ecologic et les structures intervenant dans la collecte et le traitement des déchets . \n\n\n\n Des collectivités et partenaires dans la base \n\n\n\n Une deuxième catégorie d’enregistrements concerne les  partenaires d’Ecologic . \n\n\n\n Les données revendiquées prévoient notamment le nom de la structure, son adresse, son téléphone, son email, son numéro SIRET ainsi que plusieurs informations administratives liées à son activité. \n\n\n\n Des champs concernent également les numéros ICPE, les récépissés, les déclarations liées aux déchets dangereux, la présence de contrats ou encore différentes informations utilisées dans la gestion des partenaires. \n\n\n\n L’un des exemples publiés concerne ainsi une structure médico-sociale enregistrée comme partenaire, avec ses coordonnées professionnelles et son numéro SIRET. \n\n\n\n Des comptes utilisateurs avec login et valeur de mot de passe \n\n\n\n La partie consacrée aux comptes utilisateurs est plus sensible. \n\n\n\n Les champs annoncés comprennent le  login utilisateur, une valeur associée au mot de passe, le prénom, le nom, l’email, les numéros de téléphone, l’adresse, l’entreprise, la date de création du compte, la dernière connexion  ainsi qu’un indicateur permettant de savoir si le compte dispose de droits administrateur. \n\n\n\n Dans l’un des exemples publiés, un compte professionnel associé à  Castorama  apparaît avec son login, ses coordonnées et une valeur dans le champ  password_utilisateur . Le compte aurait été créé en 2013 puis modifié en 2025. \n\n\n\n Il ne faut toutefois pas présenter ces valeurs comme des mots de passe en clair. Les chaînes publiées ne sont pas directement lisibles et semblent correspondre à une donnée transformée ou chiffrée. Sans connaître précisément le fonctionnement de l’application, impossible d’affirmer si elles peuvent être exploitées pour retrouver le mot de passe d’origine. \n\n\n\n La structure ressemble à une extraction d’un outil métier \n\n\n\n L’organisation des données revendiquées est très différente d’une simple base marketing. \n\n\n\n Les nombreux identifiants techniques reliant  sites, incidents, partenaires et utilisateurs , ainsi que les commentaires internes et les informations de suivi, donnent plutôt l’image d’une extraction provenant d’une application utilisée dans la gestion opérationnelle d’Ecologic. \n\n\n\n Syrv4x ne précise cependant pas comment il affirme avoir obtenu ces données. Rien ne permet donc de déterminer si la revendication résulte d’une intrusion directe dans les systèmes d’Ecologic, d’un accès compromis, d’une vulnérabilité applicative ou d’un environnement tiers. \n\n\n\n Des données exploitables pour cibler les partenaires \n\n\n\n Le principal risque vient du niveau de contexte fourni par les données revendiquées. Un attaquant peut potentiellement connaître  le nom d’une structure partenaire, son interlocuteur, ses coordonnées et certains incidents déjà traités avec Ecologic . \n\n\n\n Ce type d’information peut être utilisé pour fabriquer des emails de phishing particulièrement crédibles, en se faisant passer pour Ecologic, un opérateur de collecte ou un autre partenaire connu de la victime. \n\n\n\n Les comptes utilisateurs exposés représentent également un risque supplémentaire si certaines valeurs associées aux mots de passe sont exploitables ou si les mêmes identifiants ont été réutilisés sur d’autres services. \n\n\n\n Une revendication qui reste à confirmer par Ecologic \n\n\n\n À ce stade,  Ecologic n’a pas publiquement confirmé cette fuite de données . \n\n\n\n Le volume de  46 467 lignes , l’origine de l’accès et l’étendue exacte des données reposent donc sur la revendication de Syrv4x et sur les fichiers mis en téléchargement. \n\n\n\n L’analyse permet cependant de préciser un point important : ces 46 467 lignes ne correspondent pas à 46 467 victimes.  Le nombre de personnes différentes concernées est inférieur à 12 000 , la base étant composée de nombreux incidents et enregistrements rattachés aux mêmes utilisateurs ou partenaires. \n\n\n\n Les éléments diffusés montrent néanmoins un ensemble structuré attribué à Ecologic comprenant des  incidents internes, des partenaires et des comptes utilisateurs . Il reste désormais à déterminer l’origine exacte de l’accès ayant permis cette extraction.",
+    "entity": "",
+    "event_date": "",
+    "location": "",
+    "organisation": "",
+    "published": "2026-10-13",
+    "sector": "",
+    "source_item_id": "4178",
+    "source_metadata": {
+     "rich_facts": {
+      "affected_counts": [
+       {
+        "date": "",
+        "evidence": "Le hacker  Syrv4x  affirme avoir récupéré une base de  46 467 lignes pour environ 32 Mo , qu’il a mise à disposition gratuitement.",
+        "raw": "46 467 lignes",
+        "scope": "",
+        "status": "claimed",
+        "unit": "records",
+        "value": 46467
+       },
+       {
+        "date": "",
+        "evidence": "D’après l’analyse des données,  environ 12 000 personnes différentes seraient réellement concernées .",
+        "raw": "12 000 personnes",
+        "scope": "",
+        "status": "hypothesis",
+        "unit": "people",
+        "value": 12000
+       },
+       {
+        "date": "",
+        "evidence": "Ce volume ne correspond toutefois pas à 46 467 personnes.",
+        "raw": "46 467 personnes",
+        "scope": "",
+        "status": "negated",
+        "unit": "people",
+        "value": 46467
+       },
+       {
+        "date": "",
+        "evidence": "L’analyse permet cependant de préciser un point important : ces 46 467 lignes ne correspondent pas à 46 467 victimes.",
+        "raw": "46 467 lignes",
+        "scope": "",
+        "status": "negated",
+        "unit": "records",
+        "value": 46467
+       },
+       {
+        "date": "",
+        "evidence": "Ecologic : 46 467 lignes exposent des comptes utilisateurs et des incidents internes",
+        "raw": "46 467 lignes",
+        "scope": "",
+        "status": "unknown",
+        "unit": "records",
+        "value": 46467
+       },
+       {
+        "date": "",
+        "evidence": "46 467 lignes, environ 12 000 personnes",
+        "raw": "12 000 personnes",
+        "scope": "",
+        "status": "unknown",
+        "unit": "people",
+        "value": 12000
+       }
+      ],
+      "affected_datasets": [],
+      "affected_systems": [],
+      "claims": [
+       {
+        "date": "",
+        "evidence": "Le hacker  Syrv4x  affirme avoir récupéré une base de  46 467 lignes pour environ 32 Mo , qu’il a mise à disposition gratuitement.",
+        "scope": "",
+        "status": "claimed",
+        "type": "affected_count",
+        "unit": "records",
+        "value": 46467
+       },
+       {
+        "date": "",
+        "evidence": "D’après l’analyse des données,  environ 12 000 personnes différentes seraient réellement concernées .",
+        "scope": "",
+        "status": "hypothesis",
+        "type": "affected_count",
+        "unit": "people",
+        "value": 12000
+       },
+       {
+        "date": "",
+        "evidence": "Ce volume ne correspond toutefois pas à 46 467 personnes.",
+        "scope": "",
+        "status": "negated",
+        "type": "affected_count",
+        "unit": "people",
+        "value": 46467
+       },
+       {
+        "date": "",
+        "evidence": "L’analyse permet cependant de préciser un point important : ces 46 467 lignes ne correspondent pas à 46 467 victimes.",
+        "scope": "",
+        "status": "negated",
+        "type": "affected_count",
+        "unit": "records",
+        "value": 46467
+       },
+       {
+        "date": "",
+        "evidence": "Ecologic : 46 467 lignes exposent des comptes utilisateurs et des incidents internes",
+        "scope": "",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "records",
+        "value": 46467
+       },
+       {
+        "date": "",
+        "evidence": "46 467 lignes, environ 12 000 personnes",
+        "scope": "",
+        "status": "unknown",
+        "type": "affected_count",
+        "unit": "people",
+        "value": 12000
+       },
+       {
+        "date": "",
+        "evidence": "Le hacker  Syrv4x  affirme avoir récupéré une base de  46 467 lignes pour environ 32 Mo , qu’il a mise à disposition gratuitement.",
+        "scope": "",
+        "status": "claimed",
+        "type": "data_volume",
+        "unit": "MO",
+        "value": 32.0
+       },
+       {
+        "date": "",
+        "evidence": "Les champs publiés prévoient notamment l’identifiant de l’incident, le site concerné, son objet, le nom du contact, son téléphone, son adresse email, une description, son niveau, son statut ainsi que les dates de création et de modification.",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Les champs publiés prévoient notamment l’identifiant de l’incident, le site concerné, son objet, le nom du contact, son téléphone, son adresse email, une description, son niveau, son statut ainsi que les dates de création et de modification.",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "Les champs publiés prévoient notamment l’identifiant de l’incident, le site concerné, son objet, le nom du contact, son téléphone, son adresse email, une description, son niveau, son statut ainsi que les dates de création et de modification.",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "identifiants"
+       },
+       {
+        "date": "",
+        "evidence": "Des zones de commentaires sont également présentes pour documenter la clôture ou l’annulation des incidents.",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "commentaires"
+       },
+       {
+        "date": "",
+        "evidence": "Les données revendiquées prévoient notamment le nom de la structure, son adresse, son téléphone, son email, son numéro SIRET ainsi que plusieurs informations administratives liées à son activité.",
+        "status": "claimed",
+        "type": "data_type",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Les données revendiquées prévoient notamment le nom de la structure, son adresse, son téléphone, son email, son numéro SIRET ainsi que plusieurs informations administratives liées à son activité.",
+        "status": "claimed",
+        "type": "data_type",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "Les données revendiquées prévoient notamment le nom de la structure, son adresse, son téléphone, son email, son numéro SIRET ainsi que plusieurs informations administratives liées à son activité.",
+        "status": "claimed",
+        "type": "data_type",
+        "value": "SIREN / SIRET"
+       },
+       {
+        "date": "",
+        "evidence": "Les données revendiquées prévoient notamment le nom de la structure, son adresse, son téléphone, son email, son numéro SIRET ainsi que plusieurs informations administratives liées à son activité.",
+        "status": "claimed",
+        "type": "data_type",
+        "value": "informations administratives"
+       },
+       {
+        "date": "",
+        "evidence": "Des champs concernent également les numéros ICPE, les récépissés, les déclarations liées aux déchets dangereux, la présence de contrats ou encore différentes informations utilisées dans la gestion des partenaires.",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "contrats"
+       },
+       {
+        "date": "",
+        "evidence": "L’un des exemples publiés concerne ainsi une structure médico-sociale enregistrée comme partenaire, avec ses coordonnées professionnelles et son numéro SIRET.",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "SIREN / SIRET"
+       },
+       {
+        "date": "",
+        "evidence": "Des comptes utilisateurs avec login et valeur de mot de passe",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "mots de passe"
+       },
+       {
+        "date": "",
+        "evidence": "Les champs annoncés comprennent le  login utilisateur, une valeur associée au mot de passe, le prénom, le nom, l’email, les numéros de téléphone, l’adresse, l’entreprise, la date de création du compte, la dernière connexion  ainsi qu’un indicateur permettant de savoir si le compte dispose de droits administrateur.",
+        "status": "unknown",
+        "type": "data_type",
+        "value": "noms et prénoms"
+       },
+       {
+        "date": "",
+        "evidence": "Les nombreux identifiants techniques reliant  sites, incidents, partenaires et utilisateurs , ainsi que les commentaires internes et les informations de suivi, donnent plutôt l’image d’une extraction provenant d’une application utilisée dans la gestion opérationnelle d’Ecologic.",
+        "status": "claimed",
+        "type": "data_type",
+        "value": "identifiants techniques"
+       },
+       {
+        "date": "",
+        "evidence": "Les nombreux identifiants techniques reliant  sites, incidents, partenaires et utilisateurs , ainsi que les commentaires internes et les informations de suivi, donnent plutôt l’image d’une extraction provenant d’une application utilisée dans la gestion opérationnelle d’Ecologic.",
+        "status": "claimed",
+        "type": "data_type",
+        "value": "identifiants"
+       },
+       {
+        "date": "",
+        "evidence": "Les nombreux identifiants techniques reliant  sites, incidents, partenaires et utilisateurs , ainsi que les commentaires internes et les informations de suivi, donnent plutôt l’image d’une extraction provenant d’une application utilisée dans la gestion opérationnelle d’Ecologic.",
+        "status": "claimed",
+        "type": "data_type",
+        "value": "commentaires"
+       },
+       {
+        "date": "",
+        "evidence": "Ce type d’information peut être utilisé pour fabriquer des emails de phishing particulièrement crédibles, en se faisant passer pour Ecologic, un opérateur de collecte ou un autre partenaire connu de la victime.",
+        "status": "hypothesis",
+        "type": "data_type",
+        "value": "adresses e-mail"
+       }
+      ],
+      "data_types": [
+       {
+        "date": "",
+        "evidence": "Les champs publiés prévoient notamment l’identifiant de l’incident, le site concerné, son objet, le nom du contact, son téléphone, son adresse email, une description, son niveau, son statut ainsi que les dates de création et de modification.",
+        "status": "unknown",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Les champs publiés prévoient notamment l’identifiant de l’incident, le site concerné, son objet, le nom du contact, son téléphone, son adresse email, une description, son niveau, son statut ainsi que les dates de création et de modification.",
+        "status": "unknown",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "Les champs publiés prévoient notamment l’identifiant de l’incident, le site concerné, son objet, le nom du contact, son téléphone, son adresse email, une description, son niveau, son statut ainsi que les dates de création et de modification.",
+        "status": "unknown",
+        "value": "identifiants"
+       },
+       {
+        "date": "",
+        "evidence": "Des zones de commentaires sont également présentes pour documenter la clôture ou l’annulation des incidents.",
+        "status": "unknown",
+        "value": "commentaires"
+       },
+       {
+        "date": "",
+        "evidence": "Les données revendiquées prévoient notamment le nom de la structure, son adresse, son téléphone, son email, son numéro SIRET ainsi que plusieurs informations administratives liées à son activité.",
+        "status": "claimed",
+        "value": "adresses e-mail"
+       },
+       {
+        "date": "",
+        "evidence": "Les données revendiquées prévoient notamment le nom de la structure, son adresse, son téléphone, son email, son numéro SIRET ainsi que plusieurs informations administratives liées à son activité.",
+        "status": "claimed",
+        "value": "numéros de téléphone"
+       },
+       {
+        "date": "",
+        "evidence": "Les données revendiquées prévoient notamment le nom de la structure, son adresse, son téléphone, son email, son numéro SIRET ainsi que plusieurs informations administratives liées à son activité.",
+        "status": "claimed",
+        "value": "SIREN / SIRET"
+       },
+       {
+        "date": "",
+        "evidence": "Les données revendiquées prévoient notamment le nom de la structure, son adresse, son téléphone, son email, son numéro SIRET ainsi que plusieurs informations administratives liées à son activité.",
+        "status": "claimed",
+        "value": "informations administratives"
+       },
+       {
+        "date": "",
+        "evidence": "Des champs concernent également les numéros ICPE, les récépissés, les déclarations liées aux déchets dangereux, la présence de contrats ou encore différentes informations utilisées dans la gestion des partenaires.",
+        "status": "unknown",
+        "value": "contrats"
+       },
+       {
+        "date": "",
+        "evidence": "L’un des exemples publiés concerne ainsi une structure médico-sociale enregistrée comme partenaire, avec ses coordonnées professionnelles et son numéro SIRET.",
+        "status": "unknown",
+        "value": "SIREN / SIRET"
+       },
+       {
+        "date": "",
+        "evidence": "Des comptes utilisateurs avec login et valeur de mot de passe",
+        "status": "unknown",
+        "value": "mots de passe"
+       },
+       {
+        "date": "",
+        "evidence": "Les champs annoncés comprennent le  login utilisateur, une valeur associée au mot de passe, le prénom, le nom, l’email, les numéros de téléphone, l’adresse, l’entreprise, la date de création du compte, la dernière connexion  ainsi qu’un indicateur permettant de savoir si le compte dispose de droits administrateur.",
+        "status": "unknown",
+        "value": "noms et prénoms"
+       },
+       {
+        "date": "",
+        "evidence": "Les nombreux identifiants techniques reliant  sites, incidents, partenaires et utilisateurs , ainsi que les commentaires internes et les informations de suivi, donnent plutôt l’image d’une extraction provenant d’une application utilisée dans la gestion opérationnelle d’Ecologic.",
+        "status": "claimed",
+        "value": "identifiants techniques"
+       },
+       {
+        "date": "",
+        "evidence": "Les nombreux identifiants techniques reliant  sites, incidents, partenaires et utilisateurs , ainsi que les commentaires internes et les informations de suivi, donnent plutôt l’image d’une extraction provenant d’une application utilisée dans la gestion opérationnelle d’Ecologic.",
+        "status": "claimed",
+        "value": "identifiants"
+       },
+       {
+        "date": "",
+        "evidence": "Les nombreux identifiants techniques reliant  sites, incidents, partenaires et utilisateurs , ainsi que les commentaires internes et les informations de suivi, donnent plutôt l’image d’une extraction provenant d’une application utilisée dans la gestion opérationnelle d’Ecologic.",
+        "status": "claimed",
+        "value": "commentaires"
+       },
+       {
+        "date": "",
+        "evidence": "Ce type d’information peut être utilisé pour fabriquer des emails de phishing particulièrement crédibles, en se faisant passer pour Ecologic, un opérateur de collecte ou un autre partenaire connu de la victime.",
+        "status": "hypothesis",
+        "value": "adresses e-mail"
+       }
+      ],
+      "data_volumes": [
+       {
+        "date": "",
+        "evidence": "Le hacker  Syrv4x  affirme avoir récupéré une base de  46 467 lignes pour environ 32 Mo , qu’il a mise à disposition gratuitement.",
+        "scope": "",
+        "status": "claimed",
+        "unit": "MO",
+        "value": 32.0
+       }
+      ],
+      "profile": {
+       "chars": 7090,
+       "claims": 23,
+       "dates": 0,
+       "hypotheses": 2,
+       "numbers": 11,
+       "sentences": 52
+      },
+      "relations": [],
+      "semantic": {
+       "used": false
+      },
+      "timeline": [],
+      "version": "2",
+      "vulnerabilities": []
+     }
+    },
+    "summary": "Ecologic, éco-organisme français agréé par les pouvoirs publics pour organiser la collecte et le recyclage de plusieurs catégories…",
+    "threat": "",
+    "title": "Ecologic : 46 467 lignes exposent des comptes utilisateurs et des incidents internes",
+    "url": "https://www.cyberattaque.org/ecologic-46-467-lignes-exposent-des-comptes-utilisateurs-et-des-incidents-internes/"
+   },
+   "exhausted_fields": {
+    "activity_description": {
+     "at": "2026-11-15T14:25:40.889744+00:00",
+     "reason": "ACTIVITY_NOT_DESCRIBED"
+    },
+    "activity_sector_match": {
+     "at": "2026-11-15T14:25:40.889744+00:00",
+     "reason": "CONFIDENCE_REJECTED"
+    }
+   },
+   "field_reasons": {
+    "activity_description": "ACTIVITY_NOT_DESCRIBED",
+    "activity_sector_match": "CONFIDENCE_REJECTED"
+   },
+   "first_queued_at": "2026-10-14T12:31:16.394176+00:00",
+   "item": {
+    "Collected_As_Of": "2026-10-14T16:30:55.968557+04:00",
+    "Event_Date": "",
+    "Item_ID": "ITM-976457100ffb7593",
+    "Location": "Inconnu",
+    "Organisation_Key": "ecologic",
+    "Organisation_Raw": "Ecologic",
+    "Published_Date": "2026-10-13",
+    "Sector": "Inconnu",
+    "Source_ID": "CYBERATTAQUE_ORG",
+    "Source_Item_ID": "4178",
+    "Threat": "Fuite de données",
+    "Threat_Raw": "",
+    "Title": "Ecologic : 46 467 lignes exposent des comptes utilisateurs et des incidents internes",
+    "URL": "https://www.cyberattaque.org/ecologic-46-467-lignes-exposent-des-comptes-utilisateurs-et-des-incidents-internes/"
+   },
+   "key": "ITM-976457100ffb7593:99a568529736937ea53ecd8022b4f0302da66cf05453ab6fd5fb9cfd42863bfa",
+   "last_attempt_at": "2026-11-15T14:25:38.091309+00:00",
+   "last_queued_at": "2026-11-14T13:51:52.790589+00:00",
+   "pending_fields": [],
+   "reason": "SEMANTIC_REJECTED"
+  },
+  {
    "attempts": 0,
    "entry": {
     "content": "La Fédération Sportive et Culturelle de France (FSCF) fait l’objet d’une revendication de fuite de données portant sur plus de 30 000 enregistrements.  Le 26 octobre 2026, un individu utilisant le pseudonyme « camillelellouche » a publié plusieurs extraits présentés comme provenant des fichiers de la fédération. Les informations comprennent des identités, des dates de naissance, des adresses postales, des numéros de licence et des renseignements sur les pratiques sportives. \n\n\n\n Le point le plus préoccupant concerne la présence de  données personnelles d’enfants mineurs , dont certains âgés de moins de 12 ans. Les fichiers permettent notamment d’associer leur identité à un club, une discipline et une catégorie sportive. \n\n\n\n Créée en 1898, la  Fédération Sportive et Culturelle de France  est une organisation reconnue d’utilité publique qui fédère des associations sportives, culturelles et socio-éducatives sur l’ensemble du territoire. Elle intervient notamment dans la gymnastique, le twirling, les activités artistiques et l’animation jeunesse. \n\n\n\n   \n\n\n\n 21 634 licences et plus de 5 300 présélections dans les données revendiquées \n\n\n\n La publication du 26 octobre détaille sept catégories de données qui auraient été récupérées depuis les services de la FSCF. \n\n\n\n \n  21 634  enregistrements de licences ; \n\n\n\n  5 305  enregistrements de présélections ; \n\n\n\n  1 573  abonnés ; \n\n\n\n  642  enregistrements liés aux instances de la FSCF ; \n\n\n\n  457  correspondants par discipline ; \n\n\n\n  270  licences annulées ; \n\n\n\n  140  abonnements. \n \n\n\n\n Le total atteint précisément  30 021 enregistrements . Ce chiffre ne correspond pas nécessairement à 30 021 personnes différentes, puisqu’un même individu peut apparaître dans plusieurs catégories. \n\n\n\n Les fichiers révèlent l’identité, l’adresse et le club sportif des licenciés \n\n\n\n Les extraits diffusés présentent une structure caractéristique d’un export de données de gestion fédérale. Plusieurs dizaines de champs sont recensés, permettant de retrouver des informations personnelles particulièrement détaillées. \n\n\n\n Parmi les informations apparaissant dans les exemples figurent : \n\n\n\n \n Les  noms, prénoms et dates de naissance  ; \n\n\n\n Les adresses postales, communes et codes postaux ; \n\n\n\n Les adresses email et potentiellement les numéros de téléphone ; \n\n\n\n Les numéros de licence et leur statut ; \n\n\n\n Les  clubs sportifs et les disciplines pratiquées  ; \n\n\n\n Les catégories d’âge et les niveaux de compétition ; \n\n\n\n Les comités départementaux et régionaux ; \n\n\n\n Les dates de validation et d’expiration des licences ; \n\n\n\n Certains montants financiers associés aux licences. \n \n\n\n\n Les exemples concernent notamment des licenciés de  Loire-Atlantique , dans des clubs situés autour de Nantes et de Saint-Herblain. On retrouve des pratiquants de gymnastique féminine, de gymnastique rythmique et de twirling. \n\n\n\n Des enfants nés en 2014 et 2016 apparaissent dans les extraits \n\n\n\n La présence de mineurs constitue l’un des aspects les plus sensibles de cette divulgation. Plusieurs fiches correspondent à des enfants nés en  2014 et 2016 , avec des catégories sportives U12 et U10. \n\n\n\n Pour ces jeunes licenciés, les informations permettent de connaître simultanément leur  identité, leur âge, leur commune de résidence et leur association sportive . \n\n\n\n Cette combinaison est particulièrement problématique : les données ne permettent pas seulement d’identifier un enfant, mais aussi de connaître une partie de ses activités extrascolaires. Si elles sont réutilisées à des fins malveillantes, elles pourraient faciliter des prises de contact frauduleuses auprès des familles. \n\n\n\n Des licences actives pour la saison 2026 \n\n\n\n Les enregistrements présentés ne semblent pas provenir exclusivement d’anciennes archives. Plusieurs fiches portent la mention  « Active » pour la saison 2026 , avec des dates de validation situées en 2025 et une fin de validité fixée au 31 août 2026. \n\n\n\n D’autres informations font référence à des licences de compétition dont les périodes de validité peuvent s’étendre jusqu’en  2028 . \n\n\n\n Ces éléments indiquent que les données revendiquées comprennent des informations administratives relativement récentes. Ils ne permettent toutefois pas de déterminer la date exacte à laquelle elles ont été extraites. \n\n\n\n Le hacker évoque une extraction automatisée des données \n\n\n\n L’auteur de la publication présente son opération comme un  « scraping » . Cette technique consiste à collecter automatiquement des informations accessibles depuis un site ou une application, parfois en exploitant des interfaces qui ne limitent pas suffisamment les requêtes. \n\n\n\n Dans le cas de la FSCF, plusieurs scénarios sont envisageables :  une interface de consultation insuffisamment protégée, une API exposant trop d’informations ou un défaut de contrôle des autorisations . \n\n\n\n La présence de champs administratifs détaillés laisse penser que les informations proviennent d’un système structuré de gestion des licences. En revanche, rien ne permet de déterminer si le hacker a contourné une protection, utilisé un accès légitime compromis ou simplement collecté des données accessibles sans authentification. \n\n\n\n Des escroqueries possibles en usurpant l’identité des clubs sportifs \n\n\n\n Le principal risque concerne désormais l’utilisation de ces informations pour mener des  campagnes de phishing ciblées contre les licenciés et leurs familles . \n\n\n\n Un fraudeur connaissant le nom d’un sportif, son club, sa discipline et sa saison de licence pourrait se faire passer pour une association afin de réclamer un paiement, une régularisation d’inscription ou une mise à jour du dossier administratif. \n\n\n\n La présence de données concernant des mineurs renforce cette inquiétude. Les parents pourraient recevoir des sollicitations suffisamment précises pour sembler provenir de véritables responsables associatifs. \n\n\n\n À ce stade,  aucune confirmation officielle de la FSCF n’a été identifiée concernant cette extraction . Les exemples publiés permettent d’observer la nature des informations concernées, mais pas de vérifier indépendamment l’intégralité des 30 021 enregistrements revendiqués. \n\n\n\n L’enjeu principal reste donc de déterminer comment des informations aussi détaillées, notamment celles de jeunes licenciés, ont pu être récupérées et si d’autres données de la fédération demeurent accessibles.",
@@ -11070,658 +11485,7 @@
    "reason": "SEMANTIC_REJECTED"
   },
   {
-   "attempts": 4,
-   "entry": {
-    "content": "Ecologic , éco-organisme français agréé par les pouvoirs publics pour organiser la collecte et le recyclage de plusieurs catégories de déchets, fait l’objet d’une  revendication de fuite de données . Le hacker  Syrv4x  affirme avoir récupéré une base de  46 467 lignes pour environ 32 Mo , qu’il a mise à disposition gratuitement. \n\n\n\n Ce volume ne correspond toutefois pas à 46 467 personnes. La base mélange plusieurs types d’enregistrements et une même personne peut apparaître à plusieurs reprises. D’après l’analyse des données,  environ 12 000 personnes différentes seraient réellement concernées . \n\n\n\n Les données revendiquées ne correspondent pas à un simple fichier de contacts. Elles proviennent visiblement d’un outil métier et mélangent  incidents, partenaires et comptes utilisateurs , avec de nombreux champs internes liés au fonctionnement quotidien d’Ecologic. \n\n\n\n Les fichiers diffusés montrent notamment des fiches d’incidents avec les coordonnées des interlocuteurs, des partenaires avec leurs informations administratives et des utilisateurs avec leur login, leurs coordonnées et une valeur associée au mot de passe. \n\n\n\n   \n\n\n\n 46 467 lignes, environ 12 000 personnes \n\n\n\n Le chiffre avancé par Syrv4x doit donc être interprété avec précaution. Les  46 467 lignes revendiquées représentent des enregistrements  et non autant de victimes uniques. \n\n\n\n Une ligne peut correspondre à un incident, une fiche partenaire ou un compte utilisateur. Un même interlocuteur peut également être rattaché à plusieurs incidents ou apparaître dans plusieurs parties de la base. \n\n\n\n En tenant compte de ces répétitions, le périmètre humain apparaît nettement inférieur au volume brut :  moins de 12 000 personnes distinctes sont concernées . \n\n\n\n Des incidents opérationnels apparaissent dans la fuite revendiquée \n\n\n\n Une partie des enregistrements correspond à des  incidents déclarés dans l’environnement d’Ecologic . \n\n\n\n Les champs publiés prévoient notamment l’identifiant de l’incident, le site concerné, son objet, le nom du contact, son téléphone, son adresse email, une description, son niveau, son statut ainsi que les dates de création et de modification. \n\n\n\n Des zones de commentaires sont également présentes pour documenter la clôture ou l’annulation des incidents. L’un des exemples diffusés par Syrv4x fait ainsi référence à un incident remonté après une collecte en déchèterie, avec les coordonnées de l’interlocuteur et un commentaire interne sur le traitement du dossier. \n\n\n\n La fuite revendiquée pourrait donc exposer non seulement des coordonnées professionnelles, mais aussi une partie des  échanges opérationnels entre Ecologic et les structures intervenant dans la collecte et le traitement des déchets . \n\n\n\n Des collectivités et partenaires dans la base \n\n\n\n Une deuxième catégorie d’enregistrements concerne les  partenaires d’Ecologic . \n\n\n\n Les données revendiquées prévoient notamment le nom de la structure, son adresse, son téléphone, son email, son numéro SIRET ainsi que plusieurs informations administratives liées à son activité. \n\n\n\n Des champs concernent également les numéros ICPE, les récépissés, les déclarations liées aux déchets dangereux, la présence de contrats ou encore différentes informations utilisées dans la gestion des partenaires. \n\n\n\n L’un des exemples publiés concerne ainsi une structure médico-sociale enregistrée comme partenaire, avec ses coordonnées professionnelles et son numéro SIRET. \n\n\n\n Des comptes utilisateurs avec login et valeur de mot de passe \n\n\n\n La partie consacrée aux comptes utilisateurs est plus sensible. \n\n\n\n Les champs annoncés comprennent le  login utilisateur, une valeur associée au mot de passe, le prénom, le nom, l’email, les numéros de téléphone, l’adresse, l’entreprise, la date de création du compte, la dernière connexion  ainsi qu’un indicateur permettant de savoir si le compte dispose de droits administrateur. \n\n\n\n Dans l’un des exemples publiés, un compte professionnel associé à  Castorama  apparaît avec son login, ses coordonnées et une valeur dans le champ  password_utilisateur . Le compte aurait été créé en 2013 puis modifié en 2025. \n\n\n\n Il ne faut toutefois pas présenter ces valeurs comme des mots de passe en clair. Les chaînes publiées ne sont pas directement lisibles et semblent correspondre à une donnée transformée ou chiffrée. Sans connaître précisément le fonctionnement de l’application, impossible d’affirmer si elles peuvent être exploitées pour retrouver le mot de passe d’origine. \n\n\n\n La structure ressemble à une extraction d’un outil métier \n\n\n\n L’organisation des données revendiquées est très différente d’une simple base marketing. \n\n\n\n Les nombreux identifiants techniques reliant  sites, incidents, partenaires et utilisateurs , ainsi que les commentaires internes et les informations de suivi, donnent plutôt l’image d’une extraction provenant d’une application utilisée dans la gestion opérationnelle d’Ecologic. \n\n\n\n Syrv4x ne précise cependant pas comment il affirme avoir obtenu ces données. Rien ne permet donc de déterminer si la revendication résulte d’une intrusion directe dans les systèmes d’Ecologic, d’un accès compromis, d’une vulnérabilité applicative ou d’un environnement tiers. \n\n\n\n Des données exploitables pour cibler les partenaires \n\n\n\n Le principal risque vient du niveau de contexte fourni par les données revendiquées. Un attaquant peut potentiellement connaître  le nom d’une structure partenaire, son interlocuteur, ses coordonnées et certains incidents déjà traités avec Ecologic . \n\n\n\n Ce type d’information peut être utilisé pour fabriquer des emails de phishing particulièrement crédibles, en se faisant passer pour Ecologic, un opérateur de collecte ou un autre partenaire connu de la victime. \n\n\n\n Les comptes utilisateurs exposés représentent également un risque supplémentaire si certaines valeurs associées aux mots de passe sont exploitables ou si les mêmes identifiants ont été réutilisés sur d’autres services. \n\n\n\n Une revendication qui reste à confirmer par Ecologic \n\n\n\n À ce stade,  Ecologic n’a pas publiquement confirmé cette fuite de données . \n\n\n\n Le volume de  46 467 lignes , l’origine de l’accès et l’étendue exacte des données reposent donc sur la revendication de Syrv4x et sur les fichiers mis en téléchargement. \n\n\n\n L’analyse permet cependant de préciser un point important : ces 46 467 lignes ne correspondent pas à 46 467 victimes.  Le nombre de personnes différentes concernées est inférieur à 12 000 , la base étant composée de nombreux incidents et enregistrements rattachés aux mêmes utilisateurs ou partenaires. \n\n\n\n Les éléments diffusés montrent néanmoins un ensemble structuré attribué à Ecologic comprenant des  incidents internes, des partenaires et des comptes utilisateurs . Il reste désormais à déterminer l’origine exacte de l’accès ayant permis cette extraction.",
-    "entity": "",
-    "event_date": "",
-    "location": "",
-    "organisation": "",
-    "published": "2026-10-13",
-    "sector": "",
-    "source_item_id": "4178",
-    "source_metadata": {
-     "rich_facts": {
-      "affected_counts": [
-       {
-        "date": "",
-        "evidence": "Le hacker  Syrv4x  affirme avoir récupéré une base de  46 467 lignes pour environ 32 Mo , qu’il a mise à disposition gratuitement.",
-        "raw": "46 467 lignes",
-        "scope": "",
-        "status": "claimed",
-        "unit": "records",
-        "value": 46467
-       },
-       {
-        "date": "",
-        "evidence": "D’après l’analyse des données,  environ 12 000 personnes différentes seraient réellement concernées .",
-        "raw": "12 000 personnes",
-        "scope": "",
-        "status": "hypothesis",
-        "unit": "people",
-        "value": 12000
-       },
-       {
-        "date": "",
-        "evidence": "Ce volume ne correspond toutefois pas à 46 467 personnes.",
-        "raw": "46 467 personnes",
-        "scope": "",
-        "status": "negated",
-        "unit": "people",
-        "value": 46467
-       },
-       {
-        "date": "",
-        "evidence": "L’analyse permet cependant de préciser un point important : ces 46 467 lignes ne correspondent pas à 46 467 victimes.",
-        "raw": "46 467 lignes",
-        "scope": "",
-        "status": "negated",
-        "unit": "records",
-        "value": 46467
-       },
-       {
-        "date": "",
-        "evidence": "Ecologic : 46 467 lignes exposent des comptes utilisateurs et des incidents internes",
-        "raw": "46 467 lignes",
-        "scope": "",
-        "status": "unknown",
-        "unit": "records",
-        "value": 46467
-       },
-       {
-        "date": "",
-        "evidence": "46 467 lignes, environ 12 000 personnes",
-        "raw": "12 000 personnes",
-        "scope": "",
-        "status": "unknown",
-        "unit": "people",
-        "value": 12000
-       }
-      ],
-      "affected_datasets": [],
-      "affected_systems": [],
-      "claims": [
-       {
-        "date": "",
-        "evidence": "Le hacker  Syrv4x  affirme avoir récupéré une base de  46 467 lignes pour environ 32 Mo , qu’il a mise à disposition gratuitement.",
-        "scope": "",
-        "status": "claimed",
-        "type": "affected_count",
-        "unit": "records",
-        "value": 46467
-       },
-       {
-        "date": "",
-        "evidence": "D’après l’analyse des données,  environ 12 000 personnes différentes seraient réellement concernées .",
-        "scope": "",
-        "status": "hypothesis",
-        "type": "affected_count",
-        "unit": "people",
-        "value": 12000
-       },
-       {
-        "date": "",
-        "evidence": "Ce volume ne correspond toutefois pas à 46 467 personnes.",
-        "scope": "",
-        "status": "negated",
-        "type": "affected_count",
-        "unit": "people",
-        "value": 46467
-       },
-       {
-        "date": "",
-        "evidence": "L’analyse permet cependant de préciser un point important : ces 46 467 lignes ne correspondent pas à 46 467 victimes.",
-        "scope": "",
-        "status": "negated",
-        "type": "affected_count",
-        "unit": "records",
-        "value": 46467
-       },
-       {
-        "date": "",
-        "evidence": "Ecologic : 46 467 lignes exposent des comptes utilisateurs et des incidents internes",
-        "scope": "",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "records",
-        "value": 46467
-       },
-       {
-        "date": "",
-        "evidence": "46 467 lignes, environ 12 000 personnes",
-        "scope": "",
-        "status": "unknown",
-        "type": "affected_count",
-        "unit": "people",
-        "value": 12000
-       },
-       {
-        "date": "",
-        "evidence": "Le hacker  Syrv4x  affirme avoir récupéré une base de  46 467 lignes pour environ 32 Mo , qu’il a mise à disposition gratuitement.",
-        "scope": "",
-        "status": "claimed",
-        "type": "data_volume",
-        "unit": "MO",
-        "value": 32.0
-       },
-       {
-        "date": "",
-        "evidence": "Les champs publiés prévoient notamment l’identifiant de l’incident, le site concerné, son objet, le nom du contact, son téléphone, son adresse email, une description, son niveau, son statut ainsi que les dates de création et de modification.",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "Les champs publiés prévoient notamment l’identifiant de l’incident, le site concerné, son objet, le nom du contact, son téléphone, son adresse email, une description, son niveau, son statut ainsi que les dates de création et de modification.",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "numéros de téléphone"
-       },
-       {
-        "date": "",
-        "evidence": "Les champs publiés prévoient notamment l’identifiant de l’incident, le site concerné, son objet, le nom du contact, son téléphone, son adresse email, une description, son niveau, son statut ainsi que les dates de création et de modification.",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "identifiants"
-       },
-       {
-        "date": "",
-        "evidence": "Des zones de commentaires sont également présentes pour documenter la clôture ou l’annulation des incidents.",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "commentaires"
-       },
-       {
-        "date": "",
-        "evidence": "Les données revendiquées prévoient notamment le nom de la structure, son adresse, son téléphone, son email, son numéro SIRET ainsi que plusieurs informations administratives liées à son activité.",
-        "status": "claimed",
-        "type": "data_type",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "Les données revendiquées prévoient notamment le nom de la structure, son adresse, son téléphone, son email, son numéro SIRET ainsi que plusieurs informations administratives liées à son activité.",
-        "status": "claimed",
-        "type": "data_type",
-        "value": "numéros de téléphone"
-       },
-       {
-        "date": "",
-        "evidence": "Les données revendiquées prévoient notamment le nom de la structure, son adresse, son téléphone, son email, son numéro SIRET ainsi que plusieurs informations administratives liées à son activité.",
-        "status": "claimed",
-        "type": "data_type",
-        "value": "SIREN / SIRET"
-       },
-       {
-        "date": "",
-        "evidence": "Les données revendiquées prévoient notamment le nom de la structure, son adresse, son téléphone, son email, son numéro SIRET ainsi que plusieurs informations administratives liées à son activité.",
-        "status": "claimed",
-        "type": "data_type",
-        "value": "informations administratives"
-       },
-       {
-        "date": "",
-        "evidence": "Des champs concernent également les numéros ICPE, les récépissés, les déclarations liées aux déchets dangereux, la présence de contrats ou encore différentes informations utilisées dans la gestion des partenaires.",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "contrats"
-       },
-       {
-        "date": "",
-        "evidence": "L’un des exemples publiés concerne ainsi une structure médico-sociale enregistrée comme partenaire, avec ses coordonnées professionnelles et son numéro SIRET.",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "SIREN / SIRET"
-       },
-       {
-        "date": "",
-        "evidence": "Des comptes utilisateurs avec login et valeur de mot de passe",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "Les champs annoncés comprennent le  login utilisateur, une valeur associée au mot de passe, le prénom, le nom, l’email, les numéros de téléphone, l’adresse, l’entreprise, la date de création du compte, la dernière connexion  ainsi qu’un indicateur permettant de savoir si le compte dispose de droits administrateur.",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "noms et prénoms"
-       },
-       {
-        "date": "",
-        "evidence": "Les nombreux identifiants techniques reliant  sites, incidents, partenaires et utilisateurs , ainsi que les commentaires internes et les informations de suivi, donnent plutôt l’image d’une extraction provenant d’une application utilisée dans la gestion opérationnelle d’Ecologic.",
-        "status": "claimed",
-        "type": "data_type",
-        "value": "identifiants techniques"
-       },
-       {
-        "date": "",
-        "evidence": "Les nombreux identifiants techniques reliant  sites, incidents, partenaires et utilisateurs , ainsi que les commentaires internes et les informations de suivi, donnent plutôt l’image d’une extraction provenant d’une application utilisée dans la gestion opérationnelle d’Ecologic.",
-        "status": "claimed",
-        "type": "data_type",
-        "value": "identifiants"
-       },
-       {
-        "date": "",
-        "evidence": "Les nombreux identifiants techniques reliant  sites, incidents, partenaires et utilisateurs , ainsi que les commentaires internes et les informations de suivi, donnent plutôt l’image d’une extraction provenant d’une application utilisée dans la gestion opérationnelle d’Ecologic.",
-        "status": "claimed",
-        "type": "data_type",
-        "value": "commentaires"
-       },
-       {
-        "date": "",
-        "evidence": "Ce type d’information peut être utilisé pour fabriquer des emails de phishing particulièrement crédibles, en se faisant passer pour Ecologic, un opérateur de collecte ou un autre partenaire connu de la victime.",
-        "status": "hypothesis",
-        "type": "data_type",
-        "value": "adresses e-mail"
-       }
-      ],
-      "data_types": [
-       {
-        "date": "",
-        "evidence": "Les champs publiés prévoient notamment l’identifiant de l’incident, le site concerné, son objet, le nom du contact, son téléphone, son adresse email, une description, son niveau, son statut ainsi que les dates de création et de modification.",
-        "status": "unknown",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "Les champs publiés prévoient notamment l’identifiant de l’incident, le site concerné, son objet, le nom du contact, son téléphone, son adresse email, une description, son niveau, son statut ainsi que les dates de création et de modification.",
-        "status": "unknown",
-        "value": "numéros de téléphone"
-       },
-       {
-        "date": "",
-        "evidence": "Les champs publiés prévoient notamment l’identifiant de l’incident, le site concerné, son objet, le nom du contact, son téléphone, son adresse email, une description, son niveau, son statut ainsi que les dates de création et de modification.",
-        "status": "unknown",
-        "value": "identifiants"
-       },
-       {
-        "date": "",
-        "evidence": "Des zones de commentaires sont également présentes pour documenter la clôture ou l’annulation des incidents.",
-        "status": "unknown",
-        "value": "commentaires"
-       },
-       {
-        "date": "",
-        "evidence": "Les données revendiquées prévoient notamment le nom de la structure, son adresse, son téléphone, son email, son numéro SIRET ainsi que plusieurs informations administratives liées à son activité.",
-        "status": "claimed",
-        "value": "adresses e-mail"
-       },
-       {
-        "date": "",
-        "evidence": "Les données revendiquées prévoient notamment le nom de la structure, son adresse, son téléphone, son email, son numéro SIRET ainsi que plusieurs informations administratives liées à son activité.",
-        "status": "claimed",
-        "value": "numéros de téléphone"
-       },
-       {
-        "date": "",
-        "evidence": "Les données revendiquées prévoient notamment le nom de la structure, son adresse, son téléphone, son email, son numéro SIRET ainsi que plusieurs informations administratives liées à son activité.",
-        "status": "claimed",
-        "value": "SIREN / SIRET"
-       },
-       {
-        "date": "",
-        "evidence": "Les données revendiquées prévoient notamment le nom de la structure, son adresse, son téléphone, son email, son numéro SIRET ainsi que plusieurs informations administratives liées à son activité.",
-        "status": "claimed",
-        "value": "informations administratives"
-       },
-       {
-        "date": "",
-        "evidence": "Des champs concernent également les numéros ICPE, les récépissés, les déclarations liées aux déchets dangereux, la présence de contrats ou encore différentes informations utilisées dans la gestion des partenaires.",
-        "status": "unknown",
-        "value": "contrats"
-       },
-       {
-        "date": "",
-        "evidence": "L’un des exemples publiés concerne ainsi une structure médico-sociale enregistrée comme partenaire, avec ses coordonnées professionnelles et son numéro SIRET.",
-        "status": "unknown",
-        "value": "SIREN / SIRET"
-       },
-       {
-        "date": "",
-        "evidence": "Des comptes utilisateurs avec login et valeur de mot de passe",
-        "status": "unknown",
-        "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "Les champs annoncés comprennent le  login utilisateur, une valeur associée au mot de passe, le prénom, le nom, l’email, les numéros de téléphone, l’adresse, l’entreprise, la date de création du compte, la dernière connexion  ainsi qu’un indicateur permettant de savoir si le compte dispose de droits administrateur.",
-        "status": "unknown",
-        "value": "noms et prénoms"
-       },
-       {
-        "date": "",
-        "evidence": "Les nombreux identifiants techniques reliant  sites, incidents, partenaires et utilisateurs , ainsi que les commentaires internes et les informations de suivi, donnent plutôt l’image d’une extraction provenant d’une application utilisée dans la gestion opérationnelle d’Ecologic.",
-        "status": "claimed",
-        "value": "identifiants techniques"
-       },
-       {
-        "date": "",
-        "evidence": "Les nombreux identifiants techniques reliant  sites, incidents, partenaires et utilisateurs , ainsi que les commentaires internes et les informations de suivi, donnent plutôt l’image d’une extraction provenant d’une application utilisée dans la gestion opérationnelle d’Ecologic.",
-        "status": "claimed",
-        "value": "identifiants"
-       },
-       {
-        "date": "",
-        "evidence": "Les nombreux identifiants techniques reliant  sites, incidents, partenaires et utilisateurs , ainsi que les commentaires internes et les informations de suivi, donnent plutôt l’image d’une extraction provenant d’une application utilisée dans la gestion opérationnelle d’Ecologic.",
-        "status": "claimed",
-        "value": "commentaires"
-       },
-       {
-        "date": "",
-        "evidence": "Ce type d’information peut être utilisé pour fabriquer des emails de phishing particulièrement crédibles, en se faisant passer pour Ecologic, un opérateur de collecte ou un autre partenaire connu de la victime.",
-        "status": "hypothesis",
-        "value": "adresses e-mail"
-       }
-      ],
-      "data_volumes": [
-       {
-        "date": "",
-        "evidence": "Le hacker  Syrv4x  affirme avoir récupéré une base de  46 467 lignes pour environ 32 Mo , qu’il a mise à disposition gratuitement.",
-        "scope": "",
-        "status": "claimed",
-        "unit": "MO",
-        "value": 32.0
-       }
-      ],
-      "profile": {
-       "chars": 7090,
-       "claims": 23,
-       "dates": 0,
-       "hypotheses": 2,
-       "numbers": 11,
-       "sentences": 52
-      },
-      "relations": [],
-      "semantic": {
-       "used": false
-      },
-      "timeline": [],
-      "version": "2",
-      "vulnerabilities": []
-     }
-    },
-    "summary": "Ecologic, éco-organisme français agréé par les pouvoirs publics pour organiser la collecte et le recyclage de plusieurs catégories…",
-    "threat": "",
-    "title": "Ecologic : 46 467 lignes exposent des comptes utilisateurs et des incidents internes",
-    "url": "https://www.cyberattaque.org/ecologic-46-467-lignes-exposent-des-comptes-utilisateurs-et-des-incidents-internes/"
-   },
-   "exhausted_fields": {},
-   "field_reasons": {
-    "activity_description": "ACTIVITY_NOT_DESCRIBED",
-    "activity_sector_match": "CONFIDENCE_REJECTED"
-   },
-   "first_queued_at": "2026-10-14T12:31:16.394176+00:00",
-   "item": {
-    "Collected_As_Of": "2026-10-14T16:30:55.968557+04:00",
-    "Event_Date": "",
-    "Item_ID": "ITM-976457100ffb7593",
-    "Location": "Inconnu",
-    "Organisation_Key": "ecologic",
-    "Organisation_Raw": "Ecologic",
-    "Published_Date": "2026-10-13",
-    "Sector": "Inconnu",
-    "Source_ID": "CYBERATTAQUE_ORG",
-    "Source_Item_ID": "4178",
-    "Threat": "Fuite de données",
-    "Threat_Raw": "",
-    "Title": "Ecologic : 46 467 lignes exposent des comptes utilisateurs et des incidents internes",
-    "URL": "https://www.cyberattaque.org/ecologic-46-467-lignes-exposent-des-comptes-utilisateurs-et-des-incidents-internes/"
-   },
-   "key": "ITM-976457100ffb7593:99a568529736937ea53ecd8022b4f0302da66cf05453ab6fd5fb9cfd42863bfa",
-   "last_queued_at": "2026-11-14T13:51:52.790589+00:00",
-   "pending_fields": [
-    "activity_description",
-    "activity_sector_match"
-   ],
-   "reason": "SEMANTIC_REJECTED"
-  },
-  {
-   "attempts": 4,
-   "entry": {
-    "content": "SL\nPar Seblatombe, rédacteur FrenchBreaches\nPublié le 15/10/2026\n— Secteur Éducation\nASCOR piraté : des données personnelles dérobées lors d'une cyberattaque chez un prestataire\nASCOR, organisme français de formation à distance, a été victime d'une fuite de données personnelles liée à une intrusion chez l'un de ses prestataires informatiques.\nSelon une notification signée par son président, Olivier Marquet, un attaquant a accédé à un outil d'analyse de données entre le 18 et le 24 août 2026. Des noms, prénoms, adresses électroniques, numéros de téléphone et adresses postales ont pu être consultés et extraits.\nL'organisme, informé de l'incident le 5 octobre 2026, indique avoir déposé plainte et notifié la CNIL.\nUne intrusion chez un prestataire informatique\nDans un message adressé aux personnes concernées, ASCOR explique qu'un outil d'analyse de données, hébergé et administré par un prestataire informatique externe, a fait l'objet d'un accès non autorisé entre le 18 et le 24 août 2026.\nL'attaquant a pu consulter et extraire une partie des informations issues des outils de gestion de l'organisme.\nASCOR précise avoir été informé de l'incident le 5 octobre 2026, soit plus d'un mois après la période d'intrusion identifiée.\nLe communiqué ne révèle ni l'identité du prestataire concerné ni la méthode employée pour accéder aux données. Il ne permet donc pas de déterminer si l'attaque résulte d'identifiants compromis, d'une vulnérabilité informatique ou d'un autre mécanisme.\nDes données personnelles consultées et extraites\nSelon la notification, les informations concernées comprennent :\nNoms et prénoms des personnes concernées ;\nAdresses électroniques ;\nNuméros de téléphone ;\nAdresses postales.\nCes données permettent d'identifier et de contacter directement les personnes concernées.\nASCOR ne communique ni le nombre de personnes touchées ni le volume total de données extraites.\nL'organisme précise que ses vérifications se poursuivent et qu'il informera directement les personnes concernées si d'autres catégories d'informations personnelles sont identifiées.\nLe communiqué ne mentionne aucune compromission de données bancaires, de mots de passe ou de documents d'identité, sans toutefois exclure formellement ces catégories.\nDes risques de fraude liés aux formations\nASCOR alerte sur les risques d'hameçonnage ciblé par e-mail, SMS ou téléphone.\nLes informations compromises pourraient permettre à des fraudeurs de se faire passer pour l'organisme en évoquant une formation ou des échanges antérieurs afin de rendre leurs messages plus crédibles.\nLes personnes concernées pourraient ainsi recevoir de fausses demandes urgentes, destinées à récupérer d'autres informations personnelles ou à les inciter à cliquer sur des liens frauduleux.\nAucune exploitation frauduleuse effective des données n'est cependant signalée dans le communiqué.\nUne plainte déposée et la CNIL informée\nAprès avoir appris l'existence de l'intrusion, ASCOR indique avoir pris plusieurs mesures de sécurité :\nSuppression des accès utilisés par l'attaquant ;\nRenouvellement des mots de passe et clés d'accès concernés ;\nAccompagnement par des experts en cybersécurité ;\nDépôt de plainte ;\nNotification de l'incident à la CNIL.\nL'organisme ne précise pas si les investigations techniques sont terminées.\nLes recommandations d'ASCOR aux personnes concernées\nDans sa notification, ASCOR invite les destinataires à se méfier des messages faisant référence à leur formation ou à leurs échanges avec l'organisme pour leur demander une action urgente.\nIl recommande de ne pas cliquer sur les liens suspects et de ne pas répondre aux communications douteuses prétendant provenir de ses services.\nASCOR souligne que son message d'information ne contient aucun lien et ne demande aucune information personnelle.\nPour obtenir des précisions, vérifier l'authenticité d'un message ou exercer leurs droits, les personnes concernées peuvent contacter le délégué à la protection des données à l'adresse [email protected].\nUne fuite confirmée, mais plusieurs inconnues\nContrairement à une simple revendication publiée sur un forum cybercriminel, cet incident fait l'objet d'une reconnaissance directe d'ASCOR, qui confirme qu'un acteur malveillant a pu consulter et extraire des données personnelles.\nPlusieurs éléments restent néanmoins inconnus : le nombre de personnes concernées, le volume des informations récupérées, l'identité du prestataire compromis et la méthode utilisée par l'attaquant.\nAucune diffusion publique ou mise en vente des données n'est mentionnée dans la notification.\nCette intrusion illustre les risques liés aux prestataires informatiques ayant accès aux données personnelles d'une organisation. Même lorsqu'un incident survient dans un environnement externe, ses conséquences peuvent directement toucher les personnes dont les informations y sont traitées.\nÀ ce stade, le périmètre exact de la fuite reste à déterminer.",
-    "entity": "",
-    "event_date": "",
-    "location": "",
-    "organisation": "",
-    "published": "2026-10-15",
-    "sector": "",
-    "source_item_id": "https://frenchbreaches.com/alertes/ascor-mv8mz9u8fiazbkptdgm",
-    "source_metadata": {
-     "detail_hydration": {
-      "chars": 4925,
-      "extractor_version": "editorial-html-2026-09-06.1",
-      "fallback": "",
-      "status": "HYDRATED",
-      "truncated": false
-     },
-     "rich_facts": {
-      "affected_counts": [],
-      "affected_datasets": [],
-      "affected_systems": [],
-      "claims": [
-       {
-        "date": "",
-        "evidence": "Des noms, prénoms, adresses électroniques, numéros de téléphone et adresses postales ont pu être consultés et extraits.",
-        "item_id": "https://frenchbreaches.com/alertes/ascor-mv8mz9u8fiazbkptdgm",
-        "source_id": "FRENCHBREACHES",
-        "status": "reported",
-        "type": "data_type",
-        "value": "numéros de téléphone"
-       },
-       {
-        "date": "",
-        "evidence": "Des noms, prénoms, adresses électroniques, numéros de téléphone et adresses postales ont pu être consultés et extraits.",
-        "item_id": "https://frenchbreaches.com/alertes/ascor-mv8mz9u8fiazbkptdgm",
-        "source_id": "FRENCHBREACHES",
-        "status": "reported",
-        "type": "data_type",
-        "value": "adresses postales"
-       },
-       {
-        "date": "",
-        "evidence": "Des noms, prénoms, adresses électroniques, numéros de téléphone et adresses postales ont pu être consultés et extraits.",
-        "item_id": "https://frenchbreaches.com/alertes/ascor-mv8mz9u8fiazbkptdgm",
-        "source_id": "FRENCHBREACHES",
-        "status": "reported",
-        "type": "data_type",
-        "value": "noms et prénoms"
-       },
-       {
-        "date": "",
-        "evidence": "Noms et prénoms des personnes concernées ;",
-        "item_id": "https://frenchbreaches.com/alertes/ascor-mv8mz9u8fiazbkptdgm",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "noms et prénoms"
-       },
-       {
-        "date": "",
-        "evidence": "Numéros de téléphone ;",
-        "item_id": "https://frenchbreaches.com/alertes/ascor-mv8mz9u8fiazbkptdgm",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "numéros de téléphone"
-       },
-       {
-        "date": "",
-        "evidence": "Adresses postales.",
-        "item_id": "https://frenchbreaches.com/alertes/ascor-mv8mz9u8fiazbkptdgm",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "adresses postales"
-       },
-       {
-        "date": "",
-        "evidence": "Renouvellement des mots de passe et clés d'accès concernés ;",
-        "item_id": "https://frenchbreaches.com/alertes/ascor-mv8mz9u8fiazbkptdgm",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "type": "data_type",
-        "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "Pour obtenir des précisions, vérifier l'authenticité d'un message ou exercer leurs droits, les personnes concernées peuvent contacter le délégué à la protection des données à l'adresse [email protected].",
-        "item_id": "https://frenchbreaches.com/alertes/ascor-mv8mz9u8fiazbkptdgm",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "type": "data_type",
-        "value": "adresses e-mail"
-       }
-      ],
-      "data_types": [
-       {
-        "date": "",
-        "evidence": "Des noms, prénoms, adresses électroniques, numéros de téléphone et adresses postales ont pu être consultés et extraits.",
-        "item_id": "https://frenchbreaches.com/alertes/ascor-mv8mz9u8fiazbkptdgm",
-        "source_id": "FRENCHBREACHES",
-        "status": "reported",
-        "value": "numéros de téléphone"
-       },
-       {
-        "date": "",
-        "evidence": "Des noms, prénoms, adresses électroniques, numéros de téléphone et adresses postales ont pu être consultés et extraits.",
-        "item_id": "https://frenchbreaches.com/alertes/ascor-mv8mz9u8fiazbkptdgm",
-        "source_id": "FRENCHBREACHES",
-        "status": "reported",
-        "value": "adresses postales"
-       },
-       {
-        "date": "",
-        "evidence": "Des noms, prénoms, adresses électroniques, numéros de téléphone et adresses postales ont pu être consultés et extraits.",
-        "item_id": "https://frenchbreaches.com/alertes/ascor-mv8mz9u8fiazbkptdgm",
-        "source_id": "FRENCHBREACHES",
-        "status": "reported",
-        "value": "noms et prénoms"
-       },
-       {
-        "date": "",
-        "evidence": "Noms et prénoms des personnes concernées ;",
-        "item_id": "https://frenchbreaches.com/alertes/ascor-mv8mz9u8fiazbkptdgm",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "noms et prénoms"
-       },
-       {
-        "date": "",
-        "evidence": "Numéros de téléphone ;",
-        "item_id": "https://frenchbreaches.com/alertes/ascor-mv8mz9u8fiazbkptdgm",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "numéros de téléphone"
-       },
-       {
-        "date": "",
-        "evidence": "Adresses postales.",
-        "item_id": "https://frenchbreaches.com/alertes/ascor-mv8mz9u8fiazbkptdgm",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "adresses postales"
-       },
-       {
-        "date": "",
-        "evidence": "Renouvellement des mots de passe et clés d'accès concernés ;",
-        "item_id": "https://frenchbreaches.com/alertes/ascor-mv8mz9u8fiazbkptdgm",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown",
-        "value": "mots de passe"
-       },
-       {
-        "date": "",
-        "evidence": "Pour obtenir des précisions, vérifier l'authenticité d'un message ou exercer leurs droits, les personnes concernées peuvent contacter le délégué à la protection des données à l'adresse [email protected].",
-        "item_id": "https://frenchbreaches.com/alertes/ascor-mv8mz9u8fiazbkptdgm",
-        "source_id": "FRENCHBREACHES",
-        "status": "hypothesis",
-        "value": "adresses e-mail"
-       }
-      ],
-      "data_volumes": [],
-      "engine": "generic-rich-facts",
-      "profile": {
-       "chars": 5213,
-       "claims": 8,
-       "hypotheses": 1,
-       "semantic_candidate": true,
-       "sentences": 53
-      },
-      "relations": [],
-      "semantic": {
-       "candidate": true,
-       "used": false
-      },
-      "source_adapter": "frenchbreaches",
-      "timeline": [
-       {
-        "date": "2026-08-24",
-        "event": "Selon une notification signée par son président, Olivier Marquet, un attaquant a accédé à un outil d'analyse de données entre le 18 et le 24 août 2026.",
-        "evidence": "Selon une notification signée par son président, Olivier Marquet, un attaquant a accédé à un outil d'analyse de données entre le 18 et le 24 août 2026.",
-        "item_id": "https://frenchbreaches.com/alertes/ascor-mv8mz9u8fiazbkptdgm",
-        "source_id": "FRENCHBREACHES",
-        "status": "reported"
-       },
-       {
-        "date": "2026-10-05",
-        "event": "L'organisme, informé de l'incident le 5 octobre 2026, indique avoir déposé plainte et notifié la CNIL.",
-        "evidence": "L'organisme, informé de l'incident le 5 octobre 2026, indique avoir déposé plainte et notifié la CNIL.",
-        "item_id": "https://frenchbreaches.com/alertes/ascor-mv8mz9u8fiazbkptdgm",
-        "source_id": "FRENCHBREACHES",
-        "status": "reported"
-       },
-       {
-        "date": "2026-10-05",
-        "event": "ASCOR précise avoir été informé de l'incident le 5 octobre 2026, soit plus d'un mois après la période d'intrusion identifiée.",
-        "evidence": "ASCOR précise avoir été informé de l'incident le 5 octobre 2026, soit plus d'un mois après la période d'intrusion identifiée.",
-        "item_id": "https://frenchbreaches.com/alertes/ascor-mv8mz9u8fiazbkptdgm",
-        "source_id": "FRENCHBREACHES",
-        "status": "unknown"
-       }
-      ],
-      "version": "2",
-      "vulnerabilities": []
-     }
-    },
-    "summary": "ASCOR piraté : des données personnelles dérobées lors d'une cyberattaque chez un prestataire ASCOR, organisme français de formation à distance, a été victime d'une fuite de données personnelles liée à une intrusion chez l'un de ses prestataires informatiques. Selon une notificati…",
-    "threat": "Fuite de données",
-    "title": "ASCOR",
-    "url": "https://frenchbreaches.com/alertes/ascor-mv8mz9u8fiazbkptdgm"
-   },
-   "exhausted_fields": {},
-   "field_reasons": {
-    "incident_summary": "FIELD_VALIDATION_REJECTED",
-    "summary": "CONFIDENCE_REJECTED"
-   },
-   "first_queued_at": "2026-10-15T12:12:37.343556+00:00",
-   "item": {
-    "Collected_As_Of": "2026-10-16T15:58:01.182358+04:00",
-    "Event_Date": "",
-    "Item_ID": "ITM-abf37a5c4dfd7494",
-    "Location": "France métropolitaine",
-    "Organisation_Key": "ascor",
-    "Organisation_Raw": "ASCOR",
-    "Published_Date": "2026-10-15",
-    "Sector": "Inconnu",
-    "Source_ID": "FRENCHBREACHES",
-    "Source_Item_ID": "https://frenchbreaches.com/alertes/ascor-mv8mz9u8fiazbkptdgm",
-    "Threat": "Fuite de données",
-    "Threat_Raw": "Fuite de données",
-    "Title": "ASCOR",
-    "URL": "https://frenchbreaches.com/alertes/ascor-mv8mz9u8fiazbkptdgm"
-   },
-   "key": "ITM-abf37a5c4dfd7494:469fbd5f1217746053149131ddeb374c22376c25927c20295fb50cae58ac0c89",
-   "last_queued_at": "2026-11-14T13:51:56.599748+00:00",
-   "pending_fields": [
-    "incident_summary",
-    "summary"
-   ],
-   "reason": "SEMANTIC_MISS"
-  },
-  {
-   "attempts": 0,
+   "attempts": 1,
    "entry": {
     "content": "La Grande Pharmacie des Halles , officine lilloise ouverte 24 heures sur 24 et 7 jours sur 7, fait l’objet d’une  revendication de fuite de données particulièrement sensible . Une archive d’environ  1,4 Go  contenant plus d’un millier de fichiers a été mise en téléchargement le 15 octobre 2026. \n\n\n\n Les documents correspondent principalement à des  ordonnances nominatives envoyées par des patients  via le service en ligne de la pharmacie afin de préparer leurs médicaments avant un retrait ou une livraison. L’analyse de l’archive fait apparaître environ  700 patients différents , dont des mineurs. \n\n\n\n La fuite revendiquée contient des informations parmi les plus sensibles qui puissent être associées à une personne :  nom, date de naissance, adresse, traitements prescrits et, dans certains cas, numéro de Sécurité sociale . \n\n\n\n   \n\n\n\n Plus d’un millier de documents médicaux exposés \n\n\n\n La Grande Pharmacie des Halles propose sur son site pharmacie2424.fr un service permettant d’envoyer directement une ordonnance afin qu’elle soit préparée avant le passage du patient en pharmacie. \n\n\n\n Ce sont précisément des documents transmis par ce service qui apparaissent dans l’archive revendiquée. On y retrouve essentiellement des  photographies et scans d’ordonnances , parfois réalisés directement avec le téléphone du patient. \n\n\n\n Les fichiers s’étendent de  septembre 2017 au 7 octobre 2026 . La fuite revendiquée couvre donc près de neuf années de documents envoyés à l’officine. \n\n\n\n 700 patients dans les fichiers \n\n\n\n Le nombre de fichiers ne correspond pas au nombre de personnes concernées. Un même patient peut avoir envoyé plusieurs ordonnances au fil du temps ou plusieurs photographies pour un même document. \n\n\n\n Après rapprochement des documents, l’archive porterait sur environ  700 patients distincts . Plusieurs ordonnances concernent également des  enfants . \n\n\n\n Ce chiffre reste une estimation issue de l’analyse des fichiers diffusés et non un bilan communiqué officiellement par la pharmacie. \n\n\n\n Des traitements médicaux directement rattachés aux patients \n\n\n\n La sensibilité de la fuite vient d’abord du contenu même d’une ordonnance. Contrairement à une simple base contenant un nom et une adresse email, chaque document peut révéler directement  les traitements prescrits et donc une partie de l’état de santé du patient . \n\n\n\n Les documents analysés concernent des traitements très variés, dont certains relèvent de domaines particulièrement intimes comme  la psychiatrie ou l’oncologie . \n\n\n\n Cyberattaque.org ne reproduira évidemment aucun traitement ni aucune information permettant d’identifier les patients concernés. \n\n\n\n Des numéros de Sécurité sociale apparaissent aussi \n\n\n\n Selon les documents, les ordonnances peuvent également comporter la  date de naissance, l’adresse postale et parfois le numéro de Sécurité sociale  du patient. \n\n\n\n L’archive contient par ailleurs au moins  une pièce d’identité et une attestation d’assurance maladie . Ces documents augmentent encore le risque d’usurpation d’identité lorsque plusieurs informations sont croisées. \n\n\n\n Aucune donnée bancaire ni aucun mot de passe n’a en revanche été identifié dans le lot décrit. \n\n\n\n Les prescripteurs apparaissent également dans les fichiers \n\n\n\n Les ordonnances exposent aussi des informations liées aux professionnels de santé qui les ont émises :  identité du prescripteur, coordonnées professionnelles, identifiants et signatures  peuvent être visibles directement sur les documents. \n\n\n\n Deux carnets d’adresses provenant d’une messagerie professionnelle liée à l’officine apparaissent également dans l’archive, avec des  adresses email et numéros de téléphone de contacts professionnels . \n\n\n\n Certaines photos conservent leur position géographique \n\n\n\n Un autre détail mérite l’attention : certaines photographies de documents conservent des  métadonnées de géolocalisation . \n\n\n\n Lorsqu’un smartphone enregistre la position GPS au moment de la prise de vue, celle-ci peut rester attachée au fichier si les métadonnées ne sont pas supprimées avant son stockage ou son partage. \n\n\n\n Dans le contexte d’une ordonnance nominative comportant déjà une adresse, ce type de donnée peut fournir une information supplémentaire sur l’endroit où le document a été photographié. \n\n\n\n Un risque de fraude particulièrement crédible \n\n\n\n La combinaison de données administratives et médicales offre un contexte particulièrement exploitable pour des tentatives de fraude. \n\n\n\n Un attaquant pourrait par exemple se faire passer pour  la pharmacie, l’Assurance Maladie ou un professionnel de santé  en citant des informations réelles sur le patient afin de demander un document supplémentaire, de faire cliquer sur un lien ou de récupérer d’autres données personnelles. \n\n\n\n La présence éventuelle du numéro de Sécurité sociale, de la date de naissance et d’une pièce d’identité augmente également les risques d’ usurpation d’identité . \n\n\n\n Enfin, lorsqu’une ordonnance révèle un traitement sensible, la simple association entre une pathologie probable et l’identité d’une personne constitue déjà une  atteinte majeure à la vie privée . \n\n\n\n L’origine de l’accès reste inconnue \n\n\n\n La publication ne donne aucune indication permettant de comprendre comment les documents auraient été récupérés. Impossible donc de déterminer s’il s’agit d’une faille du service d’envoi d’ordonnances, d’un stockage mal sécurisé, d’un compte compromis ou d’un autre accès à l’environnement de la pharmacie. \n\n\n\n Le fait que les fichiers s’étendent jusqu’au  7 octobre 2026  montre en revanche que l’archive contient des documents très récents au moment de sa publication. \n\n\n\n Une revendication qui n’est pas encore confirmée par la pharmacie \n\n\n\n À ce stade,  la Grande Pharmacie des Halles n’a pas publiquement confirmé cette revendication de fuite de données . \n\n\n\n L’archive diffusée contient néanmoins plus d’un millier de documents attribués au service d’envoi d’ordonnances de pharmacie2424.fr et concernerait environ  700 patients . \n\n\n\n Au-delà du nombre relativement limité de personnes touchées, c’est surtout la nature des informations revendiquées qui rend l’incident particulièrement sensible :  ordonnances nominatives, traitements, données de mineurs, numéros de Sécurité sociale et documents d’identité  se retrouvent regroupés dans une archive désormais disponible hors de l’officine.",
     "entity": "",
@@ -11927,7 +11691,10 @@
     "url": "https://www.cyberattaque.org/grande-pharmacie-des-halles-les-ordonnances-de-patients-diffusees-apres-une-cyberattaque/"
    },
    "exhausted_fields": {},
-   "field_reasons": {},
+   "field_reasons": {
+    "activity_description": "ACTIVITY_NOT_DESCRIBED",
+    "activity_sector_match": "NO_VALID_ACTIVITY_PAIR"
+   },
    "first_queued_at": "2026-10-15T12:12:46.653118+00:00",
    "item": {
     "Collected_As_Of": "2026-10-16T15:58:01.182358+04:00",
@@ -11946,15 +11713,15 @@
     "URL": "https://www.cyberattaque.org/grande-pharmacie-des-halles-les-ordonnances-de-patients-diffusees-apres-une-cyberattaque/"
    },
    "key": "ITM-5b05209315516360:45e4944f062737bf0660b5ca55415b7e662b1484e2265f8419cc7ef1638bad66",
-   "last_queued_at": "2026-10-16T11:58:24.385663+00:00",
+   "last_queued_at": "2026-11-15T14:25:47.092890+00:00",
    "pending_fields": [
     "activity_description",
     "activity_sector_match"
    ],
-   "reason": "TECHNICAL_FAILURE"
+   "reason": "SEMANTIC_REJECTED"
   },
   {
-   "attempts": 0,
+   "attempts": 1,
    "entry": {
     "content": "BodySwap , service en ligne de génération d’images et de vidéos par intelligence artificielle proposant notamment des fonctions d’échange de visages, de retrait de vêtements et de création de contenus pour adultes, fait l’objet d’une  revendication de fuite de données . \n\n\n\n Un acteur utilisant le pseudonyme  MrData  affirme avoir récupéré puis mis en ligne la base de données du service. L’analyse du fichier diffusé fait apparaître  10 309 comptes utilisateurs , avec des données allant bien au-delà d’une simple liste d’adresses email. \n\n\n\n Les informations exposées peuvent notamment associer un utilisateur à son  pseudonyme, son adresse email, son mot de passe haché, ses adresses IP de connexion  et, selon les comptes, au  type de générations demandées sur la plateforme . Dans le contexte d’un service destiné notamment à produire des contenus pour adultes, ce dernier élément rend la fuite particulièrement sensible. \n\n\n\n Une base arrêtée au 3 août 2026 \n\n\n\n La revendication a été publiée le  14 octobre 2026 . Le fichier présenté comme provenant de BodySwap correspondrait à un export de la base arrêté au  3 août 2026 . \n\n\n\n Les premiers comptes présents remontent à  septembre 2025 . La base couvrirait donc environ onze mois d’activité du service. \n\n\n\n Le hacker évoque publiquement environ  10 000 lignes . L’analyse du dépôt permet d’être plus précis avec  10 309 utilisateurs concernés . \n\n\n\n Emails, mots de passe hachés et adresses IP \n\n\n\n Les comptes exposés contiennent notamment les  identifiants utilisateurs, pseudonymes et adresses email . \n\n\n\n Des valeurs correspondant aux mots de passe figurent également dans la base, mais ceux-ci sont  hachés  et ne sont donc pas directement lisibles en clair. \n\n\n\n Le fichier contient également, pour la majorité des utilisateurs, des  adresses IP de connexion . Ces informations peuvent notamment permettre de rapprocher plusieurs sessions ou de donner une indication sur la localisation approximative utilisée lors de la connexion. \n\n\n\n Le type de contenu généré apparaît dans la base \n\n\n\n C’est probablement l’information la plus sensible de cette revendication. \n\n\n\n BodySwap se présente comme un service de génération d’images et de vidéos par intelligence artificielle proposant des usages pouvant inclure des  contenus pour adultes, du face swap ou des fonctions permettant de modifier les vêtements d’une personne sur une photographie . \n\n\n\n La base ne contient pas seulement les comptes : elle conserve également des informations permettant de connaître  le type de générations demandées par certains utilisateurs . \n\n\n\n Il ne faut toutefois pas aller plus loin que ce que montrent les données :  aucune image générée par les utilisateurs n’apparaît dans le dépôt analysé . La fuite permet potentiellement de connaître une catégorie d’usage, mais pas de consulter directement les créations réalisées. \n\n\n\n Près de 800 clients avec leur historique d’achat \n\n\n\n La majorité des 10 309 comptes ne semble pas avoir effectué d’achat. En revanche,  près de 800 utilisateurs payants  apparaissent avec des informations supplémentaires. \n\n\n\n Pour ces clients, la base peut contenir le  nom complet  ainsi que l’ historique des achats de crédits  effectués sur le service, avec les montants associés. \n\n\n\n Aucune donnée de carte bancaire n’apparaît cependant dans le dépôt. Les numéros de carte, cryptogrammes et autres informations bancaires permettant directement d’effectuer un paiement ne font pas partie des données observées. \n\n\n\n Des clés liées aux services de paiement apparaissent aussi \n\n\n\n Le dépôt contient également des  clés d’accès ou clés d’API associées à des services utilisés par l’éditeur , notamment dans son environnement de paiement. \n\n\n\n Leur simple présence ne permet pas d’affirmer qu’elles sont encore valides ou qu’elles offrent un accès permettant d’effectuer des opérations financières. Elles constituent néanmoins des éléments techniques qui n’ont normalement pas vocation à être diffusés publiquement. \n\n\n\n Pas d’images des utilisateurs dans la fuite \n\n\n\n Compte tenu de la nature du service, il est important de préciser ce que la fuite ne contient pas. \n\n\n\n  Aucune image produite ou envoyée par les utilisateurs n’apparaît dans le dépôt analysé.  Rien ne permet donc d’affirmer que les photographies utilisées pour générer les contenus ou les créations finales ont été récupérées par le hacker. \n\n\n\n La sensibilité de la fuite vient surtout du rapprochement entre  l’identité numérique d’un utilisateur et son activité sur une plateforme proposant des usages pour adultes . \n\n\n\n Un risque de chantage et de phishing particulièrement élevé \n\n\n\n Dans ce contexte, les conséquences potentielles vont bien au-delà du spam classique. \n\n\n\n Un attaquant disposant d’une adresse email, d’une adresse IP et d’informations sur les usages du compte pourrait tenter de faire croire à sa victime qu’il possède également ses créations ou les photos qu’elle a envoyées au service. \n\n\n\n Ce scénario pourrait servir à des tentatives de  chantage ou de sextorsion , y compris lorsque le hacker ne possède en réalité aucune image. La connaissance du nom de la plateforme et du type d’activité suffit parfois à rendre une menace beaucoup plus crédible. \n\n\n\n Les utilisateurs payants peuvent également être ciblés par de faux messages concernant un  paiement refusé, un renouvellement de crédits ou une prétendue vérification de compte . \n\n\n\n Les mots de passe réutilisés représentent un risque supplémentaire \n\n\n\n Les mots de passe présents dans la base sont protégés par une empreinte, mais cela ne signifie pas qu’ils sont sans intérêt pour un attaquant. \n\n\n\n Selon l’algorithme utilisé et la robustesse du mot de passe choisi, certaines empreintes peuvent faire l’objet de tentatives de cassage. Les utilisateurs ayant réutilisé le même mot de passe sur leur messagerie ou d’autres services seraient alors particulièrement exposés. \n\n\n\n La méthode utilisée pour récupérer la base reste inconnue \n\n\n\n MrData ne fournit pas d’explication technique permettant de comprendre comment la base aurait été obtenue. \n\n\n\n Il est donc impossible de déterminer à ce stade si l’incident provient d’une  faille applicative, d’un serveur mal sécurisé, d’identifiants compromis, d’une sauvegarde accessible ou d’un autre type d’intrusion . \n\n\n\n La présence simultanée des comptes utilisateurs, des informations de paiement et de plusieurs éléments de configuration laisse toutefois penser à une extraction plus large qu’un simple scraping des pages publiques du service. \n\n\n\n Une revendication qui reste à confirmer par BodySwap \n\n\n\n À ce stade,  BodySwap n’a pas publiquement confirmé cette revendication de fuite de données . \n\n\n\n Le dépôt attribué au service contient néanmoins les données de  10 309 comptes  et une photographie de la base arrêtée au 3 août 2026. Près de 800 utilisateurs payants y apparaissent avec des informations supplémentaires liées à leurs achats. \n\n\n\n La fuite ne contient ni cartes bancaires ni images produites par les utilisateurs. Elle reste pourtant particulièrement sensible : dans le cas d’un service proposant des générations à caractère adulte,  associer une adresse email, une IP et un historique d’utilisation suffit déjà à créer un risque important pour la vie privée .",
     "entity": "",
@@ -12225,7 +11992,10 @@
     "url": "https://www.cyberattaque.org/cyberattaque-bodyswap-les-donnees-de-10-309-utilisateurs-du-service-dimages-pour-adultes-en-fuite/"
    },
    "exhausted_fields": {},
-   "field_reasons": {},
+   "field_reasons": {
+    "activity_description": "ACTIVITY_NOT_DESCRIBED",
+    "activity_sector_match": "NO_VALID_ACTIVITY_PAIR"
+   },
    "first_queued_at": "2026-10-15T12:12:46.800210+00:00",
    "item": {
     "Collected_As_Of": "2026-10-16T15:58:01.182358+04:00",
@@ -12244,15 +12014,15 @@
     "URL": "https://www.cyberattaque.org/cyberattaque-bodyswap-les-donnees-de-10-309-utilisateurs-du-service-dimages-pour-adultes-en-fuite/"
    },
    "key": "ITM-af91dfcba79042d4:795e802ed67fd385dbff9ed6d73acf682749cfb9f89672b6095083e2277cefa8",
-   "last_queued_at": "2026-10-16T11:58:24.538564+00:00",
+   "last_queued_at": "2026-11-15T14:25:49.659083+00:00",
    "pending_fields": [
     "activity_description",
     "activity_sector_match"
    ],
-   "reason": "TECHNICAL_FAILURE"
+   "reason": "SEMANTIC_REJECTED"
   },
   {
-   "attempts": 0,
+   "attempts": 1,
    "entry": {
     "content": "Climb Up , réseau français de salles d’escalade indoor, fait l’objet d’une importante  revendication de fuite de données . Le hacker  Alduin  affirme avoir récupéré les données clients de  29 structures en France  et propose désormais la base à la vente. \n\n\n\n La fuite revendiquée représenterait environ  151 000 profils  pour un fichier JSONL de près de 94 Mo. Les données couvriraient une période particulièrement longue, allant de  janvier 2016 à mars 2026 . \n\n\n\n  Cyberattaque.org s’est procuré l’échantillon diffusé par le hacker.  Son analyse montre que la fuite ne semble absolument pas limitée à une seule salle : les 1 001 fiches examinées sont réparties entre  13 structures différentes , avec des salles Climb Up mais également des établissements MROC et SOLO Escalade. \n\n\n\n   \n\n\n\n La fuite ne concerne pas une seule salle \n\n\n\n Le volume de 151 000 profils pouvait laisser planer un doute sur le périmètre réel de la revendication. L’échantillon permet d’écarter l’hypothèse d’une fuite provenant uniquement d’un établissement local. \n\n\n\n Parmi les 1 001 enregistrements analysés par Cyberattaque.org, nous retrouvons des clients rattachés à  Climb Up Lyon Gerland, Aix Bouc-Bel-Air, Dijon, Limoges, Épinay-sur-Seine, Aubervilliers, Istres, Angers ou encore Paris Porte d’Italie . \n\n\n\n Mais la base contient également des profils associés à  MROC Villeurbanne, MROC Laennec, MROC Part-Dieu et SOLO Escalade Toulouse . \n\n\n\n Ces données pointent donc beaucoup plus vers  un système de gestion clientèle utilisé à l’échelle du réseau ou partagé entre plusieurs structures  que vers le piratage isolé d’une seule salle. \n\n\n\n Noms, dates de naissance, téléphones et adresses \n\n\n\n Les informations contenues dans les fiches sont particulièrement détaillées. On retrouve notamment le  nom du client, sa date de naissance, son âge, son adresse postale, son code postal, sa ville, ses numéros de téléphone et son adresse email . \n\n\n\n Dans notre échantillon, les  1 001 fiches disposent d’une date de naissance . 991 contiennent une adresse email, 979 au moins un numéro de téléphone et 485 une adresse postale renseignée. \n\n\n\n Chaque profil comporte également un identifiant client, la structure fréquentée, la date de création du dossier, sa dernière mise à jour et la  date de dernière activité . Certaines fiches de l’échantillon montrent encore une activité en  mars 2026 , quelques mois seulement avant la revendication. \n\n\n\n La base permet de reconstituer les liens familiaux \n\n\n\n Le point le plus sensible apparaît dans le champ consacré aux  relations entre les clients . \n\n\n\n La plateforme ne se contente pas d’enregistrer chaque grimpeur séparément. Elle conserve également les liens entre plusieurs profils avec des mentions comme  « Parent de », « Enfant de », « Frère/Sœur de » ou « Conjoint de » . \n\n\n\n Sur les 1 001 profils analysés,  280 possèdent au moins une relation enregistrée . Nous avons comptabilisé au total  517 liens entre personnes . \n\n\n\n Ces relations permettent donc de reconstituer directement certaines familles : le profil d’un parent peut indiquer le nom de ses enfants, leur identifiant client et des informations permettant de connaître leur âge. \n\n\n\n Des centaines d’enfants apparaissent dans seulement 1 000 profils \n\n\n\n C’est probablement l’élément le plus préoccupant de l’échantillon. \n\n\n\n Cyberattaque.org a identifié  259 identifiants distincts correspondant à des mineurs  dans les relations familiales des 1 001 profils analysés. Certains enfants mentionnés sont très jeunes, avec des âges descendant jusqu’à  2 ans . \n\n\n\n À cela s’ajoutent quelques profils de mineurs directement présents parmi les fiches principales. La fuite revendiquée ne concerne donc manifestement pas uniquement des adultes abonnés à une salle :  des données relatives à des enfants apparaissent également dans la base . \n\n\n\n Il est impossible d’extrapoler mécaniquement ces proportions aux quelque 151 000 profils revendiqués. L’échantillon montre néanmoins que la présence de mineurs n’est pas anecdotique. \n\n\n\n Des comptes en ligne également reliés aux fiches clients \n\n\n\n Les enregistrements comportent aussi une partie intitulée  « online_accounts » . Celle-ci permet de rattacher le profil enregistré dans la salle à un compte utilisé en ligne. \n\n\n\n Dans l’échantillon, presque toutes les fiches disposent d’une référence à un compte en ligne. Les informations associées peuvent elles-mêmes reprendre l’identité et l’adresse email de l’utilisateur. \n\n\n\n La structure prévoit également un champ consacré aux cartes détenues par le client. Celui-ci est toutefois vide dans l’ensemble de l’échantillon analysé, nous ne pouvons donc pas affirmer que des numéros de cartes ou d’abonnements exploitables figurent dans la fuite complète. \n\n\n\n 151 000 profils pourraient représenter une part importante de l’historique du réseau \n\n\n\n Alduin affirme que les données concernent  29 structures françaises . Le hacker ne parle donc pas simplement d’une salle ou d’une franchise particulière mais présente directement son fichier comme une extraction couvrant une grande partie du réseau. \n\n\n\n L’échantillon va dans ce sens : plusieurs régions et plusieurs marques apparaissent simultanément, avec des identifiants clients différents et des dates s’étalant sur plusieurs années. \n\n\n\n Il serait toutefois prématuré de présenter les  151 000 lignes revendiquées comme 151 000 personnes uniques  sans pouvoir dédupliquer l’intégralité du fichier. L’échantillon contient déjà quelques doublons de noms et une même personne pourrait disposer de plusieurs profils ou comptes au cours de la période couverte. \n\n\n\n Pas de mots de passe ni de données bancaires dans l’échantillon \n\n\n\n Malgré la quantité d’informations personnelles, aucun champ de mot de passe n’apparaît dans la structure revendiquée. \n\n\n\n Cyberattaque.org n’a pas non plus observé de  donnée bancaire ou de numéro de carte de paiement  dans l’échantillon. La fuite porte avant tout sur les profils clients, leurs coordonnées, leurs dates de naissance, leurs activités et les relations entre membres d’une même famille. \n\n\n\n Une extraction qui ressemble à un outil central de gestion des grimpeurs \n\n\n\n La structure des données donne quelques indices sur leur origine. Les informations sont organisées autour d’un  identifiant client  auquel sont rattachés la salle, les coordonnées, les comptes en ligne, les relations avec d’autres membres et les différentes dates d’activité. \n\n\n\n La présence de nombreuses structures dans le même format suggère qu’Alduin pourrait avoir accédé à  une application ou une interface centralisant les clients de plusieurs salles , plutôt qu’avoir attaqué successivement chaque établissement. \n\n\n\n Le hacker ne précise cependant pas sa méthode. Rien ne permet actuellement de savoir s’il s’agit d’une faille applicative, d’un compte compromis, d’une API mal protégée ou d’un autre accès aux systèmes utilisés par le réseau. \n\n\n\n Les enfants constituent le risque le plus sensible \n\n\n\n Pour les adultes, noms, emails, téléphones, dates de naissance et habitudes de fréquentation peuvent faciliter des campagnes de phishing se faisant passer pour une salle Climb Up, notamment autour d’un abonnement, d’une réservation ou d’un paiement. \n\n\n\n Mais la présence des  liens familiaux et de données concernant des mineurs  augmente nettement la sensibilité de la revendication. La combinaison du nom d’un parent avec celui de ses enfants, leur âge et parfois les coordonnées du foyer fournit un contexte particulièrement précis. \n\n\n\n Ces informations pourraient notamment être utilisées pour rendre crédible un faux message concernant une inscription, une activité enfant, un stage, une autorisation parentale ou un problème sur un compte familial. \n\n\n\n Climb Up n’a pas encore confirmé la revendication \n\n\n\n À ce stade,  Climb Up n’a pas publiquement confirmé cette revendication de fuite de données . \n\n\n\n Le volume d’environ  151 000 profils  et le périmètre de 29 structures restent donc ceux annoncés par Alduin. L’échantillon analysé par Cyberattaque.org confirme néanmoins que des données attribuées à  plusieurs salles du réseau et à plusieurs structures différentes  sont regroupées dans le fichier proposé à la vente. \n\n\n\n Il confirme surtout la présence de  coordonnées personnelles, dates de naissance et relations familiales incluant des enfants . L’origine de l’extraction et le nombre exact de personnes uniques concernées restent désormais à déterminer.",
     "entity": "",
@@ -12564,7 +12334,10 @@
     "url": "https://www.cyberattaque.org/climb-up-pres-de-151-000-profils-en-vente-sur-le-darkweb-apres-une-cyberattaque/"
    },
    "exhausted_fields": {},
-   "field_reasons": {},
+   "field_reasons": {
+    "activity_description": "ACTIVITY_NOT_DESCRIBED",
+    "activity_sector_match": "NO_VALID_ACTIVITY_PAIR"
+   },
    "first_queued_at": "2026-10-15T12:12:46.946639+00:00",
    "item": {
     "Collected_As_Of": "2026-10-15T16:12:28.051967+04:00",
@@ -12583,12 +12356,12 @@
     "URL": "https://www.cyberattaque.org/climb-up-pres-de-151-000-profils-en-vente-sur-le-darkweb-apres-une-cyberattaque/"
    },
    "key": "ITM-db4981618703e0ef:a2811f467231e75d431afedbf58b3acdea9a879cde7f73333b5c3a72de8db5de",
-   "last_queued_at": "2026-10-15T12:12:46.946639+00:00",
+   "last_queued_at": "2026-11-15T14:25:52.131150+00:00",
    "pending_fields": [
     "activity_description",
     "activity_sector_match"
    ],
-   "reason": "TECHNICAL_FAILURE"
+   "reason": "SEMANTIC_REJECTED"
   },
   {
    "attempts": 0,

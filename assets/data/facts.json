@@ -29,11 +29,12 @@
   "version": 3
  },
  "INC-013B23C8E538": {
-  "display_summary": "Le site CuisineAddict a signalé une tentative d'accès non autorisé pouvant avoir entraîné le vol potentiel de données clients.",
+  "display_summary": "CuisineAddict signale une tentative d'accès non autorisé et recommande à ses clients de changer leurs mots de passe.",
   "sensitive_data": {
    "types": [
     {
      "sources": [
+      "CYBERATTAQUE_ORG",
       "FRENCHBREACHES",
       "BONJOURLAFUITE"
      ],
@@ -47,7 +48,8 @@
    "vulnerable_people": false
   },
   "summary_paragraphs": [
-   "Le site français de vente d'ustensiles et d'accessoires de cuisine CuisineAddict a alerté ses clients après une tentative d'accès non autorisé à ses systèmes."
+   "CuisineAddict indique avoir été victime d’une tentative d’accès non autorisé et affirme l’avoir déjouée.",
+   "L’entreprise recommande aux clients de modifier leurs mots de passe et signale des emails frauduleux de paiement PayPal."
   ],
   "version": 3
  },
@@ -114,30 +116,8 @@
  },
  "INC-02896BC656BE": {
   "display_summary": "1 699 factures de JASP-K9 seraient accessibles via une faille exposant des informations de facturation.",
-  "sensitive_data": {
-   "types": [
-    {
-     "sources": [
-      "FRENCHBREACHES"
-     ],
-     "specifics": [],
-     "status": "unknown",
-     "value": "mots de passe"
-    },
-    {
-     "sources": [
-      "FRENCHBREACHES"
-     ],
-     "specifics": [],
-     "status": "unknown",
-     "value": "données bancaires"
-    }
-   ],
-   "vulnerable_people": false
-  },
   "summary_paragraphs": [
-   "LunarisSec affirme détenir 1 699 factures liées à JASP-K9 et a publié des captures d'écran de documents.",
-   "JASP-K9 n'a pas confirmé l'intrusion et l'authenticité des documents reste à établir."
+   "Le collectif LunarisSec affirme avoir découvert une vulnérabilité donnant accès à 1 699 factures attribuées à JASP-K9."
   ],
   "version": 3
  },
@@ -585,22 +565,10 @@
   "version": 3
  },
  "INC-1287BAEB9F29": {
-  "display_summary": "Les données de plus de 9 millions de patients de 1001RDV Santé sont proposées à la vente par un pirate.",
-  "sensitive_data": {
-   "types": [
-    {
-     "sources": [
-      "FRENCHBREACHES"
-     ],
-     "specifics": [],
-     "status": "unknown",
-     "value": "numéros de sécurité sociale"
-    }
-   ],
-   "vulnerable_people": false
-  },
+  "display_summary": "Un pirate revendique la vente de 4,9 Go de données liées à 1001RDV et Logicielnet, comprenant environ 9 millions d'enregistrements de patients.",
   "summary_paragraphs": [
-   "Les données de plus de 9 millions de patients français seraient proposées à la vente sur un forum cybercriminel par un pirate."
+   "Un individu se faisant appeler « ChimeraZ » revendique la possession et la mise en vente de 4,9 Go de données liées à 1001RDV et Logicielnet.",
+   "Logicielnet confirme une cyberattaque sur son site WordPress mais conteste toute compromission des bases de patients."
   ],
   "version": 3
  },
@@ -2026,6 +1994,27 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-44834658383F": {
+  "display_summary": "CodinGame victime d’une cyberattaque : des messages privés exposés",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Un individu a exploité une vulnérabilité d’un outil interne pour copier des données de plusieurs bases, affectant potentiellement l’ensemble des comptes.",
+   "Parmi les informations exposées figurent adresses email, identifiants, adresses IP et, pour certains membres, des messages privés."
+  ],
+  "version": 3
+ },
  "INC-4487A2EFEFFE": {
   "display_summary": "Association Francophone de Tennis de Table (AFTT)",
   "summary_paragraphs": [
@@ -2662,6 +2651,28 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-5A28227E80E1": {
+  "display_summary": "Ninkasi confirme une cyberattaque sur sa boutique en ligne avec exposition possible de données clients et mots de passe.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "confirmed",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Ninkasi confirme un accès non autorisé à sa boutique en ligne le 12 novembre 2026 et affirme avoir détecté et bloqué l’intrusion le jour même.",
+   "Des noms, adresses email, numéros de téléphone, adresses postales, historiques de commandes et mots de passe clients ont pu être consultés."
+  ],
+  "version": 3
+ },
  "INC-5AD7E8261825": {
   "display_summary": "",
   "summary_paragraphs": [],
@@ -2872,11 +2883,20 @@
   "version": 3
  },
  "INC-60BCEF25FA60": {
-  "display_summary": "Le Centre National de l’Expertise Hospitalière (CNEH)",
+  "display_summary": "Le Centre National de l’Expertise Hospitalière (CNEH) est visé par une revendication de ransomware affirmant la récupération d’environ 645 Go de données.",
   "sensitive_data": {
    "types": [
     {
      "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "données bancaires"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
       "FRENCHBREACHES"
      ],
      "specifics": [],
@@ -2887,8 +2907,8 @@
    "vulnerable_people": false
   },
   "summary_paragraphs": [
-   "Un groupe de pirates affirme détenir environ 645 Go de données attribuées au Centre National de l’Expertise Hospitalière (CNEH).",
-   "Les échantillons publiés montrent des copies de pièces d'identité, cartes Vitale, informations RH, coordonnées personnelles et documents financiers."
+   "Kairos revendique avoir récupéré environ 645 Go de données et publie des preuves de leur accès.",
+   "Les documents publiés incluent cartes d’identité, RIB, numéros de sécurité sociale, adresses, emails, CV et informations RH et salariales."
   ],
   "version": 3
  },
@@ -5149,27 +5169,6 @@
   ],
   "version": 3
  },
- "INC-A2EDAE17F0D1": {
-  "display_summary": "CuisineAddict signale une tentative d'accès non autorisé et recommande à ses clients de changer leurs mots de passe.",
-  "sensitive_data": {
-   "types": [
-    {
-     "sources": [
-      "CYBERATTAQUE_ORG"
-     ],
-     "specifics": [],
-     "status": "unknown",
-     "value": "mots de passe"
-    }
-   ],
-   "vulnerable_people": false
-  },
-  "summary_paragraphs": [
-   "CuisineAddict indique avoir été victime d’une tentative d’accès non autorisé et affirme l’avoir déjouée.",
-   "L’entreprise recommande aux clients de modifier leurs mots de passe et signale des emails frauduleux de paiement PayPal."
-  ],
-  "version": 3
- },
  "INC-A33386D1C382": {
   "display_summary": "",
   "summary_paragraphs": [],
@@ -5786,6 +5785,14 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-B6A91F7B7910": {
+  "display_summary": "Fuite de données revendiquée chez le cabinet FIC Expertise touchant environ 2 500 contacts, revendication crédible mais non confirmée.",
+  "summary_paragraphs": [
+   "Un pirate affirme avoir récupéré et diffusé un fichier contenant environ 2 500 fiches de contacts provenant de FIC Expertise.",
+   "La revendication, publiée le 14 novembre 2026 par un pseudonyme, est qualifiée de crédible mais n'est pas confirmée indépendamment."
+  ],
+  "version": 3
+ },
  "INC-B6C3BE11559E": {
   "display_summary": "La Ville de Libercourt a subi fin août 2026 une attaque par rançongiciel entraînant l’exfiltration de données personnelles.",
   "sensitive_data": {
@@ -5908,6 +5915,43 @@
   "summary_paragraphs": [
    "Monceau Fleurs alerte ses clients après une cyberattaque survenue le 30 octobre 2026 chez un prestataire chargé de la gestion des caisses de ses magasins.",
    "Des informations personnelles ont été consultées et extraites sans autorisation, notamment des noms, adresses, dates de naissance et coordonnées."
+  ],
+  "version": 3
+ },
+ "INC-B936288D1FB9": {
+  "display_summary": "Un pirate revendique la diffusion gratuite de 18,3 Go et 4,3 millions de commandes liées à la plateforme Opsysweb.",
+  "summary_paragraphs": [
+   "Un pirate du forum ChimeraZ affirme avoir publié \"[EU] 4.3M OPSYSWEB.EU\" contenant 18,3 Go et 4 317 268 commandes.",
+   "La revendication indique la présence de 1 960 241 enregistrements avec noms et prénoms et 4 009 768 références de prescriptions."
+  ],
+  "version": 3
+ },
+ "INC-B943880DB808": {
+  "display_summary": "Un pirate revendique la mise en vente de factures attribuées à JASP-K9, jusqu'à plus de 2 000 documents revendiqués.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Le 3 novembre 2026, un individu affirme détenir 1 699 factures provenant de JASP-K9, puis revendique désormais plus de 2 000 factures.",
+   "À ce stade, JASP-K9 n'a pas confirmé l'intrusion et l'authenticité des documents reste à établir."
   ],
   "version": 3
  },
@@ -7248,6 +7292,14 @@
   ],
   "version": 3
  },
+ "INC-DF9412876A89": {
+  "display_summary": "BonjourLaFuite signale une fuite de données concernant Securitest.",
+  "summary_paragraphs": [
+   "BonjourLaFuite signale une fuite de données concernant Securitest.",
+   "Les données indiquées comprennent : Nom, prénom ; Adresse postale ; Adresse email ; Numéro de téléphone ; Plaque d’immatriculation."
+  ],
+  "version": 3
+ },
  "INC-DFBEB9D7610E": {
   "display_summary": "",
   "summary_paragraphs": [],
@@ -7372,35 +7424,6 @@
  "INC-E3AE583C7002": {
   "display_summary": "Double Counter (Discord)",
   "summary_paragraphs": [],
-  "version": 3
- },
- "INC-E4D2A28AC615": {
-  "display_summary": "Le Centre National de l’Expertise Hospitalière (CNEH) est visé par une revendication de ransomware affirmant la récupération d’environ 645 Go de données.",
-  "sensitive_data": {
-   "types": [
-    {
-     "sources": [
-      "CYBERATTAQUE_ORG"
-     ],
-     "specifics": [],
-     "status": "claimed",
-     "value": "données bancaires"
-    },
-    {
-     "sources": [
-      "CYBERATTAQUE_ORG"
-     ],
-     "specifics": [],
-     "status": "claimed",
-     "value": "pièces d'identité"
-    }
-   ],
-   "vulnerable_people": false
-  },
-  "summary_paragraphs": [
-   "Kairos revendique avoir récupéré environ 645 Go de données et publie des preuves de leur accès.",
-   "Les documents publiés incluent cartes d’identité, RIB, numéros de sécurité sociale, adresses, emails, CV et informations RH et salariales."
-  ],
   "version": 3
  },
  "INC-E5294887AFDD": {
