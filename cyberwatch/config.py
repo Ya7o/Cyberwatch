@@ -328,6 +328,8 @@ STRUCTURED_SECTOR_ALIASES = {
     # Rubriques FRENCHBREACHES désignant sans ambiguïté le service public.
     "public": SECTOR_ADMIN,
     "secteur public": SECTOR_ADMIN,
+    # La taxonomie classe déjà « real estate » dans Construction / BTP.
+    "immobilier": SECTOR_CONSTRUCTION,
     # Rubriques anglophones sans équivalent de segment canonique français.
     "technology": SECTOR_TECH,
     "professional services": SECTOR_SERVICES,

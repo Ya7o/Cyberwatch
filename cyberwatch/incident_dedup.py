@@ -12,6 +12,7 @@ from collections.abc import Iterable, Mapping
 
 SAME = "SAME"
 DIFFERENT = "DIFFERENT"
+MANUAL_AUDIT_MODEL = "manual-audit"
 
 REGISTRY_COLUMNS = [
     "Pair_Key",
@@ -88,6 +89,14 @@ def merge_rows(
         previous = by_pair.get(expected)
         if previous and not replace:
             problems.append(f"Registre dedup incident : paire dupliquée {expected}")
+            return
+        if (
+            previous and replace
+            and previous.get("Model") == MANUAL_AUDIT_MODEL
+            and row.get("Model") != MANUAL_AUDIT_MODEL
+        ):
+            # Une nouvelle proposition LLM ne doit pas effacer une décision
+            # révisée à partir des sources par un audit éditorial.
             return
         if previous and replace and previous.get("First_Seen"):
             stable_columns = (

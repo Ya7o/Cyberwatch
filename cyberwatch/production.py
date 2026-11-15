@@ -445,6 +445,19 @@ def _snapshot_freshness(snapshot: dict, now: dt.datetime) -> tuple[float | None,
     return round(exact, 2), exact < FRESHNESS_TARGET_HOURS
 
 
+def _collection_observation(snapshot: dict, run_log: list[dict]) -> dict:
+    """Conserve l'horodatage et les contrôles de la dernière collecte après un rejeu."""
+    if snapshot.get("Operation") not in {"REPLAY", "REPAIR"}:
+        return snapshot
+    last = next(
+        (row for row in reversed(run_log)
+         if row.get("Mode") == "MAJ" and row.get("Overall_Status") == "OK"
+         and row.get("As_Of") and row.get("Run_ID")),
+        None,
+    )
+    return {"As_Of": last["As_Of"], "Run_ID": last["Run_ID"]} if last else snapshot
+
+
 def published_source_coverage(snapshot: dict) -> list[dict]:
     """Expose each source's coverage even when the overall run is publishable."""
     run_id = str(snapshot.get("Run_ID") or "")
@@ -460,17 +473,19 @@ def health_payload(*, now: dt.datetime | None = None) -> dict:
     if now.tzinfo is None:
         now = now.replace(tzinfo=dt.UTC)
     snapshot = store.load_snapshot()
-    age_hours, freshness_ok = _snapshot_freshness(snapshot, now)
+    run_log = store.load_run_log()
+    collection = _collection_observation(snapshot, run_log)
+    age_hours, freshness_ok = _snapshot_freshness(collection, now)
 
     metrics = store.load_production_metrics()
     latest: dict[str, object] = next(
         (row for row in reversed(metrics) if row.get("Published") == "true"), {}
     )
-    reliability = scheduled_reliability(store.load_run_log())
+    reliability = scheduled_reliability(run_log)
     sector_rows = store.load_sector_resolution()
     inferred_rows, referenced_rows, low_rows = _sector_status_groups(sector_rows)
-    reasons = _dedup_alert_reasons(snapshot, latest)
-    source_coverage = published_source_coverage(snapshot)
+    reasons = _dedup_alert_reasons(collection, latest)
+    source_coverage = published_source_coverage(collection)
     reasons.extend(
         f"couverture source {row['Source_ID']} : {row['Status']} ({row['Reason_Code']})"
         for row in source_coverage if row.get("Status") != "OK"
@@ -482,7 +497,7 @@ def health_payload(*, now: dt.datetime | None = None) -> dict:
         reasons.append(
             "rubrique(s) de source non reconnue(s) : " + ", ".join(unmapped_labels)
         )
-    qualification_payload = qualification.payload(str(snapshot.get("Run_ID", "") or ""))
+    qualification_payload = qualification.payload(str(collection.get("Run_ID", "") or ""))
     if qualification_payload["state"] == qualification.STATE_PARTIAL:
         # Le run est publié — les contrôles d'intégrité restent bloquants et
         # ne sont pas touchés — mais son verdict de qualification doit le dire.
@@ -517,7 +532,7 @@ def health_payload(*, now: dt.datetime | None = None) -> dict:
         "alert_reasons": reasons,
         "qualification": qualification_payload,
         "freshness": {
-            "snapshot_as_of": snapshot.get("As_Of", ""),
+            "snapshot_as_of": collection.get("As_Of", ""),
             "age_hours": age_hours,
             "target_hours": FRESHNESS_TARGET_HOURS,
             "ok": freshness_ok,

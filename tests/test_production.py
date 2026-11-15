@@ -88,6 +88,33 @@ def test_fraicheur_est_strictement_inferieure_a_36_heures(monkeypatch):
     assert at_limit["alert"] is True
 
 
+def test_replay_preserves_last_collection_freshness_and_source_controls(monkeypatch):
+    monkeypatch.setattr(store, "load_snapshot", lambda: {
+        "Operation": "REPLAY", "Run_ID": "RUN-REPLAY",
+        "As_Of": "2026-09-02T12:00:00+00:00",
+    })
+    monkeypatch.setattr(store, "load_run_log", lambda: [{
+        "Run_ID": "RUN-MAJ", "Mode": "MAJ", "Overall_Status": "OK",
+        "As_Of": "2026-09-01T00:00:00+00:00",
+    }])
+    monkeypatch.setattr(store, "load_run_sources", lambda: [{
+        "Run_ID": "RUN-MAJ", "Source_ID": "FRENCHBREACHES",
+        "Status": "OK", "Coverage": "100", "Reason_Code": "OK", "Comment": "",
+    }])
+    monkeypatch.setattr(production.qualification, "payload", lambda run_id: {
+        "run_id": run_id, "state": "UNKNOWN", "reasons": [],
+    })
+
+    result = production.health_payload(
+        now=dt.datetime(2026, 9, 2, 12, 0, tzinfo=dt.timezone.utc)
+    )
+
+    assert result["freshness"]["snapshot_as_of"] == "2026-09-01T00:00:00+00:00"
+    assert result["freshness"]["ok"] is False
+    assert result["qualification"]["run_id"] == "RUN-MAJ"
+    assert result["source_coverage"][0]["Source_ID"] == "FRENCHBREACHES"
+
+
 def test_cibles_qualite_declenchent_une_alerte_sans_fausser_les_valeurs(monkeypatch):
     monkeypatch.setattr(production.qualification, "payload", lambda *_args: {
         "run_id": "RUN-1", "state": "UNKNOWN", "reasons": [],
