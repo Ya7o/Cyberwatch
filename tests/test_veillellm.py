@@ -78,7 +78,7 @@ def test_regional_watch_keeps_unverified_claims_distinct_from_confirmed_attack()
     assert any("bankinfosecurity.net" in url for url in stor["sources"])
     assert tampon["admission"] == "ACCEPTED"
     assert tampon["type_menace"] == "Autre cyber"
-    assert "ne démontre pas" in tampon["synthese"]
+    assert "restent non confirmés" in tampon["synthese"]
 
 
 def test_veille_llm_admission_not_score_controls_candidate_flag(tmp_path, monkeypatch):
