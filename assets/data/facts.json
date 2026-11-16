@@ -1995,7 +1995,7 @@
   "version": 3
  },
  "INC-44834658383F": {
-  "display_summary": "CodinGame victime d’une cyberattaque : des messages privés exposés",
+  "display_summary": "CodinGame confirme avoir été victime d’une cyberattaque dans la nuit du 7 au 8 novembre 2026.",
   "sensitive_data": {
    "types": [
     {
@@ -4598,6 +4598,11 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-8E6497AF298D": {
+  "display_summary": "",
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-8E6B412709A5": {
   "display_summary": "Le groupe de ransomware Akira revendique détenir 150 Go de données internes de Ligne Roset, dont des passeports et des documents financiers.",
   "sensitive_data": {
@@ -5001,6 +5006,27 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-9BA1C54FB5E6": {
+  "display_summary": "Trynet fait l'objet d'une revendication de fuite de 45 Go de données incluant IBAN et documents clients et salariés.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Un utilisateur affirme sur un forum que 45 Go de données de Trynet ont été récupérés, comprenant documents clients, factures et données de salariés.",
+   "La publication revendique notamment des IBAN, RIB, factures et données personnelles, mais la revendication reste non confirmée."
+  ],
+  "version": 3
+ },
  "INC-9C6AEF0A9A93": {
   "display_summary": "QPM Pro : un spécialiste des solutions informatiques victime d’une cyberattaque",
   "sensitive_data": {
@@ -5120,6 +5146,11 @@
    "RedStone revendique 16 bases, 387 tables et plus de 38,8 millions de lignes attribuées au Groupe MGEL.",
    "L'auteur affirme avoir reconstitué 450 806 IBAN uniques et des fichiers contiennent NIR, identités, coordonnées et données bancaires."
   ],
+  "version": 3
+ },
+ "INC-A01641967753": {
+  "display_summary": "Une base de données attribuée à Dagier a été publiée sur un forum de pirates, revendiquée mais non confirmée.",
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-A0A76EEC8EAA": {
@@ -6777,6 +6808,14 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-D356DEF6817F": {
+  "display_summary": "L’Imagerie des 3 Rivières confirme le vol de données personnelles de patients après un accès non autorisé chez un prestataire informatique.",
+  "summary_paragraphs": [
+   "Un prestataire informatique a subi un accès non autorisé et des données de patients de l’Imagerie des 3 Rivières ont été dérobées.",
+   "Les informations potentiellement concernées incluent noms, numéros de sécurité sociale, coordonnées et détails des examens médicaux."
+  ],
+  "version": 3
+ },
  "INC-D4E318AB1B7A": {
   "display_summary": "La Caverne des Jouets fait l'objet d'une revendication de fuite de données revendiquant 4,5 Go et près d'un million d'adresses e-mail.",
   "sensitive_data": {
@@ -7476,7 +7515,10 @@
    ],
    "vulnerable_people": false
   },
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "La mairie de Saillans a alerté ses administrés après la compromission de sa messagerie et l'envoi de courriels frauduleux réclamant des paiements.",
+   "La commune indique qu'au moins une personne a déjà été victime de cette campagne et prévoit de déposer plainte."
+  ],
   "version": 3
  },
  "INC-E67015756A95": {
@@ -8151,7 +8193,10 @@
    ],
    "vulnerable_people": false
   },
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "Ouest‑France informe que des formulaires d'abonnement ont été visés et que noms, coordonnées et copies de pièces d'identité pourraient avoir été compromis.",
+   "La notification indique que la CNIL a été saisie et qu'aucune donnée bancaire ni mot de passe n'ont été compromis."
+  ],
   "version": 3
  },
  "INC-FD11035E7E5A": {

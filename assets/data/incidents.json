@@ -2,6 +2,99 @@
  {
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
+  "date": "2026-11-16",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-A01641967753",
+  "location": "France métropolitaine",
+  "org": "Dagier",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/dagier-mwigonrfd5rkmv46mau",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/dagier-mwigonrfd5rkmv46mau"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Une base de données attribuée à Dagier a été publiée sur un forum de pirates, revendiquée mais non confirmée.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-16",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-8E6497AF298D",
+  "location": "France métropolitaine",
+  "org": "EssilorLuxottica",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Retail & E-Commerce",
+   "evidence_url": "http://nongzecboljwv3yfndkggsybsglfrkffw7bvk2zemuteoxe6etpusnad.onion#v-essilorluxottica",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-16",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-D356DEF6817F",
+  "location": "Inconnu",
+  "org": "L’Imagerie des 3 Rivières à Montauban",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/limagerie-des-3-rivieres-a-montauban-des-donnees-de-patients-volees-apres-une-cyberattaque/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "L’Imagerie des 3 Rivières confirme le vol de données personnelles de patients après un accès non autorisé chez un prestataire informatique.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-11-15",
   "high_sensitivity_data_exposed": false,
   "id": "INC-B6A91F7B7910",
@@ -62,6 +155,40 @@
    "FRENCHBREACHES"
   ],
   "summary": "Un pirate revendique la mise en vente de factures attribuées à JASP-K9, jusqu'à plus de 2 000 documents revendiqués.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-15",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-9BA1C54FB5E6",
+  "location": "France métropolitaine",
+  "org": "Trynet",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Technologie",
+   "evidence_url": "https://frenchbreaches.com/alertes/trynet-mwi4hro6pir6ksru0ek",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/trynet-mwi4hro6pir6ksru0ek"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Trynet fait l'objet d'une revendication de fuite de 45 Go de données incluant IBAN et documents clients et salariés.",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "unknown"
@@ -2074,7 +2201,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "CodinGame victime d’une cyberattaque : des messages privés exposés",
+  "summary": "CodinGame confirme avoir été victime d’une cyberattaque dans la nuit du 7 au 8 novembre 2026.",
   "threat": "Intrusion",
   "threat_status": {
    "status": "confirmed"
