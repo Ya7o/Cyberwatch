@@ -2,6 +2,175 @@
  {
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
+  "date": "2026-11-17",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-00321751D91C",
+  "location": "France métropolitaine",
+  "org": "ConsonanceWeb",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Technologie",
+   "evidence_url": "https://frenchbreaches.com/alertes/consonanceweb-mwkqj0w5acgs50xvng",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/consonanceweb-mwkqj0w5acgs50xvng"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Le groupe Lunarissec revendique une cyberattaque visant ConsonanceWeb, un éditeur français de logiciels de gestion.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-17",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-CFD27D3C4E7B",
+  "location": "France métropolitaine",
+  "org": "Contabo",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/contabo.png"
+   },
+   {
+    "label": "help.contabo.com",
+    "source": "BONJOURLAFUITE",
+    "url": "https://help.contabo.com/en/support/solutions/articles/103000426255-potential-security-incident-of-14-november-2026"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-17",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-08D1726AE6C0",
+  "location": "Inconnu",
+  "org": "Nord Chauffage Services",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-chez-nord-chauffage-services-les-donnees-personnelles-des-clients-de-ce-chauffagiste-exposees/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Nord Chauffage Services confirme un incident informatique ayant potentiellement exposé les données personnelles de ses clients.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-17",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-45747AFE78F1",
+  "location": "Inconnu",
+  "org": "Optimizely",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Optimizely est une plateforme américaine spécialisée dans l’expérimentation et la personnalisation des expériences numériques.",
+   "evidence_url": "https://www.cyberattaque.org/cyberattaque-chez-optimizely-air-france-ledger-zoom-et-la-bbc-parmi-178-organisations-touchees/",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-chez-optimizely-air-france-ledger-zoom-et-la-bbc-parmi-178-organisations-touchees/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Cyberattaque chez Optimizely : Air France, Ledger, Zoom et la BBC parmi 178 organisations touchées",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-17",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-BCC275FAF60F",
+  "location": "France métropolitaine",
+  "org": "Rassemblement National",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/rassemblement-national-mwk21lwn301zpabhmfi",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/rassemblement-national-mwk21lwn301zpabhmfi"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-11-16",
   "high_sensitivity_data_exposed": false,
   "id": "INC-A01641967753",
@@ -27,7 +196,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Une base de données attribuée à Dagier a été publiée sur un forum de pirates, revendiquée mais non confirmée.",
+  "summary": "La base de données clients de Dagier est revendiquée publiée sur un forum de pirates, avec environ 3 192 lignes et plus de 3 000 contacts professionnels.",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "reported"
@@ -63,6 +232,388 @@
  },
  {
   "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-16",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-532728CD331E",
+  "location": "France métropolitaine",
+  "org": "FourniShop",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Fournishop est un site français de commerce électronique proposant des produits destinés à la présentation, au conditionnement et à la mise en valeur de marchandises.",
+   "evidence_url": "https://frenchbreaches.com/alertes/fournishop-mwjtmry4pv19a4kp0xr",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/fournishop-les-donnees-de-45-000-clients-diffusees-apres-une-cyberattaque/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/fournishop-mwjtmry4pv19a4kp0xr"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Fournishop : 45 314 fiches clients et 40 982 mots de passe protégés par MD5 diffusés après une divulgation de données.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-16",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-8CABFB7B8D0D",
+  "location": "France métropolitaine",
+  "org": "France Projecteurs",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/france-projecteurs-mwjtv5pecniw02pnful",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/france-projecteurs-145-000-emails-diffuses-des-mots-de-passe-clients-et-des-millions-de-donnees-en-fuite/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/france-projecteurs-mwjtv5pecniw02pnful"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Une archive attribuée à France Projecteurs contenant 6,8 millions d'enregistrements a été diffusée et inclurait 145 311 adresses email et 417 comptes clients.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-16",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-167FBE98A6EA",
+  "location": "France métropolitaine",
+  "org": "Fédération Française de Cardiologie",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Santé",
+   "evidence_url": "https://frenchbreaches.com/alertes/f-d-ration-fran-aise-de-cardiologie-ffc-mwjvasinud91d6z1mn",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/federation-francaise-de-cardiologie-pres-de-50-000-comptes-exposes-avec-des-informations-personnelles-diffuses/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/f-d-ration-fran-aise-de-cardiologie-ffc-mwjvasinud91d6z1mn"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Fédération française de cardiologie : près de 50 000 comptes de la cyberattaque de 2025 refont surface",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-16",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-B0C3ACA8CF7A",
+  "location": "France métropolitaine",
+  "org": "Fédération Française de Golf",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Sport",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Fédération Française de Golf",
+   "evidence_url": "https://frenchbreaches.com/alertes/f-d-ration-fran-aise-de-golf-ffgolf-mwjj22w0j9natnvt1qs",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/f-d-ration-fran-aise-de-golf-ffgolf-mwjj22w0j9natnvt1qs"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Fédération Française de Golf (FFGOLF)",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-16",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-2ED7B8C85A9B",
+  "location": "France métropolitaine",
+  "org": "Fédération française du sport universitaire",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Sport",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Fédération française du sport universitaire",
+   "evidence_url": "https://frenchbreaches.com/alertes/f-d-ration-fran-aise-du-sport-universitaire-ffsu-mwffm8in7o7oq00hb5a",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/f-d-ration-fran-aise-du-sport-universitaire-ffsu-mwffm8in7o7oq00hb5a"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Un pirate revendique la vente de 982 964 enregistrements attribués à la Fédération française du sport universitaire.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-16",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-24A1C0B4AD5F",
+  "location": "France métropolitaine",
+  "org": "Groupe GRIM",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Le Groupe GRIM est un acteur de l'imagerie médicale implanté en région Centre-Val de Loire, notamment dans les départements d'Indre-et-Loire et du Loiret. [étiquette source écartée : Santé]",
+   "evidence_url": "https://frenchbreaches.com/alertes/groupe-grim-via-softway-medical-mwjl3w8jcxzsifjcj3k",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/groupe-grim-via-softway-medical-mwjl3w8jcxzsifjcj3k"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Le Groupe GRIM confirme une fuite de données personnelles de patients après une cyberattaque visant son prestataire informatique.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-16",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-262F629C52A7",
+  "location": "France métropolitaine",
+  "org": "Imagerie des 3 Rivières",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Santé",
+   "evidence_url": "https://frenchbreaches.com/alertes/imagerie-des-3-rivi-res-via-softway-medical-mwjkscamcwniuqr2yle",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/imagerie-des-3-rivi-res-via-softway-medical-mwjkscamcwniuqr2yle"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Imagerie des 3 Rivières (via Softway Medical)",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-16",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-A8DD6D4500B0",
+  "location": "France métropolitaine",
+  "org": "IMPAAKT",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Technologie",
+   "evidence_url": "https://frenchbreaches.com/alertes/impaakt-mwjhoj4vu0k3bjp13le",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/impaakt-mwjhoj4vu0k3bjp13le"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-16",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-E9156BC58FD9",
+  "location": "France métropolitaine",
+  "org": "Ipsos",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/ipsos-mwjlkku7b6kqw1wm7kr",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/2026-11-16-ipsos.png"
+   },
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/ipsos-victime-dune-cyberattaque-le-geant-francais-des-sondages-confirme-une-intrusion-dans-ses-systemes/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/ipsos-mwjlkku7b6kqw1wm7kr"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE",
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Ipsos confirme une violation de sécurité affectant un système d'information interne et a déposé plainte le 11 novembre 2026.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-16",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-CF29FF598695",
+  "location": "France métropolitaine",
+  "org": "La Fabrique à Filets",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/la-fabrique-filets-mwjlubi1szismsqpjga",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/fabrique-filets.jpeg"
+   },
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/la-fabrique-a-filets-victime-dune-cyberattaque-les-donnees-personnelles-et-mots-de-passe-de-ses-clients-exposes/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/la-fabrique-filets-mwjlubi1szismsqpjga"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE",
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "La Fabrique à Filets victime d’une cyberattaque : les données personnelles et mots de passe de ses clients exposés",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
   "date": "2026-11-16",
   "high_sensitivity_data_exposed": false,
@@ -87,6 +638,167 @@
    "CYBERATTAQUE_ORG"
   ],
   "summary": "L’Imagerie des 3 Rivières confirme le vol de données personnelles de patients après un accès non autorisé chez un prestataire informatique.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-16",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-91B25C62B0C1",
+  "location": "France métropolitaine",
+  "org": "SCI Horizon",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Construction / BTP",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "SCI Horizon est présentée dans l'annonce comme une société française spécialisée dans la détention, la gestion et la location de biens immobiliers. [étiquette source écartée : Commerce]",
+   "evidence_url": "https://frenchbreaches.com/alertes/sci-horizon-mwjtyoq4xq4dclkulyk",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/sci-horizon-mwjtyoq4xq4dclkulyk"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "SCI Horizon visée par une revendication crédible de divulgation de 450 372 enregistrements de contacts, revendication non confirmée.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-16",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-4D9BA816F282",
+  "location": "Inconnu",
+  "org": "Servier",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/laboratoire-servier-hackers-menacent-de-devoiler-les-donnees-de-plus-de-17-000-patients-atteints-de-cancer-ransomware/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Servier : des hackers menacent de dévoiler les données de plus de 17 000 patients atteints de cancer",
+  "threat": "Incident tiers",
+  "threat_status": {
+   "status": "claimed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-16",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-4C0489C32D06",
+  "location": "France métropolitaine",
+  "org": "Servier Laboratories",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Healthcare",
+   "evidence_url": "http://nongzecboljwv3yfndkggsybsglfrkffw7bvk2zemuteoxe6etpusnad.onion#v-servier",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-16",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-E9675AF741BE",
+  "location": "Inconnu",
+  "org": "T2MC",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Industrie / Manufacture",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "T2MC est un groupe français spécialisé dans les prestations de propreté, de nettoyage industriel et de services aux entreprises.",
+   "evidence_url": "https://www.cyberattaque.org/t2mc-les-donnees-de-milliers-de-salaries-de-nickel-arc-en-ciel-et-pei-exposees-dans-une-fuite-massive/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/t2mc-les-donnees-de-milliers-de-salaries-de-nickel-arc-en-ciel-et-pei-exposees-dans-une-fuite-massive/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "T2MC : les données personnelles de milliers de salariés de Nickel, Arc en Ciel et PEI exposées dans une fuite",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-16",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-75ACBBF4B9FF",
+  "location": "France métropolitaine",
+  "org": "Trezor",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Technologie",
+   "evidence_url": "https://frenchbreaches.com/alertes/trezor-via-skladon-mwjkjxhye52llr9qs3f",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/trezor-via-skladon-mwjkjxhye52llr9qs3f"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Trezor signale une fuite de données personnelles chez son prestataire logistique Skladon affectant des informations de commandes et de livraison.",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "confirmed"
@@ -1215,6 +1927,46 @@
   "threat": "Fuite de données",
   "threat_status": {
    "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-11",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-18E72ABBBBD2",
+  "location": "France métropolitaine",
+  "org": "Fishipedia",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/fishipedia-mwkpj0zzoqx0i9etei",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/fishipedia-victime-dune-cyberattaque-les-comptes-utilisateurs-et-mots-de-passe-exposes/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/fishipedia-mwkpj0zzoqx0i9etei"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Fishipedia signale un accès non autorisé détecté le 11 novembre 2026 avec identifiants, adresses email, profils et mots de passe potentiellement consultés.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
   }
  },
  {
@@ -17986,6 +18738,51 @@
    "FRENCHBREACHES"
   ],
   "summary": "BackPower : 47 millions de lignes revendiquées dans une fuite massive",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "CANDIDATE",
+  "admission_reason": "L’Info Kwezi affirme le 16 novembre 2026 que Mayotte figure parmi les territoires touchés par la fuite Maileva, mais ne publie ni organisme client mahorais, ni notification locale, ni ventilation géographique permettant de corroborer indépendamment ce périmètre. L’attaque et la fuite nationales sont confirmées par La Poste.",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-09-23",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-0DB7271EED5F",
+  "location": "Mayotte",
+  "org": "Maileva / destinataires à Mayotte",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Services aux entreprises",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Services aux entreprises",
+   "evidence_url": "https://www.linfokwezi.fr/cyberattaque-geante-mayotte-parmi-les-22-millions-de-victimes/",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "linfokwezi.fr",
+    "source": "VEILLE_LLM",
+    "url": "https://www.linfokwezi.fr/cyberattaque-geante-mayotte-parmi-les-22-millions-de-victimes/"
+   },
+   {
+    "label": "lapostegroupe.com",
+    "source": "VEILLE_LLM",
+    "url": "https://www.lapostegroupe.com/fr/actualite/cyberattaque-de-maileva-ce-quil-faut-savoir"
+   },
+   {
+    "label": "Cyberattaque.org",
+    "source": "VEILLE_LLM",
+    "url": "https://www.cyberattaque.org/maileva-docaposte-la-poste-cyberattaque/"
+   }
+  ],
+  "sources": [
+   "VEILLE_LLM"
+  ],
+  "summary": "",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "reported"
