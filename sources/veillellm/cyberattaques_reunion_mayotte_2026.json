@@ -5,20 +5,20 @@
       "Mayotte"
     ],
     "year": 2026,
-    "generated_at": "2026-11-16T08:52:11+04:00",
-    "record_count": 19,
+    "generated_at": "2026-11-17T08:40:28+04:00",
+    "record_count": 20,
     "accepted_count": 11,
-    "candidate_count": 8,
+    "candidate_count": 9,
     "schema": "cyberwatch-veille-v2",
     "watch_result": {
-      "new_incidents": 0,
+      "new_incidents": 1,
       "enriched_incidents": 0,
       "corrected_incidents": 0,
-      "note": "Veille complémentaire menée le 16 novembre 2026 depuis le snapshot courant de main. Aucun nouvel incident, enrichissement ni correctif métier n’est retenu. Les 19 dossiers et leurs dates sont conservés, dont l’enrichissement Jean Joly du 29 septembre et les suivis déjà publiés pour Leader Price."
+      "note": "Veille complémentaire menée le 17 novembre 2026 depuis le snapshot courant de main. Un nouveau signal CANDIDATE est ajouté pour Maileva : une source locale affirme que Mayotte figure parmi les territoires touchés, sans identifier d’organisme client mahorais ni publier de ventilation territoriale. Aucun autre enrichissement ou correctif métier n’est retenu. Les 19 dossiers antérieurs et leurs dates sont conservés, dont l’enrichissement Jean Joly du 29 septembre."
     },
     "coverage": {
-      "method": "Veille cumulative Réunion/Mayotte vérifiée le 16 novembre 2026 depuis le snapshot courant de main. Les nouveaux incidents ou signaux publiés les 15 et 16 novembre ont été recherchés séparément des enrichissements des dossiers existants. La couverture a privilégié les autorités et la presse locale, puis les sources cyber. Les sources effectivement consultées comprennent La Poste Groupe sur Maileva, Imaz Press, LINFO.re, Zinfos974, InfoNews Cyber, Le Journal de Mayotte, le CSIRT Cyber Réunion, le CERT-FR, la page officielle de Transcontinents et Cyberattaque.org. Les recherches d’enrichissement ont porté sur Transcontinents, Leader Price, L’Île en Glace, Le Tampon/Qilin, CSSM, Jean Joly et DTPN 974. Aucun changement métier n’a été établi.",
-      "limitations": "La recherche publique indexée n’est pas exhaustive et certaines pages de presse ou publications sociales peuvent être inaccessibles aux robots. Maileva confirme une cyberattaque nationale et l’exposition de données de 22 millions de destinataires ; les relais locaux consultés ne nomment cependant aucune victime, entreprise cliente, donnée ou système propre à La Réunion ou Mayotte. Le rapport 2026 relatif au SIDEVAM 976 décrit un incident de sécurité daté du 9 octobre 2025, hors périmètre annuel. Les bulletins du CERT-FR et les alertes de vulnérabilité du CSIRT Cyber Réunion ne démontrent pas à eux seuls un incident régional. Aucun suivi public nouveau n’a été trouvé pour Transcontinents, Leader Price, L’Île en Glace, Le Tampon/Qilin, CSSM, Jean Joly ou DTPN 974. Pour Leader Price, l’information judiciaire et les mandats d’arrêt concernent la campagne nationale ; le parquet ne nomme pas individuellement le magasin de Saint-André et son vecteur technique exact reste non public. Pour Transcontinents, le nombre de clients, le volume extrait, le vecteur initial et les pertes éventuelles ne sont pas publics. Pour L’Île en Glace, aucune seconde source journalistique, confirmation d’autorité, analyse forensique ou préjudice établi n’est public. Pour Le Tampon, aucune exfiltration ou publication effective de données n’est confirmée. La seconde enseigne réunionnaise reste non nommée et DTPN 974 demeure sans suivi officiel public nouveau.",
+      "method": "Veille cumulative Réunion/Mayotte vérifiée le 17 novembre 2026 depuis le snapshot courant de main. Les nouveaux incidents ou signaux publiés les 16 et 17 novembre ont été recherchés séparément des enrichissements des dossiers existants. La couverture a privilégié les autorités et la presse locale, puis les sources cyber. Les sources effectivement consultées comprennent L’Info Kwezi, Le Journal de Mayotte, LINFO.re, Zinfos974, InfoNews Cyber, le CSIRT Cyber Réunion, le CERT-FR, La Poste Groupe, Cyberattaque.org et FrenchBreaches. Les recherches d’enrichissement ont porté sur Transcontinents, Leader Price, L’Île en Glace, Le Tampon/Qilin, CSSM, Jean Joly et DTPN 974. Le signal Maileva/Mayotte est ajouté en CANDIDATE ; aucun autre changement métier n’a été établi.",
+      "limitations": "La recherche publique indexée n’est pas exhaustive et certaines pages de presse ou publications sociales peuvent être inaccessibles aux robots. Pour Maileva, L’Info Kwezi affirme que Mayotte figure parmi les territoires touchés, mais aucune source officielle, notification d’un organisme client mahorais ou ventilation géographique publique ne corrobore ce périmètre ; le nombre de personnes concernées à Mayotte est inconnu. La fuite nationale de noms, prénoms et adresses postales est confirmée par La Poste. Les difficultés téléphoniques signalées par la CSSM le 16 novembre sont décrites comme un incident technique externe, sans indice cyber, et ne modifient pas son dossier existant. Les alertes de vulnérabilité du CSIRT Cyber Réunion et les bulletins du CERT-FR ne démontrent pas à eux seuls un incident régional. Aucun suivi public nouveau n’a été trouvé pour Transcontinents, Leader Price, L’Île en Glace, Le Tampon/Qilin, CSSM, Jean Joly ou DTPN 974. Pour Leader Price, le vecteur technique exact reste non public. Pour Transcontinents, le nombre de clients, le volume extrait, le vecteur initial et les pertes éventuelles ne sont pas publics. Pour L’Île en Glace, aucune seconde source journalistique, confirmation d’autorité, analyse forensique ou préjudice établi n’est public. Pour Le Tampon, aucune exfiltration ou publication effective de données n’est confirmée. La seconde enseigne réunionnaise reste non nommée et DTPN 974 demeure sans suivi officiel public nouveau.",
       "excluded_candidates": [
         {
           "organisation": "SFR — cyberattaque nationale de juillet 2026",
@@ -59,10 +59,6 @@
         {
           "organisation": "Établissement français du sang (EFS) / Coolworld — attaque nationale du 2 novembre 2026",
           "reason": "Zinfos974 relaie une attaque nationale contre le prestataire frigorifique Coolworld et cite notamment des installations en Bourgogne-Franche-Comté, mais aucune source consultée ne démontre qu’un site, système ou produit sanguin de La Réunion ou de Mayotte figure dans le périmètre touché."
-        },
-        {
-          "organisation": "Maileva / Docaposte — cyberattaque nationale de septembre 2026",
-          "reason": "La Poste confirme une attaque et une fuite de données nationale, relayées par la presse réunionnaise les 15 et 16 novembre, mais aucune source publique consultée n’identifie une entreprise cliente, une victime, une donnée ou un système propre à La Réunion ou Mayotte dans le périmètre compromis."
         },
         {
           "organisation": "SIDEVAM 976 — cyberattaque décrite dans un rapport publié en 2026",
@@ -362,6 +358,27 @@
       ],
       "synthese": "Le serveur pédagogique du lycée Jean Joly a subi des redémarrages manuels répétés au moyen d'un compte administrateur. Le 14 septembre, un élève a été surpris lors d'une tentative de connexion ; le rectorat qualifie les faits d'atteinte à la sécurité numérique et le proviseur a déposé plainte. Les publications des 26 et 29 septembre documentent les demandes de transparence des élèves puis leur mobilisation. Elles constituent un suivi de cet incident ; elles ne démontrent ni une nouvelle attaque ni une exfiltration.",
       "evolution": "enrichi"
+    },
+    {
+      "date": "2026-09-23",
+      "organisation": "Maileva / destinataires à Mayotte",
+      "admission": "CANDIDATE",
+      "admission_reason": "L’Info Kwezi affirme le 16 novembre 2026 que Mayotte figure parmi les territoires touchés par la fuite Maileva, mais ne publie ni organisme client mahorais, ni notification locale, ni ventilation géographique permettant de corroborer indépendamment ce périmètre. L’attaque et la fuite nationales sont confirmées par La Poste.",
+      "territoire": "Mayotte",
+      "localisation": "Mayotte",
+      "secteur": "Services aux entreprises",
+      "type_menace": "Fuite de données",
+      "acteur": "Inconnu",
+      "statut": "Incident national confirmé ; périmètre mahorais affirmé par une source locale, à corroborer",
+      "score_cyberattaque": 60,
+      "impact_connu": "Un nombre inconnu de destinataires à Mayotte pourrait avoir vu exposés ses nom, prénom et adresse postale. Aucun organisme client mahorais ni volume territorial n’est public.",
+      "sources": [
+        "https://www.linfokwezi.fr/cyberattaque-geante-mayotte-parmi-les-22-millions-de-victimes/",
+        "https://www.lapostegroupe.com/fr/actualite/cyberattaque-de-maileva-ce-quil-faut-savoir",
+        "https://www.cyberattaque.org/maileva-docaposte-la-poste-cyberattaque/"
+      ],
+      "synthese": "Maileva, filiale de Docaposte, a confirmé une fuite nationale touchant 22 millions de destinataires. L’Info Kwezi indique que Mayotte est concernée, sans identifier de client local ni fournir de ventilation ; le rattachement territorial reste donc à confirmer.",
+      "evolution": "nouveau"
     },
     {
       "date": "2026-09-30",
