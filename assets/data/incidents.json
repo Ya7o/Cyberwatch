@@ -2,6 +2,181 @@
  {
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
+  "date": "2026-11-18",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-86B4705DEE1B",
+  "location": "France métropolitaine",
+  "org": "Bexter",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Hébergement / Tourisme / Restauration",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Bexter est une agence française spécialisée dans la création de sites internet, le marketing digital et l'hébergement web, implantée à La Seyne-sur-Mer, près de Toulon, dans le département du Var. [étiquette source écartée : Commerce]",
+   "evidence_url": "https://frenchbreaches.com/alertes/bexter-mwlygina9i2dvpwrtkh",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/bexter-mwlygina9i2dvpwrtkh"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Une revendication crédible non confirmée affirme la fuite de données de 1 365 clients et 678 IBAN chez l'agence web Bexter.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-18",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-1B85CA34042E",
+  "location": "France métropolitaine",
+  "org": "Flatchr",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Fondée en 2014, Flatchr est une entreprise française spécialisée dans les logiciels de gestion des recrutements, également appelés ATS.",
+   "evidence_url": "https://www.cyberattaque.org/flatchr-des-donnees-de-candidats-exposees-les-entreprises-alertees-dune-cyberattaque/",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/flatchr-des-donnees-de-candidats-exposees-les-entreprises-alertees-dune-cyberattaque/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/flatchr-mwly4tpyivref4515kf"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Flatchr signale une faille de configuration exploitée les 15-16 novembre 2026 ayant permis l'accès à des fiches de candidats.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-18",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-D3D1543EEC42",
+  "location": "France métropolitaine",
+  "org": "Made in Bébé",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/made-in-bebe.jpeg"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE"
+  ],
+  "summary": "BonjourLaFuite signale une fuite de données concernant Made in Bébé.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-18",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-5E50141726EC",
+  "location": "France métropolitaine",
+  "org": "Snowleader",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/snowleader-mwm9ll40bzlnlzkioiv",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/snowleader.png"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/snowleader-mwm9ll40bzlnlzkioiv"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Snowleader signale un piratage informatique avec des données personnelles de clients potentiellement consultées ou dérobées.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-17",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-FDEDD1384D70",
+  "location": "Maurice",
+  "org": "BAE Exchange",
+  "organisation_links": [
+   "https://baexchange.mu"
+  ],
+  "personal_data_exposed": false,
+  "sector": "Finance / Assurance",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Financial Services",
+   "evidence_url": "https://baexchange.mu",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-11-17",
   "high_sensitivity_data_exposed": true,
   "id": "INC-00321751D91C",
@@ -11,11 +186,11 @@
   "personal_data_exposed": true,
   "sector": "Numérique / Technologie",
   "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Technologie",
+   "confidence": 0.8,
+   "evidence": "ConsonanceWeb confirme un accès non autorisé à l'une de ses applications entre le 13 et le 15 novembre 2026, mais conteste le chiffre d'un million de personnes avancé par les pirates, évoquant plutôt quelques milliers de tiers potentiellement concernés.",
    "evidence_url": "https://frenchbreaches.com/alertes/consonanceweb-mwkqj0w5acgs50xvng",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
   },
   "source_links": [
    {
@@ -27,10 +202,10 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Le groupe Lunarissec revendique une cyberattaque visant ConsonanceWeb, un éditeur français de logiciels de gestion.",
-  "threat": "Fuite de données",
+  "summary": "ConsonanceWeb confirme un accès non autorisé à l'une de ses applications entre le 13 et le 15 novembre 2026.",
+  "threat": "Intrusion",
   "threat_status": {
-   "status": "unknown"
+   "status": "confirmed"
   }
  },
  {
@@ -67,6 +242,110 @@
   "threat": "Fuite de données",
   "threat_status": {
    "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-17",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-F7E5984D31DC",
+  "location": "France métropolitaine",
+  "org": "Decoset",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Association / Syndicat",
+  "sector_status": {
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Administration / Collectivité"
+   ],
+   "evidence": "Decoset est un syndicat mixte public implanté à Balma, près de Toulouse, en Haute-Garonne.",
+   "evidence_url": "https://www.cyberattaque.org/decoset-les-adresses-email-des-usagers-des-decheteries-de-toulouse-exposees-apres-une-cyberattaque/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/decoset-les-adresses-email-des-usagers-des-decheteries-de-toulouse-exposees-apres-une-cyberattaque/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/decoset-mwl915nnrw9lj3bghod"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Decoset : les adresses email des usagers des déchèteries de Toulouse exposées après une cyberattaque",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-17",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-1175E5BD9752",
+  "location": "Inconnu",
+  "org": "Divalto",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Divalto est un éditeur français de logiciels de gestion d’entreprise, installé à Entzheim, près de Strasbourg.",
+   "evidence_url": "https://www.cyberattaque.org/cyberattaque-chez-divalto-le-distributeur-du-programme-de-lfi-touche-les-commandes-des-librairies-perturbees/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-chez-divalto-le-distributeur-du-programme-de-lfi-touche-les-commandes-des-librairies-perturbees/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Cyberattaque chez Divalto : le distributeur du programme de LFI touché, les commandes des librairies perturbées",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-17",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-CBB87A06E82E",
+  "location": "France métropolitaine",
+  "org": "Groupe SERL",
+  "organisation_links": [
+   "https://groupe-serl.fr"
+  ],
+  "personal_data_exposed": false,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "SOURCE_SECTOR_RAW_AMBIGUOUS",
+   "status": "unknown"
+  },
+  "source_links": [],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
   }
  },
  {
@@ -163,6 +442,40 @@
    "FRENCHBREACHES"
   ],
   "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-17",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-1BD16D08800B",
+  "location": "France métropolitaine",
+  "org": "Softway Medical",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Santé",
+   "evidence_url": "https://frenchbreaches.com/alertes/softway-medical-mwl0ih77zqb5co09pw",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/softway-medical-mwl0ih77zqb5co09pw"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Un individu affirme vendre sur un forum une base contenant les données personnelles de 18 millions de patients prétendument liées à Softway Medical.",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "unknown"
@@ -282,11 +595,11 @@
   "personal_data_exposed": true,
   "sector": "Commerce / Distribution",
   "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Commerce",
+   "confidence": 0.8,
+   "evidence": "France Projecteurs est un site français spécialisé dans la commercialisation de matériel destiné à la sonorisation, à l'éclairage et à la vidéo.",
    "evidence_url": "https://frenchbreaches.com/alertes/france-projecteurs-mwjtv5pecniw02pnful",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
   },
   "source_links": [
    {
@@ -576,13 +889,16 @@
   "org": "La Fabrique à Filets",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
+  "sector": "Industrie / Manufacture",
   "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Commerce",
-   "evidence_url": "https://frenchbreaches.com/alertes/la-fabrique-filets-mwjlubi1szismsqpjga",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Commerce / Distribution"
+   ],
+   "evidence": "La Fabrique à Filets est une entreprise française spécialisée dans la fabrication et la commercialisation de filets sur mesure.",
+   "evidence_url": "https://www.cyberattaque.org/la-fabrique-a-filets-victime-dune-cyberattaque-les-donnees-personnelles-et-mots-de-passe-de-ses-clients-exposes/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
   },
   "source_links": [
    {
@@ -836,6 +1152,40 @@
   "threat": "Fuite de données",
   "threat_status": {
    "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-15",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-5B46AA1EFE08",
+  "location": "France métropolitaine",
+  "org": "Izilo",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Transport / Logistique",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Izilo est le réseau de transports publics de Lorient Agglomération, exploité par RD Lorient Agglomération, filiale de RATP Dev.",
+   "evidence_url": "https://frenchbreaches.com/alertes/izilo-via-maileva-mwl8222v57kxxkk63x7",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/izilo-via-maileva-mwl8222v57kxxkk63x7"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Izilo confirme l’exposition de certaines données personnelles de ses usagers suite à une cyberattaque visant son prestataire Maileva.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
   }
  },
  {
@@ -10601,10 +10951,10 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "",
-  "threat": "Fuite de données",
+  "summary": "La Clinique vétérinaire Voltaire signale une cyberattaque ayant suspendu la prise de rendez‑vous en ligne.",
+  "threat": "Intrusion",
   "threat_status": {
-   "status": "unknown"
+   "status": "confirmed"
   }
  },
  {
@@ -10922,7 +11272,7 @@
    "FRENCHBREACHES"
   ],
   "summary": "Couleur CE : des billets de cinéma exposés après une cyberattaque",
-  "threat": "Intrusion",
+  "threat": "Fuite de données",
   "threat_status": {
    "status": "reported"
   }

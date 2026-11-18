@@ -1,6 +1,6 @@
 {
  "INC-00321751D91C": {
-  "display_summary": "Le groupe Lunarissec revendique une cyberattaque visant ConsonanceWeb, un éditeur français de logiciels de gestion.",
+  "display_summary": "ConsonanceWeb confirme un accès non autorisé à l'une de ses applications entre le 13 et le 15 novembre 2026.",
   "sensitive_data": {
    "types": [
     {
@@ -15,8 +15,8 @@
    "vulnerable_people": false
   },
   "summary_paragraphs": [
-   "Le groupe Lunarissec revendique une cyberattaque visant ConsonanceWeb; 1 092 091 personnes pourraient être concernées.",
-   "FrenchBreaches indique que des échantillons contiennent noms, prénoms, adresses postales, e-mails, numéros de téléphone et informations de facturation."
+   "ConsonanceWeb confirme un accès non autorisé à l'une de ses applications entre le 13 et le 15 novembre 2026.",
+   "Le groupe de pirates Lunarissec revendique une cyberattaque visant ConsonanceWeb, un éditeur français de logiciels de gestion destinés aux professionnels."
   ],
   "version": 3
  },
@@ -390,8 +390,11 @@
   "version": 3
  },
  "INC-0A79C15C4861": {
-  "display_summary": "",
-  "summary_paragraphs": [],
+  "display_summary": "La Clinique vétérinaire Voltaire signale une cyberattaque ayant suspendu la prise de rendez‑vous en ligne.",
+  "summary_paragraphs": [
+   "La Clinique vétérinaire Voltaire annonce avoir été victime d'une cyberattaque, interrompant temporairement la prise de rendez‑vous en ligne.",
+   "Aucune fuite de données personnelles ou médicales vétérinaires n'a été annoncée à ce stade."
+  ],
   "version": 3
  },
  "INC-0AB5E9FB09C5": {
@@ -611,6 +614,14 @@
  "INC-10CAECE09DE1": {
   "display_summary": "",
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-1175E5BD9752": {
+  "display_summary": "Cyberattaque chez Divalto : le distributeur du programme de LFI touché, les commandes des librairies perturbées",
+  "summary_paragraphs": [
+   "BLDD confirme que son prestataire Divalto fait l’objet d’une cyberattaque ciblée depuis le dimanche 15 novembre.",
+   "Divalto a isolé sa plateforme et suspendu l’accès à certains environnements ERP et CRM par précaution."
+  ],
   "version": 3
  },
  "INC-11C1B1A5AB59": {
@@ -978,6 +989,22 @@
   "summary_paragraphs": [
    "TrainMe indique qu’un prestataire logiciel a causé une exposition de données personnelles et de santé.",
    "TrainMe précise que ses équipes ont rapidement identifié et maîtrisé l’accès non autorisé et réinitialisé tous les mots de passe par précaution."
+  ],
+  "version": 3
+ },
+ "INC-1B85CA34042E": {
+  "display_summary": "Flatchr signale une faille de configuration exploitée les 15-16 novembre 2026 ayant permis l'accès à des fiches de candidats.",
+  "summary_paragraphs": [
+   "Un individu non autorisé a exploité une faille de configuration pour consulter des fiches de candidats.",
+   "Les informations potentiellement exposées incluent noms, coordonnées, parcours, compétences et lettres de motivation."
+  ],
+  "version": 3
+ },
+ "INC-1BD16D08800B": {
+  "display_summary": "Un individu affirme vendre sur un forum une base contenant les données personnelles de 18 millions de patients prétendument liées à Softway Medical.",
+  "summary_paragraphs": [
+   "Un individu affirme vendre sur un forum une base de données de 18 millions de patients dont des fiches examinées par FrenchBreaches.",
+   "FrenchBreaches a analysé un échantillon de 3 247 fiches patients contenant des données personnelles et administratives sensibles."
   ],
   "version": 3
  },
@@ -2905,6 +2932,14 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-5B46AA1EFE08": {
+  "display_summary": "Izilo confirme l’exposition de certaines données personnelles de ses usagers suite à une cyberattaque visant son prestataire Maileva.",
+  "summary_paragraphs": [
+   "Izilo indique que les noms, prénoms, adresses postales et noms de fichiers de certains voyageurs ont été exposés via Maileva.",
+   "L’incident résulte d’une cyberattaque chez Maileva, prestataire d’envoi de documents, et non d’une intrusion confirmée dans les systèmes d’Izilo."
+  ],
+  "version": 3
+ },
  "INC-5B57D1B37C8C": {
   "display_summary": "L'INRAE serait victime d'une compromission ayant entraîné la fuite potentielle de bases de données, fichiers et identifiants techniques.",
   "sensitive_data": {
@@ -2964,6 +2999,24 @@
      "specifics": [],
      "status": "unknown",
      "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-5E50141726EC": {
+  "display_summary": "Snowleader signale un piratage informatique avec des données personnelles de clients potentiellement consultées ou dérobées.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "reported",
+     "value": "mots de passe"
     }
    ],
    "vulnerable_people": false
@@ -4449,6 +4502,27 @@
   "display_summary": "France Travail : 62 848 fiches d’agents revendiquées après une nouvelle cyberattaque",
   "summary_paragraphs": [
    "0xRune revendique la vente d'une base de 62 848 lignes d'agents et professionnels liés à France Travail."
+  ],
+  "version": 3
+ },
+ "INC-86B4705DEE1B": {
+  "display_summary": "Une revendication crédible non confirmée affirme la fuite de données de 1 365 clients et 678 IBAN chez l'agence web Bexter.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Un individu affirme détenir et avoir publié une base clients de Bexter contenant 1 365 fiches et 678 références IBAN.",
+   "La revendication, publiée le 17 novembre 2026, est qualifiée de crédible mais n'a pas été confirmée indépendamment."
   ],
   "version": 3
  },
@@ -6499,9 +6573,7 @@
  },
  "INC-BCC275FAF60F": {
   "display_summary": "",
-  "summary_paragraphs": [
-   "Le 17 novembre 2026, un annonceur nommé shin0bi revendique la vente d'une base de 500 782 enregistrements attribuée au Rassemblement national."
-  ],
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-BD9850BF3E4B": {
@@ -6872,6 +6944,11 @@
   ],
   "version": 3
  },
+ "INC-CBB87A06E82E": {
+  "display_summary": "",
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-CC9731B28C94": {
   "display_summary": "Un pirate revendique la mise en vente des données de plus de 200 000 adhérents de la Fédération francophone de Gymnastique.",
   "sensitive_data": {
@@ -7144,6 +7221,13 @@
   "summary_paragraphs": [
    "Un prestataire informatique a subi un accès non autorisé et des données de patients de l’Imagerie des 3 Rivières ont été dérobées.",
    "Les informations potentiellement concernées incluent noms, numéros de sécurité sociale, coordonnées et détails des examens médicaux."
+  ],
+  "version": 3
+ },
+ "INC-D3D1543EEC42": {
+  "display_summary": "BonjourLaFuite signale une fuite de données concernant Made in Bébé.",
+  "summary_paragraphs": [
+   "BonjourLaFuite signale une fuite de données concernant Made in Bébé."
   ],
   "version": 3
  },
@@ -8470,6 +8554,35 @@
   ],
   "version": 3
  },
+ "INC-F7E5984D31DC": {
+  "display_summary": "Decoset : les adresses email des usagers des déchèteries de Toulouse exposées après une cyberattaque",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Entre le 13 et le 16 novembre 2026, une personne malveillante aurait potentiellement pu consulter les adresses email des usagers.",
+   "Decoset indique que les comptes Pass déchèterie et les informations qu'ils contiennent ne sont pas concernés et que l'incident a été déclaré à la CNIL."
+  ],
+  "version": 3
+ },
  "INC-F833F61DB919": {
   "display_summary": "BonjourLaFuite signale une fuite de données concernant Scouts guides de France.",
   "summary_paragraphs": [
@@ -8607,6 +8720,11 @@
   "version": 3
  },
  "INC-FD563387C197": {
+  "display_summary": "",
+  "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-FDEDD1384D70": {
   "display_summary": "",
   "summary_paragraphs": [],
   "version": 3
