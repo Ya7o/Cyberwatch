@@ -598,6 +598,26 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-0F2CC6586F2C": {
+  "display_summary": "Chargemap a confirmé une fuite de données utilisateurs après une cyberattaque du 8 novembre 2026.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Une personne non autorisée a accédé à certaines informations de comptes utilisateurs, détectée le 10 novembre et la faille corrigée le 12 novembre."
+  ],
+  "version": 3
+ },
  "INC-0F486B50ABB2": {
   "display_summary": "Le Groupe Adéquat signale des accès non autorisés sur jobadequat.fr entre le 24 avril et le 22 juillet 2026, exposant potentiellement des données de candidats.",
   "summary_paragraphs": [
@@ -3007,7 +3027,7 @@
   "version": 3
  },
  "INC-5E50141726EC": {
-  "display_summary": "Snowleader signale un piratage informatique avec des données personnelles de clients potentiellement consultées ou dérobées.",
+  "display_summary": "Snowleader confirme un piratage informatique avec des coordonnées bancaires clients potentiellement consultées ou dérobées.",
   "sensitive_data": {
    "types": [
     {
@@ -3015,13 +3035,24 @@
       "FRENCHBREACHES"
      ],
      "specifics": [],
-     "status": "reported",
+     "status": "confirmed",
+     "value": "données bancaires"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
      "value": "mots de passe"
     }
    ],
    "vulnerable_people": false
   },
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "Snowleader confirme avoir été victime d'un piratage informatique et indique que des coordonnées bancaires pourraient avoir été consultées ou dérobées.",
+   "L'entreprise a invalidé les mots de passe des comptes clients par mesure de précaution et invite les clients à contacter leur banque."
+  ],
   "version": 3
  },
  "INC-5E8059ABAC74": {
@@ -4328,6 +4359,11 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-8168A79DB6EB": {
+  "display_summary": "Rahma TV fait l'objet d'une revendication de fuite de données concernant 691 utilisateurs, incluant adresses e-mail et numéros de téléphone.",
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-81CF6EB04450": {
   "display_summary": "Grand Est Automobiles : plus de 2 500 fiches clients diffusées avec leurs plaques d’immatriculation et adresses",
   "summary_paragraphs": [
@@ -5448,6 +5484,11 @@
  },
  "INC-9FABAAA7F3E5": {
   "display_summary": "Centrale Canine : 1,48 million de chiens avec puces et emails d’éleveurs en fuite",
+  "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-9FED3EAE9914": {
+  "display_summary": "France Travail : 1,55 million de dossiers mis en vente issus de le cyberattaque de 2025",
   "summary_paragraphs": [],
   "version": 3
  },
@@ -8725,6 +8766,11 @@
   "version": 3
  },
  "INC-FDEDD1384D70": {
+  "display_summary": "",
+  "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-FE86CACC1DDC": {
   "display_summary": "",
   "summary_paragraphs": [],
   "version": 3

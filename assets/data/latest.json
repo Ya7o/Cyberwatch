@@ -2,6 +2,73 @@
  {
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
+  "date": "2026-11-19",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-FE86CACC1DDC",
+  "location": "France métropolitaine",
+  "org": "Piz'wich Data Breach",
+  "organisation_links": [
+   "https://pizwich.com"
+  ],
+  "personal_data_exposed": false,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "SOURCE_SECTOR_RAW_UNMAPPED",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "yhgphvfgaecacgtlbn67u7yfhafe6evnj4gs4s2oyb3hzjnlhq45azqd.onion",
+    "source": "RANSOMWARE_LIVE",
+    "url": "http://yhgphvfgaecacgtlbn67u7yfhafe6evnj4gs4s2oyb3hzjnlhq45azqd.onion/blog/view/1795086268412852961_PG9grdpq"
+   }
+  ],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-19",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-8168A79DB6EB",
+  "location": "France métropolitaine",
+  "org": "Rahma TV",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Culture / Médias / Loisirs",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Rahma TV est une plateforme francophone de contenus vidéo et d'enseignements religieux consacrés au Coran. [étiquette source écartée : Commerce]",
+   "evidence_url": "https://frenchbreaches.com/alertes/rahma-tv-mwmsirnsl6pcm9dbybs",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/rahma-tv-mwmsirnsl6pcm9dbybs"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Rahma TV fait l'objet d'une revendication de fuite de données concernant 691 utilisateurs, incluant adresses e-mail et numéros de téléphone.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
   "date": "2026-11-18",
   "high_sensitivity_data_exposed": false,
   "id": "INC-D3D1543EEC42",
@@ -28,6 +95,37 @@
   "threat": "Fuite de données",
   "threat_status": {
    "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-18",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-9FED3EAE9914",
+  "location": "Inconnu",
+  "org": "France Travail",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/france-travail-155-million-de-dossiers-mis-en-vente-issus-de-le-cyberattaque-de-2025/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "France Travail : 1,55 million de dossiers mis en vente issus de le cyberattaque de 2025",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
   }
  },
  {
@@ -68,7 +166,7 @@
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": true,
   "date": "2026-11-18",
-  "high_sensitivity_data_exposed": false,
+  "high_sensitivity_data_exposed": true,
   "id": "INC-5E50141726EC",
   "location": "France métropolitaine",
   "org": "Snowleader",
@@ -98,8 +196,8 @@
    "BONJOURLAFUITE",
    "FRENCHBREACHES"
   ],
-  "summary": "Snowleader signale un piratage informatique avec des données personnelles de clients potentiellement consultées ou dérobées.",
-  "threat": "Fuite de données",
+  "summary": "Snowleader confirme un piratage informatique avec des coordonnées bancaires clients potentiellement consultées ou dérobées.",
+  "threat": "Intrusion",
   "threat_status": {
    "status": "confirmed"
   }
@@ -3475,6 +3573,40 @@
   ],
   "summary": "CodinGame confirme avoir été victime d’une cyberattaque dans la nuit du 7 au 8 novembre 2026.",
   "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-08",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-0F2CC6586F2C",
+  "location": "France métropolitaine",
+  "org": "Chargemap",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Transport / Logistique",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Chargemap est un service français destiné aux conducteurs de véhicules électriques. [étiquette source écartée : Commerce]",
+   "evidence_url": "https://frenchbreaches.com/alertes/chargemap-mwmdclb8whoxcxtuijb",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/chargemap-mwmdclb8whoxcxtuijb"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Chargemap a confirmé une fuite de données utilisateurs après une cyberattaque du 8 novembre 2026.",
+  "threat": "Fuite de données",
   "threat_status": {
    "status": "confirmed"
   }
@@ -9130,518 +9262,6 @@
   "threat": "Fuite de données",
   "threat_status": {
    "status": "confirmed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-20",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-F116E43D6A1B",
-  "location": "France métropolitaine",
-  "org": "Frenchy Sushi",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Hébergement / Tourisme / Restauration",
-  "sector_status": {
-   "confidence": 0.8,
-   "discarded_source_labels": [
-    "Commerce / Distribution"
-   ],
-   "evidence": "Frenchy Sushi est une société créée en  2013  et spécialisée dans la restauration rapide japonaise.",
-   "evidence_url": "https://www.cyberattaque.org/frenchy-sushi-3-424-clients-exposes-avec-telephones-et-historique-de-commandes/",
-   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/frenchy-sushi-3-424-clients-exposes-avec-telephones-et-historique-de-commandes/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/frenchy-sushi-mvh6jsmfitdlozblgf"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "Frenchy Sushi : 3 424 clients exposés, avec téléphones et historique de commandes",
-  "threat": "Inconnu",
-  "threat_status": {
-   "status": "unknown"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-20",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-DFF0558417B7",
-  "location": "France métropolitaine",
-  "org": "SOLIHA",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Construction / BTP",
-  "sector_status": {
-   "confidence": 0.8,
-   "evidence": "SOLIHA, réseau associatif français spécialisé dans l'amélioration de l'habitat et l'accompagnement des ménages, est visé par une revendication de fuite de données. [étiquette source écartée : Commerce]",
-   "evidence_url": "https://frenchbreaches.com/alertes/soliha-mvgxc2quxy1txsgtoe",
-   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/soliha-3-154-profils-de-son-intranet-exposent-ses-collaborateurs-dans-une-fuite-de-donnees/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/soliha-mvgxc2quxy1txsgtoe"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "SOLIHA : 3 154 profils de son intranet exposent ses collaborateurs dans une fuite de données",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-20",
-  "high_sensitivity_data_exposed": true,
-  "id": "INC-D5DE3AD49366",
-  "location": "France métropolitaine",
-  "org": "PortaleCo",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
-  "sector_status": {
-   "confidence": 0.8,
-   "evidence": "PortaleCo est une enseigne française spécialisée dans la commercialisation en ligne d'équipements destinés à l'aménagement extérieur.",
-   "evidence_url": "https://frenchbreaches.com/alertes/portaleco-mvh1wazxhkwj2zu1gfs",
-   "reason": "ACTIVITY_RULE",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/portaleco-plus-de-100-000-fiches-avec-noms-et-adresses-en-fuite/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/portaleco-mvh1wazxhkwj2zu1gfs"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "Portaleco : plus de 100 000 fiches avec noms et adresses en fuite",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "confirmed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "admission_reason": "Transcontinents confirme sur son site officiel qu’un accès non autorisé à son outil de réservation, les 20 et 21 octobre 2026, a permis l’extraction de données personnelles et d’informations de réservation de clients.",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-20",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-CE234E7943B8",
-  "location": "La Réunion",
-  "org": "Transcontinents Réunion",
-  "organisation_links": [],
-  "personal_data_exposed": false,
-  "sector": "Transport / Logistique",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Transport / Logistique",
-   "evidence_url": "https://transcontinents.com/alerte-fraude/",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "transcontinents.com",
-    "source": "VEILLE_LLM",
-    "url": "https://transcontinents.com/alerte-fraude/"
-   },
-   {
-    "label": "Cyberattaque.org",
-    "source": "VEILLE_LLM",
-    "url": "https://www.cyberattaque.org/transcontinents-des-hackers-exploitent-les-reservations-de-lagence-de-voyages-reunionnaise/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "VEILLE_LLM",
-    "url": "https://frenchbreaches.com/blog/hotels-gites-voyages-une-vague-de-cyberattaques-inquiete-avant-noel"
-   }
-  ],
-  "sources": [
-   "VEILLE_LLM"
-  ],
-  "summary": "",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
-  "date": "2026-10-20",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-A3EBCA6EA6BA",
-  "location": "France métropolitaine",
-  "org": "Valeurs actuelles",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Culture / Médias / Loisirs",
-  "sector_status": {
-   "confidence": 0.8,
-   "discarded_source_labels": [
-    "Commerce / Distribution"
-   ],
-   "evidence": "Valeurs actuelles est un hebdomadaire français d’actualité et d’opinion édité par  Valmonde et Cie .",
-   "evidence_url": "https://www.cyberattaque.org/cyberattaque-valeurs-actuelles/",
-   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/cyberattaque-valeurs-actuelles/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/valeurs-actuelles-mvgxt8dpogb8av8bdzm"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "Valeurs actuelles : près de 45 000 abonnés révélés par une cyberattaque",
-  "threat": "Intrusion",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-20",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-973F96955D58",
-  "location": "France métropolitaine",
-  "org": "Padel Normandie",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Commerce",
-   "evidence_url": "https://frenchbreaches.com/alertes/padel-normandie-mvh6f5dxc041wra4jc",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/padel-normandie-mvh6f5dxc041wra4jc"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "unknown"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-20",
-  "high_sensitivity_data_exposed": true,
-  "id": "INC-8DAC588B4D42",
-  "location": "France métropolitaine",
-  "org": "Misterbooking",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Hébergement / Tourisme / Restauration",
-  "sector_status": {
-   "confidence": 0.8,
-   "evidence": "Misterbooking est une solution logicielle destinée aux professionnels de l'hôtellerie, notamment pour la gestion des réservations, des clients et de l'activité des établissements. [étiquette source écartée : Commerce]",
-   "evidence_url": "https://frenchbreaches.com/alertes/misterbooking-mvgyucgy6374p06vxeb",
-   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/misterbooking-mvgyucgy6374p06vxeb"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "unknown"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-20",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-86A0E3F1856E",
-  "location": "France métropolitaine",
-  "org": "Terranota",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Construction / BTP",
-  "sector_status": {
-   "confidence": 0.8,
-   "evidence": "Terranota intervient dans le domaine des renseignements réglementaires, de l'urbanisme et des démarches juridiques liées à l'immobilier. [étiquette source écartée : Commerce]",
-   "evidence_url": "https://frenchbreaches.com/alertes/terranota-mvh1ackqc8kzf8diegm",
-   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/terranota-pres-de-43-000-personnes-exposees-via-leurs-dossiers-immobiliers/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/terranota-mvh1ackqc8kzf8diegm"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "Terranota : près de 43 000 personnes exposées via leurs dossiers immobiliers",
-  "threat": "Inconnu",
-  "threat_status": {
-   "status": "unknown"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
-  "date": "2026-10-20",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-4F05D65DCC88",
-  "location": "France métropolitaine",
-  "org": "Billets Nantes",
-  "organisation_links": [
-   "https://BilletsNantes.fr"
-  ],
-  "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Commerce",
-   "evidence_url": "https://frenchbreaches.com/alertes/billets-nantes-mvh6pydjtys8slkzvks",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/billetsnantes-161-supporters-exposes-apres-une-cyberattaque/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/billets-nantes-mvh6pydjtys8slkzvks"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "BilletsNantes : 161 supporters exposés après une cyberattaque",
-  "threat": "Intrusion",
-  "threat_status": {
-   "status": "confirmed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-20",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-29ED2D60A321",
-  "location": "France métropolitaine",
-  "org": "Livre officiel des origines félines",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Commerce",
-   "evidence_url": "https://frenchbreaches.com/alertes/livre-officiel-des-origines-f-lines-loof-mvb6cesqs8p2mqrp5m",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/livre-officiel-des-origines-f-lines-loof-mvb6cesqs8p2mqrp5m"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "Livre officiel des origines félines (LOOF)",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "unknown"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
-  "date": "2026-10-20",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-16036600937F",
-  "location": "France métropolitaine",
-  "org": "Plenitude On The Road",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Transport / Logistique",
-  "sector_status": {
-   "confidence": 0.8,
-   "discarded_source_labels": [
-    "Commerce / Distribution"
-   ],
-   "evidence": "Plenitude On The Road est le service de mobilité électrique du groupe Plenitude.",
-   "evidence_url": "https://www.cyberattaque.org/cyberattaque-plenitude-on-the-road-des-donnees-clients-exposees-apres-un-piratage/",
-   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/cyberattaque-plenitude-on-the-road-des-donnees-clients-exposees-apres-un-piratage/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/plenitude-on-the-road-mvkzvkaghaihpwmydjt"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "Plenitude On The Road : des données clients exposées après un piratage",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "confirmed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-20",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-0AEE7942999A",
-  "location": "France métropolitaine",
-  "org": "Association francophone de padel",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Commerce",
-   "evidence_url": "https://frenchbreaches.com/alertes/association-francophone-de-padel-afpadel-mvgxh2pryxyvw87o0t",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/association-francophone-de-padel-afpadel-mvgxh2pryxyvw87o0t"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "Association francophone de padel (AFPAdel)",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "unknown"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-20",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-07A263B26D50",
-  "location": "France métropolitaine",
-  "org": "King Jouet",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Commerce",
-   "evidence_url": "https://frenchbreaches.com/alertes/king-jouet-mvh2wz4eji7ew5cohhq",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/cyberattaque-king-jouet-fuite-donnees/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/king-jouet-mvh2wz4eji7ew5cohhq"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "King Jouet : près de 196 000 fiches clients diffusées sur le darkweb",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "unknown"
   }
  }
 ]
