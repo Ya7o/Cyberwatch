@@ -5,3 +5,62 @@ header{max-width:1120px;margin:auto;padding:28px 36px;border-bottom:1px solid #d
 header nav{display:flex;gap:24px;font-size:.85rem}header nav a{text-decoration:none}main{max-width:780px;margin:auto;padding:55px 28px 40px}.meta{display:flex;gap:22px;color:#626262;font-size:.83rem}h1{font-size:clamp(2rem,5vw,3.15rem);line-height:1.13;letter-spacing:-.045em;margin:22px 0}h2{font-size:1.7rem;line-height:1.25;letter-spacing:-.025em;margin:0 0 20px}h3{font-size:1rem;line-height:1.4;margin:27px 0 10px}p{margin:0 0 18px}.intro{font-size:1.12rem;color:#484848}.period{font-size:.8rem;color:#666}.contents{margin:36px 0 0;padding:20px 24px;background:#f2f2f2;border-left:3px solid var(--accent)}.contents ol{padding-left:20px;margin:0}.contents li+li{margin-top:8px}.contents a{text-decoration:none}article{padding:48px 0;border-bottom:1px solid #ddd;scroll-margin-top:24px}.summary{font-size:1.1rem}.points{padding-left:22px;margin:0}.points li{margin-bottom:15px}.points strong{display:block}aside{border-left:3px solid var(--accent);padding:1px 22px;margin:28px 0;background:#fafafa}aside h3{margin-top:18px}details{margin-top:24px;font-size:.85rem}summary{cursor:pointer;font-weight:650}.sources{padding-left:20px}.sources li{margin:12px 0;overflow-wrap:anywhere}.sources span{display:block;color:#666}.archive{list-style:none;margin:0;padding:0}.archive li{padding:28px 0;border-bottom:1px solid #ddd}.archive a{text-decoration:none;display:block}.archive time,.archive span{font-size:.85rem;color:#666}.archive h2{margin:12px 0;font-size:1.3rem}footer{max-width:780px;margin:0 auto;padding:28px;color:#777;font-size:.8rem}.skip{position:absolute;left:20px;top:-100px;background:white;padding:10px}.skip:focus{top:10px}
 @media(max-width:600px){:root{font-size:16px}header{padding:22px 20px;flex-wrap:wrap;gap:18px}.brand{font-size:1.35rem}header nav{gap:20px}main{padding:32px 20px}h1{font-size:2.05rem}h2{font-size:1.5rem}.contents{padding:18px}article{padding:34px 0}.meta{gap:14px;font-size:.78rem}aside{padding-left:16px;padding-right:14px}}
 @media print{header nav,.contents,.skip{display:none}main{max-width:none;padding:0}details{display:block}article{break-inside:avoid}a{color:#000}}
+
+/* Readable, full-width newsletter layout on phones and touch devices. */
+html{-webkit-text-size-adjust:100%}
+h1,h2,.contents li,.archive h2{overflow-wrap:break-word}
+@media screen and (max-width:760px){
+  :root{font-size:17px;line-height:1.65}
+  header{max-width:none;padding:17px 18px;flex-wrap:wrap;gap:12px 18px}
+  .brand{font-size:1.22rem;letter-spacing:-.035em}
+  .brand:before{width:7px;height:19px;margin-right:9px}
+  header nav{margin-left:auto;gap:17px;font-size:.9rem}
+  main{width:100%;max-width:none;padding:26px 18px 34px}
+  .meta{flex-wrap:wrap;gap:4px 15px;font-size:.78rem;line-height:1.45}
+  h1{font-size:clamp(1.85rem,7.3vw,2.45rem);line-height:1.13;letter-spacing:-.035em;margin:18px 0 18px}
+  h2{font-size:1.4rem;line-height:1.26;margin:0 0 16px}
+  h3{font-size:.98rem;line-height:1.35;margin:24px 0 9px}
+  p{margin-bottom:16px}
+  .intro{font-size:1.03rem;line-height:1.65}
+  .period{font-size:.79rem;line-height:1.5}
+  .contents{margin:26px 0 0;padding:16px 16px 16px 14px;font-size:.94rem;line-height:1.5}
+  .contents ol{padding-left:1.3rem}
+  .contents li+li{margin-top:11px}
+  article{padding:34px 0;scroll-margin-top:12px}
+  .summary{font-size:1.02rem}
+  .points{padding-left:1.3rem}
+  .points li{padding-left:2px;margin-bottom:18px}
+  .points strong{margin-bottom:3px;line-height:1.4}
+  aside{padding:8px 15px 5px;margin:23px 0}
+  aside h3{margin-top:13px}
+  details{font-size:.9rem}
+  .sources{padding-left:1.25rem}
+  .archive li{padding:24px 0}
+  .archive h2{font-size:1.32rem}
+  footer{max-width:none;padding:22px 18px 36px}
+}
+@media screen and (max-width:360px){
+  header{padding:15px 16px}
+  header nav{width:100%;margin-left:0;justify-content:flex-start}
+  main{padding:22px 16px 30px}
+  h1{font-size:1.83rem}
+  .contents{padding:14px 13px 14px 12px}
+  footer{padding:20px 16px 30px}
+}
+/* Touch browsers showing a desktop-sized viewport should not squeeze the
+   newsletter into a tiny 780px desktop reading column. */
+@media screen and (pointer:coarse) and (min-width:761px) and (max-width:1100px){
+  :root{font-size:21px;line-height:1.62}
+  header{max-width:none;padding:24px 34px;gap:22px}
+  .brand{font-size:1.35rem}
+  header nav{font-size:.9rem}
+  main{max-width:920px;padding:35px 28px 42px}
+  h1{font-size:clamp(2.1rem,5vw,2.75rem)}
+  h2{font-size:1.55rem}
+  h3{margin-top:26px}
+  .intro{font-size:1.06rem}
+  .summary{font-size:1.04rem}
+  .contents{margin-top:28px}
+  article{padding:39px 0}
+  footer{max-width:920px}
+}
