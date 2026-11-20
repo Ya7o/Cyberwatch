@@ -1,6 +1,136 @@
 [
  {
   "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-20",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-1B5A941300C6",
+  "location": "Inconnu",
+  "org": "Maileva",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/maileva-les-revelations-exclusives-du-hacker-presume-de-la-poste/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Maileva : les révélations exclusives du hacker présumé de La Poste",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-20",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-02F4A8DC2225",
+  "location": "Inconnu",
+  "org": "Seazon",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Hébergement / Tourisme / Restauration",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Seazon, le service français de livraison de repas appartenant à FoodChéri, confirme avoir été victime d’une cyberattaque ayant entraîné le vol de données personnelles de ses clients.",
+   "evidence_url": "https://www.cyberattaque.org/seazon-victime-dune-cyberattaque-les-donnees-personnelles-et-mots-de-passe-des-clients-de-foodcheri-exposes/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/seazon-victime-dune-cyberattaque-les-donnees-personnelles-et-mots-de-passe-des-clients-de-foodcheri-exposes/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Seazon confirme une cyberattaque ayant entraîné l'extraction de données personnelles et de mots de passe hachés de ses clients.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-19",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-C26BA353F22F",
+  "location": "France métropolitaine",
+  "org": "AlloBébé",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/allobebe.jpeg"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE"
+  ],
+  "summary": "BonjourLaFuite signale une fuite de données concernant AlloBébé.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-19",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-3EA97975134D",
+  "location": "Inconnu",
+  "org": "Godot & Fils",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Fondée en 1933, Godot & Fils est une enseigne française spécialisée dans le négoce de métaux précieux, la numismatique et le change de devises.",
+   "evidence_url": "https://www.cyberattaque.org/godot-fils-apres-une-cyberattaque-des-clients-depouilles-de-centaines-de-milliers-deuros-en-or/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/godot-fils-apres-une-cyberattaque-des-clients-depouilles-de-centaines-de-milliers-deuros-en-or/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Godot & Fils : après une cyberattaque, des clients dépouillés de centaines de milliers d’euros en or",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
   "date": "2026-11-19",
   "high_sensitivity_data_exposed": false,
@@ -3339,17 +3469,19 @@
   "date": "2026-11-08",
   "high_sensitivity_data_exposed": false,
   "id": "INC-702A75E1A86F",
-  "location": "Inconnu",
-  "org": "Chambourcy",
-  "organisation_links": [],
+  "location": "France métropolitaine",
+  "org": "CHAMBOURCY",
+  "organisation_links": [
+   "https://chambourcy.fr"
+  ],
   "personal_data_exposed": false,
   "sector": "Administration / Collectivité",
   "sector_status": {
-   "confidence": 0.8,
-   "evidence": "Chambourcy est une commune française située dans les Yvelines, en Île-de-France, à proximité de Saint-Germain-en-Laye.",
-   "evidence_url": "https://www.cyberattaque.org/chambourcy-une-cyberattaque-contraint-la-mairie-a-couper-son-reseau-informatique-et-a-revenir-au-papier/",
-   "reason": "ACTIVITY_RULE",
-   "status": "inferred"
+   "confidence": 0.7,
+   "evidence": "Government & Defense",
+   "evidence_url": "https://chambourcy.fr",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
   },
   "source_links": [
    {
@@ -3359,12 +3491,13 @@
    }
   ],
   "sources": [
-   "CYBERATTAQUE_ORG"
+   "CYBERATTAQUE_ORG",
+   "RANSOMWARE_LIVE"
   ],
   "summary": "La mairie de Chambourcy a été visée par une cyberattaque, poussant la municipalité à couper préventivement son réseau informatique.",
-  "threat": "Intrusion",
+  "threat": "Ransomware",
   "threat_status": {
-   "status": "confirmed"
+   "status": "claimed"
   }
  },
  {
@@ -6691,6 +6824,40 @@
   "threat": "Fuite de données",
   "threat_status": {
    "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-10-30",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-A98A65F86AA0",
+  "location": "France métropolitaine",
+  "org": "LOCService",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/locservice-mwowy67458wrwtcg5j2",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/locservice-mwowy67458wrwtcg5j2"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
   }
  },
  {
@@ -10976,9 +11143,9 @@
    "FRENCHBREACHES"
   ],
   "summary": "Paroisse Saint-Urbain–Sainte-Marie : les emails des fidèles exposés après une cyberattaque",
-  "threat": "Intrusion",
+  "threat": "Fuite de données",
   "threat_status": {
-   "status": "reported"
+   "status": "confirmed"
   }
  },
  {

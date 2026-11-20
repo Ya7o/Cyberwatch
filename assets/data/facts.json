@@ -127,7 +127,10 @@
    ],
    "vulnerable_people": false
   },
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "Le pirate Angel_Batista affirme avoir obtenu et mis en vente une base de 4 852 437 enregistrements attribués à Nomad Education.",
+   "Les données revendiquées comprendraient noms, prénoms, adresses e-mail, noms d'utilisateur et dates de naissance."
+  ],
   "version": 3
  },
  "INC-026EAF294728": {
@@ -173,6 +176,27 @@
   "summary_paragraphs": [
    "Un individu non autorisé a accédé à une plateforme Smartbox, exposant potentiellement noms et adresses email de clients.",
    "Smartbox affirme que mots de passe et coordonnées bancaires n’ont pas été compromis."
+  ],
+  "version": 3
+ },
+ "INC-02F4A8DC2225": {
+  "display_summary": "Seazon confirme une cyberattaque ayant entraîné l'extraction de données personnelles et de mots de passe hachés de ses clients.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "reported",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "FoodChéri reconnaît un accès non autorisé à l'application Seazon et une extraction d'informations personnelles.",
+   "Les données potentiellement compromises incluent noms, adresses, historiques de commandes, mots de passe hachés et certaines informations de moyens de paiement."
   ],
   "version": 3
  },
@@ -1012,6 +1036,24 @@
   ],
   "version": 3
  },
+ "INC-1B5A941300C6": {
+  "display_summary": "Maileva : les révélations exclusives du hacker présumé de La Poste",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-1B85CA34042E": {
   "display_summary": "Flatchr signale une faille de configuration exploitée les 15-16 novembre 2026 ayant permis l'accès à des fiches de candidats.",
   "summary_paragraphs": [
@@ -1430,7 +1472,10 @@
  },
  "INC-2AADE4847930": {
   "display_summary": "Paroisse Saint-Urbain–Sainte-Marie : les emails des fidèles exposés après une cyberattaque",
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "La paroisse Saint-Urbain–Sainte-Marie indique qu'un incident de sécurité a affecté des données personnelles qu'elle conserve.",
+   "La paroisse précise que les informations potentiellement compromises seraient, a priori, limitées aux adresses électroniques des personnes concernées."
+  ],
   "version": 3
  },
  "INC-2B1CDBBD2AD7": {
@@ -2063,6 +2108,13 @@
  "INC-3E7D77B3D0DC": {
   "display_summary": "",
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-3EA97975134D": {
+  "display_summary": "Godot & Fils : après une cyberattaque, des clients dépouillés de centaines de milliers d’euros en or",
+  "summary_paragraphs": [
+   "Des informations personnelles et historiques d’achats de clients de Godot & Fils ont été exposées lors d’une cyberattaque reconnue en juin 2026."
+  ],
   "version": 3
  },
  "INC-409E26876A2B": {
@@ -5807,6 +5859,26 @@
   ],
   "version": 3
  },
+ "INC-A98A65F86AA0": {
+  "display_summary": "",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "LocService confirme que des noms, prénoms, adresses e-mail, informations de facturation et messages échangés ont été copiés par un tiers non autorisé."
+  ],
+  "version": 3
+ },
  "INC-AA1E1BAAF08B": {
   "display_summary": "Cnam : près de 900 000 fiches et 16 000 profils d’enseignants en fuite",
   "summary_paragraphs": [
@@ -6708,6 +6780,26 @@
   "summary_paragraphs": [
    "Bouteilles et bocaux a subi une intrusion permettant l'installation d'un logiciel malveillant dans l'environnement de sa boutique en ligne.",
    "Les attaquants auraient pu accéder à un ensemble limité de données clients comprenant noms, prénoms, adresses postales et adresses e-mail."
+  ],
+  "version": 3
+ },
+ "INC-C26BA353F22F": {
+  "display_summary": "BonjourLaFuite signale une fuite de données concernant AlloBébé.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "BONJOURLAFUITE"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "Type de moyen de paiement utilisé"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "BonjourLaFuite signale une fuite de données concernant AlloBébé."
   ],
   "version": 3
  },
