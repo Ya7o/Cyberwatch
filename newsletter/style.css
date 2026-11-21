@@ -64,3 +64,37 @@ h1,h2,.contents li,.archive h2{overflow-wrap:break-word}
   article{padding:39px 0}
   footer{max-width:920px}
 }
+
+/* V7: three distinct reading rhythms; the dossier stays a separate page. */
+.edition-section{padding:22px 0 12px;border-top:1px solid #dedede}
+.edition-section:first-of-type{border-top:0}
+.edition-section>h2{font-size:1.65rem;letter-spacing:-.03em;margin:0 0 14px}
+.news-article{padding:28px 0;border-bottom:1px solid #e8e8e8}
+.news-article>h3{font-size:1.43rem;letter-spacing:-.025em;line-height:1.3;margin:0 0 16px}
+.news-article>h4{font-size:.99rem;margin:22px 0 8px}
+.brief-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.ai-brief{border:1px solid #e5e5e5;border-radius:10px;padding:19px;min-width:0}
+.ai-brief h3{font-size:1.15rem;line-height:1.3;margin:0 0 14px}
+.ai-brief p{font-size:.94rem;line-height:1.55;margin-bottom:11px}
+.ai-brief .brief-type{font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#9b4700}
+.ai-brief .brief-metric{padding:10px 12px;background:#f6f6f6;border-radius:7px}
+.ai-brief .brief-watch{color:#575757}
+.ai-brief details{margin-top:10px}
+.deep-teaser{border-left:3px solid var(--accent);padding:9px 0 10px 20px}
+.deep-teaser a{font-weight:700}
+.dossier-section{padding:16px 0;border-top:1px solid #e3e3e3}
+.dossier-section h2{font-size:1.45rem;margin:10px 0 18px}
+.dossier-section li{margin:0 0 14px;overflow-wrap:anywhere}
+.dossier-section p{margin-bottom:18px}
+.fact-source{color:#777;font-size:.83rem}
+@media(max-width:760px){
+  .edition-section{padding:16px 0 8px}
+  .edition-section>h2{font-size:1.42rem}
+  .news-article{padding:23px 0}
+  .news-article>h3{font-size:1.27rem}
+  .brief-list{grid-template-columns:minmax(0,1fr);gap:12px}
+  .ai-brief{padding:15px}
+  .dossier-section{padding:14px 0}
+  .dossier-section h2{font-size:1.27rem}
+  .deep-teaser{padding-left:14px}
+}
