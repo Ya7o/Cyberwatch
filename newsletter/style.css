@@ -98,3 +98,17 @@ h1,h2,.contents li,.archive h2{overflow-wrap:break-word}
   .dossier-section h2{font-size:1.27rem}
   .deep-teaser{padding-left:14px}
 }
+
+/* V7 library: name the competence, not merely the publication date. */
+.dossier-card>a{display:block;padding:1px 0 7px}
+.dossier-card .dossier-topic{display:block;color:#9b4700;font-size:.77rem;font-weight:700;letter-spacing:.035em;margin:0 0 5px}
+.dossier-card h2{margin:5px 0 9px;font-size:1.35rem;line-height:1.35}
+.dossier-card .dossier-outcome{max-width:62ch;color:#333;font-size:1rem;line-height:1.6;margin:0 0 12px}
+.dossier-card>a:hover h2{text-decoration:underline;text-underline-offset:3px}
+.fact-source a{text-decoration:underline;text-underline-offset:2px}
+.fact-source a:hover,.fact-source a:focus-visible{color:#9b4700}
+.sources li:target{background:#fff2e3;scroll-margin-top:26px;border-left:3px solid #da7300;padding-left:9px}
+@media screen and (max-width:760px){
+  .dossier-card h2{font-size:1.24rem}
+  .dossier-card .dossier-outcome{font-size:.98rem}
+}
