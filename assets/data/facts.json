@@ -127,10 +127,7 @@
    ],
    "vulnerable_people": false
   },
-  "summary_paragraphs": [
-   "Le pirate Angel_Batista affirme avoir obtenu et mis en vente une base de 4 852 437 enregistrements attribués à Nomad Education.",
-   "Les données revendiquées comprendraient noms, prénoms, adresses e-mail, noms d'utilisateur et dates de naissance."
-  ],
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-026EAF294728": {
@@ -185,11 +182,23 @@
    "types": [
     {
      "sources": [
-      "CYBERATTAQUE_ORG"
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES",
+      "BONJOURLAFUITE"
      ],
-     "specifics": [],
+     "specifics": [
+      "Mot de passe haché"
+     ],
      "status": "reported",
      "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
     }
    ],
    "vulnerable_people": false
@@ -1369,6 +1378,26 @@
   ],
   "version": 3
  },
+ "INC-24EFDD2F1EB0": {
+  "display_summary": "",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Un individu utilisant le pseudonyme Chimera affirme avoir récupéré et mis en vente une base de 3,4 Go provenant du site robot-advance.com."
+  ],
+  "version": 3
+ },
  "INC-25FB4E5B300E": {
   "display_summary": "",
   "summary_paragraphs": [],
@@ -2479,8 +2508,11 @@
   "version": 3
  },
  "INC-4C59C26E31C7": {
-  "display_summary": "",
-  "summary_paragraphs": [],
+  "display_summary": "Un pirate revendique la vente de 334 474 enregistrements d'adresses attribués à O'Tacos.",
+  "summary_paragraphs": [
+   "Angel_Batista affirme proposer à la vente une base de 334 474 enregistrements d'adresses attribuée à O'Tacos.",
+   "L'annonce indique que les données comprennent adresses postales, numéros de téléphone et coordonnées géographiques, mais l'authenticité reste à confirmer."
+  ],
   "version": 3
  },
  "INC-4CA0BE29DA39": {
@@ -5241,6 +5273,11 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-92AB96FF60E2": {
+  "display_summary": "",
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-93026E986785": {
   "display_summary": "Les données personnelles d'environ 825 000 utilisateurs de Location-Étudiant seraient proposées à la vente sur un forum cybercriminel.",
   "summary_paragraphs": [
@@ -5318,6 +5355,28 @@
   "summary_paragraphs": [
    "Une fuite revendiquée par Syrv4x diffuse une base de 10 193 lignes contenant des données de stagiaires.",
    "La base contient notamment identité, date et ville de naissance, parcours de formation et situation de handicap."
+  ],
+  "version": 3
+ },
+ "INC-959A7148CB99": {
+  "display_summary": "La plateforme Clevermate fait l'objet d'une revendication de diffusion d'une archive contenant des dossiers individuels et des coordonnées bancaires.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "reported",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Des pirates ont diffusé une archive contenant plus de 1 500 dossiers individuels, des coordonnées bancaires et des informations personnelles.",
+   "L'archive examinée contient 1 574 dossiers JSON renseignés et un fichier distinct de 1 257 entrées présenté comme des coordonnées bancaires."
   ],
   "version": 3
  },
@@ -5425,7 +5484,10 @@
  },
  "INC-9B7B6F1DF9AE": {
   "display_summary": "Inter-Etab : 286 773 dossiers d’élèves et leurs familles en fuite",
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "Un utilisateur se présentant sous le pseudonyme Angel_Batista affirme mettre en vente 286 773 lignes de données provenant du site inter-etab.com.",
+   "Les données revendiquées comprendraient noms, dates de naissance, adresses, e‑mails, numéros de téléphone et informations sur les responsables légaux."
+  ],
   "version": 3
  },
  "INC-9BA1C54FB5E6": {
@@ -5784,7 +5846,9 @@
  },
  "INC-A83829E8180E": {
   "display_summary": "Courtepaille Bayeux : 8 734 lignes issues de l’outil de réservation en fuite",
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "Un utilisateur nommé rea affirme vendre une base de données de 8 734 fiches clients attribuée au restaurant Courtepaille de Bayeux."
+  ],
   "version": 3
  },
  "INC-A84ABFF6796F": {
@@ -5915,6 +5979,14 @@
   "display_summary": "BonjourLaFuite signale une fuite de données concernant Réussir Agra.",
   "summary_paragraphs": [
    "BonjourLaFuite signale une fuite de données concernant Réussir Agra."
+  ],
+  "version": 3
+ },
+ "INC-AADCC695B753": {
+  "display_summary": "Une cyberattaque a forcé Orchestra à couper ses systèmes, perturbant les réservations de nombreux sites et agences de voyages.",
+  "summary_paragraphs": [
+   "Des accès non autorisés ont été détectés la nuit du 19 au 20 novembre, poussant Orchestra à arrêter ses systèmes par précaution.",
+   "L'arrêt des infrastructures a entraîné des perturbations chez Voyages E.Leclerc, Carrefour Voyages, Selectour et Havas Voyages."
   ],
   "version": 3
  },
@@ -6171,6 +6243,35 @@
  "INC-AFB021A15908": {
   "display_summary": "",
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-B035F6D6F00B": {
+  "display_summary": "GoTronic fait l'objet d'une revendication de fuite de données avec plus de 328 000 adresses e-mail annoncées.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Un pirate affirme avoir mis en vente une base de données de GoTronic contenant \"328 190 adresses e-mail\" et d'autres informations.",
+   "La revendication, signée par le pseudonyme Chimera, est considérée crédible mais n'a pas été confirmée indépendamment."
+  ],
   "version": 3
  },
  "INC-B039906F8F9A": {
@@ -7251,6 +7352,11 @@
    "Un pirate a publié le 30 septembre 2026 une base de 6 768 lignes contenant identités, NIR et informations bancaires de stagiaires.",
    "FrenchBreaches analyse 6 767 enregistrements exploitables et ~5 400 identifiants individuels distincts, sans confirmation officielle de la Région."
   ],
+  "version": 3
+ },
+ "INC-CFCFC5332362": {
+  "display_summary": "Une fuite de 1,2 Go de fichiers est revendiquée chez La Maison des Travaux, affectant potentiellement des centaines de milliers de personnes.",
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-CFD27D3C4E7B": {
@@ -8442,6 +8548,24 @@
  },
  "INC-EF6AF4F03502": {
   "display_summary": "Saint-Pierre-des-Corps : une cyberattaque perturbe ses systèmes",
+  "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-EF9D00DAD055": {
+  "display_summary": "Voyages Rive Gauche fait l'objet d'une revendication crédible de fuite de données portant sur plusieurs fichiers totalisant plus de 5,3 millions de lignes.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [],
   "version": 3
  },

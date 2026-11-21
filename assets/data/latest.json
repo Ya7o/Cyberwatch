@@ -1,6 +1,246 @@
 [
  {
   "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-21",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-CFCFC5332362",
+  "location": "France métropolitaine",
+  "org": "La Maison Des Travaux",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/la-maison-des-travaux-mwqim3512cssbwz8jde",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/la-maison-des-travaux-mwqim3512cssbwz8jde"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Une fuite de 1,2 Go de fichiers est revendiquée chez La Maison des Travaux, affectant potentiellement des centaines de milliers de personnes.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-21",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-B035F6D6F00B",
+  "location": "France métropolitaine",
+  "org": "GoTronic",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/gotronic-mwqiij0l351ddo81adu",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/gotronic-mwqiij0l351ddo81adu"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "GoTronic fait l'objet d'une revendication de fuite de données avec plus de 328 000 adresses e-mail annoncées.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-21",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-AADCC695B753",
+  "location": "Inconnu",
+  "org": "Orchestra",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "ACTIVITY_TAXONOMY_UNRESOLVED",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-chez-orchestra-voyages-e-leclerc-carrefour-voyages-selectour-et-havas-voyages-paralyses/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Une cyberattaque a forcé Orchestra à couper ses systèmes, perturbant les réservations de nombreux sites et agences de voyages.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-21",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-959A7148CB99",
+  "location": "France métropolitaine",
+  "org": "Clevermate",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Éducation / Formation",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Éducation",
+   "evidence_url": "https://frenchbreaches.com/alertes/clevermate-mwqhk4jhz05mfutusn",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/clevermate-vise-par-des-hackers-des-donnees-personnelles-des-iban-et-cartes-etudiantes-exposes/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/clevermate-mwqhk4jhz05mfutusn"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "La plateforme Clevermate fait l'objet d'une revendication de diffusion d'une archive contenant des dossiers individuels et des coordonnées bancaires.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-21",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-24EFDD2F1EB0",
+  "location": "France métropolitaine",
+  "org": "Robot Advance",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Robot Advance commercialise notamment des robots domestiques, des équipements de robotique, des jouets éducatifs et des produits technologiques destinés aux particuliers, aux familles et aux amateurs d'innovation.",
+   "evidence_url": "https://frenchbreaches.com/alertes/robot-advance-mwqip71q8i2uxq55z1x",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/robot-advance-mwqip71q8i2uxq55z1x"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-20",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-EF9D00DAD055",
+  "location": "France métropolitaine",
+  "org": "Voyages Rive Gauche",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/voyages-rive-gauche-mwpcyv1jsg0bwjw7m3o",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/voyages-rive-gauche-mwpcyv1jsg0bwjw7m3o"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Voyages Rive Gauche fait l'objet d'une revendication crédible de fuite de données portant sur plusieurs fichiers totalisant plus de 5,3 millions de lignes.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-20",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-92AB96FF60E2",
+  "location": "France métropolitaine",
+  "org": "Alla France",
+  "organisation_links": [
+   "https://allafrance.com"
+  ],
+  "personal_data_exposed": false,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "SOURCE_SECTOR_RAW_AMBIGUOUS",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "everestndkvzcibcje2cqxhre2hmmybl3rn2gwzwsblz7gx6uryn5rad.onion",
+    "source": "RANSOMWARE_LIVE",
+    "url": "http://everestndkvzcibcje2cqxhre2hmmybl3rn2gwzwsblz7gx6uryn5rad.onion/news/alla-france"
+   }
+  ],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": true,
   "date": "2026-11-20",
   "high_sensitivity_data_exposed": false,
@@ -34,29 +274,44 @@
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": true,
   "date": "2026-11-20",
-  "high_sensitivity_data_exposed": false,
+  "high_sensitivity_data_exposed": true,
   "id": "INC-02F4A8DC2225",
-  "location": "Inconnu",
+  "location": "France métropolitaine",
   "org": "Seazon",
   "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Hébergement / Tourisme / Restauration",
   "sector_status": {
    "confidence": 0.8,
+   "discarded_source_labels": [
+    "Commerce / Distribution"
+   ],
    "evidence": "Seazon, le service français de livraison de repas appartenant à FoodChéri, confirme avoir été victime d’une cyberattaque ayant entraîné le vol de données personnelles de ses clients.",
    "evidence_url": "https://www.cyberattaque.org/seazon-victime-dune-cyberattaque-les-donnees-personnelles-et-mots-de-passe-des-clients-de-foodcheri-exposes/",
-   "reason": "ACTIVITY_RULE",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
    "status": "inferred"
   },
   "source_links": [
    {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/seazon.png"
+   },
+   {
     "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/seazon-victime-dune-cyberattaque-les-donnees-personnelles-et-mots-de-passe-des-clients-de-foodcheri-exposes/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/seazon-mwpcomhzc6ka3vashji"
    }
   ],
   "sources": [
-   "CYBERATTAQUE_ORG"
+   "BONJOURLAFUITE",
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
   ],
   "summary": "Seazon confirme une cyberattaque ayant entraîné l'extraction de données personnelles et de mots de passe hachés de ses clients.",
   "threat": "Fuite de données",
@@ -8902,321 +9157,6 @@
   "threat": "Fuite de données",
   "threat_status": {
    "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-22",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-FF05712F8905",
-  "location": "France métropolitaine",
-  "org": "Fédération Française de Tir",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Inconnu",
-  "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
-  },
-  "source_links": [
-   {
-    "label": "BonjourLaFuite",
-    "source": "BONJOURLAFUITE",
-    "url": "https://bonjourlafuite.eu.org/img/fftir-1.png"
-   },
-   {
-    "label": "BonjourLaFuite",
-    "source": "BONJOURLAFUITE",
-    "url": "https://bonjourlafuite.eu.org/img/fftir-2.png"
-   }
-  ],
-  "sources": [
-   "BONJOURLAFUITE"
-  ],
-  "summary": "BonjourLaFuite signale une fuite de données concernant Fédération Française de Tir.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "confirmed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-22",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-D5F48B0C6F2B",
-  "location": "France métropolitaine",
-  "org": "AMSAM",
-  "organisation_links": [
-   "https://www.amsam.net"
-  ],
-  "personal_data_exposed": false,
-  "sector": "Inconnu",
-  "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE | SOURCE_SECTOR_RAW_AMBIGUOUS",
-   "status": "unknown"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/amsam-les-patients-et-salaries-alertes-dune-fuite-de-leurs-donnees-personnelles-apres-une-cyberattaque/"
-   },
-   {
-    "label": "bravoxxwcfz5qk43ychgveprpd5mw5hvxfs4a2uz2okx7mumiht4fzyd.onion",
-    "source": "RANSOMWARE_LIVE",
-    "url": "http://bravoxxwcfz5qk43ychgveprpd5mw5hvxfs4a2uz2okx7mumiht4fzyd.onion/blog/cc468ef2-0eee-4c8a-8753-26d68b8bae5f"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "RANSOMWARE_LIVE"
-  ],
-  "summary": "L'Association Médico-Sociale Anne Morgan (AMSAM) a confirmé le vol de données personnelles suite à une cyberattaque.",
-  "threat": "Ransomware",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-22",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-CF293FAA403B",
-  "location": "France métropolitaine",
-  "org": "Icantec",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Administration / Collectivité",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "public",
-   "evidence_url": "https://frenchbreaches.com/alertes/icantec-retraites-mvk0hhi1k0g8fp7vhof",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/icantec-retraites-mvk0hhi1k0g8fp7vhof"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "Icantec (retraites)",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "unknown"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-22",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-CA8AFA3C9AD6",
-  "location": "France métropolitaine",
-  "org": "Clin d'œil Opticiens",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Commerce",
-   "evidence_url": "https://frenchbreaches.com/alertes/clin-d-il-opticiens-mvjqwafqwazubtzvvbd",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/clin-doeil-opticiens-les-numeros-de-securite-sociale-de-clients-exposes-dans-une-fuite-de-donnees/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/clin-d-il-opticiens-mvjqwafqwazubtzvvbd"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "Clin d’œil Opticiens : les numéros de sécurité sociale de clients exposés dans une fuite de données",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "confirmed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
-  "date": "2026-10-22",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-508934937659",
-  "location": "France métropolitaine",
-  "org": "La Compagnie des Sens",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Inconnu",
-  "sector_status": {
-   "evidence": "Commerce / Distribution | Santé",
-   "reason": "SOURCE_SECTOR_CONFLICT",
-   "status": "unknown"
-  },
-  "source_links": [
-   {
-    "label": "BonjourLaFuite",
-    "source": "BONJOURLAFUITE",
-    "url": "https://bonjourlafuite.eu.org/img/compagnie-sens.png"
-   },
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/la-compagnie-des-sens-une-intrusion-compromet-les-comptes-de-sa-boutique-en-ligne/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/la-compagnie-des-sens-mvjln10z6tvrzovg8bp"
-   }
-  ],
-  "sources": [
-   "BONJOURLAFUITE",
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "La Compagnie des Sens : une intrusion compromet les comptes de sa boutique en ligne",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "confirmed"
-  }
- },
- {
-  "admission": "CANDIDATE",
-  "admission_reason": "Impact opérationnel territorial documenté à Mayotte à la suite d’un incident de sécurité informatique national ; aucune compromission locale, exploitation des vulnérabilités ou fuite de données démontrée. À confirmer.",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-22",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-428941FDD31E",
-  "location": "Mayotte",
-  "org": "Caisse de sécurité sociale de Mayotte",
-  "organisation_links": [],
-  "personal_data_exposed": false,
-  "sector": "Administration / Collectivité",
-  "sector_status": {
-   "confidence": 0.9,
-   "evidence": "Entité ou alias territorial validé du référentiel Cyberwatch",
-   "evidence_url": "https://github.com/Ya7o/Cyberwatch/blob/main/cyberwatch/watchlists.py",
-   "reason": "REFERENCE_EXACT",
-   "status": "referenced"
-  },
-  "source_links": [
-   {
-    "label": "linfokwezi.fr",
-    "source": "VEILLE_LLM",
-    "url": "https://www.linfokwezi.fr/les-demarches-en-ligne-et-le-telephone-a-larret-a-la-cssm-a-cause-du-probleme-national-de-securite-informatique/"
-   },
-   {
-    "label": "lejournaldemayotte.yt",
-    "source": "VEILLE_LLM",
-    "url": "https://lejournaldemayotte.yt/2026/10/26/les-services-en-ligne-de-la-cssm-retablis/"
-   },
-   {
-    "label": "lejournaldemayotte.yt",
-    "source": "VEILLE_LLM",
-    "url": "https://lejournaldemayotte.yt/2026/10/22/alerte-informatique-des-sites-administratifs-inaccessibles-a-mayotte-sur-fond-de-menace-mondiale/"
-   }
-  ],
-  "sources": [
-   "VEILLE_LLM"
-  ],
-  "summary": "",
-  "threat": "Incident tiers",
-  "threat_status": {
-   "status": "unknown"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-22",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-34CEC7E073BC",
-  "location": "Inconnu",
-  "org": "Graines de Culture",
-  "organisation_links": [],
-  "personal_data_exposed": false,
-  "sector": "Inconnu",
-  "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/graines-de-cultures-une-cyberattaque-coupe-le-portail-de-34-mediatheques-en-pevele-carembault/"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG"
-  ],
-  "summary": "Graines de Culture(s) : une cyberattaque coupe le portail de 34 médiathèques en Pévèle Carembault",
-  "threat": "Intrusion",
-  "threat_status": {
-   "status": "confirmed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
-  "date": "2026-10-22",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-2E9A68445846",
-  "location": "France métropolitaine",
-  "org": "Printerpix",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Commerce",
-   "evidence_url": "https://frenchbreaches.com/alertes/printerpix-mvjpwa9iz1zpm22i3k",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "BonjourLaFuite",
-    "source": "BONJOURLAFUITE",
-    "url": "https://bonjourlafuite.eu.org/img/printerpix.png"
-   },
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/printerpix-les-mots-de-passe-clients-compromis-apres-une-cyberattaque/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/printerpix-mvjpwa9iz1zpm22i3k"
-   }
-  ],
-  "sources": [
-   "BONJOURLAFUITE",
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "Printerpix : les mots de passe clients compromis après une cyberattaque",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "confirmed"
   }
  }
 ]

@@ -1,6 +1,212 @@
 [
  {
   "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-21",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-959A7148CB99",
+  "location": "France métropolitaine",
+  "org": "Clevermate",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Éducation / Formation",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Éducation",
+   "evidence_url": "https://frenchbreaches.com/alertes/clevermate-mwqhk4jhz05mfutusn",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/clevermate-vise-par-des-hackers-des-donnees-personnelles-des-iban-et-cartes-etudiantes-exposes/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/clevermate-mwqhk4jhz05mfutusn"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "La plateforme Clevermate fait l'objet d'une revendication de diffusion d'une archive contenant des dossiers individuels et des coordonnées bancaires.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-21",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-B035F6D6F00B",
+  "location": "France métropolitaine",
+  "org": "GoTronic",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/gotronic-mwqiij0l351ddo81adu",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/gotronic-mwqiij0l351ddo81adu"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "GoTronic fait l'objet d'une revendication de fuite de données avec plus de 328 000 adresses e-mail annoncées.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-21",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-CFCFC5332362",
+  "location": "France métropolitaine",
+  "org": "La Maison Des Travaux",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/la-maison-des-travaux-mwqim3512cssbwz8jde",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/la-maison-des-travaux-mwqim3512cssbwz8jde"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Une fuite de 1,2 Go de fichiers est revendiquée chez La Maison des Travaux, affectant potentiellement des centaines de milliers de personnes.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-21",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-AADCC695B753",
+  "location": "Inconnu",
+  "org": "Orchestra",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "ACTIVITY_TAXONOMY_UNRESOLVED",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-chez-orchestra-voyages-e-leclerc-carrefour-voyages-selectour-et-havas-voyages-paralyses/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Une cyberattaque a forcé Orchestra à couper ses systèmes, perturbant les réservations de nombreux sites et agences de voyages.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-21",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-24EFDD2F1EB0",
+  "location": "France métropolitaine",
+  "org": "Robot Advance",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Robot Advance commercialise notamment des robots domestiques, des équipements de robotique, des jouets éducatifs et des produits technologiques destinés aux particuliers, aux familles et aux amateurs d'innovation.",
+   "evidence_url": "https://frenchbreaches.com/alertes/robot-advance-mwqip71q8i2uxq55z1x",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/robot-advance-mwqip71q8i2uxq55z1x"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-20",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-92AB96FF60E2",
+  "location": "France métropolitaine",
+  "org": "Alla France",
+  "organisation_links": [
+   "https://allafrance.com"
+  ],
+  "personal_data_exposed": false,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "SOURCE_SECTOR_RAW_AMBIGUOUS",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "everestndkvzcibcje2cqxhre2hmmybl3rn2gwzwsblz7gx6uryn5rad.onion",
+    "source": "RANSOMWARE_LIVE",
+    "url": "http://everestndkvzcibcje2cqxhre2hmmybl3rn2gwzwsblz7gx6uryn5rad.onion/news/alla-france"
+   }
+  ],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": true,
   "date": "2026-11-20",
   "high_sensitivity_data_exposed": false,
@@ -34,34 +240,83 @@
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": true,
   "date": "2026-11-20",
-  "high_sensitivity_data_exposed": false,
+  "high_sensitivity_data_exposed": true,
   "id": "INC-02F4A8DC2225",
-  "location": "Inconnu",
+  "location": "France métropolitaine",
   "org": "Seazon",
   "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Hébergement / Tourisme / Restauration",
   "sector_status": {
    "confidence": 0.8,
+   "discarded_source_labels": [
+    "Commerce / Distribution"
+   ],
    "evidence": "Seazon, le service français de livraison de repas appartenant à FoodChéri, confirme avoir été victime d’une cyberattaque ayant entraîné le vol de données personnelles de ses clients.",
    "evidence_url": "https://www.cyberattaque.org/seazon-victime-dune-cyberattaque-les-donnees-personnelles-et-mots-de-passe-des-clients-de-foodcheri-exposes/",
-   "reason": "ACTIVITY_RULE",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
    "status": "inferred"
   },
   "source_links": [
    {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/seazon.png"
+   },
+   {
     "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/seazon-victime-dune-cyberattaque-les-donnees-personnelles-et-mots-de-passe-des-clients-de-foodcheri-exposes/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/seazon-mwpcomhzc6ka3vashji"
    }
   ],
   "sources": [
-   "CYBERATTAQUE_ORG"
+   "BONJOURLAFUITE",
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
   ],
   "summary": "Seazon confirme une cyberattaque ayant entraîné l'extraction de données personnelles et de mots de passe hachés de ses clients.",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-20",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-EF9D00DAD055",
+  "location": "France métropolitaine",
+  "org": "Voyages Rive Gauche",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/voyages-rive-gauche-mwpcyv1jsg0bwjw7m3o",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/voyages-rive-gauche-mwpcyv1jsg0bwjw7m3o"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Voyages Rive Gauche fait l'objet d'une revendication crédible de fuite de données portant sur plusieurs fichiers totalisant plus de 5,3 millions de lignes.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
   }
  },
  {
@@ -11068,7 +11323,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "",
+  "summary": "Un pirate revendique la vente de 334 474 enregistrements d'adresses attribués à O'Tacos.",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "unknown"
