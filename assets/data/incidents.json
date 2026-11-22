@@ -113,24 +113,33 @@
   "date": "2026-11-21",
   "high_sensitivity_data_exposed": false,
   "id": "INC-AADCC695B753",
-  "location": "Inconnu",
+  "location": "France métropolitaine",
   "org": "Orchestra",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Transport / Logistique",
   "sector_status": {
-   "reason": "ACTIVITY_TAXONOMY_UNRESOLVED",
-   "status": "unknown"
+   "confidence": 0.7,
+   "evidence": "Transport",
+   "evidence_url": "https://frenchbreaches.com/alertes/orchestra-mwqjgibjsfgntq6dyuk",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
   },
   "source_links": [
    {
     "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
     "url": "https://www.cyberattaque.org/cyberattaque-chez-orchestra-voyages-e-leclerc-carrefour-voyages-selectour-et-havas-voyages-paralyses/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/orchestra-mwqjgibjsfgntq6dyuk"
    }
   ],
   "sources": [
-   "CYBERATTAQUE_ORG"
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
   ],
   "summary": "Une cyberattaque a forcé Orchestra à couper ses systèmes, perturbant les réservations de nombreux sites et agences de voyages.",
   "threat": "Intrusion",
@@ -11579,10 +11588,10 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "",
-  "threat": "Fuite de données",
+  "summary": "Le Grimaldi Forum Monaco a détecté un accès non autorisé à son infrastructure informatique le 29 septembre 2026.",
+  "threat": "Intrusion",
   "threat_status": {
-   "status": "unknown"
+   "status": "confirmed"
   }
  },
  {
@@ -11666,37 +11675,6 @@
   "org": "Vélo Grimpe",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
-  "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
-  },
-  "source_links": [
-   {
-    "label": "BonjourLaFuite",
-    "source": "BONJOURLAFUITE",
-    "url": "https://bonjourlafuite.eu.org/img/velo-grimpe.png"
-   }
-  ],
-  "sources": [
-   "BONJOURLAFUITE"
-  ],
-  "summary": "BonjourLaFuite signale une fuite de données concernant Vélo Grimpe.",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "confirmed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-16",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-8A890C06B458",
-  "location": "France métropolitaine",
-  "org": "Vélogrimpe",
-  "organisation_links": [],
-  "personal_data_exposed": true,
   "sector": "Commerce / Distribution",
   "sector_status": {
    "confidence": 0.7,
@@ -11707,18 +11685,24 @@
   },
   "source_links": [
    {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/velo-grimpe.png"
+   },
+   {
     "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/v-logrimpe-mvb7cujdb3r2s61tuo9"
    }
   ],
   "sources": [
+   "BONJOURLAFUITE",
    "FRENCHBREACHES"
   ],
-  "summary": "",
+  "summary": "Vélogrimpe a indiqué qu'une erreur de développement a exposé des adresses e-mail de contributeurs visibles dans le code source de certaines pages.",
   "threat": "Fuite de données",
   "threat_status": {
-   "status": "unknown"
+   "status": "confirmed"
   }
  },
  {
@@ -12593,7 +12577,7 @@
  },
  {
   "admission": "ACCEPTED",
-  "admission_reason": "Zinfos974 et Imaz Press documentent le piratage des installations frigorifiques du magasin identifié ; le propriétaire du Leader Price de Saint-André confirme à LINFO.re une attaque informatique à distance, chiffre les pertes globales et indique avoir déposé plainte. Imaz Press rattache l’incident, survenu au même moment et selon le même mode opératoire, à la campagne nationale contre les contrôleurs frigorifiques. Le C4 et France Diplomatie attribuent officiellement cette campagne à l’unité cyber-offensive Shahid Kaveh du centre électronique et cyber du Corps des Gardiens de la Révolution Islamique iranien. Le vecteur technique exact du magasin reste non public.",
+  "admission_reason": "Zinfos974 et Imaz Press documentent le piratage des installations frigorifiques du magasin identifié ; le propriétaire du Leader Price de Saint-André confirme à LINFO.re une attaque informatique à distance, chiffre les pertes globales et indique avoir déposé plainte. Imaz Press rattache l’incident, survenu au même moment et selon le même mode opératoire, à la campagne nationale contre les contrôleurs frigorifiques. Le C4 et France Diplomatie attribuent officiellement cette campagne à l’unité cyber-offensive Shahid Kaveh du centre électronique et cyber du Corps des Gardiens de la Révolution Islamique iranien. Le 21 novembre, Zinfos974 relie explicitement les attaques contre les systèmes de réfrigération, notamment à La Réunion, à cette attribution française et rappelle le cas du Leader Price de Saint-André. Le vecteur technique exact du magasin reste non public.",
   "credentials_or_secrets_exposed": false,
   "date": "2026-10-12",
   "high_sensitivity_data_exposed": false,
@@ -12640,6 +12624,11 @@
     "label": "lemonde.fr",
     "source": "VEILLE_LLM",
     "url": "https://www.lemonde.fr/pixels/article/2026/11/10/derriere-la-cyberattaque-contre-les-frigos-de-supermarches-l-iran-et-l-unite-cyber-des-gardiens-de-la-revolution_6808819_4408996.html"
+   },
+   {
+    "label": "zinfos974.com",
+    "source": "VEILLE_LLM",
+    "url": "https://www.zinfos974.com/a-la-reunion-on-a-tendance-a-croire-quon-est-a-labri-pourquoi-notre-ile-est-de-plus-en-plus-exposee-aux-cyberattaques/"
    }
   ],
   "sources": [

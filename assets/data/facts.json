@@ -42,10 +42,10 @@
   "version": 3
  },
  "INC-00C7F75053E1": {
-  "display_summary": "BonjourLaFuite signale une fuite de données concernant Vélo Grimpe.",
+  "display_summary": "Vélogrimpe a indiqué qu'une erreur de développement a exposé des adresses e-mail de contributeurs visibles dans le code source de certaines pages.",
   "summary_paragraphs": [
-   "BonjourLaFuite signale une fuite de données concernant Vélo Grimpe.",
-   "Les données indiquées comprennent : Adresse email."
+   "Le site Vélogrimpe a signalé une fuite d'adresses e-mail de contributeurs dues à une erreur technique rendant ces adresses visibles dans le code source.",
+   "Vélogrimpe affirme avoir corrigé l'erreur et précise qu'aucune intrusion ou compromission de mots de passe n'a été signalée."
   ],
   "version": 3
  },
@@ -4122,7 +4122,7 @@
   "regional_watch": [
    {
     "acteur": "Unité cyber-offensive Shahid Kaveh (CGRI-CEC, Iran)",
-    "admission_reason": "Zinfos974 et Imaz Press documentent le piratage des installations frigorifiques du magasin identifié ; le propriétaire du Leader Price de Saint-André confirme à LINFO.re une attaque informatique à distance, chiffre les pertes globales et indique avoir déposé plainte. Imaz Press rattache l’incident, survenu au même moment et selon le même mode opératoire, à la campagne nationale contre les contrôleurs frigorifiques. Le C4 et France Diplomatie attribuent officiellement cette campagne à l’unité cyber-offensive Shahid Kaveh du centre électronique et cyber du Corps des Gardiens de la Révolution Islamique iranien. Le vecteur technique exact du magasin reste non public.",
+    "admission_reason": "Zinfos974 et Imaz Press documentent le piratage des installations frigorifiques du magasin identifié ; le propriétaire du Leader Price de Saint-André confirme à LINFO.re une attaque informatique à distance, chiffre les pertes globales et indique avoir déposé plainte. Imaz Press rattache l’incident, survenu au même moment et selon le même mode opératoire, à la campagne nationale contre les contrôleurs frigorifiques. Le C4 et France Diplomatie attribuent officiellement cette campagne à l’unité cyber-offensive Shahid Kaveh du centre électronique et cyber du Corps des Gardiens de la Révolution Islamique iranien. Le 21 novembre, Zinfos974 relie explicitement les attaques contre les systèmes de réfrigération, notamment à La Réunion, à cette attribution française et rappelle le cas du Leader Price de Saint-André. Le vecteur technique exact du magasin reste non public.",
     "impact_connu": "Les températures des congélateurs ont atteint 50 °C et les produits frais et surgelés ont été perdus. Zinfos974 rapporte 60 000 euros de préjudice et Imaz Press 66 000 euros ; le propriétaire estime auprès de LINFO.re les pertes globales à 100 000 euros, avec une fréquentation en baisse de 20 % la semaine suivante et un déficit d’image.",
     "localisation": "Saint-André",
     "score": 100,
@@ -4131,7 +4131,7 @@
    }
   ],
   "summary_paragraphs": [
-   "Dans la nuit du 11 au 12 octobre 2026, les installations frigorifiques du Leader Price de Saint-André ont été piratées à distance et portées jusqu’à 50 °C. Le propriétaire a confirmé l’incident à LINFO.re, fait état de pertes globales estimées à 100 000 euros et indiqué qu’une plainte avait été déposée. Imaz Press indique que le magasin, équipé de contrôleurs Danfoss, a été touché au même moment et de la même manière que les sites de l’Hexagone. Le 9 novembre, le C4 et France Diplomatie ont attribué la campagne nationale contre plus de 700 sites de la grande distribution à l’unité cyber-offensive Shahid Kaveh du CGRI-CEC iranien. Le parquet de Paris a ouvert une information judiciaire, confiée à l’Ofac et à la DGSI, et requis des mandats d’arrêt internationaux contre le chef du groupe et ses deux adjoints. Le vecteur technique exact propre au magasin reste non public."
+   "Dans la nuit du 11 au 12 octobre 2026, les installations frigorifiques du Leader Price de Saint-André ont été piratées à distance et portées jusqu’à 50 °C. Le propriétaire a confirmé l’incident à LINFO.re, fait état de pertes globales estimées à 100 000 euros et indiqué qu’une plainte avait été déposée. Imaz Press indique que le magasin, équipé de contrôleurs Danfoss, a été touché au même moment et de la même manière que les sites de l’Hexagone. Le 9 novembre, le C4 et France Diplomatie ont attribué la campagne nationale contre plus de 700 sites de la grande distribution à l’unité cyber-offensive Shahid Kaveh du CGRI-CEC iranien. Le 21 novembre, Zinfos974 a explicitement présenté les attaques contre les systèmes de réfrigération, notamment à La Réunion, comme relevant de cette attribution et a rappelé le cas de Saint-André. Le parquet de Paris a ouvert une information judiciaire, confiée à l’Ofac et à la DGSI, et requis des mandats d’arrêt internationaux contre le chef du groupe et ses deux adjoints. Les sources officielles ne nomment pas individuellement le magasin et le vecteur technique exact propre au site reste non public."
   ],
   "version": 3
  },
@@ -4847,11 +4847,6 @@
   ],
   "version": 3
  },
- "INC-8A890C06B458": {
-  "display_summary": "",
-  "summary_paragraphs": [],
-  "version": 3
- },
  "INC-8C3B062EFF51": {
   "display_summary": "",
   "regional_watch": [
@@ -5484,10 +5479,7 @@
  },
  "INC-9B7B6F1DF9AE": {
   "display_summary": "Inter-Etab : 286 773 dossiers d’élèves et leurs familles en fuite",
-  "summary_paragraphs": [
-   "Un utilisateur se présentant sous le pseudonyme Angel_Batista affirme mettre en vente 286 773 lignes de données provenant du site inter-etab.com.",
-   "Les données revendiquées comprendraient noms, dates de naissance, adresses, e‑mails, numéros de téléphone et informations sur les responsables légaux."
-  ],
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-9BA1C54FB5E6": {
@@ -8977,8 +8969,10 @@
   "version": 3
  },
  "INC-FD563387C197": {
-  "display_summary": "",
-  "summary_paragraphs": [],
+  "display_summary": "Le Grimaldi Forum Monaco a détecté un accès non autorisé à son infrastructure informatique le 29 septembre 2026.",
+  "summary_paragraphs": [
+   "Le Grimaldi Forum Monaco annonce avoir été victime d'un incident de cybersécurité avec un accès non autorisé à son infrastructure informatique."
+  ],
   "version": 3
  },
  "INC-FDEDD1384D70": {
