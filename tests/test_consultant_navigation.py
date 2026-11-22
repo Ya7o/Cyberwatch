@@ -21,7 +21,7 @@ const context = {
 };
 if (input.now) context.Date = class extends Date { static now() { return new Date(input.now).getTime(); } };
 const source = fs.readFileSync("assets/dashboard-v2.js", "utf8").replace(
-  "  init();", "  globalThis.api = {state, readUrl, syncUrl, filteredSearch, applySearchPatch, incidentCardHtml, sectorLabel, simpleBars, renderVeille, renderHeader, renderIntegrityAlert, openIncident};"
+  "  init();", "  globalThis.api = {state, readUrl, syncUrl, filteredSearch, applySearchPatch, incidentCardHtml, sectorLabel, simpleBars, renderVeille, renderRecherche, renderHeader, renderIntegrityAlert, openIncident};"
 );
 vm.runInNewContext(source, context);
 (async () => {
@@ -32,6 +32,7 @@ vm.runInNewContext(source, context);
   if (input.action === "route") {api.readUrl(); api.syncUrl();}
   if (input.action === "bars") api.simpleBars(element("bars"), input.rows);
   if (input.action === "veille") api.renderVeille();
+  if (input.action === "recherche") api.renderRecherche();
   if (input.action === "health") { api.renderHeader(); api.renderIntegrityAlert(); }
   if (input.action === "detail") await api.openIncident(input.id);
   console.log(JSON.stringify({
@@ -48,6 +49,7 @@ vm.runInNewContext(source, context);
     regionalCards: elements["#regional-watch-list"]?.innerHTML,
     veilleCards: elements["#veille-list"]?.innerHTML,
     veilleCount: elements["#veille-count"]?.textContent,
+    searchCount: elements["#s-count"]?.textContent,
     veillePager: elements["#veille-pager"]?.innerHTML,
     detail: elements["#detail-dialog-content"]?.innerHTML,
     healthLabel: elements["#run-pill-text"]?.textContent,
@@ -172,7 +174,7 @@ def test_regional_watch_collapses_when_only_older_local_incidents_exist():
 def test_veille_paginates_full_corpus_and_keeps_page_in_permalink():
     rows = [{"id": f"INC-{i:02}", "date": f"2026-09-{i:02}", "location": "France métropolitaine"} for i in range(1, 21)]
     result = runtime(action="veille", state={"incidents": rows, "latest": rows[-3:], "veillePage": 2})
-    assert result["veilleCount"] == "20 incidents · Toute la base · 16–20"
+    assert result["veilleCount"] == "20 incidents retenus · Toute la base · 16–20"
     assert result["veilleCards"].count('data-open-id=') == 5
     assert 'data-id="INC-05"' in result["veilleCards"]
     assert 'data-id="INC-06"' not in result["veilleCards"]
@@ -191,3 +193,29 @@ def test_detail_keeps_sector_reserve_and_both_sensitivity_alerts_without_redunda
     assert "Données très sensibles signalées" in result["detail"]
     assert "Qualification du secteur" not in result["detail"]
     assert "Copier le lien" not in result["detail"]
+
+def test_veille_distinguishes_retained_incidents_from_candidates():
+    rows = [
+        {"id": "INC-A", "date": "2026-11-21", "org": "Alpha", "location": "France métropolitaine", "admission": "ACCEPTED"},
+        {"id": "INC-B", "date": "2026-11-20", "org": "Beta", "location": "La Réunion", "admission": "CANDIDATE"},
+        {"id": "INC-C", "date": "2026-11-19", "org": "Gamma", "location": "Mayotte", "admission": "CANDIDATE"},
+    ]
+    result = runtime(action="veille", state={
+        "status": {"run": {"as_of": "2026-11-22T17:00:00+04:00"}},
+        "incidents": rows,
+    })
+    assert result["veilleCount"] == "1 incident retenu · 2 à confirmer · Toute la base · 1–3"
+
+
+def test_search_count_does_not_present_candidates_as_confirmed_incidents():
+    rows = [
+        {"id": "INC-A", "date": "2026-11-21", "org": "Alpha", "admission": "ACCEPTED"},
+        {"id": "INC-B", "date": "2026-11-21", "org": "Beta", "admission": "CANDIDATE"},
+    ]
+    result = runtime(action="recherche", state={"incidents": rows})
+    assert result["searchCount"] == "1 incident retenu · 1 à confirmer"
+
+    candidates_only = runtime(action="recherche", state={"incidents": rows,
+        "filters": {"q": "", "threat": "", "sector": "", "locations": [], "source": "", "period": "all", "admission": "CANDIDATE"},
+    })
+    assert candidates_only["searchCount"] == "0 incident retenu · 1 à confirmer"
