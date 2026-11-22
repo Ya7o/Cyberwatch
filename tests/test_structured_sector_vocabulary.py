@@ -122,7 +122,6 @@ def test_les_variantes_de_forme_donnent_le_meme_secteur(given):
     ("Énergie", config.SECTOR_ENERGY),
     ("BTP", config.SECTOR_CONSTRUCTION),
     ("Services aux entreprises", config.SECTOR_SERVICES),
-    ("Hospitality", config.SECTOR_HOSPITALITY),
 ])
 def test_les_libelles_structures_surs_sont_normalises(given, expected):
     assert classify_source_sector(given) == expected
@@ -148,7 +147,7 @@ def test_un_secteur_canonique_se_traverse_lui_meme(sector):
     "energie du desespoir", "administration systeme", "public relations",
     # Catégories trop larges, volontairement non résolues.
     "services", "divers", "autre", "other", "unknown", "entreprise",
-    "secteur privé", "PME", "multi sector", "holding", "distribution",
+    "secteur privé", "PME", "multi sector", "holding", "distribution", "Hospitality",
 ])
 def test_les_libelles_ambigus_ou_inconnus_restent_inconnu(given):
     assert classify_source_sector(given) == config.SECTOR_UNKNOWN
