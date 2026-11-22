@@ -147,7 +147,7 @@ def test_un_secteur_canonique_se_traverse_lui_meme(sector):
     "energie du desespoir", "administration systeme", "public relations",
     # Catégories trop larges, volontairement non résolues.
     "services", "divers", "autre", "other", "unknown", "entreprise",
-    "secteur privé", "PME", "multi sector", "holding", "distribution",
+    "secteur privé", "PME", "multi sector", "holding", "distribution", "Hospitality",
 ])
 def test_les_libelles_ambigus_ou_inconnus_restent_inconnu(given):
     assert classify_source_sector(given) == config.SECTOR_UNKNOWN

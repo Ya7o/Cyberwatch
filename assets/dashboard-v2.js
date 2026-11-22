@@ -20,6 +20,11 @@
   const known = (value) => Boolean(String(value ?? "").trim()) && String(value).trim() !== UNKNOWN;
   const unique = (values) => Array.from(new Set(values.filter(Boolean)));
   const formatNumber = (value) => new Intl.NumberFormat("fr-FR").format(Number(value));
+  const resultCountLabel = (rows) => {
+    const pending = rows.filter((row) => row.admission === "CANDIDATE").length;
+    const retained = rows.length - pending;
+    return `${formatNumber(retained)} incident${retained > 1 ? "s" : ""} retenu${retained > 1 ? "s" : ""}${pending ? ` · ${formatNumber(pending)} à confirmer` : ""}`;
+  };
   const readStorage = (scope, key) => { try { return window[scope]?.getItem(key) || ""; } catch (_) { return ""; } };
   const writeStorage = (scope, key, value) => { try { window[scope]?.setItem(key, value); } catch (_) { /* Le stockage est facultatif. */ } };
   const formatDate = (value) => {
@@ -238,7 +243,7 @@
     state.veillePage = Math.min(state.veillePage, pages);
     const start = (state.veillePage - 1) * VEILLE_SIZE;
     const shown = rows.slice(start, start + VEILLE_SIZE);
-    $("#veille-count").textContent = `${formatNumber(rows.length)} incident${rows.length > 1 ? "s" : ""} · ${state.incidentsLoaded ? "Toute la base" : "Liste partielle · 30 jours"}${rows.length ? ` · ${start + 1}–${start + shown.length}` : ""}`;
+    $("#veille-count").textContent = `${resultCountLabel(rows)} · ${state.incidentsLoaded ? "Toute la base" : "Liste partielle · 30 jours"}${rows.length ? ` · ${start + 1}–${start + shown.length}` : ""}`;
     $("#veille-list").innerHTML = shown.length ? shown.map(incidentCardHtml).join("") : '<p class="empty-state">Aucun incident publié dans ce périmètre.</p>';
     renderPager($("#veille-pager"), state.veillePage, pages);
   }
@@ -319,7 +324,7 @@
     state.page = Math.min(state.page, pages);
     const start = (state.page - 1) * PAGE_SIZE;
     const shown = rows.slice(start, start + PAGE_SIZE);
-    $("#s-count").textContent = `${formatNumber(rows.length)} incident${rows.length > 1 ? "s" : ""}${rows.length && pages > 1 ? ` · ${start + 1}–${start + shown.length}` : ""}`;
+    $("#s-count").textContent = `${resultCountLabel(rows)}${rows.length && pages > 1 ? ` · ${start + 1}–${start + shown.length}` : ""}`;
     $("#s-list").innerHTML = !state.incidentsLoaded ? '<p class="empty-state">La liste n’a pas pu être chargée. Actualisez la page pour réessayer.</p>' : state.filters.period !== "all" && !periodBounds(state.filters.period) ? '<p class="empty-state">Période indisponible : la date du snapshot manque.</p>' : shown.length ? shown.map(incidentCardHtml).join("") : '<p class="empty-state">Aucun résultat. Retirez un filtre pour élargir la recherche.</p>';
     renderPager($("#s-pager"), state.page, pages);
   }

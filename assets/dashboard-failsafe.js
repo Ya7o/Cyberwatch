@@ -35,6 +35,11 @@
   const known = (value) => Boolean(String(value ?? "").trim()) && String(value).trim() !== "Inconnu";
   const sourceLabel = (id) => SOURCE_LABELS[id] || id || "Source";
   const formatNumber = (value) => new Intl.NumberFormat("fr-FR").format(Number(value || 0));
+  const resultCountLabel = (rows) => {
+    const pending = rows.filter((row) => row.admission === "CANDIDATE").length;
+    const retained = rows.length - pending;
+    return `${formatNumber(retained)} incident${retained > 1 ? "s" : ""} retenu${retained > 1 ? "s" : ""}${pending ? ` · ${formatNumber(pending)} à confirmer` : ""}`;
+  };
   const formatDate = (value) => {
     const date = value ? new Date(value) : null;
     return date && !Number.isNaN(date.getTime())
@@ -147,7 +152,7 @@
     renderAlert("Affichage simplifié. Actualisez la page pour rétablir toutes les fonctions.");
 
     const count = $("#veille-count");
-    if (count) count.textContent = `${formatNumber(latest.length)} incident${latest.length > 1 ? "s" : ""}`;
+    if (count) count.textContent = resultCountLabel(latest);
     const list = $("#veille-list");
     if (list) list.innerHTML = latest.slice(0, 15).map(cardHtml).join("");
   }

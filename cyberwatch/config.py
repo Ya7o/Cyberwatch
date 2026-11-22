@@ -360,6 +360,10 @@ STRUCTURED_SECTOR_AMBIGUOUS = frozenset({
     "inconnu",
     "unknown",
     "not found",
+    # Rubrique ransomware.live observée sans requalification persistée.
+    # Abstention explicite jusqu'au rejeu canonique contrôlé du snapshot :
+    # une nouvelle règle ne doit pas rendre les données publiées incohérentes.
+    "hospitality",
     "n a",
     "sans objet",
     # Désignent une taille ou un statut d'entreprise, jamais une activité.
