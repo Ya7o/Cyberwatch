@@ -333,6 +333,8 @@ STRUCTURED_SECTOR_ALIASES = {
     # Rubriques anglophones sans équivalent de segment canonique français.
     "technology": SECTOR_TECH,
     "professional services": SECTOR_SERVICES,
+    # Rubrique explicite publiée par ransomware.live : hébergement et restauration.
+    "hospitality": SECTOR_HOSPITALITY,
     "retail e commerce": SECTOR_RETAIL,
 }
 
