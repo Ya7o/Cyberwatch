@@ -23,9 +23,54 @@
     "ITM-0889c66115507f6c": {"set": {"Threat": "Fuite de données"}},
     "ITM-fc5feeb5ddf1ff43": {"set":{"Threat":"Fuite de données"}},
     "ITM-9f99ff6be672b738": {"set":{"Threat":"Fuite de données"}},
-    "ITM-a27286500e1e2431": {"set":{"Threat":"Fuite de données"}}
+    "ITM-a27286500e1e2431": {"set":{"Threat":"Fuite de données"}},
+    "ITM-f7644f6ff73edec1": {
+      "audit": "AUDIT-2026-11-23",
+      "reason": "Le communiqué de Transcontinents date l’accès non autorisé des 20 et 21 octobre 2026.",
+      "sources": ["https://transcontinents.com/alerte-fraude/"],
+      "set": {"Event_Date": "2026-10-20"}
+    },
+    "ITM-5b15e42c2e8aa136": {
+      "audit": "AUDIT-2026-11-23",
+      "reason": "L’article reprend le même communiqué de Transcontinents sur l’accès non autorisé des 20 et 21 octobre 2026.",
+      "sources": ["https://transcontinents.com/alerte-fraude/"],
+      "set": {"Event_Date": "2026-10-20"}
+    }
   },
   "source_facts": {
+    "ITM-f7644f6ff73edec1": {
+      "audit": "AUDIT-2026-11-23",
+      "reason": "Le communiqué exclut l’extraction de données bancaires. Les mentions bancaires décrivent les tentatives d’escroquerie qui ont suivi.",
+      "sources": ["https://transcontinents.com/alerte-fraude/"],
+      "rich_remove_values": {"data_types": ["données bancaires"], "claims": ["données bancaires"]}
+    },
+    "ITM-5b15e42c2e8aa136": {
+      "audit": "AUDIT-2026-11-23",
+      "reason": "Le communiqué exclut l’extraction de données bancaires. L’article évoque seulement les informations demandées dans les messages frauduleux.",
+      "sources": ["https://transcontinents.com/alerte-fraude/"],
+      "rich_remove_values": {"data_types": ["données bancaires"], "claims": ["données bancaires"]}
+    },
+    "ITM-61548bd0d80e404e": {
+      "audit": "AUDIT-2026-11-23",
+      "reason": "Orchestra édite un logiciel destiné aux professionnels du tourisme. L’intrusion est confirmée et le vol d’identifiants reste à établir.",
+      "sources": ["https://www.orchestra.eu/", "https://www.lechotouristique.com/digital/cyberattaque-d-orchestra-ce-que-l-on-sait"],
+      "set": {"Activity_Sector_Match": "Numérique / Technologie"},
+      "clear": ["Data_Types_JSON"],
+      "rich_remove_values": {
+        "data_types": ["identifiants", "mots de passe", "données bancaires"],
+        "claims": ["identifiants", "mots de passe", "données bancaires"]
+      }
+    },
+    "ITM-e38afee68fb84c1d": {
+      "audit": "AUDIT-2026-11-23",
+      "reason": "Le texte de l’alerte confirme l’intrusion et indique que la fuite de données et le vol d’identifiants restent à établir.",
+      "sources": ["https://frenchbreaches.com/alertes/cyberattaque-orchestra-voyages-leclerc-carrefour-selectour-havas-mwqjgibjsfgntq6dyuk"],
+      "clear": ["Data_Types_JSON"],
+      "rich_remove_values": {
+        "data_types": ["identifiants", "mots de passe", "données bancaires", "données personnelles", "montants"],
+        "claims": ["identifiants", "mots de passe", "données bancaires", "données personnelles", "montants"]
+      }
+    },
     "ITM-55b265847884c3b1": {"audit": "SITE-QA-2026-10-27", "reason": "L’article indique que la FSU compte environ 160 000 adhérents, mais précise que les captures ne prouvent pas une fuite massive et que le nombre de comptes accessibles est inconnu. Cet effectif ne mesure pas les personnes touchées.", "sources": ["https://www.cyberattaque.org/fsu-des-hackers-accedent-a-un-serveur-et-a-des-comptes-internes/"], "clear": ["Affected_Count", "Affected_Unit", "Affected_Count_Raw"]},
     "ITM-4b3c8a7f68dcc41c": {"audit": "AUDIT-2026-10-11", "reason": "Le record ransomware.live est désormais publié dans countryvictims/CH avec country=CH, description située à Morges, Suisse, et website=boullard.ch. Il ne doit pas être compté comme France métropolitaine.", "sources": ["https://api.ransomware.live/v2/countryvictims/CH"], "metadata_set": {"country": "CH"}},
     "ITM-297a7e21d0f7da49": {

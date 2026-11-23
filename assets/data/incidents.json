@@ -116,14 +116,17 @@
   "location": "France métropolitaine",
   "org": "Orchestra",
   "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Transport / Logistique",
+  "personal_data_exposed": false,
+  "sector": "Numérique / Technologie",
   "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Transport",
-   "evidence_url": "https://frenchbreaches.com/alertes/orchestra-mwqjgibjsfgntq6dyuk",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Transport / Logistique"
+   ],
+   "evidence": "Orchestra est une entreprise française spécialisée dans les solutions informatiques destinées aux agences de voyages et aux tour-opérateurs.",
+   "evidence_url": "https://www.cyberattaque.org/cyberattaque-chez-orchestra-voyages-e-leclerc-carrefour-voyages-selectour-et-havas-voyages-paralyses/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
   },
   "source_links": [
    {
@@ -4448,49 +4451,6 @@
   ],
   "summary": "Le Secours Islamique France confirme une cyberattaque ayant exposé des données personnelles de donateurs.",
   "threat": "Intrusion",
-  "threat_status": {
-   "status": "confirmed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-11-06",
-  "high_sensitivity_data_exposed": true,
-  "id": "INC-047C6D219D56",
-  "location": "La Réunion",
-  "org": "Transcontinents",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Hébergement / Tourisme / Restauration",
-  "sector_status": {
-   "confidence": 0.8,
-   "discarded_source_labels": [
-    "Transport / Logistique"
-   ],
-   "evidence": "Transcontinents est une agence de voyages réunionnaise fondée en 1959.",
-   "evidence_url": "https://www.cyberattaque.org/transcontinents-des-hackers-exploitent-les-reservations-de-lagence-de-voyages-reunionnaise/",
-   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/transcontinents-des-hackers-exploitent-les-reservations-de-lagence-de-voyages-reunionnaise/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/transcontinents-mw5am0zv9dgfruhlnxs"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "Transcontinents a subi une cyberattaque les 20 et 21 octobre 2026 entraînant l'extraction de données personnelles et d'informations de réservation de clients.",
-  "threat": "Fuite de données",
   "threat_status": {
    "status": "confirmed"
   }
@@ -10127,27 +10087,32 @@
   "high_sensitivity_data_exposed": false,
   "id": "INC-CE234E7943B8",
   "location": "La Réunion",
-  "org": "Transcontinents Réunion",
+  "org": "Transcontinents",
   "organisation_links": [],
-  "personal_data_exposed": false,
-  "sector": "Transport / Logistique",
+  "personal_data_exposed": true,
+  "sector": "Hébergement / Tourisme / Restauration",
   "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Transport / Logistique",
+   "confidence": 0.9,
+   "evidence": "Agence de voyages et de réservation de séjours à La Réunion",
    "evidence_url": "https://transcontinents.com/alerte-fraude/",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/transcontinents-des-hackers-exploitent-les-reservations-de-lagence-de-voyages-reunionnaise/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/transcontinents-mw5am0zv9dgfruhlnxs"
+   },
    {
     "label": "transcontinents.com",
     "source": "VEILLE_LLM",
     "url": "https://transcontinents.com/alerte-fraude/"
-   },
-   {
-    "label": "Cyberattaque.org",
-    "source": "VEILLE_LLM",
-    "url": "https://www.cyberattaque.org/transcontinents-des-hackers-exploitent-les-reservations-de-lagence-de-voyages-reunionnaise/"
    },
    {
     "label": "FrenchBreaches",
@@ -10156,12 +10121,13 @@
    }
   ],
   "sources": [
-   "VEILLE_LLM"
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
   ],
-  "summary": "",
+  "summary": "Transcontinents a subi une cyberattaque les 20 et 21 octobre 2026 entraînant l'extraction de données personnelles et d'informations de réservation de clients.",
   "threat": "Fuite de données",
   "threat_status": {
-   "status": "reported"
+   "status": "confirmed"
   }
  },
  {

@@ -133,6 +133,17 @@ def test_analysis_scope_and_period_survive_reload():
     assert result["url"] == "/Cyberwatch/?vue=analyse&scope=focus&period=30"
 
 
+def test_old_permalink_opens_merged_incident_with_its_facts():
+    result = runtime(action="detail", id="INC-OLD", state={
+        "status": {"incident_redirects": {"INC-OLD": "INC-CURRENT"}},
+        "incidents": [{"id": "INC-CURRENT", "org": "Transcontinents"}],
+        "facts": {"INC-CURRENT": {"version": 3, "summary_paragraphs": ["Résumé du dossier regroupé."]}},
+    })
+    assert result["incidentId"] == "INC-OLD"
+    assert "Transcontinents" in result["detail"]
+    assert "Résumé du dossier regroupé." in result["detail"]
+
+
 def test_zero_bar_has_zero_width_and_descriptive_bars_are_not_fake_buttons():
     result = runtime(action="bars", rows=[{"label": "2026-09", "count": 0}, {"label": "2026-10", "count": 10}])
     assert 'width:0%' in result["bars"]

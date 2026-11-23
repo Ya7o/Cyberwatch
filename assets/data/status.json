@@ -1,9 +1,9 @@
 {
  "analytics": {
-  "dated_incidents": 621,
+  "dated_incidents": 620,
   "focus": {
    "by_location": {
-    "La Réunion": 12,
+    "La Réunion": 11,
     "Mayotte": 1
    },
    "comparison": {
@@ -30,7 +30,7 @@
       "label": "Santé"
      },
      {
-      "count": 44,
+      "count": 45,
       "label": "Numérique / Technologie"
      }
     ],
@@ -54,9 +54,9 @@
      }
     ]
    },
-   "days_since_last": 16,
-   "incidents": 13,
-   "last_date": "2026-11-06",
+   "days_since_last": 20,
+   "incidents": 12,
+   "last_date": "2026-11-02",
    "locations": [
     "La Réunion",
     "Mayotte"
@@ -69,19 +69,15 @@
      "CYBERATTAQUE_ORG": 1,
      "FRENCHBREACHES": 1,
      "RANSOMWARE_LIVE": 1,
-     "VEILLE_LLM": 11
+     "VEILLE_LLM": 10
     },
-    "dominant_source_pct": 84.6,
-    "incidents": 13,
-    "ransomware_pct": 7.7,
+    "dominant_source_pct": 83.3,
+    "incidents": 12,
+    "ransomware_pct": 8.3,
     "sectors": [
      {
       "count": 5,
       "label": "Administration / Collectivité"
-     },
-     {
-      "count": 2,
-      "label": "Transport / Logistique"
      },
      {
       "count": 2,
@@ -90,12 +86,16 @@
      {
       "count": 1,
       "label": "Commerce / Distribution"
+     },
+     {
+      "count": 1,
+      "label": "Construction / BTP"
      }
     ],
     "threat_profile_reliable": false,
     "threats": [
      {
-      "count": 7,
+      "count": 6,
       "label": "Fuite de données"
      },
      {
@@ -112,13 +112,13 @@
      }
     ]
    },
-   "share_pct": 2.1,
+   "share_pct": 1.9,
    "silence_is_unusual": false
   },
   "ocean": {
    "by_location": {
     "Comores": 0,
-    "La Réunion": 12,
+    "La Réunion": 11,
     "Madagascar": 0,
     "Maurice": 1,
     "Mayotte": 1,
@@ -148,7 +148,7 @@
       "label": "Santé"
      },
      {
-      "count": 44,
+      "count": 45,
       "label": "Numérique / Technologie"
      }
     ],
@@ -173,7 +173,7 @@
     ]
    },
    "days_since_last": 5,
-   "incidents": 14,
+   "incidents": 13,
    "last_date": "2026-11-17",
    "locations": [
     "La Réunion",
@@ -184,26 +184,22 @@
     "Comores"
    ],
    "max_gap_days": 101,
-   "median_gap_days": 11,
+   "median_gap_days": 15,
    "multi_source": 1,
    "profile": {
     "by_source": {
      "CYBERATTAQUE_ORG": 1,
      "FRENCHBREACHES": 1,
      "RANSOMWARE_LIVE": 2,
-     "VEILLE_LLM": 11
+     "VEILLE_LLM": 10
     },
-    "dominant_source_pct": 78.6,
-    "incidents": 14,
-    "ransomware_pct": 14.3,
+    "dominant_source_pct": 76.9,
+    "incidents": 13,
+    "ransomware_pct": 15.4,
     "sectors": [
      {
       "count": 5,
       "label": "Administration / Collectivité"
-     },
-     {
-      "count": 2,
-      "label": "Transport / Logistique"
      },
      {
       "count": 2,
@@ -212,12 +208,16 @@
      {
       "count": 1,
       "label": "Commerce / Distribution"
+     },
+     {
+      "count": 1,
+      "label": "Construction / BTP"
      }
     ],
     "threat_profile_reliable": false,
     "threats": [
      {
-      "count": 7,
+      "count": 6,
       "label": "Fuite de données"
      },
      {
@@ -234,18 +234,18 @@
      }
     ]
    },
-   "share_pct": 2.2,
+   "share_pct": 2.1,
    "silence_is_unusual": false
   },
   "quality": {
    "corroborated_pct": 43.5,
    "first_date": "2022-10-13",
    "history_months": 36,
-   "incidents": 621,
+   "incidents": 620,
    "last_date": "2026-11-21",
-   "mono_source": 351,
+   "mono_source": 350,
    "mono_source_pct": 56.5,
-   "organisations": 596,
+   "organisations": 595,
    "sources": 5,
    "unknown_pct": {
     "location": 16.9,
@@ -258,7 +258,7 @@
    "all": {
     "30": {
      "first_date": "2026-10-24",
-     "incidents": 250,
+     "incidents": 249,
      "last_date": "2026-11-21",
      "months": [
       {
@@ -266,11 +266,11 @@
        "label": "2026-10"
       },
       {
-       "count": 173,
+       "count": 172,
        "label": "2026-11"
       }
      ],
-     "organisations": 245,
+     "organisations": 244,
      "sector": [
       {
        "count": 63,
@@ -289,7 +289,7 @@
        "label": "Santé"
       },
       {
-       "count": 15,
+       "count": 16,
        "label": "Numérique / Technologie"
       },
       {
@@ -309,10 +309,6 @@
        "label": "Éducation / Formation"
       },
       {
-       "count": 6,
-       "label": "Transport / Logistique"
-      },
-      {
        "count": 5,
        "label": "Culture / Médias / Loisirs"
       },
@@ -322,11 +318,15 @@
       },
       {
        "count": 5,
-       "label": "Hébergement / Tourisme / Restauration"
+       "label": "Transport / Logistique"
       },
       {
        "count": 4,
        "label": "Association / Syndicat"
+      },
+      {
+       "count": 4,
+       "label": "Hébergement / Tourisme / Restauration"
       },
       {
        "count": 1,
@@ -339,7 +339,7 @@
      ],
      "threat": [
       {
-       "count": 166,
+       "count": 165,
        "label": "Fuite de données"
       },
       {
@@ -371,7 +371,7 @@
     },
     "365": {
      "first_date": "2026-02-19",
-     "incidents": 619,
+     "incidents": 618,
      "last_date": "2026-11-21",
      "months": [
       {
@@ -399,11 +399,11 @@
        "label": "2026-10"
       },
       {
-       "count": 173,
+       "count": 172,
        "label": "2026-11"
       }
      ],
-     "organisations": 594,
+     "organisations": 593,
      "sector": [
       {
        "count": 163,
@@ -422,7 +422,7 @@
        "label": "Santé"
       },
       {
-       "count": 44,
+       "count": 45,
        "label": "Numérique / Technologie"
       },
       {
@@ -442,12 +442,12 @@
        "label": "Industrie / Manufacture"
       },
       {
-       "count": 15,
-       "label": "Transport / Logistique"
-      },
-      {
        "count": 14,
        "label": "Finance / Assurance"
+      },
+      {
+       "count": 13,
+       "label": "Transport / Logistique"
       },
       {
        "count": 12,
@@ -476,7 +476,7 @@
      ],
      "threat": [
       {
-       "count": 434,
+       "count": 433,
        "label": "Fuite de données"
       },
       {
@@ -516,7 +516,7 @@
     },
     "90": {
      "first_date": "2026-09-02",
-     "incidents": 613,
+     "incidents": 612,
      "last_date": "2026-11-21",
      "months": [
       {
@@ -528,11 +528,11 @@
        "label": "2026-10"
       },
       {
-       "count": 173,
+       "count": 172,
        "label": "2026-11"
       }
      ],
-     "organisations": 588,
+     "organisations": 587,
      "sector": [
       {
        "count": 163,
@@ -551,7 +551,7 @@
        "label": "Santé"
       },
       {
-       "count": 44,
+       "count": 45,
        "label": "Numérique / Technologie"
       },
       {
@@ -575,12 +575,12 @@
        "label": "Finance / Assurance"
       },
       {
-       "count": 14,
-       "label": "Transport / Logistique"
+       "count": 12,
+       "label": "Hébergement / Tourisme / Restauration"
       },
       {
        "count": 12,
-       "label": "Hébergement / Tourisme / Restauration"
+       "label": "Transport / Logistique"
       },
       {
        "count": 10,
@@ -605,7 +605,7 @@
      ],
      "threat": [
       {
-       "count": 429,
+       "count": 428,
        "label": "Fuite de données"
       },
       {
@@ -645,7 +645,7 @@
     },
     "all": {
      "first_date": "2022-10-13",
-     "incidents": 621,
+     "incidents": 620,
      "last_date": "2026-11-21",
      "months": [
       {
@@ -681,11 +681,11 @@
        "label": "2026-10"
       },
       {
-       "count": 173,
+       "count": 172,
        "label": "2026-11"
       }
      ],
-     "organisations": 596,
+     "organisations": 595,
      "sector": [
       {
        "count": 163,
@@ -704,7 +704,7 @@
        "label": "Santé"
       },
       {
-       "count": 44,
+       "count": 45,
        "label": "Numérique / Technologie"
       },
       {
@@ -724,12 +724,12 @@
        "label": "Industrie / Manufacture"
       },
       {
-       "count": 15,
-       "label": "Transport / Logistique"
-      },
-      {
        "count": 14,
        "label": "Finance / Assurance"
+      },
+      {
+       "count": 13,
+       "label": "Transport / Logistique"
       },
       {
        "count": 12,
@@ -758,7 +758,7 @@
      ],
      "threat": [
       {
-       "count": 435,
+       "count": 434,
        "label": "Fuite de données"
       },
       {
@@ -800,30 +800,22 @@
    "focus": {
     "30": {
      "first_date": "2026-11-02",
-     "incidents": 2,
-     "last_date": "2026-11-06",
+     "incidents": 1,
+     "last_date": "2026-11-02",
      "months": [
       {
-       "count": 2,
+       "count": 1,
        "label": "2026-11"
       }
      ],
-     "organisations": 2,
+     "organisations": 1,
      "sector": [
-      {
-       "count": 1,
-       "label": "Hébergement / Tourisme / Restauration"
-      },
       {
        "count": 1,
        "label": "Industrie / Manufacture"
       }
      ],
      "threat": [
-      {
-       "count": 1,
-       "label": "Fuite de données"
-      },
       {
        "count": 1,
        "label": "Intrusion"
@@ -833,8 +825,8 @@
     },
     "365": {
      "first_date": "2026-02-19",
-     "incidents": 13,
-     "last_date": "2026-11-06",
+     "incidents": 12,
+     "last_date": "2026-11-02",
      "months": [
       {
        "count": 1,
@@ -861,19 +853,15 @@
        "label": "2026-10"
       },
       {
-       "count": 2,
+       "count": 1,
        "label": "2026-11"
       }
      ],
-     "organisations": 13,
+     "organisations": 12,
      "sector": [
       {
        "count": 5,
        "label": "Administration / Collectivité"
-      },
-      {
-       "count": 2,
-       "label": "Transport / Logistique"
       },
       {
        "count": 2,
@@ -894,11 +882,15 @@
       {
        "count": 1,
        "label": "Industrie / Manufacture"
+      },
+      {
+       "count": 1,
+       "label": "Transport / Logistique"
       }
      ],
      "threat": [
       {
-       "count": 7,
+       "count": 6,
        "label": "Fuite de données"
       },
       {
@@ -918,8 +910,8 @@
     },
     "90": {
      "first_date": "2026-09-09",
-     "incidents": 7,
-     "last_date": "2026-11-06",
+     "incidents": 6,
+     "last_date": "2026-11-02",
      "months": [
       {
        "count": 2,
@@ -930,11 +922,11 @@
        "label": "2026-10"
       },
       {
-       "count": 2,
+       "count": 1,
        "label": "2026-11"
       }
      ],
-     "organisations": 7,
+     "organisations": 6,
      "sector": [
       {
        "count": 2,
@@ -954,10 +946,6 @@
       },
       {
        "count": 1,
-       "label": "Transport / Logistique"
-      },
-      {
-       "count": 1,
        "label": "Éducation / Formation"
       }
      ],
@@ -968,11 +956,11 @@
       },
       {
        "count": 2,
-       "label": "Fuite de données"
+       "label": "Intrusion"
       },
       {
-       "count": 2,
-       "label": "Intrusion"
+       "count": 1,
+       "label": "Fuite de données"
       },
       {
        "count": 1,
@@ -983,8 +971,8 @@
     },
     "all": {
      "first_date": "2026-02-19",
-     "incidents": 13,
-     "last_date": "2026-11-06",
+     "incidents": 12,
+     "last_date": "2026-11-02",
      "months": [
       {
        "count": 1,
@@ -1011,19 +999,15 @@
        "label": "2026-10"
       },
       {
-       "count": 2,
+       "count": 1,
        "label": "2026-11"
       }
      ],
-     "organisations": 13,
+     "organisations": 12,
      "sector": [
       {
        "count": 5,
        "label": "Administration / Collectivité"
-      },
-      {
-       "count": 2,
-       "label": "Transport / Logistique"
       },
       {
        "count": 2,
@@ -1044,11 +1028,15 @@
       {
        "count": 1,
        "label": "Industrie / Manufacture"
+      },
+      {
+       "count": 1,
+       "label": "Transport / Logistique"
       }
      ],
      "threat": [
       {
-       "count": 7,
+       "count": 6,
        "label": "Fuite de données"
       },
       {
@@ -1101,7 +1089,7 @@
        "label": "Santé"
       },
       {
-       "count": 13,
+       "count": 14,
        "label": "Numérique / Technologie"
       },
       {
@@ -1121,10 +1109,6 @@
        "label": "Industrie / Manufacture"
       },
       {
-       "count": 5,
-       "label": "Transport / Logistique"
-      },
-      {
        "count": 4,
        "label": "Association / Syndicat"
       },
@@ -1135,6 +1119,10 @@
       {
        "count": 4,
        "label": "Hébergement / Tourisme / Restauration"
+      },
+      {
+       "count": 4,
+       "label": "Transport / Logistique"
       },
       {
        "count": 3,
@@ -1210,7 +1198,7 @@
        "label": "Santé"
       },
       {
-       "count": 40,
+       "count": 41,
        "label": "Numérique / Technologie"
       },
       {
@@ -1238,12 +1226,12 @@
        "label": "Hébergement / Tourisme / Restauration"
       },
       {
-       "count": 11,
-       "label": "Transport / Logistique"
+       "count": 10,
+       "label": "Services aux entreprises"
       },
       {
        "count": 10,
-       "label": "Services aux entreprises"
+       "label": "Transport / Logistique"
       },
       {
        "count": 8,
@@ -1331,7 +1319,7 @@
        "label": "Santé"
       },
       {
-       "count": 40,
+       "count": 41,
        "label": "Numérique / Technologie"
       },
       {
@@ -1359,12 +1347,12 @@
        "label": "Hébergement / Tourisme / Restauration"
       },
       {
-       "count": 11,
-       "label": "Transport / Logistique"
+       "count": 10,
+       "label": "Services aux entreprises"
       },
       {
        "count": 10,
-       "label": "Services aux entreprises"
+       "label": "Transport / Logistique"
       },
       {
        "count": 8,
@@ -1456,7 +1444,7 @@
        "label": "Santé"
       },
       {
-       "count": 40,
+       "count": 41,
        "label": "Numérique / Technologie"
       },
       {
@@ -1484,12 +1472,12 @@
        "label": "Hébergement / Tourisme / Restauration"
       },
       {
-       "count": 11,
-       "label": "Transport / Logistique"
+       "count": 10,
+       "label": "Services aux entreprises"
       },
       {
        "count": 10,
-       "label": "Services aux entreprises"
+       "label": "Transport / Logistique"
       },
       {
        "count": 8,
@@ -1544,15 +1532,15 @@
    "ocean": {
     "30": {
      "first_date": "2026-11-02",
-     "incidents": 3,
+     "incidents": 2,
      "last_date": "2026-11-17",
      "months": [
       {
-       "count": 3,
+       "count": 2,
        "label": "2026-11"
       }
      ],
-     "organisations": 3,
+     "organisations": 2,
      "sector": [
       {
        "count": 1,
@@ -1560,18 +1548,10 @@
       },
       {
        "count": 1,
-       "label": "Hébergement / Tourisme / Restauration"
-      },
-      {
-       "count": 1,
        "label": "Industrie / Manufacture"
       }
      ],
      "threat": [
-      {
-       "count": 1,
-       "label": "Fuite de données"
-      },
       {
        "count": 1,
        "label": "Intrusion"
@@ -1585,7 +1565,7 @@
     },
     "365": {
      "first_date": "2026-02-19",
-     "incidents": 14,
+     "incidents": 13,
      "last_date": "2026-11-17",
      "months": [
       {
@@ -1613,19 +1593,15 @@
        "label": "2026-10"
       },
       {
-       "count": 3,
+       "count": 2,
        "label": "2026-11"
       }
      ],
-     "organisations": 14,
+     "organisations": 13,
      "sector": [
       {
        "count": 5,
        "label": "Administration / Collectivité"
-      },
-      {
-       "count": 2,
-       "label": "Transport / Logistique"
       },
       {
        "count": 2,
@@ -1650,11 +1626,15 @@
       {
        "count": 1,
        "label": "Industrie / Manufacture"
+      },
+      {
+       "count": 1,
+       "label": "Transport / Logistique"
       }
      ],
      "threat": [
       {
-       "count": 7,
+       "count": 6,
        "label": "Fuite de données"
       },
       {
@@ -1674,7 +1654,7 @@
     },
     "90": {
      "first_date": "2026-09-09",
-     "incidents": 8,
+     "incidents": 7,
      "last_date": "2026-11-17",
      "months": [
       {
@@ -1686,11 +1666,11 @@
        "label": "2026-10"
       },
       {
-       "count": 3,
+       "count": 2,
        "label": "2026-11"
       }
      ],
-     "organisations": 8,
+     "organisations": 7,
      "sector": [
       {
        "count": 2,
@@ -1714,10 +1694,6 @@
       },
       {
        "count": 1,
-       "label": "Transport / Logistique"
-      },
-      {
-       "count": 1,
        "label": "Éducation / Formation"
       }
      ],
@@ -1728,22 +1704,22 @@
       },
       {
        "count": 2,
-       "label": "Fuite de données"
-      },
-      {
-       "count": 2,
        "label": "Intrusion"
       },
       {
        "count": 2,
        "label": "Ransomware"
+      },
+      {
+       "count": 1,
+       "label": "Fuite de données"
       }
      ],
      "undated": 0
     },
     "all": {
      "first_date": "2026-02-19",
-     "incidents": 14,
+     "incidents": 13,
      "last_date": "2026-11-17",
      "months": [
       {
@@ -1771,19 +1747,15 @@
        "label": "2026-10"
       },
       {
-       "count": 3,
+       "count": 2,
        "label": "2026-11"
       }
      ],
-     "organisations": 14,
+     "organisations": 13,
      "sector": [
       {
        "count": 5,
        "label": "Administration / Collectivité"
-      },
-      {
-       "count": 2,
-       "label": "Transport / Logistique"
       },
       {
        "count": 2,
@@ -1808,11 +1780,15 @@
       {
        "count": 1,
        "label": "Industrie / Manufacture"
+      },
+      {
+       "count": 1,
+       "label": "Transport / Logistique"
       }
      ],
      "threat": [
       {
-       "count": 7,
+       "count": 6,
        "label": "Fuite de données"
       },
       {
@@ -1985,7 +1961,7 @@
      0,
      16,
      16,
-     12
+     13
     ],
     "Santé": [
      0,
@@ -2215,7 +2191,7 @@
      0,
      115,
      198,
-     116
+     115
     ],
     "Intrusion": [
      0,
@@ -2406,7 +2382,7 @@
     0,
     153,
     287,
-    173
+    172
    ]
   },
   "signals": [
@@ -2426,7 +2402,6 @@
     "excess_points": null,
     "incident_ids": [
      "INC-02F4A8DC2225",
-     "INC-047C6D219D56",
      "INC-13200FD49444",
      "INC-3B12E9BC1C38",
      "INC-52648B55EA47",
@@ -2436,6 +2411,7 @@
      "INC-8DAC588B4D42",
      "INC-ACDF33488003",
      "INC-BEB27450B5FC",
+     "INC-CE234E7943B8",
      "INC-F116E43D6A1B"
     ],
     "kind": "emerging",
@@ -2509,7 +2485,7 @@
     "kind": "new_pair",
     "label": "Fuite de données × Commerce / Distribution",
     "previous": 0,
-    "share_pct": 20.7,
+    "share_pct": 20.8,
     "window_days": 90
    },
    {
@@ -2679,7 +2655,7 @@
     "kind": "emerging",
     "label": "France métropolitaine",
     "previous": 0,
-    "share_pct": 81.7,
+    "share_pct": 81.9,
     "window_days": 90
    },
    {
@@ -2718,16 +2694,16 @@
    },
    {
     "base_rate_pct": null,
-    "change_pct": 1300.0,
+    "change_pct": 1100.0,
     "confidence": {
-     "incidents": 14,
-     "known_ratio": 0.952,
+     "incidents": 12,
+     "known_ratio": 0.944,
      "level": "high",
-     "multi_source_incidents": 8,
+     "multi_source_incidents": 7,
      "score": 88
     },
-    "current": 14,
-    "delta": 13,
+    "current": 12,
+    "delta": 11,
     "dimension": "sector",
     "excess_points": null,
     "incident_ids": [
@@ -2739,15 +2715,49 @@
      "INC-624936F92BC4",
      "INC-745CC3BD768D",
      "INC-9D94800B90F1",
-     "INC-AADCC695B753",
      "INC-BA6B1499689A",
      "INC-BA8703C6B04B",
-     "INC-CE234E7943B8"
+     "INC-DFEB66426AD8",
+     "INC-EA45CB7EDDDE"
     ],
     "kind": "acceleration",
     "label": "Transport / Logistique",
     "previous": 1,
-    "share_pct": 2.3,
+    "share_pct": 2.0,
+    "window_days": 90
+   },
+   {
+    "base_rate_pct": null,
+    "change_pct": 100.0,
+    "confidence": {
+     "incidents": 45,
+     "known_ratio": 0.948,
+     "level": "high",
+     "multi_source_incidents": 23,
+     "score": 87
+    },
+    "current": 45,
+    "delta": 45,
+    "dimension": "sector",
+    "excess_points": null,
+    "incident_ids": [
+     "INC-00321751D91C",
+     "INC-0C6419E48F71",
+     "INC-0E4631F3A262",
+     "INC-1175E5BD9752",
+     "INC-1B85CA34042E",
+     "INC-2480CB00E430",
+     "INC-25FB4E5B300E",
+     "INC-27866DDB3159",
+     "INC-2F086959A78B",
+     "INC-3634AD5756CD",
+     "INC-36BF040BEA60",
+     "INC-3AAEEA9D575F"
+    ],
+    "kind": "emerging",
+    "label": "Numérique / Technologie",
+    "previous": 0,
+    "share_pct": 7.4,
     "window_days": 90
    },
    {
@@ -2820,50 +2830,16 @@
    },
    {
     "base_rate_pct": null,
-    "change_pct": 100.0,
+    "change_pct": 10600.0,
     "confidence": {
-     "incidents": 44,
-     "known_ratio": 0.947,
-     "level": "high",
-     "multi_source_incidents": 22,
-     "score": 86
-    },
-    "current": 44,
-    "delta": 44,
-    "dimension": "sector",
-    "excess_points": null,
-    "incident_ids": [
-     "INC-00321751D91C",
-     "INC-0C6419E48F71",
-     "INC-0E4631F3A262",
-     "INC-1175E5BD9752",
-     "INC-1B85CA34042E",
-     "INC-2480CB00E430",
-     "INC-25FB4E5B300E",
-     "INC-27866DDB3159",
-     "INC-2F086959A78B",
-     "INC-3634AD5756CD",
-     "INC-36BF040BEA60",
-     "INC-3AAEEA9D575F"
-    ],
-    "kind": "emerging",
-    "label": "Numérique / Technologie",
-    "previous": 0,
-    "share_pct": 7.2,
-    "window_days": 90
-   },
-   {
-    "base_rate_pct": null,
-    "change_pct": 10625.0,
-    "confidence": {
-     "incidents": 429,
+     "incidents": 428,
      "known_ratio": 0.906,
      "level": "high",
      "multi_source_incidents": 210,
      "score": 85
     },
-    "current": 429,
-    "delta": 425,
+    "current": 428,
+    "delta": 424,
     "dimension": "threat",
     "excess_points": null,
     "incident_ids": [
@@ -2877,13 +2853,13 @@
      "INC-02B6D96E8D86",
      "INC-02F4A8DC2225",
      "INC-0369B007BDB8",
-     "INC-047C6D219D56",
-     "INC-068CAEB32D8C"
+     "INC-068CAEB32D8C",
+     "INC-06EA4DA7F8BB"
     ],
     "kind": "acceleration",
     "label": "Fuite de données",
     "previous": 4,
-    "share_pct": 70.0,
+    "share_pct": 69.9,
     "window_days": 90
    },
    {
@@ -2989,7 +2965,7 @@
     "window_days": 90
    },
    {
-    "base_rate_pct": -11.0,
+    "base_rate_pct": -11.4,
     "change_pct": 66.7,
     "confidence": {
      "incidents": 25,
@@ -3001,7 +2977,7 @@
     "current": 25,
     "delta": 10,
     "dimension": "sector",
-    "excess_points": 77.7,
+    "excess_points": 78.1,
     "incident_ids": [
      "INC-02B6D96E8D86",
      "INC-0E77F81BAAC5",
@@ -3100,7 +3076,7 @@
      "label": "Inconnu"
     },
     {
-     "count": 7,
+     "count": 6,
      "label": "La Réunion"
     },
     {
@@ -3126,7 +3102,7 @@
      "label": "Santé"
     },
     {
-     "count": 44,
+     "count": 45,
      "label": "Numérique / Technologie"
     },
     {
@@ -3144,7 +3120,7 @@
    ],
    "threat": [
     {
-     "count": 429,
+     "count": 428,
      "label": "Fuite de données"
     },
     {
@@ -3188,6 +3164,34 @@
   "La Réunion",
   "Mayotte"
  ],
+ "incident_redirects": {
+  "INC-047C6D219D56": "INC-CE234E7943B8",
+  "INC-19A20C8A10E8": "INC-2B9ABE7FD227",
+  "INC-216C758CC758": "INC-D9091A0211B6",
+  "INC-21AE16486F4B": "INC-41D3A5E68E62",
+  "INC-2C2D95145031": "INC-B52A1013C987",
+  "INC-4E33287FC026": "INC-4F05D65DCC88",
+  "INC-514833CDCCB3": "INC-FB1EC7E5A99A",
+  "INC-6CFE298CA338": "INC-447AE4B3A871",
+  "INC-6FD3B892BC32": "INC-11C1B1A5AB59",
+  "INC-6FDE34AF395B": "INC-6F760CFC7E64",
+  "INC-75B912C7A455": "INC-6741AD9842BA",
+  "INC-7A443660ADFD": "INC-606A74E0F7CF",
+  "INC-8977F4E00B2B": "INC-2906CE42B265",
+  "INC-8A890C06B458": "INC-00C7F75053E1",
+  "INC-A2EDAE17F0D1": "INC-013B23C8E538",
+  "INC-B35474814A8B": "INC-02BB571E8CCD",
+  "INC-C2248ACAC277": "INC-B7F0248C35F0",
+  "INC-D72A05DFD66E": "INC-1C4D92961F4E",
+  "INC-DCADE9E8E394": "INC-3139AFB2614E",
+  "INC-E03D86EED03F": "INC-E1DA055D023A",
+  "INC-E1DAFF22CE19": "INC-CFA199A7659B",
+  "INC-E4D2A28AC615": "INC-60BCEF25FA60",
+  "INC-EE167D8D9DEA": "INC-AA49D64CDD92",
+  "INC-F624C40BD089": "INC-85B65263A155",
+  "INC-FB1C1AB0773B": "INC-447AE4B3A871",
+  "INC-FCBE905E1444": "INC-55B78F7C08BD"
+ },
  "integrity": {
   "days": 73,
   "end": "2026-11-22",
@@ -3245,12 +3249,12 @@
    "corpus_false_negatives": 0,
    "corpus_false_positive_rate_pct": 0.0,
    "dedup_known_false_merges": 0,
-   "location_unknown_pct": 16.67,
+   "location_unknown_pct": 16.69,
    "missed_duplicate_candidate_pairs": 39,
    "pending_review_pairs": 3416,
    "potential_duplicate_pairs": 366,
    "potential_duplicate_rate_pct": 58.1,
-   "sector_unknown_pct": 18.57,
+   "sector_unknown_pct": 18.6,
    "validated_same_not_grouped_pairs": 0,
    "weak_merge_review_pairs": 302
   },

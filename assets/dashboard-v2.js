@@ -544,20 +544,22 @@
     const token = ++detailToken;
     state.incidentId = id;
     if (navigate) syncUrl(true);
+    const redirects = state.status?.incident_redirects || {};
+    const canonicalId = Object.hasOwn(redirects, id) ? redirects[id] : id;
     const dialog = $("#detail-dialog");
     $("#detail-dialog-content").innerHTML = '<h2 id="detail-dialog-title">Chargement de la fiche…</h2>';
     if (!dialog.open) dialog.showModal();
-    let incident = state.latest.find((row) => row.id === id) || state.incidents.find((row) => row.id === id);
+    let incident = state.latest.find((row) => row.id === canonicalId) || state.incidents.find((row) => row.id === canonicalId);
     if (!incident) {
       await ensureIncidents();
-      incident = state.incidents.find((row) => row.id === id);
+      incident = state.incidents.find((row) => row.id === canonicalId);
     }
     const facts = incident ? await ensureFacts() : {};
     if (token !== detailToken || state.incidentId !== id) return;
     if (!incident) {
       $("#detail-dialog-content").innerHTML = '<h2 id="detail-dialog-title">Incident introuvable</h2><p>Cette fiche n’est pas disponible dans le corpus publié.</p>';
     } else {
-      const detail = facts[id];
+      const detail = facts[canonicalId];
       const meta = [incident.date ? formatDate(incident.date) : "Date non déterminée", threatLabel(incident), sectorLabel(incident) || "Secteur non déterminé"].filter(Boolean).join(" · ");
       const locationHtml = known(incident.location) ? `<p class="detail-location"><span class="incident-location${OCEAN_LOCATIONS.includes(incident.location) ? " incident-location-regional" : ""}">${esc(incident.location)}</span></p>` : "";
       const exposure = exposureLabel(incident);

@@ -328,6 +328,12 @@ def build() -> tuple[int, int]:
         site_evidence.decorate(row, raw_facts.get(str(row.get("id") or ""), []))
 
     state = _legacy.status_payload()
+    published_ids = {row["id"] for row in payload}
+    state["incident_redirects"] = {
+        row["Incident_ID"]: row["Redirect_To"]
+        for row in store.load_incident_id_registry()
+        if row["Redirect_To"] in published_ids
+    }
 
     # Les CANDIDATE sont visibles et recherchables comme les autres incidents,
     # mais ne modifient pas les KPI, tendances et signaux réservés aux incidents
