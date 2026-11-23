@@ -1,6 +1,643 @@
 [
  {
   "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-23",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-747D62713F5E",
+  "location": "France métropolitaine",
+  "org": "Agence d'Accompagnement Actif à l'Évaluation Psychotechnique",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/agence-d-accompagnement-actif-l-valuation-psychotechnique-aaaep-mwsfi1x6xgz6drfbeak",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/agence-d-accompagnement-actif-l-valuation-psychotechnique-aaaep-mwsfi1x6xgz6drfbeak"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Agence d'Accompagnement Actif à l'Évaluation Psychotechnique (AAAEP)",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-23",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-28FC1E063509",
+  "location": "France métropolitaine",
+  "org": "Arobases",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Technologie",
+   "evidence_url": "https://frenchbreaches.com/alertes/arobases-mws8isu03brughu55xr",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/arobases-mws8isu03brughu55xr"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Arobases confirme un accès non autorisé à son serveur de sauvegarde entre le 29 octobre et le 1er novembre 2026.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-23",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-D3FEDE157069",
+  "location": "France métropolitaine",
+  "org": "Banque Delubac & Cie",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Finance / Assurance",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Finance",
+   "evidence_url": "https://frenchbreaches.com/alertes/banque-delubac-cie-mwtgss2oqq00xalh08",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/banque-delubac-cie-mwtgss2oqq00xalh08"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "La Banque Delubac & Cie confirme une cyberattaque détectée le 20 novembre entraînant une fuite de données clients.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-23",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-5B08B29D13DB",
+  "location": "Guadeloupe",
+  "org": "CHU de Bordeaux",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/chu-de-bordeaux-un-ransomware-menace-de-divulguer-des-dossiers-medicaux-de-patients-apres-une-cyberattaque/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Le groupe de ransomware Scarlettgroup revendique avoir volé et menace de divulguer des dossiers médicaux du CHU de Bordeaux.",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-23",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-9CBC5097849B",
+  "location": "France métropolitaine",
+  "org": "Company #265",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "SOURCE_SECTOR_RAW_AMBIGUOUS",
+   "status": "unknown"
+  },
+  "source_links": [],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-23",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-9B9E93F2A83C",
+  "location": "France métropolitaine",
+  "org": "Decathlon",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Sport",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Fondé en 1976 et basé à Villeneuve-d’Ascq, dans le Nord, Decathlon est l’un des plus importants distributeurs d’articles de sport au monde.",
+   "evidence_url": "https://www.cyberattaque.org/decathlon-plus-de-163-000-fiches-clients-diffusees-par-un-hacker-des-livraisons-a-venir-exposees/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/decathlon-plus-de-163-000-fiches-clients-diffusees-par-un-hacker-des-livraisons-a-venir-exposees/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/decathlon-mwsnl2jcqpydbdbuhw"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Decathlon confirme un accès malveillant à des données personnelles chez un prestataire, avec plus de 163 000 fiches clients diffusées par un hacker.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-23",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-FC3A3176DBEB",
+  "location": "France métropolitaine",
+  "org": "Fondation des Femmes",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Association / Syndicat",
+  "sector_status": {
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Administration / Collectivité"
+   ],
+   "evidence": "Créée en 2016 et basée à Paris, la Fondation des Femmes est une organisation française reconnue d’utilité publique, engagée dans la défense des droits des femmes et la lutte contre les violences.",
+   "evidence_url": "https://www.cyberattaque.org/fondation-des-femmes-un-hacker-diffuse-pres-de-120-000-fiches-personnelles-et-les-details-de-2-007-dons/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/fondation-des-femmes-un-hacker-diffuse-pres-de-120-000-fiches-personnelles-et-les-details-de-2-007-dons/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/fondation-des-femmes-mwslzfr9dmmcraechdu"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Un pirate revendique et diffuse une archive contenant 119 823 fiches et 2 007 enregistrements de dons liés à la Fondation des Femmes.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-23",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-B00F33DD2B71",
+  "location": "France métropolitaine",
+  "org": "Laboratoire pour la Santé Animale",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/laboratoire-pour-la-sant-animale-lapsa-mwsgiojqs5jtk67611h",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/laboratoire-pour-la-sant-animale-lapsa-mwsgiojqs5jtk67611h"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "LAPSA, marque française de croquettes pour chiens et chats, fait l'objet d'une revendication de fuite de données concernant 80 000 clients.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-23",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-EB699FA9A7F3",
+  "location": "Inconnu",
+  "org": "LAPSA",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/lapsa-un-hacker-revendique-les-commandes-de-80-000-proprietaires-danimaux/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "LAPSA fait l’objet d’une revendication de fuite de données affectant potentiellement 80 000 clients.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "claimed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-23",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-BD91579D5E5B",
+  "location": "France métropolitaine",
+  "org": "LWS",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Technologie",
+   "evidence_url": "https://frenchbreaches.com/alertes/lws-mwth84cla12tsa5fok5",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/lws.png"
+   },
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/lws-victime-dune-cyberattaque-les-donnees-des-proprietaires-de-noms-de-domaine-exposees/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/lws-mwth84cla12tsa5fok5"
+   }
+  ],
+  "sources": [
+   "BONJOURLAFUITE",
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "LWS signale une intrusion au 16 novembre 2026 ayant potentiellement exposé les coordonnées des titulaires de noms de domaine.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-23",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-7117E04BE176",
+  "location": "Inconnu",
+  "org": "Nissan",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/nissan-victime-dune-cyberattaque-des-reparations-automobiles-bloquees-depuis-dix-jours/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Nissan a suspendu depuis le 13 novembre plusieurs fonctions de son outil de diagnostic CONSULT-III plus après la découverte d'un accès non autorisé.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-23",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-7C00628F9BB4",
+  "location": "France métropolitaine",
+  "org": "OC Sport",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Sport",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "OC Sport est l’organisme certificateur de la branche professionnelle du sport en France.",
+   "evidence_url": "https://www.cyberattaque.org/cyberattaque-chez-oc-sport-des-pieces-didentite-et-certificats-medicaux-de-professionnels-du-sport-exposes/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-chez-oc-sport-des-pieces-didentite-et-certificats-medicaux-de-professionnels-du-sport-exposes/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/oc-sport-mwth2d9l8ox5tr8lafv"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Cyberattaque chez OC Sport : des pièces d’identité et certificats médicaux de professionnels du sport exposés",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-23",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-849E62A7514A",
+  "location": "France métropolitaine",
+  "org": "PIMENT INTERIM",
+  "organisation_links": [
+   "https://www.groupepiment.fr"
+  ],
+  "personal_data_exposed": false,
+  "sector": "Services aux entreprises",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Professional Services",
+   "evidence_url": "http://5butbkrljkaorg5maepuca25oma7eiwo6a2rlhvkblb4v6mf3ki2ovid.onion/companies/85/piment-interim-groupe-piment",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "5butbkrljkaorg5maepuca25oma7eiwo6a2rlhvkblb4v6mf3ki2ovid.onion",
+    "source": "RANSOMWARE_LIVE",
+    "url": "http://5butbkrljkaorg5maepuca25oma7eiwo6a2rlhvkblb4v6mf3ki2ovid.onion/companies/85/piment-interim-groupe-piment"
+   }
+  ],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-22",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-5076B4340FEF",
+  "location": "France métropolitaine",
+  "org": "chu-bordeaux",
+  "organisation_links": [
+   "https://chu-bordeaux.fr"
+  ],
+  "personal_data_exposed": false,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Healthcare",
+   "evidence_url": "http://scarlettgutttdlyxz6rdqfslpdvdqnnzuxvzfsqavys2hvtnd3aidyd.onion/?open=37bbbdd02294bc9bde",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "scarlettgutttdlyxz6rdqfslpdvdqnnzuxvzfsqavys2hvtnd3aidyd.onion",
+    "source": "RANSOMWARE_LIVE",
+    "url": "http://scarlettgutttdlyxz6rdqfslpdvdqnnzuxvzfsqavys2hvtnd3aidyd.onion/?open=37bbbdd02294bc9bde"
+   }
+  ],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-22",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-FEA74BC07F16",
+  "location": "France métropolitaine",
+  "org": "La Chouette Mauve",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "La Chouette Mauve est une boutique française de commerce en ligne spécialisée dans les cadeaux personnalisés et les produits créatifs.",
+   "evidence_url": "https://frenchbreaches.com/alertes/la-chouette-mauve-via-arobases-mws87da0l7uyj8br0n8",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/la-chouette-mauve-via-arobases-mws87da0l7uyj8br0n8"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "La Chouette Mauve visée par une revendication de fuite de données comprenant plus de 111 000 adresses e-mail et 2,7 millions d'enregistrements revendiqués.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-22",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-4C31B236B2C2",
+  "location": "France métropolitaine",
+  "org": "Subtil Diamant",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/subtil-diamant-via-arobases-mws83vattepri3sjcq",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/subtil-diamant-via-arobases-mws83vattepri3sjcq"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Subtil Diamant (via Arobases)",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-22",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-9530031CAC81",
+  "location": "France métropolitaine",
+  "org": "Wanda Collection",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Wanda Collection est une boutique en ligne spécialisée dans le mobilier et la décoration de la maison.",
+   "evidence_url": "https://frenchbreaches.com/alertes/wanda-collection-via-arobases-mws8a88mjga465247dj",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/wanda-collection-via-arobases-mws8a88mjga465247dj"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Wanda Collection (via Arobases)",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-21",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-2F7BA3421D59",
+  "location": "Guadeloupe",
+  "org": "CHU de Guadeloupe",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Santé",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Santé",
+   "evidence_url": "https://frenchbreaches.com/alertes/chu-de-guadeloupe-mwsn70em60u7iz2azyi",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/chu-de-guadeloupe-une-cyberattaque-paralyse-les-hopitaux-des-donnees-chiffrees-et-des-operations-annulees/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/chu-de-guadeloupe-mwsn70em60u7iz2azyi"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Le CHU de la Guadeloupe confirme une cyberattaque ayant chiffré plusieurs bases de données et paralysé ses systèmes.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": false,
   "date": "2026-11-21",
   "high_sensitivity_data_exposed": true,
@@ -410,7 +1047,7 @@
   "personal_data_exposed": false,
   "sector": "Inconnu",
   "sector_status": {
-   "reason": "SOURCE_SECTOR_RAW_UNMAPPED",
+   "reason": "SOURCE_SECTOR_RAW_AMBIGUOUS",
    "status": "unknown"
   },
   "source_links": [
@@ -1330,14 +1967,14 @@
  },
  {
   "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
+  "credentials_or_secrets_exposed": true,
   "date": "2026-11-16",
   "high_sensitivity_data_exposed": false,
   "id": "INC-E9156BC58FD9",
   "location": "France métropolitaine",
   "org": "Ipsos",
   "organisation_links": [],
-  "personal_data_exposed": false,
+  "personal_data_exposed": true,
   "sector": "Commerce / Distribution",
   "sector_status": {
    "confidence": 0.7,
@@ -1368,7 +2005,7 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "Ipsos confirme une violation de sécurité affectant un système d'information interne et a déposé plainte le 11 novembre 2026.",
+  "summary": "Ipsos confirme une intrusion dans l'un de ses systèmes d'information internes et une enquête est en cours.",
   "threat": "Intrusion",
   "threat_status": {
    "status": "confirmed"
@@ -10085,7 +10722,7 @@
   "credentials_or_secrets_exposed": false,
   "date": "2026-10-20",
   "high_sensitivity_data_exposed": false,
-  "id": "INC-CE234E7943B8",
+  "id": "INC-047C6D219D56",
   "location": "La Réunion",
   "org": "Transcontinents",
   "organisation_links": [],

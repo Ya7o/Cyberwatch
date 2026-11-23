@@ -235,6 +235,25 @@
   ],
   "version": 3
  },
+ "INC-047C6D219D56": {
+  "display_summary": "Transcontinents a subi une cyberattaque les 20 et 21 octobre 2026 entraînant l'extraction de données personnelles et d'informations de réservation de clients.",
+  "regional_watch": [
+   {
+    "acteur": "Non identifié",
+    "admission_reason": "Transcontinents confirme sur son site officiel qu’un accès non autorisé à son outil de réservation, les 20 et 21 octobre 2026, a permis l’extraction de données personnelles et d’informations de réservation de clients.",
+    "impact_connu": "Des noms, adresses électroniques, numéros de téléphone et informations de réservation (hôtel, vols et dates) ont été extraits. Des clients ont reçu de faux messages WhatsApp reprenant de véritables détails de séjour afin de les pousser vers un lien frauduleux. Aucune donnée bancaire n’était conservée dans l’outil ; le nombre de clients concernés et d’éventuelles pertes financières ne sont pas publics.",
+    "localisation": "La Réunion",
+    "score": 100,
+    "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
+    "statut": "Incident confirmé par l’entreprise ; accès bloqué, sécurité renforcée, CNIL informée et plainte déposée"
+   }
+  ],
+  "summary_paragraphs": [
+   "Un accès non autorisé les 20 et 21 octobre 2026 a permis l’extraction de noms, coordonnées et détails de réservations de clients.",
+   "Des clients reçoivent des messages frauduleux reprenant leurs véritables informations de séjour pour tenter de récupérer des coordonnées bancaires."
+  ],
+  "version": 3
+ },
  "INC-06066B2EEF57": {
   "display_summary": "Grande Loge Traditionnelle de France (GLTF)",
   "summary_paragraphs": [],
@@ -1459,6 +1478,27 @@
   ],
   "version": 3
  },
+ "INC-28FC1E063509": {
+  "display_summary": "Arobases confirme un accès non autorisé à son serveur de sauvegarde entre le 29 octobre et le 1er novembre 2026.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Arobases confirme un accès non autorisé à son serveur de sauvegarde entre le 29 octobre et le 1er novembre 2026.",
+   "Le pirate revendique environ 300 Go de données et près de 350 bases de données, dont des identifiants et des mots de passe."
+  ],
+  "version": 3
+ },
  "INC-2906CE42B265": {
   "display_summary": "Krys Group : les données de plus de 8 000 personnes diffusées après une cyberattaque",
   "summary_paragraphs": [
@@ -1705,6 +1745,27 @@
    "vulnerable_people": false
   },
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-2F7BA3421D59": {
+  "display_summary": "Le CHU de la Guadeloupe confirme une cyberattaque ayant chiffré plusieurs bases de données et paralysé ses systèmes.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Plusieurs bases de données ont été chiffrées, rendant les applications informatiques inaccessibles et perturbant gravement les communications téléphoniques.",
+   "Le plan blanc a été déclenché dimanche 22 novembre et des interventions chirurgicales ont été déprogrammées."
+  ],
   "version": 3
  },
  "INC-30587B962720": {
@@ -2485,6 +2546,26 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-4C31B236B2C2": {
+  "display_summary": "Subtil Diamant (via Arobases)",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Un pirate affirme avoir publié une annonce proposant à la vente une base de données présentée comme provenant du site subtil-diamant.com."
+  ],
+  "version": 3
+ },
  "INC-4C59C26E31C7": {
   "display_summary": "Un pirate revendique la vente de 334 474 enregistrements d'adresses attribués à O'Tacos.",
   "summary_paragraphs": [
@@ -2634,6 +2715,11 @@
    "MGEL signale des connexions non autorisées sur une ancienne base de données antérieure à mai 2022, pouvant avoir exposé des données personnelles.",
    "Parmi les informations potentiellement concernées figurent noms, dates de naissance, adresses, numéros de sécurité sociale et certaines coordonnées bancaires."
   ],
+  "version": 3
+ },
+ "INC-5076B4340FEF": {
+  "display_summary": "",
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-508934937659": {
@@ -3012,6 +3098,14 @@
  "INC-5AD7E8261825": {
   "display_summary": "",
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-5B08B29D13DB": {
+  "display_summary": "Le groupe de ransomware Scarlettgroup revendique avoir volé et menace de divulguer des dossiers médicaux du CHU de Bordeaux.",
+  "summary_paragraphs": [
+   "Scarlettgroup revendique détenir dossiers médicaux, résultats, prescriptions, numéros de Sécurité sociale et identifiants informatiques du CHU de Bordeaux.",
+   "Le CHU de Bordeaux confirme une utilisation frauduleuse d’adresses e-mail mais n’a pas confirmé le vol des données revendiquées."
+  ],
   "version": 3
  },
  "INC-5B46AA1EFE08": {
@@ -3946,6 +4040,13 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-7117E04BE176": {
+  "display_summary": "Nissan a suspendu depuis le 13 novembre plusieurs fonctions de son outil de diagnostic CONSULT-III plus après la découverte d'un accès non autorisé.",
+  "summary_paragraphs": [
+   "Nissan confirme un accès non autorisé ayant entraîné la suspension de parties de son système de diagnostic utilisé par ses concessionnaires."
+  ],
+  "version": 3
+ },
  "INC-723CD35E91B1": {
   "display_summary": "VosFactures touché par une cyberattaque : les factures exposées",
   "sensitive_data": {
@@ -3991,6 +4092,32 @@
    "Un cybercriminel nommé Quantique revendique avoir compromis WayToMe et extrait plusieurs tables d'une instance Supabase.",
    "Le pirate revendique 669 445 enregistrements cumulés répartis entre fichiers Users, Routes, Notifications et Parcel."
   ],
+  "version": 3
+ },
+ "INC-747D62713F5E": {
+  "display_summary": "Agence d'Accompagnement Actif à l'Évaluation Psychotechnique (AAAEP)",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "données bancaires"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-74DACCF9E08E": {
@@ -4291,6 +4418,36 @@
   ],
   "version": 3
  },
+ "INC-7C00628F9BB4": {
+  "display_summary": "Cyberattaque chez OC Sport : des pièces d’identité et certificats médicaux de professionnels du sport exposés",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "pièces d'identité"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "OC Sport signale un accès non autorisé à sa plateforme de certifications du 21 octobre au 12 novembre 2026.",
+   "Noms, dates de naissance, coordonnées, copies de pièces d’identité et certificats médicaux figurent parmi les informations susceptibles d’avoir été exposées."
+  ],
+  "version": 3
+ },
  "INC-7C0FCA2CE323": {
   "display_summary": "BonjourLaFuite signale une fuite de données concernant Pass Pass.",
   "summary_paragraphs": [
@@ -4538,6 +4695,11 @@
  },
  "INC-845CF3A0AFE4": {
   "display_summary": "Le Club TotalEnergies touché par une cyberattaque : les historiques de transactions en fuite",
+  "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-849E62A7514A": {
+  "display_summary": "",
   "summary_paragraphs": [],
   "version": 3
  },
@@ -5331,6 +5493,24 @@
   ],
   "version": 3
  },
+ "INC-9530031CAC81": {
+  "display_summary": "Wanda Collection (via Arobases)",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-959A7148CB99": {
   "display_summary": "La plateforme Clevermate fait l'objet d'une revendication de diffusion d'une archive contenant des dossiers individuels et des coordonnées bancaires.",
   "sensitive_data": {
@@ -5460,6 +5640,26 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-9B9E93F2A83C": {
+  "display_summary": "Decathlon confirme un accès malveillant à des données personnelles chez un prestataire, avec plus de 163 000 fiches clients diffusées par un hacker.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Un pirate a publié quatre fichiers attribués à Decathlon contenant 163 646 fiches et 255 011 lignes de suivi de commandes, dont des livraisons programmées."
+  ],
+  "version": 3
+ },
  "INC-9BA1C54FB5E6": {
   "display_summary": "Trynet fait l'objet d'une revendication de fuite de 45 Go de données incluant IBAN et documents clients et salariés.",
   "sensitive_data": {
@@ -5522,6 +5722,11 @@
    "Le 8 novembre 2026, un cybercriminel a publié des extraits d'une base de données attribuée à MBS Design, comprenant comptes clients et transactions de paiement.",
    "La publication contient des noms, adresses, e-mails, mots de passe hachés et informations relatives aux paiements, revendiquées par l'auteur."
   ],
+  "version": 3
+ },
+ "INC-9CBC5097849B": {
+  "display_summary": "",
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-9D94800B90F1": {
@@ -6215,6 +6420,26 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-B00F33DD2B71": {
+  "display_summary": "LAPSA, marque française de croquettes pour chiens et chats, fait l'objet d'une revendication de fuite de données concernant 80 000 clients.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Un pirate affirme détenir et diffuser des données commerciales de LAPSA, présentant un fichier \"Laboratoire pour la Santé Animale (LAPSA) | 80K\"."
+  ],
+  "version": 3
+ },
  "INC-B035F6D6F00B": {
   "display_summary": "GoTronic fait l'objet d'une revendication de fuite de données avec plus de 328 000 adresses e-mail annoncées.",
   "sensitive_data": {
@@ -6760,6 +6985,27 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-BD91579D5E5B": {
+  "display_summary": "LWS signale une intrusion au 16 novembre 2026 ayant potentiellement exposé les coordonnées des titulaires de noms de domaine.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "LWS a découvert le 16 novembre 2026 un accès non autorisé au serveur de son service WHOIS ayant pu copier des coordonnées clients.",
+   "Des noms, adresses postales, numéros de téléphone, adresses email et identifiants de comptes clients ont potentiellement été copiés."
+  ],
+  "version": 3
+ },
  "INC-BD9850BF3E4B": {
   "display_summary": "Biocoop victime d'une fuite revendiquée de 2,8 Go de données internes comprenant bases SQL, chiffres magasins, assortiments et positionnement tarifaire.",
   "sensitive_data": {
@@ -7212,25 +7458,6 @@
   "summary_paragraphs": [],
   "version": 3
  },
- "INC-CE234E7943B8": {
-  "display_summary": "Transcontinents a subi une cyberattaque les 20 et 21 octobre 2026 entraînant l'extraction de données personnelles et d'informations de réservation de clients.",
-  "regional_watch": [
-   {
-    "acteur": "Non identifié",
-    "admission_reason": "Transcontinents confirme sur son site officiel qu’un accès non autorisé à son outil de réservation, les 20 et 21 octobre 2026, a permis l’extraction de données personnelles et d’informations de réservation de clients.",
-    "impact_connu": "Des noms, adresses électroniques, numéros de téléphone et informations de réservation (hôtel, vols et dates) ont été extraits. Des clients ont reçu de faux messages WhatsApp reprenant de véritables détails de séjour afin de les pousser vers un lien frauduleux. Aucune donnée bancaire n’était conservée dans l’outil ; le nombre de clients concernés et d’éventuelles pertes financières ne sont pas publics.",
-    "localisation": "La Réunion",
-    "score": 100,
-    "score_definition": "Indicateur analytique de confiance qu'il s'agit d'une cyberattaque, de 0 à 100. 100 est réservé à l'existence d'une cyberattaque confirmée ; attribution, vecteur et ampleur peuvent rester non confirmés.",
-    "statut": "Incident confirmé par l’entreprise ; accès bloqué, sécurité renforcée, CNIL informée et plainte déposée"
-   }
-  ],
-  "summary_paragraphs": [
-   "Un accès non autorisé les 20 et 21 octobre 2026 a permis l’extraction de noms, coordonnées et détails de réservations de clients.",
-   "Des clients reçoivent des messages frauduleux reprenant leurs véritables informations de séjour pour tenter de récupérer des coordonnées bancaires."
-  ],
-  "version": 3
- },
  "INC-CEAB26927F32": {
   "display_summary": "France Utilitaires : près de 10 000 comptes clients exposés après une cyberattaque",
   "sensitive_data": {
@@ -7438,6 +7665,27 @@
   "display_summary": "BonjourLaFuite signale une fuite de données concernant Made in Bébé.",
   "summary_paragraphs": [
    "BonjourLaFuite signale une fuite de données concernant Made in Bébé."
+  ],
+  "version": 3
+ },
+ "INC-D3FEDE157069": {
+  "display_summary": "La Banque Delubac & Cie confirme une cyberattaque détectée le 20 novembre entraînant une fuite de données clients.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Intrusion détectée le 20 novembre avec tentative de fraude; la banque dit qu'aucun mouvement de fonds frauduleux n'a abouti.",
+   "La banque reconnaît une fuite de données concernant une partie de sa clientèle mais la nature et l'étendue restent inconnues."
   ],
   "version": 3
  },
@@ -8240,7 +8488,20 @@
   "version": 3
  },
  "INC-E9156BC58FD9": {
-  "display_summary": "Ipsos confirme une violation de sécurité affectant un système d'information interne et a déposé plainte le 11 novembre 2026.",
+  "display_summary": "Ipsos confirme une intrusion dans l'un de ses systèmes d'information internes et une enquête est en cours.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [
    "Ipsos a confirmé un incident de cybersécurité touchant un système informatique interne.",
    "Le groupe indique avoir déposé plainte le 11 novembre et poursuit des investigations avec des experts externes."
@@ -8337,6 +8598,14 @@
   "summary_paragraphs": [
    "Un utilisateur d’un forum affirme avoir récupéré et publié environ 9,1 millions d’enregistrements issus de la base publique Transparence Santé.",
    "FrenchBreaches indique que les données publiées correspondent à des informations déjà rendues publiques par le ministère chargé de la Santé."
+  ],
+  "version": 3
+ },
+ "INC-EB699FA9A7F3": {
+  "display_summary": "LAPSA fait l’objet d’une revendication de fuite de données affectant potentiellement 80 000 clients.",
+  "summary_paragraphs": [
+   "Un hacker prétend avoir diffusé un fichier de ~57 Mo contenant des informations personnelles et historiques de réservations attribuées à LAPSA.",
+   "Les extraits publiés incluent noms, adresses email, références de commandes, produits achetés, remises et montants facturés; l’authenticité reste à confirmer."
   ],
   "version": 3
  },
@@ -8883,6 +9152,27 @@
   ],
   "version": 3
  },
+ "INC-FC3A3176DBEB": {
+  "display_summary": "Un pirate revendique et diffuse une archive contenant 119 823 fiches et 2 007 enregistrements de dons liés à la Fondation des Femmes.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "La Fondation des Femmes fait l'objet d'une revendication de fuite de données publiée le 23 novembre 2026 sur un forum cybercriminel.",
+   "L'archive examinée contient 119 823 inscriptions et 118 130 adresses e-mail distinctes, mais aucune intrusion directe n'est confirmée."
+  ],
+  "version": 3
+ },
  "INC-FCF965AF5FEC": {
   "display_summary": "Ouest-France : une cyberattaque touche les formulaires d’abonnement de l’offre jeunes",
   "sensitive_data": {
@@ -8962,6 +9252,26 @@
  "INC-FE86CACC1DDC": {
   "display_summary": "",
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-FEA74BC07F16": {
+  "display_summary": "La Chouette Mauve visée par une revendication de fuite de données comprenant plus de 111 000 adresses e-mail et 2,7 millions d'enregistrements revendiqués.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Une annonce attribuée à Chimera revendique la vente d'environ 2,7 millions d'enregistrements dont 111 269 adresses e-mail."
+  ],
   "version": 3
  },
  "INC-FF05712F8905": {
