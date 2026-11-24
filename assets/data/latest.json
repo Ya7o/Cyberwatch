@@ -2,6 +2,309 @@
  {
   "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": true,
+  "date": "2026-11-24",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-FDBB2EEEA3B3",
+  "location": "Inconnu",
+  "org": "Macadam",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/macadam-lapplication-qui-recompense-vos-pas-victime-dune-cyberattaque/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Macadam confirme une fuite de données personnelles après une intrusion le 2 août 2026 liée à l'exploitation d'une vulnérabilité Metabase.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-24",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-FCB9F06DCBD1",
+  "location": "Inconnu",
+  "org": "L’Aviation civile",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "La Direction générale de l’aviation civile est l’administration française chargée de la réglementation, de la sécurité et de la supervision du transport aérien.",
+   "evidence_url": "https://www.cyberattaque.org/laviation-civile-dgac-piratee-des-donnees-bancaires-voles-sur-un-site-de-paiement-de-letat/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/laviation-civile-dgac-piratee-des-donnees-bancaires-voles-sur-un-site-de-paiement-de-letat/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "La DGAC confirme une cyberattaque sur son site de paiement ayant entraîné la fuite de données personnelles et bancaires.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-24",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-ECC8DA36C24C",
+  "location": "France métropolitaine",
+  "org": "La ville de Quimper",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "La ville de Quimper",
+   "evidence_url": "https://frenchbreaches.com/alertes/la-ville-de-quimper-mwumsdhecox20bbpnou",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/la-ville-de-quimper-mwumsdhecox20bbpnou"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "La ville de Quimper et Quimper Bretagne Occidentale annoncent être victimes d'une intrusion informatique affectant leurs systèmes d'information.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-24",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-B072B34B19C6",
+  "location": "France métropolitaine",
+  "org": "Bocklip",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Bocklip est une entreprise spécialisée dans la conception et la commercialisation de façades personnalisées pour les meubles de cuisine, de salle de bains et de rangement.",
+   "evidence_url": "https://frenchbreaches.com/alertes/bocklip-via-arobases-mwtwfs5rrpthaimsfq9",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/bocklip-via-arobases-mwtwfs5rrpthaimsfq9"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Bocklip fait l'objet d'une revendication de fuite de données incluant des informations clients et bancaires partielles.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-24",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-8A4615474096",
+  "location": "France métropolitaine",
+  "org": "L'Empreinte du Bois",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "L'Empreinte du Bois, entreprise française spécialisée dans les produits en bois, est visée par une revendication de fuite de données ce lundi 23 novembre 2026.",
+   "evidence_url": "https://frenchbreaches.com/alertes/l-empreinte-du-bois-via-arobases-mwtwj3fsaa6v5s572l",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/l-empreinte-du-bois-via-arobases-mwtwj3fsaa6v5s572l"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "L'Empreinte du Bois visée par une revendication de fuite de données comprenant factures, contacts et possibles empreintes de mots de passe.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-24",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-7BC96B1FCA65",
+  "location": "France métropolitaine",
+  "org": "Univers du Cuir",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/univers-du-cuir-via-arobases-mwtx487wztth7gkpme",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/univers-du-cuir-via-arobases-mwtx487wztth7gkpme"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Univers du Cuir visée par une revendication de fuite de données avec 32 746 adresses e-mail potentiellement compromises.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-24",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-43D7E80A31BE",
+  "location": "France métropolitaine",
+  "org": "Expert Canapé",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/expert-canap-via-arobases-mwtx16afew242r61btp",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/expert-canap-via-arobases-mwtx16afew242r61btp"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Expert Canapé fait l'objet d'une revendication de fuite de données personnelles par un cybercriminel annonçant la diffusion d'une base attribuée à l'enseigne.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-24",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-3AA786C74D51",
+  "location": "France métropolitaine",
+  "org": "Rapid-Sign",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/rapid-sign-via-arobases-mwtwy8jdxkna7s4ko",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/rapid-sign-via-arobases-mwtwy8jdxkna7s4ko"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Rapid-Sign (via Arobases)",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-24",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-2FA63AD60384",
+  "location": "Inconnu",
+  "org": "Pix",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Éducation / Formation",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Pix est un service public français permettant d’évaluer, de développer et de certifier les compétences numériques.",
+   "evidence_url": "https://www.cyberattaque.org/pix-les-donnees-de-44-000-eleves-dans-55-etablissements-francais-en-fuite/",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/pix-les-donnees-de-44-000-eleves-dans-55-etablissements-francais-en-fuite/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Pix : les données de 44 000 élèves dans 55 établissements français en fuite",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
   "date": "2026-11-23",
   "high_sensitivity_data_exposed": false,
   "id": "INC-FC3A3176DBEB",
@@ -12,12 +315,9 @@
   "sector": "Association / Syndicat",
   "sector_status": {
    "confidence": 0.8,
-   "discarded_source_labels": [
-    "Administration / Collectivité"
-   ],
    "evidence": "Créée en 2016 et basée à Paris, la Fondation des Femmes est une organisation française reconnue d’utilité publique, engagée dans la défense des droits des femmes et la lutte contre les violences.",
    "evidence_url": "https://www.cyberattaque.org/fondation-des-femmes-un-hacker-diffuse-pres-de-120-000-fiches-personnelles-et-les-details-de-2-007-dons/",
-   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
    "status": "inferred"
   },
   "source_links": [
@@ -40,6 +340,46 @@
   "threat": "Fuite de données",
   "threat_status": {
    "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-23",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-EED2BA514236",
+  "location": "France métropolitaine",
+  "org": "L'Institut national du cancer",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/l-institut-national-du-cancer-inca-mwumwnln69x0vrvmv45",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/linstitut-national-du-cancer-victime-dune-cyberattaque-avec-fuite-de-donnees/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/l-institut-national-du-cancer-inca-mwumwnln69x0vrvmv45"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "L’Institut national du cancer victime d’une cyberattaque avec fuite de données",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
   }
  },
  {
@@ -115,6 +455,74 @@
   "credentials_or_secrets_exposed": true,
   "date": "2026-11-23",
   "high_sensitivity_data_exposed": false,
+  "id": "INC-C96DDD8108CC",
+  "location": "France métropolitaine",
+  "org": "Euro Vanille",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Eurovanille est une entreprise française spécialisée dans la commercialisation de vanille naturelle et de produits dérivés destinés notamment aux professionnels de la gastronomie, de la pâtisserie et de l'industrie agroalimentaire.",
+   "evidence_url": "https://frenchbreaches.com/alertes/euro-vanille-via-arobases-mwtv5gpu310w15fg1cg",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/euro-vanille-via-arobases-mwtv5gpu310w15fg1cg"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Eurovanille visé par une revendication de fuite de données exposant des informations clients et de paiement.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-23",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-C3950E2B5797",
+  "location": "France métropolitaine",
+  "org": "Idil Diffusion",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Idil Diffusion est une entreprise française spécialisée dans la fourniture de composants et d'accessoires destinés aux créateurs et professionnels de la bijouterie.",
+   "evidence_url": "https://frenchbreaches.com/alertes/idil-diffusion-via-arobases-mwtuplwhuw2izdzcl2",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/idil-diffusion-via-arobases-mwtuplwhuw2izdzcl2"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Un pirate revendique la diffusion de plus de 1,4 million d'enregistrements attribués à Idil Diffusion le 23 novembre 2026.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-23",
+  "high_sensitivity_data_exposed": false,
   "id": "INC-BD91579D5E5B",
   "location": "France métropolitaine",
   "org": "LWS",
@@ -161,6 +569,46 @@
   "credentials_or_secrets_exposed": true,
   "date": "2026-11-23",
   "high_sensitivity_data_exposed": false,
+  "id": "INC-B8C0620F2CD9",
+  "location": "France métropolitaine",
+  "org": "Happy Candy",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Happy Candy est une entreprise familiale spécialisée dans la vente de bonbons, friandises, gâteaux de bonbons et articles destinés aux événements festifs.",
+   "evidence_url": "https://frenchbreaches.com/alertes/happy-candy-via-arobases-mwtuteuvw9w64w09gg",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/happy-candy-pirate-les-donnees-de-7-200-clients-diffusees-sur-le-darkweb/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/happy-candy-via-arobases-mwtuteuvw9w64w09gg"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Happy Candy piraté : les données de 7 200 clients diffusées sur le darkweb",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-23",
+  "high_sensitivity_data_exposed": false,
   "id": "INC-B00F33DD2B71",
   "location": "France métropolitaine",
   "org": "Laboratoire pour la Santé Animale",
@@ -188,6 +636,84 @@
   "threat": "Fuite de données",
   "threat_status": {
    "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-23",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-AB300553CE2A",
+  "location": "France métropolitaine",
+  "org": "La Fabrique d’Écharpe",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "evidence": "Commerce / Distribution | Industrie / Manufacture",
+   "reason": "SOURCE_SECTOR_CONFLICT",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/la-fabrique-decharpe-7-500-emails-et-des-mots-de-passe-exposes-dans-une-fuite-de-36-go/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/la-fabrique-d-charpe-via-arobases-mwtuyslfziyg0gpig68"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "La Fabrique d’écharpe : 7 500 emails et des mots de passe exposés dans une fuite de 3,6 Go",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-23",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-A525CADC4AA0",
+  "location": "France métropolitaine",
+  "org": "Les Gazons Parisiens",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/les-gazons-parisiens-via-arobases-mwtv29sb8dyt5f4mtl6",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/les-gazons-parisiens-plus-de-10-000-clients-exposes-avec-leurs-donnees-de-paiement-apres-une-cyberattaque/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/les-gazons-parisiens-via-arobases-mwtv29sb8dyt5f4mtl6"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Les Gazons Parisiens : plus de 10 000 clients exposés avec leurs données de paiement après une cyberattaque",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
   }
  },
  {
@@ -228,12 +754,17 @@
   "sector": "Sport",
   "sector_status": {
    "confidence": 0.8,
-   "evidence": "Fondé en 1976 et basé à Villeneuve-d’Ascq, dans le Nord, Decathlon est l’un des plus importants distributeurs d’articles de sport au monde.",
-   "evidence_url": "https://www.cyberattaque.org/decathlon-plus-de-163-000-fiches-clients-diffusees-par-un-hacker-des-livraisons-a-venir-exposees/",
-   "reason": "ACTIVITY_RULE",
+   "evidence": "Decathlon est l'un des principaux distributeurs d'articles de sport en France. [étiquette source écartée : Commerce]",
+   "evidence_url": "https://frenchbreaches.com/alertes/decathlon-mwsnl2jcqpydbdbuhw",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
    "status": "inferred"
   },
   "source_links": [
+   {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/decathlon.png"
+   },
    {
     "label": "Cyberattaque.org",
     "source": "CYBERATTAQUE_ORG",
@@ -246,6 +777,7 @@
    }
   ],
   "sources": [
+   "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
@@ -359,10 +891,10 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Agence d'Accompagnement Actif à l'Évaluation Psychotechnique (AAAEP)",
+  "summary": "AAAEP confirme une fuite de données après un accès non autorisé à un outil interne exploité via une faille de Metabase.",
   "threat": "Fuite de données",
   "threat_status": {
-   "status": "unknown"
+   "status": "confirmed"
   }
  },
  {
@@ -646,7 +1178,7 @@
   "high_sensitivity_data_exposed": true,
   "id": "INC-B035F6D6F00B",
   "location": "France métropolitaine",
-  "org": "GoTronic",
+  "org": "Go Tronic",
   "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Commerce / Distribution",
@@ -659,18 +1191,24 @@
   },
   "source_links": [
    {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/gotronic.png"
+   },
+   {
     "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/gotronic-mwqiij0l351ddo81adu"
    }
   ],
   "sources": [
+   "BONJOURLAFUITE",
    "FRENCHBREACHES"
   ],
   "summary": "GoTronic fait l'objet d'une revendication de fuite de données avec plus de 328 000 adresses e-mail annoncées.",
   "threat": "Fuite de données",
   "threat_status": {
-   "status": "unknown"
+   "status": "confirmed"
   }
  },
  {
@@ -895,6 +1433,37 @@
   "threat": "Ransomware",
   "threat_status": {
    "status": "claimed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-20",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-7034161374E4",
+  "location": "Inconnu",
+  "org": "Banque Delubac",
+  "organisation_links": [],
+  "personal_data_exposed": false,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/banque-delubac-des-pirates-echouent-a-voler-de-largent-mais-derobent-des-donnees-clients/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Banque Delubac : des pirates échouent à voler de l’argent, mais dérobent des données clients",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
   }
  },
  {
@@ -1682,15 +2251,15 @@
   "id": "INC-E9156BC58FD9",
   "location": "France métropolitaine",
   "org": "Ipsos",
-  "organisation_links": [],
+  "organisation_links": [
+   "https://www.ipsos.com"
+  ],
   "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
+  "sector": "Inconnu",
   "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Commerce",
-   "evidence_url": "https://frenchbreaches.com/alertes/ipsos-mwjlkku7b6kqw1wm7kr",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
+   "evidence": "Commerce / Distribution | Services aux entreprises",
+   "reason": "SOURCE_SECTOR_CONFLICT",
+   "status": "unknown"
   },
   "source_links": [
    {
@@ -1707,17 +2276,23 @@
     "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/ipsos-mwjlkku7b6kqw1wm7kr"
+   },
+   {
+    "label": "ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion",
+    "source": "RANSOMWARE_LIVE",
+    "url": "http://ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.onion/site/blog?uuid=cbe215de-76e5-4352-b02e-bdf04f3489f9"
    }
   ],
   "sources": [
    "BONJOURLAFUITE",
    "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
+   "FRENCHBREACHES",
+   "RANSOMWARE_LIVE"
   ],
   "summary": "Ipsos confirme une intrusion dans l'un de ses systèmes d'information internes et une enquête est en cours.",
-  "threat": "Intrusion",
+  "threat": "Ransomware",
   "threat_status": {
-   "status": "confirmed"
+   "status": "claimed"
   }
  },
  {
@@ -4327,6 +4902,40 @@
   "threat": "Ransomware",
   "threat_status": {
    "status": "claimed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-09",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-35D755B349DB",
+  "location": "France métropolitaine",
+  "org": "Direction générale de l'aviation civile",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Administration / Collectivité",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "public",
+   "evidence_url": "https://frenchbreaches.com/alertes/direction-g-n-rale-de-l-aviation-civile-dgac-mwumgm25fozd06vnjy7",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/direction-g-n-rale-de-l-aviation-civile-dgac-mwumgm25fozd06vnjy7"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Direction générale de l'aviation civile (DGAC)",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "confirmed"
   }
  },
  {
@@ -7638,18 +8247,24 @@
   },
   "source_links": [
    {
+    "label": "BonjourLaFuite",
+    "source": "BONJOURLAFUITE",
+    "url": "https://bonjourlafuite.eu.org/img/locservice.png"
+   },
+   {
     "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/locservice-mwowy67458wrwtcg5j2"
    }
   ],
   "sources": [
+   "BONJOURLAFUITE",
    "FRENCHBREACHES"
   ],
   "summary": "",
   "threat": "Fuite de données",
   "threat_status": {
-   "status": "unknown"
+   "status": "confirmed"
   }
  },
  {
@@ -9171,157 +9786,6 @@
   "threat": "Fuite de données",
   "threat_status": {
    "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-25",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-8FFC0C049830",
-  "location": "Inconnu",
-  "org": "Orange",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Numérique / Technologie",
-  "sector_status": {
-   "confidence": 0.9,
-   "evidence": "Opérateur de télécommunications et fournisseur de services numériques",
-   "evidence_url": "https://www.orange.com/fr/propos-de-nous",
-   "reason": "REFERENCE_EXACT",
-   "status": "referenced"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/cyberattaque-contre-orange-pres-de-30-000-fichiers-internes-devoilent-les-secrets-de-son-reseau/"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG"
-  ],
-  "summary": "Près de 30 000 fichiers attribués à Orange, soit environ 6,5 Go de données, ont été diffusés par un hacker se présentant comme « 0xRune ».",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "confirmed"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
-  "date": "2026-10-25",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-606A74E0F7CF",
-  "location": "France métropolitaine",
-  "org": "FSU",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Association / Syndicat",
-  "sector_status": {
-   "confidence": 0.8,
-   "evidence": "Fédération syndicale unitaire",
-   "evidence_url": "https://frenchbreaches.com/alertes/f-d-ration-syndicale-unitaire-fsu-mvo6q4sbdeahqvm9z7b",
-   "reason": "ORGANISATION_NAME_RULE",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/fsu-des-hackers-accedent-a-un-serveur-et-a-des-comptes-internes/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/f-d-ration-syndicale-unitaire-fsu-mvo6q4sbdeahqvm9z7b"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "FSU : des hackers accèdent à un serveur et à des comptes internes",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "unknown"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": true,
-  "date": "2026-10-25",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-409E26876A2B",
-  "location": "France métropolitaine",
-  "org": "FootballMinigames",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Sport",
-  "sector_status": {
-   "confidence": 0.8,
-   "discarded_source_labels": [
-    "Commerce / Distribution"
-   ],
-   "evidence": "FootballMinigames propose de nombreux jeux reposant sur de grandes quantités de données sportives : deviner un joueur à partir de sa carrière, comparer des statistiques, retrouver un footballeur grâce à son âge ou encore remplir des grilles en fonction des clubs et nationalités.",
-   "evidence_url": "https://www.cyberattaque.org/footballminigames-un-hacker-revendique-22-074-utilisateurs-en-fuite/",
-   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
-   "status": "inferred"
-  },
-  "source_links": [
-   {
-    "label": "Cyberattaque.org",
-    "source": "CYBERATTAQUE_ORG",
-    "url": "https://www.cyberattaque.org/footballminigames-un-hacker-revendique-22-074-utilisateurs-en-fuite/"
-   },
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/footballminigames-mvnivky1qjwaoqm62xh"
-   }
-  ],
-  "sources": [
-   "CYBERATTAQUE_ORG",
-   "FRENCHBREACHES"
-  ],
-  "summary": "FootballMinigames : un hacker revendique 22 074 utilisateurs en fuite",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "reported"
-  }
- },
- {
-  "admission": "ACCEPTED",
-  "credentials_or_secrets_exposed": false,
-  "date": "2026-10-25",
-  "high_sensitivity_data_exposed": false,
-  "id": "INC-0A7579664EAF",
-  "location": "France métropolitaine",
-  "org": "Delatad",
-  "organisation_links": [],
-  "personal_data_exposed": true,
-  "sector": "Commerce / Distribution",
-  "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Commerce",
-   "evidence_url": "https://frenchbreaches.com/alertes/delatad-mvo6xajrex6fjllr89s",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
-  },
-  "source_links": [
-   {
-    "label": "FrenchBreaches",
-    "source": "FRENCHBREACHES",
-    "url": "https://frenchbreaches.com/alertes/delatad-mvo6xajrex6fjllr89s"
-   }
-  ],
-  "sources": [
-   "FRENCHBREACHES"
-  ],
-  "summary": "",
-  "threat": "Fuite de données",
-  "threat_status": {
-   "status": "unknown"
   }
  }
 ]

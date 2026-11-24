@@ -1768,6 +1768,11 @@
   ],
   "version": 3
  },
+ "INC-2FA63AD60384": {
+  "display_summary": "Pix : les données de 44 000 élèves dans 55 établissements français en fuite",
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-30587B962720": {
   "display_summary": "Groupe Alternance apparaît parmi les nouvelles cibles revendiquées par le groupe de ransomware The Gentlemen.",
   "summary_paragraphs": [
@@ -1928,6 +1933,32 @@
   ],
   "version": 3
  },
+ "INC-35D755B349DB": {
+  "display_summary": "Direction générale de l'aviation civile (DGAC)",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "reported",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-3634AD5756CD": {
   "display_summary": "BodySwap : les données de 10 309 utilisateurs du service d’images pour adultes en fuite",
   "sensitive_data": {
@@ -2027,6 +2058,24 @@
  },
  "INC-3A4CFEB0905F": {
   "display_summary": "Avantages Jeunes : 318 000 profils en fuite, des milliers de mineurs exposés",
+  "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-3AA786C74D51": {
+  "display_summary": "Rapid-Sign (via Arobases)",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [],
   "version": 3
  },
@@ -2294,6 +2343,26 @@
   "summary_paragraphs": [
    "La revendication indique une base attribuée aux Scouts de France d'environ 71 000 enregistrements.",
    "Les échantillons publiés montrent noms, adresses, dates de naissance et coordonnées de représentants légaux, et des mineurs pourraient être concernés."
+  ],
+  "version": 3
+ },
+ "INC-43D7E80A31BE": {
+  "display_summary": "Expert Canapé fait l'objet d'une revendication de fuite de données personnelles par un cybercriminel annonçant la diffusion d'une base attribuée à l'enseigne.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Un cybercriminel affirme avoir diffusé une base de données attribuée à Expert Canapé contenant 3 731 078 lignes et divers fichiers CSV."
   ],
   "version": 3
  },
@@ -4035,6 +4104,11 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-7034161374E4": {
+  "display_summary": "Banque Delubac : des pirates échouent à voler de l’argent, mais dérobent des données clients",
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-70737EF727A7": {
   "display_summary": "",
   "summary_paragraphs": [],
@@ -4095,7 +4169,7 @@
   "version": 3
  },
  "INC-747D62713F5E": {
-  "display_summary": "Agence d'Accompagnement Actif à l'Évaluation Psychotechnique (AAAEP)",
+  "display_summary": "AAAEP confirme une fuite de données après un accès non autorisé à un outil interne exploité via une faille de Metabase.",
   "sensitive_data": {
    "types": [
     {
@@ -4117,7 +4191,10 @@
    ],
    "vulnerable_people": false
   },
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "AAAEP a détecté le 23 novembre un accès non autorisé à un outil interne et confirme une fuite de données.",
+   "Le groupe BlackHatSect0r revendique l'extraction de 59 tables et affirme avoir identifié 584 867 candidats distincts."
+  ],
   "version": 3
  },
  "INC-74DACCF9E08E": {
@@ -4408,6 +4485,24 @@
    "ChimeraZ annonce la vente d'une base attribuée à caverne-des-jouets.com comprenant 9,361,144 lignes et 969,386 adresses email.",
    "Cyberattaque.org a analysé des échantillons confirmant la présence de données personnelles, d'historiques d'achats et de mots de passe hachés."
   ],
+  "version": 3
+ },
+ "INC-7BC96B1FCA65": {
+  "display_summary": "Univers du Cuir visée par une revendication de fuite de données avec 32 746 adresses e-mail potentiellement compromises.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-7BF9828040F8": {
@@ -4985,6 +5080,24 @@
    "Cave Coste confirme une cyberattaque ayant entraîné la divulgation d'adresses email et de mots de passe clients stockés en clair dans un ancien fichier.",
    "La faille a été exploitée entre août et début septembre 2026 et corrigée début septembre; l'incident a été reconnu le 3 octobre 2026."
   ],
+  "version": 3
+ },
+ "INC-8A4615474096": {
+  "display_summary": "L'Empreinte du Bois visée par une revendication de fuite de données comprenant factures, contacts et possibles empreintes de mots de passe.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-8C3B062EFF51": {
@@ -5959,6 +6072,27 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-A525CADC4AA0": {
+  "display_summary": "Les Gazons Parisiens : plus de 10 000 clients exposés avec leurs données de paiement après une cyberattaque",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Un pirate surnommé « Chimera » revendique la diffusion de 320 440 lignes et 10 791 adresses e-mail attribuées aux Gazons Parisiens."
+  ],
+  "version": 3
+ },
  "INC-A674F41CD218": {
   "display_summary": "Fédération Royale Belge des Sports Équestres (FRBSE/KBRSF)",
   "sensitive_data": {
@@ -6171,6 +6305,25 @@
    "BonjourLaFuite signale une fuite de données concernant WayToMe.",
    "Les données indiquées comprennent : Adresse email."
   ],
+  "version": 3
+ },
+ "INC-AB300553CE2A": {
+  "display_summary": "La Fabrique d’écharpe : 7 500 emails et des mots de passe exposés dans une fuite de 3,6 Go",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "confirmed",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-AC0AE089503F": {
@@ -6446,9 +6599,12 @@
    "types": [
     {
      "sources": [
-      "FRENCHBREACHES"
+      "FRENCHBREACHES",
+      "BONJOURLAFUITE"
      ],
-     "specifics": [],
+     "specifics": [
+      "Mot de passe chiffré (😒)"
+     ],
      "status": "unknown",
      "value": "mots de passe"
     },
@@ -6481,6 +6637,27 @@
   "summary_paragraphs": [
    "Un pirate affirme vendre une base attribuée aux sites d'Ebikon, Gersau, Meggen et Wil, revendiquant 8 960 enregistrements pour environ 5 000 personnes.",
    "L'annonce présente des extraits principalement issus du système d'événements du site d'Ebikon; le piratage reste à confirmer."
+  ],
+  "version": 3
+ },
+ "INC-B072B34B19C6": {
+  "display_summary": "Bocklip fait l'objet d'une revendication de fuite de données incluant des informations clients et bancaires partielles.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Un pirate nommé « Chimera » revendique la diffusion de près de 300 000 lignes de données associées au site bocklip.com, comprenant 11 310 adresses e-mail.",
+   "Les échantillons publiés contiennent des identités, des coordonnées, des empreintes de mots de passe et des informations partielles de cartes bancaires."
   ],
   "version": 3
  },
@@ -6723,6 +6900,28 @@
   "summary_paragraphs": [
    "Monceau Fleurs alerte ses clients après une cyberattaque survenue le 30 octobre 2026 chez un prestataire chargé de la gestion des caisses de ses magasins.",
    "Des informations personnelles ont été consultées et extraites sans autorisation, notamment des noms, adresses, dates de naissance et coordonnées."
+  ],
+  "version": 3
+ },
+ "INC-B8C0620F2CD9": {
+  "display_summary": "Happy Candy piraté : les données de 7 200 clients diffusées sur le darkweb",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "confirmed",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Un pirate revendique avoir diffusé 281 400 enregistrements et 7 220 adresses e-mail attribués à Happy Candy.",
+   "La publication contient des échantillons montrant noms, e-mails, téléphones, adresses postales, références et données techniques de paiements."
   ],
   "version": 3
  },
@@ -7120,6 +7319,24 @@
   ],
   "version": 3
  },
+ "INC-C3950E2B5797": {
+  "display_summary": "Un pirate revendique la diffusion de plus de 1,4 million d'enregistrements attribués à Idil Diffusion le 23 novembre 2026.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-C39B7E02FCBC": {
   "display_summary": "BonjourLaFuite signale une fuite de données concernant Diocèse 92.",
   "summary_paragraphs": [
@@ -7339,6 +7556,48 @@
   },
   "summary_paragraphs": [
    "Elloha a détecté le 25 octobre 2026 un incident de sécurité et l'a immédiatement confiné, bloquant l'accès concerné et déployant des correctifs."
+  ],
+  "version": 3
+ },
+ "INC-C8191F6ED24F": {
+  "display_summary": "Love and Vibes annonce la mise en vente par un pirate d'une base de données contenant des commandes et données personnelles de clients.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Un pirate a annoncé la mise en vente d'une base de données attribuée à Love and Vibes contenant 237 655 lignes et 188 942 personnes.",
+   "Love and Vibes avait confirmé une intrusion informatique le 22 octobre 2026, laquelle pourrait être liée à la fuite."
+  ],
+  "version": 3
+ },
+ "INC-C96DDD8108CC": {
+  "display_summary": "Eurovanille visé par une revendication de fuite de données exposant des informations clients et de paiement.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Un pirate affirme avoir diffusé plus de 155 000 lignes de données associées au site eurovanille.com, dont 3 547 adresses e-mail.",
+   "Les échantillons publiés contiennent noms, coordonnées, empreintes de mots de passe, historiques de transactions et informations partielles de cartes bancaires."
   ],
   "version": 3
  },
@@ -8656,6 +8915,27 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-ECC8DA36C24C": {
+  "display_summary": "La ville de Quimper et Quimper Bretagne Occidentale annoncent être victimes d'une intrusion informatique affectant leurs systèmes d'information.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "La ville de Quimper et Quimper Bretagne Occidentale annoncent être victimes d'une intrusion informatique affectant leurs systèmes d'information internes.",
+   "Aucune fuite de données confirmée à ce stade et l'origine et l'étendue de la compromission restent inconnues."
+  ],
+  "version": 3
+ },
  "INC-ED0F6C3D5980": {
   "display_summary": "Cyberattaque contre Vackelys : passeports, RIB et données médicales de mineurs en fuite",
   "sensitive_data": {
@@ -8783,6 +9063,27 @@
   "summary_paragraphs": [
    "BonjourLaFuite signale une fuite de données concernant Point Vision.",
    "Les données indiquées comprennent : Nom, prénom ; Date de naissance ; Adresse postale ; Adresse email ; Numéro de téléphone ; Échanges relatifs aux rendez-vous."
+  ],
+  "version": 3
+ },
+ "INC-EED2BA514236": {
+  "display_summary": "L’Institut national du cancer victime d’une cyberattaque avec fuite de données",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "L'incident, détecté le 18 novembre, concerne le site institutionnel cancer.fr et pediatrie.cancer.fr, aujourd'hui indisponibles.",
+   "L'organisme confirme qu'une violation de données personnelles a eu lieu mais n'a pas précisé la nature ni l'ampleur des informations compromises."
   ],
   "version": 3
  },
@@ -9173,6 +9474,35 @@
   ],
   "version": 3
  },
+ "INC-FCB9F06DCBD1": {
+  "display_summary": "La DGAC confirme une cyberattaque sur son site de paiement ayant entraîné la fuite de données personnelles et bancaires.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Une personne non autorisée a accédé aux données du site de paiement des redevances de la DSAC entre le 5 et le 9 novembre 2026.",
+   "Des numéros partiels de cartes, dates d'expiration et cryptogrammes figurent parmi les données compromises."
+  ],
+  "version": 3
+ },
  "INC-FCF965AF5FEC": {
   "display_summary": "Ouest-France : une cyberattaque touche les formulaires d’abonnement de l’offre jeunes",
   "sensitive_data": {
@@ -9241,6 +9571,43 @@
   "display_summary": "Le Grimaldi Forum Monaco a détecté un accès non autorisé à son infrastructure informatique le 29 septembre 2026.",
   "summary_paragraphs": [
    "Le Grimaldi Forum Monaco annonce avoir été victime d'un incident de cybersécurité avec un accès non autorisé à son infrastructure informatique."
+  ],
+  "version": 3
+ },
+ "INC-FDBB2EEEA3B3": {
+  "display_summary": "Macadam confirme une fuite de données personnelles après une intrusion le 2 août 2026 liée à l'exploitation d'une vulnérabilité Metabase.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données de santé"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "pièces d'identité"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Un pirate a accédé à son environnement informatique le 2 août 2026 et a téléchargé adresses email, numéros de téléphone, pays et identifiants utilisateurs.",
+   "Jusqu’à 4 100 profils contenant des informations supplémentaires ont également été consultés, sans preuve de téléchargement complet de ces données."
   ],
   "version": 3
  },
