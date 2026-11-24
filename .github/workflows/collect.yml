@@ -55,12 +55,10 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.Cyberwatchapi }}
           CYBERWATCH_API_MODE: ${{ inputs.api_mode || 'STANDARD' }}
-          # Plafond partagé par l'enrichissement et la déduplication.
-          # Plafond partagé par l'enrichissement, la déduplication et le
-          # mapper sectoriel. Relevé de 0.03 à 0.035 : le run du 11/09 a
-          # consommé 0.0260 en source_facts seul, et le mapper s'exécute
-          # après — sans marge il serait coupé en budget_blocked.
+          # L'extraction s'exécute avant le mapper sectoriel et la déduplication.
+          # Son plafond laisse une marge à ces étapes dans le budget partagé.
           LLM_MAX_COST_USD_PER_RUN: "0.035"
+          LLM_SOURCE_FACTS_MAX_COST_USD_PER_RUN: "0.029"
           DEDUP_AI_DAILY_ENABLED: "1"
           # Jusqu'à trois lots, 40 paires au total, budget partagé inchangé.
           DEDUP_AI_DAILY_MAX_BATCHES: "3"

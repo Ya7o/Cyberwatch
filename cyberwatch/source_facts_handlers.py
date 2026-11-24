@@ -489,6 +489,17 @@ def merge_source_facts(existing: list[dict], incoming: list[dict]) -> list[dict]
             merged_meta["_source_facts_pending_clear"] = pending_clear
         else:
             merged_meta.pop("_source_facts_pending_clear", None)
+        # Le verdict taxonomique porte sur la description, sa citation et
+        # la rubrique brutes au moment du mapping. Un refresh peut les changer.
+        if not new.get("Activity_Sector_Semantic") and (
+            merged.get("Activity_Description") != old.get("Activity_Description")
+            or merged.get("Source_Sector_Raw") != old.get("Source_Sector_Raw")
+            or evidence.get("Activity_Description") != (
+                old_evidence.get("Activity_Description") if isinstance(old_evidence, dict) else None
+            )
+        ):
+            merged["Activity_Sector_Semantic"] = ""
+            merged_meta.pop("_activity_sector_semantic", None)
         merged["Source_Metadata_JSON"] = _dumps_json(merged_meta)
         merged["Evidence_JSON"] = _dumps_json(evidence)
         return merged

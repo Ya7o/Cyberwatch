@@ -73,10 +73,8 @@ def gap(item: Item, fact: dict, reference: dict) -> tuple[str, str] | None:
     description ni la citation ne sont classables par le déterministe, et
     aucune preuve plus forte n'a déjà tranché.
 
-    Le double test description/citation n'est pas optionnel : une citation
-    classable est une réponse déterministe même quand `_decision_from_facts`
-    ne la promeut pas faute de `matched`. Laisser le LLM la contredire serait
-    une régression.
+    Le double test description/citation évite d'appeler le modèle lorsque
+    la description ou sa citation fournit déjà un classement déterministe.
     """
     from .blf_org_enrichment import activity_subject
     from .sector_resolution import _decision_from_reference, _valid
@@ -283,7 +281,8 @@ def _default_caller(system_prompt: str, user_content: str) -> dict:
 
 
 def map_activity(organisation: str, activity: str, proof: str, *,
-                 source_sector_raw: str = "", call: Caller | None = None) -> dict:
+                 source_sector_raw: str = "", call: Caller | None = None,
+                 allow_network: bool = True) -> dict:
     """Verdict pour une activité. Jamais d'exception : au pire Inconnu.
 
     Le résultat porte toujours ``origin`` — cache, call, disabled, budget,
@@ -293,13 +292,13 @@ def map_activity(organisation: str, activity: str, proof: str, *,
              "reason": "", "evidence": proof, "origin": "disabled"}
     if not activity or not proof:
         return blank
-    if call is None and not _enabled():
-        return blank
     key = cache_key(activity, proof, source_sector_raw)
     cache = _load_cache()
     cached = cache.get(key)
     if isinstance(cached, dict) and cached.get("sector") in config.SECTORS:
         return {**cached, "evidence": proof, "origin": "cache"}
+    if not allow_network or (call is None and not _enabled()):
+        return blank
     user_content = _user_content(organisation, activity, proof, source_sector_raw)
     try:
         payload = (call or _default_caller)(_SYSTEM_PROMPT, user_content)
@@ -335,7 +334,7 @@ def _loads(raw: object) -> dict:
 
 
 def annotate_source_facts(items: list[Item], facts: list[dict], reference: dict, *,
-                          call: Caller | None = None) -> list[str]:
+                          call: Caller | None = None, allow_network: bool = True) -> list[str]:
     """Remplit ``Activity_Sector_Semantic`` là où le déterministe est muet.
 
     Exécutée une fois par run, sur tout le corpus — pas seulement la fenêtre du
@@ -355,7 +354,7 @@ def annotate_source_facts(items: list[Item], facts: list[dict], reference: dict,
         raw = str(fact.get("Source_Sector_Raw") or "").strip()
         from .blf_org_enrichment import activity_subject
         verdict = map_activity(activity_subject(item, fact), activity, proof,
-                               source_sector_raw=raw, call=call)
+                               source_sector_raw=raw, call=call, allow_network=allow_network)
         accepted = verdict["sector"] != config.SECTOR_UNKNOWN
         events.append({
             "item_id": item.Item_ID, "organisation": item.Organisation_Raw,

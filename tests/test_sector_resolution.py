@@ -56,6 +56,9 @@ def test_description_contradictoire_est_signalee():
         ("Gestion et diffusion de données foncières", config.SECTOR_CONSTRUCTION),
         ("Production agricole et horticulture", config.SECTOR_AGRICULTURE),
         ("Service cloud de stockage de fichiers", config.SECTOR_TECH),
+        ("Logiciels et hébergement informatique pour les professionnels de santé", config.SECTOR_TECH),
+        ("Solutions informatiques destinées aux établissements de santé", config.SECTOR_TECH),
+        ("Plateforme française de livraison de colis entre particuliers", config.SECTOR_TRANSPORT),
         ("Vente en ligne de chaussures", config.SECTOR_RETAIL),
     ],
 )
@@ -66,6 +69,15 @@ def test_regles_activite_couvrent_les_cas_metier_observes(description, expected)
 @pytest.mark.parametrize("name", ["Qare", "LiveTrail", "Geofoncier", "Herbiolys", "FFTir"])
 def test_nom_de_marque_seul_reste_inconnu(name):
     assert sector_resolution.sector_policy.classify_sector_name(name) == config.SECTOR_UNKNOWN
+
+
+@pytest.mark.parametrize(("name", "sector"), [
+    ("CHU de Bordeaux", config.SECTOR_HEALTH),
+    ("Pharmacie des Congrès à Dijon", config.SECTOR_HEALTH),
+    ("Communauté de communes Entre Bièvre et Rhône", config.SECTOR_ADMIN),
+])
+def test_un_nom_institutionnel_auto_descriptif_est_classable(name, sector):
+    assert sector_resolution.resolve_item(_item(name), {}, {}).sector == sector
 
 
 def test_reference_exacte_precede_le_repli():

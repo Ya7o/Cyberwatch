@@ -60,7 +60,12 @@ def test_aucun_trou_quand_seule_la_citation_est_classable():
     proof = "GreenGo est une plateforme de réservation d'hébergements de tourisme durable."
     fact = _fact("GreenGo opère dans le voyage.")
     fact["Evidence_JSON"] = json.dumps({"Activity_Description": proof})
-    assert sector_semantic.gap(_item("GreenGo"), fact, {}) is None
+    item = _item("GreenGo")
+    assert sector_semantic.gap(item, fact, {}) is None
+    decision = sector_resolution.resolve_item(item, fact, {})
+    assert (decision.sector, decision.reason, decision.evidence) == (
+        config.SECTOR_HOSPITALITY, "ACTIVITY_EVIDENCE_RULE", proof,
+    )
 
 
 def test_aucun_trou_quand_le_premier_appel_a_deja_tranche():
@@ -235,6 +240,36 @@ def test_le_cache_evite_un_second_appel():
         sector_semantic.map_activity("Acme", INEDIT, INEDIT, call=call)
     assert len(calls) == 1
     assert sector_semantic.map_activity("Acme", INEDIT, INEDIT, call=call)["origin"] == "cache"
+
+
+def test_le_cache_reste_exploitable_hors_ligne(monkeypatch):
+    sector_semantic.map_activity("Acme", INEDIT, INEDIT, call=_answer())
+    monkeypatch.setattr(sector_semantic, "_enabled", lambda: True)
+    monkeypatch.setattr(requests.Session, "request",
+                        lambda *a, **k: pytest.fail("appel réseau interdit"))
+    fact = _fact(INEDIT)
+    assert sector_semantic.annotate_source_facts(
+        [_item()], [fact], {}, allow_network=False,
+    ) == ["ITM-test"]
+    assert fact["Activity_Sector_Semantic"] == config.SECTOR_TECH
+
+
+def test_un_refresh_de_citation_invalide_le_mapping_en_cache():
+    from cyberwatch import source_facts
+
+    fact = _fact(INEDIT, Activity_Sector_Semantic=config.SECTOR_TECH)
+    fact["Source_Metadata_JSON"] = json.dumps({
+        sector_semantic.METADATA_KEY: {"sector": config.SECTOR_TECH},
+    })
+    refresh = _fact(INEDIT)
+    identical = source_facts.merge_source_facts([fact], [refresh])[0]
+    assert identical["Activity_Sector_Semantic"] == config.SECTOR_TECH
+    refresh["Evidence_JSON"] = json.dumps({
+        "Activity_Description": "Acme est un opérateur de constellations de satellites en orbite.",
+    })
+    merged = source_facts.merge_source_facts([fact], [refresh])[0]
+    assert not merged["Activity_Sector_Semantic"]
+    assert sector_semantic.METADATA_KEY not in json.loads(merged["Source_Metadata_JSON"] or "{}")
 
 
 def test_une_evolution_de_taxonomie_invalide_la_cle(monkeypatch):

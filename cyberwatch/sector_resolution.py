@@ -11,7 +11,7 @@ from .model import Incident, Item
 from .normalize import organisation_key
 
 SECTOR_UNKNOWN_TARGET_PCT = 10.0  # Alerte, jamais un secteur par défaut.
-POLICY_VERSION = "2026-10-07.sector.7"
+POLICY_VERSION = "2026-11-24.sector.8"
 
 
 @dataclass(frozen=True)
@@ -34,6 +34,7 @@ def _unknown(reason: str = "NO_ACTIVITY_EVIDENCE", evidence: str = "") -> Sector
 
 def _decision_from_facts(item: Item, fact: dict) -> SectorDecision | None:
     from .blf_org_enrichment import KEY, activity_subject, metadata
+    from .organisation_activity import structured_proof
     from .sector_activity import supported_activity
 
     provenance = metadata(fact.get("Source_Metadata_JSON")).get(KEY, {})
@@ -66,21 +67,17 @@ def _decision_from_facts(item: Item, fact: dict) -> SectorDecision | None:
     if not _valid(matched):
         matched = str(fact.get("Activity_Sector_Semantic") or "").strip()
     rule = sector_policy.classify_sector_activity(activity)
-    proof_rule = sector_policy.classify_sector_activity(proof)
-    if _valid(proof_rule) and _valid(rule) and proof_rule != rule:
-        return SectorDecision(
-            proof_rule,
-            "inferred",
-            "ACTIVITY_EVIDENCE_RULE",
-            0.80,
-            f"{proof} [description sémantique écartée : {activity}]",
-            activity_url,
-        )
-    if _valid(rule) and _valid(matched) and rule != matched:
+    proof_rule = (config.SECTOR_UNKNOWN if structured_proof(proof)
+                  else sector_policy.classify_sector_activity(proof))
+    if _valid(proof_rule) and proof_rule != rule:
+        reason, value = "ACTIVITY_EVIDENCE_RULE", proof_rule
+    elif _valid(rule) and _valid(matched) and rule != matched:
         return _unknown("ACTIVITY_SECTOR_CONFLICT", f"{rule} | {matched} : {proof}")
-    value = rule if _valid(rule) else matched
+    elif _valid(rule):
+        reason, value = "ACTIVITY_RULE", rule
+    else:
+        reason, value = "SEMANTIC_ACTIVITY_MATCH", matched
     if _valid(value):
-        reason = "ACTIVITY_RULE" if _valid(rule) else "SEMANTIC_ACTIVITY_MATCH"
         if reported and reported.sector != value:
             reason = "ACTIVITY_OVERRIDES_SOURCE_LABEL"
             proof = f"{proof} [étiquette source écartée : {raw}]"

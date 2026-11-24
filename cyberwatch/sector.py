@@ -234,9 +234,11 @@ def _safe_institutional_name_sector(organisation: str) -> str:
 
     # Formulations sanitaires auto-descriptives observées en base.
     if blob.startswith((
-        "agence regionale de sante", "centre hospitalier ", "centre d imagerie medicale ",
+        "agence regionale de sante", "chu de ", "chu d ", "chu du ",
+        "centre hospitalier ", "centre d imagerie medicale ",
         "centre imagerie medicale ", "clinique ", "hopital ", "hospices civils ",
-        "federation hospitaliere ",
+        "federation hospitaliere ", "pharmacie de ", "pharmacie du ", "pharmacie des ",
+        "grande pharmacie ",
     )):
         return config.SECTOR_HEALTH
 
@@ -250,6 +252,7 @@ def _safe_institutional_name_sector(organisation: str) -> str:
         "fr ministry of ", "prefecture de ", "metropole de ", "metropole ",
         "region ", "la region ", "departement de ", "conseil departemental ",
         "centre communal d action sociale ", "service public ", "france services",
+        "communaute de communes ", "communaute d agglomeration ",
     )
     if blob.startswith(admin_prefixes):
         return config.SECTOR_ADMIN
@@ -319,6 +322,8 @@ def classify_sector_activity(activity_description: str) -> str:
     # software serves hotels, hospitals or schools.
     if re.search(r"\bediteur\b.{0,40}\b(?:logiciels?|applications?)\b", blob):
         return config.SECTOR_TECH
+    if re.search(r"\b(?:hebergement informatique|solutions informatiques destinees aux)\b", blob):
+        return config.SECTOR_TECH
     # Principal business, not the software used, client industry or a brand.
     if re.search(r"\b(?:commercialis\w*|vend\w*)\b", blob) and any(
         term in blob for term in ("mobilier", "luminaires", "equipements", "produits", "chaussures")
@@ -344,7 +349,9 @@ def classify_sector_activity(activity_description: str) -> str:
     if any(term in blob for term in ("commercialise en ligne", "vente en ligne", "negoce",
                                     "vente de materiel", "vente d equipements")):
         return config.SECTOR_RETAIL
-    if any(term in blob for term in ("reexpedition de colis", "plateforme d expedition")):
+    if any(term in blob for term in (
+        "reexpedition de colis", "plateforme d expedition", "livraison de colis entre particuliers",
+    )):
         return config.SECTOR_TRANSPORT
     if "specialisee dans la chimie" in blob or "specialise dans la chimie" in blob:
         return config.SECTOR_INDUSTRY

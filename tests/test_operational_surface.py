@@ -44,10 +44,10 @@ def test_collect_expose_daily_update_and_explicit_manual_purge():
     assert "create" not in content
 
 
-def test_collect_has_one_explicit_global_ai_budget():
+def test_collect_preserves_global_ai_budget_and_leaves_room_after_extraction():
     content = (WORKFLOWS / "collect.yml").read_text(encoding="utf-8")
     assert 'LLM_MAX_COST_USD_PER_RUN: "0.035"' in content
-    assert content.count("MAX_COST_USD_PER_RUN") == 1
+    assert 'LLM_SOURCE_FACTS_MAX_COST_USD_PER_RUN: "0.029"' in content
 
 
 def test_ci_installe_les_dependances_de_dev_et_execute_toute_la_suite():

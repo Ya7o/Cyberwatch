@@ -111,10 +111,13 @@
   "org": "CHU de Bordeaux",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Santé",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.8,
+   "evidence": "CHU de Bordeaux",
+   "evidence_url": "https://www.cyberattaque.org/chu-de-bordeaux-un-ransomware-menace-de-divulguer-des-dossiers-medicaux-de-patients-apres-une-cyberattaque/",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
   },
   "source_links": [
    {
@@ -284,10 +287,13 @@
   "org": "LAPSA",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Agriculture / Agroalimentaire",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Développement et fabrication d’aliments pour chiens et chats",
+   "evidence_url": "https://www.lapsa-lab.fr/lapsa/alimentation",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -361,10 +367,13 @@
   "org": "Nissan",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Industrie / Manufacture",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Fabrication et commercialisation de véhicules automobiles",
+   "evidence_url": "https://www.nissan-global.com/EN/COMPANY/PROFILE/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -608,11 +617,11 @@
   "personal_data_exposed": true,
   "sector": "Santé",
   "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Santé",
-   "evidence_url": "https://frenchbreaches.com/alertes/chu-de-guadeloupe-mwsn70em60u7iz2azyi",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
+   "confidence": 0.8,
+   "evidence": "CHU de Guadeloupe",
+   "evidence_url": "https://www.cyberattaque.org/chu-de-guadeloupe-une-cyberattaque-paralyse-les-hopitaux-des-donnees-chiffrees-et-des-operations-annulees/",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
   },
   "source_links": [
    {
@@ -864,10 +873,13 @@
   "org": "Maileva",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Services aux entreprises",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Prestataire d’envoi de documents pour le compte d’entreprises",
+   "evidence_url": "https://www.lapostegroupe.com/fr/actualite/cyberattaque-de-maileva-ce-quil-faut-savoir",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -978,10 +990,13 @@
   "org": "AlloBébé",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Commerce / Distribution",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Boutique en ligne spécialisée dans les articles de puériculture",
+   "evidence_url": "https://www.allobebe.fr/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -1184,10 +1199,13 @@
   "org": "France Travail",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Administration / Collectivité",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Opérateur du service public de l’emploi chargé d’accompagner les demandeurs d’emploi et les recruteurs",
+   "evidence_url": "https://www.francetravail.org/accueil/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -1215,10 +1233,13 @@
   "org": "Made in Bébé",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Commerce / Distribution",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Boutique en ligne de produits de puériculture",
+   "evidence_url": "https://www.madeinbebe.com/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -1350,10 +1371,13 @@
   "org": "Contabo",
   "organisation_links": [],
   "personal_data_exposed": false,
-  "sector": "Inconnu",
+  "sector": "Numérique / Technologie",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Fournisseur de serveurs virtuels et de services d’hébergement informatique",
+   "evidence_url": "https://contabo.com/en/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -1465,10 +1489,13 @@
    "https://groupe-serl.fr"
   ],
   "personal_data_exposed": false,
-  "sector": "Inconnu",
+  "sector": "Construction / BTP",
   "sector_status": {
-   "reason": "SOURCE_SECTOR_RAW_AMBIGUOUS",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Groupe d’aménagement urbain et de construction",
+   "evidence_url": "https://groupe-serl.fr/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [],
   "sources": [
@@ -1589,13 +1616,13 @@
   "org": "Softway Medical",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Santé",
+  "sector": "Numérique / Technologie",
   "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Santé",
-   "evidence_url": "https://frenchbreaches.com/alertes/softway-medical-mwl0ih77zqb5co09pw",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
+   "confidence": 0.9,
+   "evidence": "Éditeur de logiciels métiers et hébergeur informatique pour les professionnels de santé",
+   "evidence_url": "https://www.groupesoftwaymedical.com/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -2135,10 +2162,13 @@
   "org": "Servier",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Santé",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Groupe pharmaceutique qui développe et commercialise des médicaments",
+   "evidence_url": "https://servier.com/groupe/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -2497,15 +2527,12 @@
   "org": "CHU de Reims",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Administration / Collectivité",
+  "sector": "Santé",
   "sector_status": {
    "confidence": 0.8,
-   "discarded_source_labels": [
-    "Santé"
-   ],
-   "evidence": "Le Centre hospitalier universitaire de Reims est l’un des principaux établissements de santé de la région Grand Est. Implanté dans la Marne, il assure des missions de soins, d’enseignement et de recherche.",
+   "evidence": "CHU de Reims",
    "evidence_url": "https://www.cyberattaque.org/chu-de-reims-des-donnees-de-patients-exposees-apres-la-cyberattaque-dun-logiciel/",
-   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "reason": "ORGANISATION_NAME_RULE",
    "status": "inferred"
   },
   "source_links": [
@@ -2540,10 +2567,13 @@
   "org": "Communauté de Communes d'Entre Bièvre et Rhône",
   "organisation_links": [],
   "personal_data_exposed": false,
-  "sector": "Inconnu",
+  "sector": "Administration / Collectivité",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.8,
+   "evidence": "Communauté de Communes d'Entre Bièvre et Rhône",
+   "evidence_url": "https://frenchbreaches.com/alertes/communaut-de-communes-d-entre-bi-vre-et-rh-ne-mwf9txigpk5flbkvnm",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
   },
   "source_links": [
    {
@@ -3049,10 +3079,13 @@
   "org": "Macif",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Finance / Assurance",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Assureur mutualiste proposant des contrats de dommages et de prévoyance",
+   "evidence_url": "https://presse.macif.fr/a-propos-de-la-macif.html",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -3281,10 +3314,13 @@
   "org": "Éducation nationale",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Administration / Collectivité",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Ministère de l’État chargé de l’enseignement scolaire",
+   "evidence_url": "https://www.education.gouv.fr/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -3312,10 +3348,13 @@
   "org": "ARTE TV",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Culture / Médias / Loisirs",
   "sector_status": {
-   "reason": "SOURCE_SECTOR_RAW_AMBIGUOUS",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Chaîne publique et plateforme culturelle européenne",
+   "evidence_url": "https://corporate.arte.tv/fr/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -3377,11 +3416,13 @@
   "org": "Effy",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Construction / BTP",
   "sector_status": {
-   "evidence": "Construction / BTP | Énergie / Utilities",
-   "reason": "SOURCE_SECTOR_CONFLICT",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Services de rénovation énergétique des logements",
+   "evidence_url": "https://www.effy.fr/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -3461,10 +3502,13 @@
   "org": "Garanka",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Construction / BTP",
   "sector_status": {
-   "reason": "BLF_ACTIVITY_CONFLICT",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Installation, entretien et dépannage d’équipements de chauffage",
+   "evidence_url": "https://frenchbreaches.com/alertes/garanka-mvp5u5169z0jw96lm8e",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -3566,10 +3610,13 @@
   "org": "Mistertemp Group",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Services aux entreprises",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Groupe spécialisé dans le recrutement et le travail temporaire",
+   "evidence_url": "https://www.mistertemp-group.com/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -3597,10 +3644,13 @@
   "org": "Notion",
   "organisation_links": [],
   "personal_data_exposed": false,
-  "sector": "Inconnu",
+  "sector": "Numérique / Technologie",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Éditeur d’un logiciel de travail collaboratif",
+   "evidence_url": "https://www.notion.com/fr",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -3633,10 +3683,13 @@
   "org": "Notion AI",
   "organisation_links": [],
   "personal_data_exposed": false,
-  "sector": "Inconnu",
+  "sector": "Numérique / Technologie",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Assistant d’intelligence artificielle intégré au logiciel collaboratif Notion",
+   "evidence_url": "https://www.notion.com/fr/product/ai",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -3906,10 +3959,13 @@
   "org": "QNAP",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Numérique / Technologie",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Développe des solutions informatiques de stockage réseau et de stockage cloud",
+   "evidence_url": "https://www.qnap.com/en/about-qnap",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -3937,11 +3993,13 @@
   "org": "Softway Medical",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Numérique / Technologie",
   "sector_status": {
-   "evidence": "Hébergement / Tourisme / Restauration | Santé",
-   "reason": "SOURCE_SECTOR_CONFLICT",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Éditeur de logiciels métiers et hébergeur informatique pour les professionnels de santé",
+   "evidence_url": "https://www.groupesoftwaymedical.com/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -4015,10 +4073,13 @@
   "org": "Abritel",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Hébergement / Tourisme / Restauration",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Plateforme spécialisée dans la réservation de locations de vacances",
+   "evidence_url": "https://www.abritel.fr/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -5037,10 +5098,13 @@
   "org": "Pharmagest",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Numérique / Technologie",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Éditeur de logiciels de gestion d’officine",
+   "evidence_url": "https://pharmagest.com/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -5480,10 +5544,13 @@
   "org": "Inovie",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Santé",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Réseau de laboratoires de biologie et de diagnostic médical",
+   "evidence_url": "https://inovie.fr/laboratoires/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -5640,10 +5707,13 @@
   "org": "Crédit Mutuel Arkéa",
   "organisation_links": [],
   "personal_data_exposed": false,
-  "sector": "Inconnu",
+  "sector": "Finance / Assurance",
   "sector_status": {
-   "reason": "ACTIVITY_EVIDENCE_REJECTED",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Groupe bancaire coopératif proposant des services de banque et d’assurance",
+   "evidence_url": "https://www.arkea.com/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -6638,11 +6708,11 @@
   "personal_data_exposed": true,
   "sector": "Santé",
   "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Santé",
+   "confidence": 0.8,
+   "evidence": "Pharmacie de la Cigogne",
    "evidence_url": "https://frenchbreaches.com/alertes/pharmacie-de-la-cigogne-mvxltey6athigff2ntt",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
   },
   "source_links": [
    {
@@ -7080,10 +7150,13 @@
   "org": "Pharmacie de la Cigogne à Strasbourg",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Santé",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.8,
+   "evidence": "Pharmacie de la Cigogne à Strasbourg",
+   "evidence_url": "https://www.cyberattaque.org/pharmacie-de-la-cigogne-a-strasbourg-110-000-patients-exposes-apres-une-cyberattaque/",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
   },
   "source_links": [
    {
@@ -7111,10 +7184,13 @@
   "org": "Pharmacie des Congrès à Dijon",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Santé",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.8,
+   "evidence": "Pharmacie des Congrès à Dijon",
+   "evidence_url": "https://www.cyberattaque.org/pharmacie-des-congres-a-dijon-23-000-dossiers-de-patients-en-fuite/",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
   },
   "source_links": [
    {
@@ -8134,11 +8210,11 @@
   "personal_data_exposed": true,
   "sector": "Administration / Collectivité",
   "sector_status": {
-   "confidence": 0.7,
-   "evidence": "public",
+   "confidence": 0.8,
+   "evidence": "Communauté de communes des Portes du Berry",
    "evidence_url": "https://frenchbreaches.com/alertes/communaut-de-communes-des-portes-du-berry-mvsk9pzoj4df8bidfvk",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
   },
   "source_links": [
    {
@@ -8231,10 +8307,13 @@
   "org": "CTS Strasbourg",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Transport / Logistique",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Exploitant du réseau de transports en commun de l’agglomération strasbourgeoise",
+   "evidence_url": "https://www.cts-strasbourg.eu/fr/accueil/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -8663,10 +8742,13 @@
   "org": "FSCF",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Sport",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Fédération sportive et culturelle qui organise notamment la pratique de disciplines sportives",
+   "evidence_url": "https://fscf.asso.fr/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -8922,16 +9004,13 @@
   "org": "Garanka",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Énergie / Utilities",
+  "sector": "Construction / BTP",
   "sector_status": {
-   "confidence": 0.8,
-   "discarded_source_labels": [
-    "Commerce / Distribution"
-   ],
-   "evidence": "Garanka est l’un des principaux acteurs français de la maintenance des équipements de chauffage.",
-   "evidence_url": "https://www.cyberattaque.org/garanka-une-cyberattaque-contraint-lentreprise-a-isoler-tous-ses-systemes-informatiques/",
-   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
-   "status": "inferred"
+   "confidence": 0.9,
+   "evidence": "Installation, entretien et dépannage d’équipements de chauffage",
+   "evidence_url": "https://frenchbreaches.com/alertes/garanka-mvp5u5169z0jw96lm8e",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -9221,10 +9300,13 @@
   "org": "Orange",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Numérique / Technologie",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Opérateur de télécommunications et fournisseur de services numériques",
+   "evidence_url": "https://www.orange.com/fr/propos-de-nous",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -9378,10 +9460,13 @@
   "org": "FFVoile",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Sport",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Fédération française de voile",
+   "evidence_url": "https://www.ffvoile.fr/ffv/web/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -9565,10 +9650,13 @@
   "org": "Caisse des Dépôts",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Finance / Assurance",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Institution financière publique exerçant des activités d’investissement de long terme",
+   "evidence_url": "https://www.caissedesdepots.fr/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -9670,10 +9758,13 @@
   "org": "Ircantec",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Administration / Collectivité",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Institution qui administre le régime réglementaire de retraite complémentaire des agents publics non titulaires",
+   "evidence_url": "https://www.ircantec.retraites.fr/nous-connaitre/notre-institution",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -10000,11 +10091,13 @@
   "org": "La Compagnie des Sens",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Commerce / Distribution",
   "sector_status": {
-   "evidence": "Commerce / Distribution | Santé",
-   "reason": "SOURCE_SECTOR_CONFLICT",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Vente de produits naturels et d’huiles essentielles",
+   "evidence_url": "https://www.compagnie-des-sens.fr/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -10894,10 +10987,13 @@
   "org": "OVHcloud",
   "organisation_links": [],
   "personal_data_exposed": false,
-  "sector": "Inconnu",
+  "sector": "Numérique / Technologie",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Fournisseur de services cloud et d’hébergement informatique",
+   "evidence_url": "https://www.ovhcloud.com/fr/about-us/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -11367,10 +11463,13 @@
    "https://chicas-gap.fr"
   ],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Santé",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Centre hospitalier intercommunal des Alpes du Sud proposant des soins à Gap et à Sisteron",
+   "evidence_url": "https://www.chicas-gap.fr/centre-hospitalier/decouvrir-chicas",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -12462,10 +12561,13 @@
   "org": "Grande Pharmacie des Halles",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Santé",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.8,
+   "evidence": "Grande Pharmacie des Halles",
+   "evidence_url": "https://www.cyberattaque.org/grande-pharmacie-des-halles-les-ordonnances-de-patients-diffusees-apres-une-cyberattaque/",
+   "reason": "ORGANISATION_NAME_RULE",
+   "status": "inferred"
   },
   "source_links": [
    {
@@ -13479,11 +13581,13 @@
   "org": "RGIS",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Services aux entreprises",
   "sector_status": {
-   "evidence": "Numérique / Technologie | Services aux entreprises",
-   "reason": "SOURCE_SECTOR_CONFLICT",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Prestataire d’inventaires et de gestion des stocks",
+   "evidence_url": "https://www.rgis.fr/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -14029,11 +14133,11 @@
   "personal_data_exposed": true,
   "sector": "Administration / Collectivité",
   "sector_status": {
-   "confidence": 0.8,
-   "evidence": "Ministère de l'Éducation nationale",
-   "evidence_url": "https://frenchbreaches.com/alertes/minist-re-de-l-ducation-nationale-mv14i2qtnqr84k1v1d",
-   "reason": "ORGANISATION_NAME_RULE",
-   "status": "inferred"
+   "confidence": 0.9,
+   "evidence": "Ministère de l’État chargé de l’enseignement scolaire",
+   "evidence_url": "https://www.education.gouv.fr/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -15201,11 +15305,13 @@
   "org": "TrainMe",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Sport",
   "sector_status": {
-   "evidence": "Santé | Sport",
-   "reason": "SOURCE_SECTOR_CONFLICT",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Plateforme de réservation et de prestation de coaching sportif",
+   "evidence_url": "https://www.cyberattaque.org/trainme-la-filiale-de-decathlon-touchee-par-une-fuite-de-donnees-des-informations-de-sante-exposees/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -15367,11 +15473,11 @@
   "personal_data_exposed": true,
   "sector": "Administration / Collectivité",
   "sector_status": {
-   "confidence": 0.7,
-   "evidence": "public",
-   "evidence_url": "https://frenchbreaches.com/alertes/france-travail-muynjxgd3ygeejsc32u",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
+   "confidence": 0.9,
+   "evidence": "Opérateur du service public de l’emploi chargé d’accompagner les demandeurs d’emploi et les recruteurs",
+   "evidence_url": "https://www.francetravail.org/accueil/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -15530,10 +15636,13 @@
   "org": "WayToMe",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Transport / Logistique",
   "sector_status": {
-   "reason": "ACTIVITY_TAXONOMY_UNRESOLVED",
-   "status": "unknown"
+   "confidence": 0.8,
+   "evidence": "WayToMe, plateforme française de livraison de colis entre particuliers, fait l’objet d’une cyberattaque revendiquée par un hacker utilisant le pseudonyme Quantique .",
+   "evidence_url": "https://www.cyberattaque.org/waytome-147-000-utilisateurs-et-des-milliers-de-trajets-exposes-apres-une-cyberattaque/",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
   },
   "source_links": [
    {
@@ -15801,13 +15910,13 @@
   "org": "Maileva",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Administration / Collectivité",
+  "sector": "Services aux entreprises",
   "sector_status": {
-   "confidence": 0.7,
-   "evidence": "public",
-   "evidence_url": "https://frenchbreaches.com/alertes/maileva-mufora09gh9so92vdk",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
+   "confidence": 0.9,
+   "evidence": "Prestataire d’envoi de documents pour le compte d’entreprises",
+   "evidence_url": "https://www.lapostegroupe.com/fr/actualite/cyberattaque-de-maileva-ce-quil-faut-savoir",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -18426,10 +18535,13 @@
   "org": "SFR",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Numérique / Technologie",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE | SOURCE_SECTOR_RAW_AMBIGUOUS",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Opérateur de télécommunications fournissant des accès fixes et mobiles",
+   "evidence_url": "https://www.sfr.fr/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -18766,11 +18878,13 @@
   "org": "Talentplug",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Numérique / Technologie",
   "sector_status": {
-   "evidence": "Numérique / Technologie | Services aux entreprises",
-   "reason": "SOURCE_SECTOR_CONFLICT",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Éditeur d’un logiciel de multidiffusion d’offres d’emploi et de gestion des candidatures",
+   "evidence_url": "https://talentplug.com/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -19177,11 +19291,13 @@
   "org": "CAPM Europe",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Commerce / Distribution",
   "sector_status": {
-   "evidence": "Commerce / Distribution | Industrie / Manufacture",
-   "reason": "SOURCE_SECTOR_CONFLICT",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Vente, location et maintenance de chariots élévateurs et de matériel de manutention",
+   "evidence_url": "https://www.capmeurope.com/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -19947,11 +20063,13 @@
   "org": "Doinsport",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Numérique / Technologie",
   "sector_status": {
-   "evidence": "Numérique / Technologie | Sport",
-   "reason": "SOURCE_SECTOR_CONFLICT",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Éditeur d’un logiciel de gestion et de réservation pour les établissements sportifs",
+   "evidence_url": "https://doinsport.com/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -20025,10 +20143,13 @@
   "org": "Maileva, filiale de La Poste",
   "organisation_links": [],
   "personal_data_exposed": false,
-  "sector": "Inconnu",
+  "sector": "Services aux entreprises",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Prestataire d’envoi de documents pour le compte d’entreprises",
+   "evidence_url": "https://www.lapostegroupe.com/fr/actualite/cyberattaque-de-maileva-ce-quil-faut-savoir",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -20374,11 +20495,13 @@
   "org": "Twizzit",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Numérique / Technologie",
   "sector_status": {
-   "evidence": "Association / Syndicat | Sport",
-   "reason": "SOURCE_SECTOR_CONFLICT",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Éditeur d’une plateforme logicielle de gestion des clubs et associations",
+   "evidence_url": "https://frenchbreaches.com/alertes/twizzit-mud9l0fmn55odchtxul",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {
@@ -22599,13 +22722,16 @@
   "org": "Groupe MGEL",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Santé",
+  "sector": "Finance / Assurance",
   "sector_status": {
-   "confidence": 0.7,
-   "evidence": "Santé",
-   "evidence_url": "https://frenchbreaches.com/alertes/groupe-mgel-mtzinl1af3p94rq9r2p",
-   "reason": "SOURCE_SECTOR_RAW",
-   "status": "reported"
+   "confidence": 0.8,
+   "discarded_source_labels": [
+    "Santé"
+   ],
+   "evidence": "Historiquement connue comme la Mutuelle Générale des Étudiants de l’Est, la MGEL accompagne notamment les étudiants, alternants et jeunes actifs.",
+   "evidence_url": "https://www.cyberattaque.org/cyberattaque-groupe-mgel-mutuelle-vitalite-sante/",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
   },
   "source_links": [
    {
@@ -22749,10 +22875,13 @@
   "org": "Revolut",
   "organisation_links": [],
   "personal_data_exposed": true,
-  "sector": "Inconnu",
+  "sector": "Finance / Assurance",
   "sector_status": {
-   "reason": "NO_ACTIVITY_EVIDENCE",
-   "status": "unknown"
+   "confidence": 0.9,
+   "evidence": "Services bancaires et de paiement",
+   "evidence_url": "https://www.revolut.com/fr-FR/",
+   "reason": "REFERENCE_EXACT",
+   "status": "referenced"
   },
   "source_links": [
    {

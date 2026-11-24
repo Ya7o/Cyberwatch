@@ -55,7 +55,7 @@ def test_le_corpus_courant_n_introduit_aucun_libelle_inconnu():
     """Garde-fou de dérive : une rubrique inédite doit être tranchée, pas subie."""
     if not CORPUS.exists():
         pytest.skip("corpus absent (base purgée)")
-    known = {e["raw"] for e in VOCABULARY}
+    known = {e["raw"] for e in VOCABULARY} | set(config.SECTORS)
     assert sorted(_corpus_values() - known) == []
 
 

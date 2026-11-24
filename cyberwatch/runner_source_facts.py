@@ -167,7 +167,9 @@ def resolve_activities(items: list[Item], facts: list[dict], incident_rows: list
         items, facts, reference, offline=offline, run_id=run_id, persist_results=persist)
     blf_org_enrichment.enrich(items, facts, incident_decisions=incident_rows,
                               provider=engine)
-    return engine, sector_semantic.annotate_source_facts(items, facts, reference)
+    return engine, sector_semantic.annotate_source_facts(
+        items, facts, reference, allow_network=not offline,
+    )
 
 
 def settle_sectors(rows: list[dict], incidents: list[Incident]) -> dict:
