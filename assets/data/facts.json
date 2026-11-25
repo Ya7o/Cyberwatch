@@ -1769,8 +1769,10 @@
   "version": 3
  },
  "INC-2FA63AD60384": {
-  "display_summary": "Pix : les données de 44 000 élèves dans 55 établissements français en fuite",
-  "summary_paragraphs": [],
+  "display_summary": "Une revendication affirme la diffusion de données de 43 940 élèves et 1 692 membres du personnel liées à la plateforme Pix.",
+  "summary_paragraphs": [
+   "Le 24 novembre 2026, un hacker annonce la diffusion de quatre fichiers attribués à Pix couvrant 55 établissements et 45 800 enregistrements."
+  ],
   "version": 3
  },
  "INC-30587B962720": {
@@ -1959,6 +1961,35 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-362F2D67C1D6": {
+  "display_summary": "Revendication crédible d'une fuite de données attribuée à Eneco Belgique exposant près de 105 000 numéros de comptes clients et 89 558 IBAN.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Un cybercriminel revendique la diffusion d'une base de données attribuée à Eneco Belgique contenant 104 886 numéros de comptes clients et 89 558 IBAN distincts.",
+   "La revendication est présentée comme crédible mais non confirmée et l'origine des données reste inconnue."
+  ],
+  "version": 3
+ },
  "INC-3634AD5756CD": {
   "display_summary": "BodySwap : les données de 10 309 utilisateurs du service d’images pour adultes en fuite",
   "sensitive_data": {
@@ -2022,6 +2053,11 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-390278E15E71": {
+  "display_summary": "",
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-3968EAFD86F6": {
   "display_summary": "Une sauvegarde SQL associée à Assu-Risk (Assupro) contenant potentiellement des données de 56 000 personnes a été identifiée.",
   "sensitive_data": {
@@ -2076,7 +2112,9 @@
    ],
    "vulnerable_people": false
   },
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "Un pirate a annoncé la publication d'une base attribuée à rapid-sign.com contenant 979 557 lignes et 22 496 adresses e-mail."
+  ],
   "version": 3
  },
  "INC-3AAEEA9D575F": {
@@ -2347,7 +2385,7 @@
   "version": 3
  },
  "INC-43D7E80A31BE": {
-  "display_summary": "Expert Canapé fait l'objet d'une revendication de fuite de données personnelles par un cybercriminel annonçant la diffusion d'une base attribuée à l'enseigne.",
+  "display_summary": "Expert Canapé fait l'objet d'une revendication de diffusion d'une base de données clients attribuée à son site.",
   "sensitive_data": {
    "types": [
     {
@@ -2362,7 +2400,8 @@
    "vulnerable_people": false
   },
   "summary_paragraphs": [
-   "Un cybercriminel affirme avoir diffusé une base de données attribuée à Expert Canapé contenant 3 731 078 lignes et divers fichiers CSV."
+   "Un cybercriminel a annoncé la diffusion d'une base de données attribuée à Expert Canapé, contenant des extraits publiés pour appuyer la revendication.",
+   "Les extraits montrent des données clients dont noms, e-mails, adresses, numéros, dates de naissance et mots de passe hachés."
   ],
   "version": 3
  },
@@ -2808,6 +2847,27 @@
    "vulnerable_people": false
   },
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-50FF04A60E2B": {
+  "display_summary": "Six extensions WordPress de WP Connect ont été piégées via un jeton GitHub compromis, menaçant plus de 3 600 installations actives.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Un jeton d’accès GitHub d’un partenaire a été utilisé pour introduire une porte dérobée dans six extensions, totalisant plus de 3 600 installations actives.",
+   "WordPress.org a bloqué les versions malveillantes avant leur distribution aux utilisateurs."
+  ],
   "version": 3
  },
  "INC-5156949E8337": {
@@ -4114,6 +4174,11 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-7075AEEACD03": {
+  "display_summary": "Ligue nationale de basket : un hacker revendique 40 000 comptes et diffuse une notification push aux supporters",
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-7117E04BE176": {
   "display_summary": "Nissan a suspendu depuis le 13 novembre plusieurs fonctions de son outil de diagnostic CONSULT-III plus après la découverte d'un accès non autorisé.",
   "summary_paragraphs": [
@@ -4317,6 +4382,27 @@
   ],
   "version": 3
  },
+ "INC-76D25A46B635": {
+  "display_summary": "Inmac Wstore, fournisseur de matériel informatique, confirme avoir été victime d'une cyberattaque détectée le 24 novembre 2026.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Inmac Wstore confirme une cyberattaque détectée le 24 novembre 2026 et a isolé des systèmes pour contenir l'incident.",
+   "Le site Internet est temporairement indisponible et le traitement des commandes et les livraisons sont perturbés."
+  ],
+  "version": 3
+ },
  "INC-77FA7FC04A8A": {
   "display_summary": "Une faille d'un composant lié à Welyb/Portail AGIRIS CONNECT a exposé des données de clients de cabinets d'expertise comptable.",
   "sensitive_data": {
@@ -4488,7 +4574,7 @@
   "version": 3
  },
  "INC-7BC96B1FCA65": {
-  "display_summary": "Univers du Cuir visée par une revendication de fuite de données avec 32 746 adresses e-mail potentiellement compromises.",
+  "display_summary": "Univers du Cuir visée par une revendication de fuite de données révélant plus de 32 000 adresses e-mail.",
   "sensitive_data": {
    "types": [
     {
@@ -4502,7 +4588,10 @@
    ],
    "vulnerable_people": false
   },
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "Un cybercriminel nommé Chimera a annoncé la diffusion d'une base de données attribuée à Univers du Cuir contenant 32 746 adresses e-mail.",
+   "Les extraits publiés montrent noms, adresses e-mail, adresses postales, numéros de téléphone, factures et mots de passe hachés."
+  ],
   "version": 3
  },
  "INC-7BF9828040F8": {
@@ -5083,7 +5172,7 @@
   "version": 3
  },
  "INC-8A4615474096": {
-  "display_summary": "L'Empreinte du Bois visée par une revendication de fuite de données comprenant factures, contacts et possibles empreintes de mots de passe.",
+  "display_summary": "Un pirate revendique la diffusion de 622 Mo de données attribuées à L'Empreinte du Bois, dont des noms, adresses et factures de clients.",
   "sensitive_data": {
    "types": [
     {
@@ -5097,7 +5186,9 @@
    ],
    "vulnerable_people": false
   },
-  "summary_paragraphs": [],
+  "summary_paragraphs": [
+   "Un pirate affirme avoir publié des extraits de fichiers liés au site lempreintedubois.fr et revendique 622 Mo de données et des millions de lignes."
+  ],
   "version": 3
  },
  "INC-8C3B062EFF51": {
@@ -6291,6 +6382,35 @@
   ],
   "version": 3
  },
+ "INC-AAC49356F0F6": {
+  "display_summary": "Banques françaises, paris sportifs et cryptomonnaies : un hacker utilise DeepSeek pour lancer ses cyberattaques",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "pièces d'identité"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Le pirate BabidiGhost a mené une vaste campagne assistée par DeepSeek et Hermes Agent ciblant une cinquantaine d'organisations en Europe.",
+   "En France, neuf cibles ont été identifiées, notamment dans les secteurs bancaire, des paris sportifs et des cryptomonnaies."
+  ],
+  "version": 3
+ },
  "INC-AADCC695B753": {
   "display_summary": "Une cyberattaque a forcé Orchestra à couper ses systèmes, perturbant les réservations de nombreux sites et agences de voyages.",
   "summary_paragraphs": [
@@ -6594,18 +6714,19 @@
   "version": 3
  },
  "INC-B035F6D6F00B": {
-  "display_summary": "GoTronic fait l'objet d'une revendication de fuite de données avec plus de 328 000 adresses e-mail annoncées.",
+  "display_summary": "GoTronic signale une fuite de données clients après une cyberattaque ayant touché un prestataire informatique, avec 328 190 adresses email revendiquées.",
   "sensitive_data": {
    "types": [
     {
      "sources": [
+      "CYBERATTAQUE_ORG",
       "FRENCHBREACHES",
       "BONJOURLAFUITE"
      ],
      "specifics": [
       "Mot de passe chiffré (😒)"
      ],
-     "status": "unknown",
+     "status": "confirmed",
      "value": "mots de passe"
     },
     {
@@ -6641,7 +6762,7 @@
   "version": 3
  },
  "INC-B072B34B19C6": {
-  "display_summary": "Bocklip fait l'objet d'une revendication de fuite de données incluant des informations clients et bancaires partielles.",
+  "display_summary": "Bocklip visé par une revendication de fuite de données incluant des informations clients et bancaires partiellement exposées.",
   "sensitive_data": {
    "types": [
     {
@@ -6656,8 +6777,7 @@
    "vulnerable_people": false
   },
   "summary_paragraphs": [
-   "Un pirate nommé « Chimera » revendique la diffusion de près de 300 000 lignes de données associées au site bocklip.com, comprenant 11 310 adresses e-mail.",
-   "Les échantillons publiés contiennent des identités, des coordonnées, des empreintes de mots de passe et des informations partielles de cartes bancaires."
+   "Un pirate nommé « Chimera » affirme avoir diffusé près de 300 000 lignes de données associées au site bocklip.com, comprenant 11 310 adresses e-mail."
   ],
   "version": 3
  },
@@ -6739,6 +6859,36 @@
   "display_summary": "Visionix : le spécialiste français du diagnostic ophtalmologique victime d’une cyberattaque",
   "summary_paragraphs": [
    "Revenio confirme qu’un serveur de sa filiale française a été compromis et contenait notamment des demandes internes d’assistance informatique."
+  ],
+  "version": 3
+ },
+ "INC-B4EF3C2804B1": {
+  "display_summary": "Cyberattaque chez Septeo : l’éditeur français de logiciels professionnels victime d’un vol de données",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Un tiers malveillant a accédé sans autorisation à une plateforme interne utilisée exclusivement à des fins internes.",
+   "Les données extraites comprennent les fiches contacts, les informations de facturation et les détails des tickets d’assistance."
   ],
   "version": 3
  },
@@ -7065,6 +7215,35 @@
   "display_summary": "Ciblex : les coordonnées et informations de livraison de milliers de destinataires exposées",
   "summary_paragraphs": [
    "Le 12 novembre 2026, un internaute affirme avoir publié une base associée au transporteur Ciblex contenant plus de 3 000 enregistrements."
+  ],
+  "version": 3
+ },
+ "INC-BA854704CC67": {
+  "display_summary": "SNIPES confirme une cyberattaque ayant exposé des informations liées aux achats de ses clients, dont des factures.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Des personnes non autorisées ont accédé à des données issues de la boutique en ligne de SNIPES, incluant noms, adresses, factures et modes de paiement.",
+   "SNIPES indique que mots de passe, identifiants de connexion et données bancaires n’ont pas été compromis."
   ],
   "version": 3
  },
@@ -7560,7 +7739,7 @@
   "version": 3
  },
  "INC-C8191F6ED24F": {
-  "display_summary": "Love and Vibes annonce la mise en vente par un pirate d'une base de données contenant des commandes et données personnelles de clients.",
+  "display_summary": "Love and Vibes confirme une intrusion et une base de 237 655 lignes attribuée au site est annoncée en vente par un pirate.",
   "sensitive_data": {
    "types": [
     {
@@ -7575,8 +7754,8 @@
    "vulnerable_people": false
   },
   "summary_paragraphs": [
-   "Un pirate a annoncé la mise en vente d'une base de données attribuée à Love and Vibes contenant 237 655 lignes et 188 942 personnes.",
-   "Love and Vibes avait confirmé une intrusion informatique le 22 octobre 2026, laquelle pourrait être liée à la fuite."
+   "Un pirate annonce la vente d'une base de données attribuée à Love and Vibes contenant 237 655 lignes et 188 942 personnes.",
+   "Love and Vibes a confirmé une intrusion informatique survenue le 22 octobre 2026, qui pourrait être liée à la fuite."
   ],
   "version": 3
  },
@@ -9067,7 +9246,7 @@
   "version": 3
  },
  "INC-EED2BA514236": {
-  "display_summary": "L’Institut national du cancer victime d’une cyberattaque avec fuite de données",
+  "display_summary": "L’Institut national du cancer confirme une cyberattaque ayant entraîné une violation de données et l’indisponibilité de plusieurs services en ligne.",
   "sensitive_data": {
    "types": [
     {
@@ -9082,8 +9261,8 @@
    "vulnerable_people": false
   },
   "summary_paragraphs": [
-   "L'incident, détecté le 18 novembre, concerne le site institutionnel cancer.fr et pediatrie.cancer.fr, aujourd'hui indisponibles.",
-   "L'organisme confirme qu'une violation de données personnelles a eu lieu mais n'a pas précisé la nature ni l'ampleur des informations compromises."
+   "L’incident, découvert le 18 novembre 2026, a visé notamment les sites cancer.fr et pediatrie.cancer.fr, désormais hors ligne.",
+   "L’organisme public reconnaît que des données personnelles ont été compromises et annonce des notifications individuelles aux personnes concernées."
   ],
   "version": 3
  },

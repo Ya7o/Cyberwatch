@@ -1,6 +1,219 @@
 [
  {
   "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-25",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-AAC49356F0F6",
+  "location": "Inconnu",
+  "org": "Banques françaises, paris sportifs et cryptomonnaies",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Finance / Assurance",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Les chercheurs identifient explicitement quatre secteurs d’activité ciblés en France : les banques, les paris sportifs, les cryptomonnaies et les services de paiement.",
+   "evidence_url": "https://www.cyberattaque.org/banques-francaises-paris-sportifs-et-cryptomonnaies-un-hacker-utilise-deepseek-pour-lancer-ses-cyberattaques/",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/banques-francaises-paris-sportifs-et-cryptomonnaies-un-hacker-utilise-deepseek-pour-lancer-ses-cyberattaques/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Banques françaises, paris sportifs et cryptomonnaies : un hacker utilise DeepSeek pour lancer ses cyberattaques",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-25",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-362F2D67C1D6",
+  "location": "France métropolitaine",
+  "org": "Eneco",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Énergie / Utilities",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Eneco est un groupe énergétique international spécialisé dans la fourniture d'électricité et de gaz ainsi que dans le développement des énergies renouvelables. [étiquette source écartée : Industrie]",
+   "evidence_url": "https://frenchbreaches.com/alertes/eneco-mww3l5sd1gjun7n5fs7",
+   "reason": "ACTIVITY_OVERRIDES_SOURCE_LABEL",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/eneco-mww3l5sd1gjun7n5fs7"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Revendication crédible d'une fuite de données attribuée à Eneco Belgique exposant près de 105 000 numéros de comptes clients et 89 558 IBAN.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-25",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-7075AEEACD03",
+  "location": "Inconnu",
+  "org": "Ligue nationale de basket",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Inconnu",
+  "sector_status": {
+   "reason": "NO_ACTIVITY_EVIDENCE",
+   "status": "unknown"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/ligue-nationale-de-basket-un-hacker-revendique-40-000-comptes-et-diffuse-une-notification-de-chantage-aux-supporters/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Ligue nationale de basket : un hacker revendique 40 000 comptes et diffuse une notification push aux supporters",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-25",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-B4EF3C2804B1",
+  "location": "France métropolitaine",
+  "org": "Septeo",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Technologie",
+   "evidence_url": "https://frenchbreaches.com/alertes/septeo-mww7besuaxley58og2k",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/cyberattaque-chez-septeo-lediteur-francais-de-logiciels-professionnels-victime-dun-vol-de-donnees/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/septeo-mww7besuaxley58og2k"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "Cyberattaque chez Septeo : l’éditeur français de logiciels professionnels victime d’un vol de données",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-25",
+  "high_sensitivity_data_exposed": true,
+  "id": "INC-BA854704CC67",
+  "location": "France métropolitaine",
+  "org": "SNIPES",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Commerce",
+   "evidence_url": "https://frenchbreaches.com/alertes/snipes-mww3zenzu92q4s3d6rr",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/snipes-victime-dune-cyberattaque-les-factures-des-clients-en-fuite/"
+   },
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/snipes-mww3zenzu92q4s3d6rr"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG",
+   "FRENCHBREACHES"
+  ],
+  "summary": "SNIPES confirme une cyberattaque ayant exposé des informations liées aux achats de ses clients, dont des factures.",
+  "threat": "Fuite de données",
+  "threat_status": {
+   "status": "confirmed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-25",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-50FF04A60E2B",
+  "location": "Inconnu",
+  "org": "WP Connect",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Numérique / Technologie",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "WP Connect est un studio français spécialisé dans le développement d’extensions WordPress et WooCommerce, basé à Nantes.",
+   "evidence_url": "https://www.cyberattaque.org/wp-connect-un-hacker-piege-six-extensions-wordpress-de-lediteur-francais-et-menace-3-600-sites/",
+   "reason": "SEMANTIC_ACTIVITY_MATCH",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/wp-connect-un-hacker-piege-six-extensions-wordpress-de-lediteur-francais-et-menace-3-600-sites/"
+   }
+  ],
+  "sources": [
+   "CYBERATTAQUE_ORG"
+  ],
+  "summary": "Six extensions WordPress de WP Connect ont été piégées via un jeton GitHub compromis, menaçant plus de 3 600 installations actives.",
+  "threat": "Intrusion",
+  "threat_status": {
+   "status": "reported"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
   "credentials_or_secrets_exposed": true,
   "date": "2026-11-24",
   "high_sensitivity_data_exposed": false,
@@ -27,7 +240,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Bocklip fait l'objet d'une revendication de fuite de données incluant des informations clients et bancaires partielles.",
+  "summary": "Bocklip visé par une revendication de fuite de données incluant des informations clients et bancaires partiellement exposées.",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "confirmed"
@@ -61,8 +274,78 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Expert Canapé fait l'objet d'une revendication de fuite de données personnelles par un cybercriminel annonçant la diffusion d'une base attribuée à l'enseigne.",
+  "summary": "Expert Canapé fait l'objet d'une revendication de diffusion d'une base de données clients attribuée à son site.",
   "threat": "Fuite de données",
+  "threat_status": {
+   "status": "unknown"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": false,
+  "date": "2026-11-24",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-390278E15E71",
+  "location": "France métropolitaine",
+  "org": "Groupe Gagneraud",
+  "organisation_links": [
+   "https://gagneraud.fr"
+  ],
+  "personal_data_exposed": false,
+  "sector": "Industrie / Manufacture",
+  "sector_status": {
+   "confidence": 0.7,
+   "evidence": "Manufacturing",
+   "evidence_url": "http://tezwsse5czllksjb7cwp65rvnk4oobmzti2znn42i43bjdfd2prqqkad.onion/groupe_gagneraud",
+   "reason": "SOURCE_SECTOR_RAW",
+   "status": "reported"
+  },
+  "source_links": [
+   {
+    "label": "tezwsse5czllksjb7cwp65rvnk4oobmzti2znn42i43bjdfd2prqqkad.onion",
+    "source": "RANSOMWARE_LIVE",
+    "url": "http://tezwsse5czllksjb7cwp65rvnk4oobmzti2znn42i43bjdfd2prqqkad.onion/groupe_gagneraud"
+   }
+  ],
+  "sources": [
+   "RANSOMWARE_LIVE"
+  ],
+  "summary": "",
+  "threat": "Ransomware",
+  "threat_status": {
+   "status": "claimed"
+  }
+ },
+ {
+  "admission": "ACCEPTED",
+  "credentials_or_secrets_exposed": true,
+  "date": "2026-11-24",
+  "high_sensitivity_data_exposed": false,
+  "id": "INC-76D25A46B635",
+  "location": "France métropolitaine",
+  "org": "Inmac Wstore",
+  "organisation_links": [],
+  "personal_data_exposed": true,
+  "sector": "Commerce / Distribution",
+  "sector_status": {
+   "confidence": 0.8,
+   "evidence": "Inmac Wstore, spécialiste de la vente de matériel informatique et de solutions technologiques aux professionnels, confirme être v…",
+   "evidence_url": "https://frenchbreaches.com/alertes/inmac-wstore-mww3u8je0cvghzp64xlp",
+   "reason": "ACTIVITY_RULE",
+   "status": "inferred"
+  },
+  "source_links": [
+   {
+    "label": "FrenchBreaches",
+    "source": "FRENCHBREACHES",
+    "url": "https://frenchbreaches.com/alertes/inmac-wstore-mww3u8je0cvghzp64xlp"
+   }
+  ],
+  "sources": [
+   "FRENCHBREACHES"
+  ],
+  "summary": "Inmac Wstore, fournisseur de matériel informatique, confirme avoir été victime d'une cyberattaque détectée le 24 novembre 2026.",
+  "threat": "Intrusion",
   "threat_status": {
    "status": "confirmed"
   }
@@ -95,10 +378,10 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "L'Empreinte du Bois visée par une revendication de fuite de données comprenant factures, contacts et possibles empreintes de mots de passe.",
+  "summary": "Un pirate revendique la diffusion de 622 Mo de données attribuées à L'Empreinte du Bois, dont des noms, adresses et factures de clients.",
   "threat": "Fuite de données",
   "threat_status": {
-   "status": "confirmed"
+   "status": "reported"
   }
  },
  {
@@ -228,10 +511,10 @@
   "sources": [
    "CYBERATTAQUE_ORG"
   ],
-  "summary": "Pix : les données de 44 000 élèves dans 55 établissements français en fuite",
+  "summary": "Une revendication affirme la diffusion de données de 43 940 élèves et 1 692 membres du personnel liées à la plateforme Pix.",
   "threat": "Fuite de données",
   "threat_status": {
-   "status": "confirmed"
+   "status": "reported"
   }
  },
  {
@@ -296,7 +579,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Univers du Cuir visée par une revendication de fuite de données avec 32 746 adresses e-mail potentiellement compromises.",
+  "summary": "Univers du Cuir visée par une revendication de fuite de données révélant plus de 32 000 adresses e-mail.",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "confirmed"
@@ -691,10 +974,10 @@
    "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "L’Institut national du cancer victime d’une cyberattaque avec fuite de données",
+  "summary": "L’Institut national du cancer confirme une cyberattaque ayant entraîné une violation de données et l’indisponibilité de plusieurs services en ligne.",
   "threat": "Fuite de données",
   "threat_status": {
-   "status": "confirmed"
+   "status": "reported"
   }
  },
  {
@@ -1224,7 +1507,7 @@
   "high_sensitivity_data_exposed": true,
   "id": "INC-B035F6D6F00B",
   "location": "France métropolitaine",
-  "org": "Go Tronic",
+  "org": "GoTronic",
   "organisation_links": [],
   "personal_data_exposed": true,
   "sector": "Commerce / Distribution",
@@ -1242,6 +1525,11 @@
     "url": "https://bonjourlafuite.eu.org/img/gotronic.png"
    },
    {
+    "label": "Cyberattaque.org",
+    "source": "CYBERATTAQUE_ORG",
+    "url": "https://www.cyberattaque.org/gotronic-328-000-adresses-email-en-fuite-apres-une-cyberattaque/"
+   },
+   {
     "label": "FrenchBreaches",
     "source": "FRENCHBREACHES",
     "url": "https://frenchbreaches.com/alertes/gotronic-mwqiij0l351ddo81adu"
@@ -1249,9 +1537,10 @@
   ],
   "sources": [
    "BONJOURLAFUITE",
+   "CYBERATTAQUE_ORG",
    "FRENCHBREACHES"
   ],
-  "summary": "GoTronic fait l'objet d'une revendication de fuite de données avec plus de 328 000 adresses e-mail annoncées.",
+  "summary": "GoTronic signale une fuite de données clients après une cyberattaque ayant touché un prestataire informatique, avec 328 190 adresses email revendiquées.",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "confirmed"
@@ -10770,7 +11059,7 @@
   "sources": [
    "FRENCHBREACHES"
   ],
-  "summary": "Love and Vibes annonce la mise en vente par un pirate d'une base de données contenant des commandes et données personnelles de clients.",
+  "summary": "Love and Vibes confirme une intrusion et une base de 237 655 lignes attribuée au site est annoncée en vente par un pirate.",
   "threat": "Fuite de données",
   "threat_status": {
    "status": "reported"
