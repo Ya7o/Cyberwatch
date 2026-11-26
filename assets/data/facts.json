@@ -1662,6 +1662,24 @@
   ],
   "version": 3
  },
+ "INC-2D9D47AC956B": {
+  "display_summary": "Publication revendiquée d'une base de données attribuée à Technimusic contenant potentiellement des données clients (emails, factures, mots de passe).",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-2E3AE6A9B2EB": {
   "display_summary": "Le CCAS de Dunkerque voit la republication revendiquée de données personnelles de 66 659 usagers sur un forum de cybercriminels.",
   "summary_paragraphs": [],
@@ -1793,6 +1811,52 @@
  },
  "INC-314FE9ECF0EC": {
   "display_summary": "",
+  "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-31BBDAB97D78": {
+  "display_summary": "Todoist confirme une cyberattaque ayant permis le vol des données d'environ 6 % de ses utilisateurs.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "BONJOURLAFUITE"
+     ],
+     "specifics": [
+      "Mot de passe hashé (SHA1, algorithme obsolète)",
+      "Mot de passe"
+     ],
+     "status": "confirmed",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "BONJOURLAFUITE"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "Token API"
+    },
+    {
+     "sources": [
+      "BONJOURLAFUITE"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "Token intégration Slack"
+    },
+    {
+     "sources": [
+      "BONJOURLAFUITE"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "Token OpenAI, Anthropic, OpenRouter, Stripe, Shopify"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [],
   "version": 3
  },
@@ -1962,7 +2026,7 @@
   "version": 3
  },
  "INC-362F2D67C1D6": {
-  "display_summary": "Revendication crédible d'une fuite de données attribuée à Eneco Belgique exposant près de 105 000 numéros de comptes clients et 89 558 IBAN.",
+  "display_summary": "Eneco Belgique reconnaît une possible fuite de données exposant près de 105 000 comptes clients et 89 558 IBAN.",
   "sensitive_data": {
    "types": [
     {
@@ -1985,8 +2049,8 @@
    "vulnerable_people": false
   },
   "summary_paragraphs": [
-   "Un cybercriminel revendique la diffusion d'une base de données attribuée à Eneco Belgique contenant 104 886 numéros de comptes clients et 89 558 IBAN distincts.",
-   "La revendication est présentée comme crédible mais non confirmée et l'origine des données reste inconnue."
+   "Un cybercriminel a annoncé la diffusion gratuite d'une base de données attribuée à Eneco Belgique contenant 104 886 numéros de comptes clients et 89 558 IBAN.",
+   "Eneco indique avoir été informé par le Centre pour la cybersécurité Belgique et a corrigé une faille en poursuivant ses investigations."
   ],
   "version": 3
  },
@@ -2850,7 +2914,7 @@
   "version": 3
  },
  "INC-50FF04A60E2B": {
-  "display_summary": "Six extensions WordPress de WP Connect ont été piégées via un jeton GitHub compromis, menaçant plus de 3 600 installations actives.",
+  "display_summary": "Six extensions de WP connect ont reçu des versions malveillantes injectées via un jeton GitHub compromis, mais WordPress.org a bloqué leur diffusion.",
   "sensitive_data": {
    "types": [
     {
@@ -2865,8 +2929,8 @@
    "vulnerable_people": false
   },
   "summary_paragraphs": [
-   "Un jeton d’accès GitHub d’un partenaire a été utilisé pour introduire une porte dérobée dans six extensions, totalisant plus de 3 600 installations actives.",
-   "WordPress.org a bloqué les versions malveillantes avant leur distribution aux utilisateurs."
+   "Un jeton d’accès GitHub d’un partenaire a servi à injecter une porte dérobée dans six extensions de WP connect le 22 novembre 2026.",
+   "WordPress.org a bloqué les neuf versions malveillantes avant leur diffusion, empêchant leur distribution officielle."
   ],
   "version": 3
  },
@@ -3114,6 +3178,28 @@
   "summary_paragraphs": [
    "Flandre Opale Habitat indique que l’incident pourrait concerner des informations figurant dans des courriers envoyés au cours des dix dernières années.",
    "Les catégories potentiellement concernées incluent noms, adresses, numéros de client, références de logement et informations financières."
+  ],
+  "version": 3
+ },
+ "INC-573F9917F431": {
+  "display_summary": "Alexandre de Paris : 90 000 emails et 21 000 mots de passe en fuite",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "confirmed",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Une archive de 2,39 Go attribuée au site marchand contient 11 647 702 enregistrements et 21 108 comptes clients avec empreintes de mot de passe compatibles MD5.",
+   "Cyberattaque.org confirme 11 647 702 enregistrements répartis dans 406 fichiers JSONL, dont 286 contiennent des données."
   ],
   "version": 3
  },
@@ -4169,14 +4255,66 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-70435E7EC104": {
+  "display_summary": "",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-705F93D25F8B": {
+  "display_summary": "Idéa-Bois fait l'objet d'une publication revendiquée d'une base de données contenant des données clients, factures et empreintes de mots de passe.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-70737EF727A7": {
   "display_summary": "",
   "summary_paragraphs": [],
   "version": 3
  },
  "INC-7075AEEACD03": {
-  "display_summary": "Ligue nationale de basket : un hacker revendique 40 000 comptes et diffuse une notification push aux supporters",
-  "summary_paragraphs": [],
+  "display_summary": "Un hacker revendique 40 000 comptes de la Ligue nationale de basket et a diffusé une notification push signée depuis l’application.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Un hacker affirme détenir les données personnelles d’environ 40 000 utilisateurs de la Ligue nationale de basket.",
+   "Une capture montre une notification push affichée sous le nom de la LNB, signée « By Alduin <3 » et transmise via l’application."
+  ],
   "version": 3
  },
  "INC-7117E04BE176": {
@@ -4661,6 +4799,24 @@
   ],
   "version": 3
  },
+ "INC-7E8CDE22C0DF": {
+  "display_summary": "Creativ'Sign (via Arobases)",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-7F028203AC2F": {
   "display_summary": "L'armurerie Douillet-Dreumont fait l'objet d'une revendication de fuite de 7 546 fichiers (4,65 Go) proposés à la vente.",
   "sensitive_data": {
@@ -4734,6 +4890,24 @@
   "summary_paragraphs": [
    "Signal de menace interne à Saint-Denis : une policière est soupçonnée d'avoir utilisé ses accès professionnels pour rechercher des personnes et communiquer des informations confidentielles contre rémunération. L'ouverture de l'enquête est confirmée par le parquet ; les faits matériels restent au stade de l'allégation, ce qui justifie le maintien en CANDIDATE."
   ],
+  "version": 3
+ },
+ "INC-811D64816D28": {
+  "display_summary": "Le cybercriminel Chimera revendique la publication d'une base de données attribuée aux laboratoires Lehning contenant des données clients et de pharmacies.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-814D4F227E47": {
@@ -6643,6 +6817,24 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-AF688847CDBC": {
+  "display_summary": "Stickers Folies fait l'objet d'une publication revendiquée d'une base de données contenant des données clients et 28 364 empreintes de mots de passe MD5.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-AF6A27F3AB60": {
   "display_summary": "Une base attribuée à AvantagesJeunes et revendiquée sur un forum annonce environ 318 000 profils, dont des mineurs.",
   "sensitive_data": {
@@ -6863,7 +7055,7 @@
   "version": 3
  },
  "INC-B4EF3C2804B1": {
-  "display_summary": "Cyberattaque chez Septeo : l’éditeur français de logiciels professionnels victime d’un vol de données",
+  "display_summary": "Septeo IT Solutions a subi une intrusion le 22 novembre 2026 avec extraction de fiches contacts, informations de facturation et détails de tickets d’assistance.",
   "sensitive_data": {
    "types": [
     {
@@ -7806,6 +7998,27 @@
   ],
   "version": 3
  },
+ "INC-CB11202FCAB2": {
+  "display_summary": "Une base non protégée contenant près de deux milliards d’identifiants, dont cookies et jetons de session, a été découverte et rendue accessible publiquement.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Un chercheur a dévoilé le 24 novembre 2026 une collection de près de deux milliards d’identifiants stockés en clair, répartis dans 8 471 dossiers.",
+   "La base contient cookies de connexion et jetons de session permettant potentiellement d’accéder à des comptes malgré la double authentification."
+  ],
+  "version": 3
+ },
  "INC-CB116813D04D": {
   "display_summary": "Crédit Mutuel Arkéa confirme une cyberattaque via la plateforme d’un prestataire ayant permis des transactions frauduleuses depuis un compte du groupe.",
   "summary_paragraphs": [],
@@ -8179,12 +8392,59 @@
   ],
   "version": 3
  },
+ "INC-D6A7F5E9F216": {
+  "display_summary": "OPCO EP a suspendu plusieurs de ses portails numériques suite à un incident de cybersécurité.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "reported",
+     "value": "données bancaires"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Opco EP a temporairement interrompu l'accès à plusieurs portails numériques par mesure de sécurité.",
+   "Aucune fuite de données n'a été confirmée et l'origine de l'incident reste inconnue."
+  ],
+  "version": 3
+ },
  "INC-D710ACF5DF9D": {
   "display_summary": "La Communauté de communes Entre Bièvre et Rhône fait l'objet d'une revendication de cyberattaque avec divulgation de données.",
   "summary_paragraphs": [
    "La communauté de communes Entre Bièvre et Rhône fait l'objet d'une importante revendication de cyberattaque.",
    "Des hackers se présentant sous les noms de Blackhatsect0r, DXQR revendiquent la divulgation de données de milliers d'habitants."
   ],
+  "version": 3
+ },
+ "INC-D787BF017469": {
+  "display_summary": "1Password confirme une cyberattaque ayant permis le vol d'informations personnelles clients après la compromission d'un compte GitHub professionnel.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "confirmed",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-D7D9458445F1": {
