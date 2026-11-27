@@ -112,6 +112,24 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-01E2E391162C": {
+  "display_summary": "Groupe IMRO (via Softway Medical)",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-01E8D3339D48": {
   "display_summary": "Cyberattaque contre Nomad Education : 4,85 millions de comptes mis en vente sur le darkweb",
   "sensitive_data": {
@@ -254,6 +272,27 @@
   ],
   "version": 3
  },
+ "INC-048AF83CEB71": {
+  "display_summary": "L'Agence France-Presse a confirmé une intrusion informatique ayant entraîné la suspension temporaire de la plateforme AFP Forum.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "L'Agence France-Presse a été victime d'une cyberattaque dans la nuit du mercredi 25 au jeudi 26 novembre 2026.",
+   "La plateforme AFP Forum a été rendue temporairement inaccessible et des investigations ont été engagées."
+  ],
+  "version": 3
+ },
  "INC-06066B2EEF57": {
   "display_summary": "Grande Loge Traditionnelle de France (GLTF)",
   "summary_paragraphs": [],
@@ -304,6 +343,27 @@
  "INC-07A263B26D50": {
   "display_summary": "King Jouet : près de 196 000 fiches clients diffusées sur le darkweb",
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-0810BF915719": {
+  "display_summary": "Le Groupe de Chelles confirme une fuite de données personnelles de patients via une intrusion chez son fournisseur de logiciels.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "reported",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Le Groupe de Chelles a été informé d'une cyberattaque par son éditeur de logiciels de gestion des rendez-vous et des dossiers administratifs.",
+   "Le groupe confirme qu'une intrusion chez son fournisseur a permis la consultation non autorisée de données personnelles de patients."
+  ],
   "version": 3
  },
  "INC-086C12B8F086": {
@@ -409,6 +469,35 @@
  "INC-0981AAF62C2E": {
   "display_summary": "",
   "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-0988E6E5E16E": {
+  "display_summary": "ParuVendu confirme une cyberattaque du 24 novembre ayant exposé noms, contacts et historiques d’activité de ses utilisateurs.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG",
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "claimed",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "ParuVendu a détecté et bloqué un accès non autorisé le 24 novembre 2026, et a informé ses membres le 27 novembre 2026."
+  ],
   "version": 3
  },
  "INC-0A7579664EAF": {
@@ -867,6 +956,27 @@
   ],
   "version": 3
  },
+ "INC-1813A09BB2D4": {
+  "display_summary": "Buffalo Grill : la cyberattaque chez Brevo pousse l’enseigne à alerter tous ses clients",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Accès non autorisé à un outil de Brevo a entraîné l'exposition de noms, e-mails, téléphones et codes postaux.",
+   "Buffalo Grill indique qu'une dizaine de clients seraient concernés mais a informé l'ensemble de sa clientèle par précaution."
+  ],
+  "version": 3
+ },
  "INC-182F9EE2F8D0": {
   "display_summary": "",
   "sensitive_data": {
@@ -909,6 +1019,35 @@
   "summary_paragraphs": [
    "Accès non autorisé détecté le 11 novembre 2026 et bloqué le jour même, vulnérabilité corrigée.",
    "Les identifiants, adresses email, informations de profil et mots de passe des membres pourraient avoir été consultés."
+  ],
+  "version": 3
+ },
+ "INC-1906970E6207": {
+  "display_summary": "Interservices confirme la compromission d'une ancienne application de gestion et une possible fuite de données personnelles et bancaires.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "reported",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "CYBERATTAQUE_ORG"
+     ],
+     "specifics": [],
+     "status": "reported",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Interservices confirme qu'une ancienne application de gestion a été compromise chez son prestataire d'hébergement et que des données ont pu être copiées.",
+   "La coopérative indique que les types de données potentiellement récupérées incluent noms, adresses, e‑mails, mots de passe et coordonnées bancaires (IBAN)."
   ],
   "version": 3
  },
@@ -1330,6 +1469,11 @@
   "summary_paragraphs": [
    "Le pirate « ChimeraZ » affirme vendre une base liée au site Zohe.be avec 28 787 lignes et évoque environ 3 500 personnes concernées."
   ],
+  "version": 3
+ },
+ "INC-237F67F04F41": {
+  "display_summary": "L’AFP a isolé AFP Forum après une intrusion détectée le 25-26 novembre 2026, rendant la plateforme indisponible pour ses clients.",
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-24437AB737D5": {
@@ -2229,6 +2373,11 @@
    "Un individu a publié sur PwnForums une annonce affirmant vendre une base de données provenant du site alloextra.com.",
    "Le pirate affirme avoir extrait les profils par scraping plutôt que par compromission des serveurs, mais l'authenticité n'est pas vérifiée."
   ],
+  "version": 3
+ },
+ "INC-3B37F8AAE645": {
+  "display_summary": "Pagès : une cyberattaque expose les données clients et menace les paiements en ligne",
+  "summary_paragraphs": [],
   "version": 3
  },
  "INC-3B8C2F71BF60": {
@@ -3288,6 +3437,14 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-59EA8B13053B": {
+  "display_summary": "SAP a détecté des activités suspectes et des cybercriminels auraient copié et modifié du code source en utilisant des clés d'authentification volées.",
+  "summary_paragraphs": [
+   "SAP a détecté des activités suspectes dans son environnement de développement et a engagé des mesures d'urgence.",
+   "Des jetons d'authentification auraient été dérobés et utilisés pour copier et modifier du code source hébergé sur GitHub."
+  ],
+  "version": 3
+ },
  "INC-5A28227E80E1": {
   "display_summary": "Ninkasi confirme une cyberattaque sur sa boutique en ligne avec exposition possible de données clients et mots de passe.",
   "sensitive_data": {
@@ -4256,7 +4413,7 @@
   "version": 3
  },
  "INC-70435E7EC104": {
-  "display_summary": "",
+  "display_summary": "Intelcia visée par une fuite de données revendiquée, exposant des dizaines de milliers d'adresses e-mail et fiches RH.",
   "sensitive_data": {
    "types": [
     {
@@ -4321,6 +4478,27 @@
   "display_summary": "Nissan a suspendu depuis le 13 novembre plusieurs fonctions de son outil de diagnostic CONSULT-III plus après la découverte d'un accès non autorisé.",
   "summary_paragraphs": [
    "Nissan confirme un accès non autorisé ayant entraîné la suspension de parties de son système de diagnostic utilisé par ses concessionnaires."
+  ],
+  "version": 3
+ },
+ "INC-719608A809F1": {
+  "display_summary": "Le Groupe de Saint-Louis confirme une fuite de données personnelles de patients liée à une compromission via son fournisseur de logiciel.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Le Groupe de Saint-Louis a été informé d'une intrusion par l'entreprise fournissant son logiciel de gestion des rendez-vous et des dossiers administratifs.",
+   "La compromission pourrait être liée à la cyberattaque ayant frappé l'éditeur Softway Medical et sa solution One Manager, selon FrenchBreaches."
   ],
   "version": 3
  },
@@ -5173,6 +5351,34 @@
   ],
   "version": 3
  },
+ "INC-86CBCA54E40B": {
+  "display_summary": "Le Groupe d'imagerie médicale du bassin lorientais confirme une fuite de données personnelles de patients liée à un incident chez un prestataire informatique.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    },
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "données bancaires"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Des données personnelles de patients ont fait l'objet d'un accès non autorisé après un incident de cybersécurité chez un prestataire."
+  ],
+  "version": 3
+ },
  "INC-86F9B6AFB61C": {
   "display_summary": "Plus de 500 000 enregistrements de commandes attribuées aux clients de Nature et Découvertes sont proposés à la vente sur un forum cybercriminel.",
   "summary_paragraphs": [
@@ -5614,6 +5820,13 @@
   "summary_paragraphs": [
    "Un pirate affirme avoir récupéré deux fichiers JSON d'environ 14 Mo contenant des données clients, d'interventions, devis et factures de HelloDepann.",
    "FrenchBreaches indique qu'aucune confirmation officielle de HelloDepann n'a été obtenue et que la revendication reste à établir."
+  ],
+  "version": 3
+ },
+ "INC-8FC4F9CEBF2A": {
+  "display_summary": "Le groupe de ransomware The Gentlemen revendique une cyberattaque visant Infflux, éditeur français de logiciels de gestion logistique.",
+  "summary_paragraphs": [
+   "The Gentlemen a publié une revendication nommant Infflux et son domaine infflux.com, proposant un bouton « Data » laissant entendre un accès à des données."
   ],
   "version": 3
  },
@@ -7555,6 +7768,26 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-BD276C1370EB": {
+  "display_summary": "pCloud confirme une cyberattaque visant son gestionnaire de mots de passe pCloud Pass et l'exposition d'adresses e-mail d'utilisateurs.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "confirmed",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "pCloud confirme l'exposition d'adresses e-mail d'utilisateurs de pCloud Pass et des tentatives de connexion à leurs comptes."
+  ],
+  "version": 3
+ },
  "INC-BD91579D5E5B": {
   "display_summary": "LWS signale une intrusion au 16 novembre 2026 ayant potentiellement exposé les coordonnées des titulaires de noms de domaine.",
   "sensitive_data": {
@@ -7811,6 +8044,24 @@
   "summary_paragraphs": [],
   "version": 3
  },
+ "INC-C589937E0F38": {
+  "display_summary": "",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "confirmed",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [],
+  "version": 3
+ },
  "INC-C5B5AF9DF4E2": {
   "display_summary": "Un pirate revendique la publication de 11 173 enregistrements liés au domaine amf-france.org de l'Autorité des marchés financiers.",
   "sensitive_data": {
@@ -7877,6 +8128,24 @@
  },
  "INC-C76D252079F0": {
   "display_summary": "",
+  "summary_paragraphs": [],
+  "version": 3
+ },
+ "INC-C7811D1868FA": {
+  "display_summary": "Infflux fait l'objet d'une revendication de cyberattaque par le groupe de ransomware The Gentlemen.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
   "summary_paragraphs": [],
   "version": 3
  },
@@ -8416,7 +8685,7 @@
    "vulnerable_people": false
   },
   "summary_paragraphs": [
-   "Opco EP a temporairement interrompu l'accès à plusieurs portails numériques par mesure de sécurité.",
+   "Opco EP a interrompu l'accès à plusieurs portails numériques par mesure de sécurité.",
    "Aucune fuite de données n'a été confirmée et l'origine de l'incident reste inconnue."
   ],
   "version": 3
@@ -8546,6 +8815,27 @@
   "display_summary": "Distinxion : un pirate revendique une base CRM de 518 903 contacts correspondant selon lui à 415 990 personnes distinctes.",
   "summary_paragraphs": [
    "Un pirate affirme détenir une base CRM de 518 903 contacts et 415 990 personnes distinctes, publiée le 30 septembre 2026."
+  ],
+  "version": 3
+ },
+ "INC-D9776A6C8C65": {
+  "display_summary": "Une revendication affirme la fuite de données de 413 000 comptes du site Offi.fr, guide culturel L'Officiel des spectacles.",
+  "sensitive_data": {
+   "types": [
+    {
+     "sources": [
+      "FRENCHBREACHES"
+     ],
+     "specifics": [],
+     "status": "unknown",
+     "value": "mots de passe"
+    }
+   ],
+   "vulnerable_people": false
+  },
+  "summary_paragraphs": [
+   "Un pirate affirme détenir la base de données du site Offi.fr contenant les informations de quelque 413 000 comptes utilisateurs.",
+   "L'échantillon consulté par FrenchBreaches contient 999 adresses e-mail et des mots de passe sous forme de hash."
   ],
   "version": 3
  },
